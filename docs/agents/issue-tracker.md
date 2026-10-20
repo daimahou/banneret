@@ -47,5 +47,4 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 ## Closing
 
-- Branch `<kind>/<id>-<slug>`, squash-merged to `main`, then deleted.
-- That commit sets `finished` and `commit`.
+- The squash commit sets `finished`.

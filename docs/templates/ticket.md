@@ -4,7 +4,6 @@ id:
 requires:
 started:
 finished:
-commit:
 ---
 # Done when
 

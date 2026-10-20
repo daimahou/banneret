@@ -28,15 +28,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Mechanics/Poison.md",
+                "file": "CLAUDE.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Poison"
+              "title": "CLAUDE"
             }
           }
         ],
+        "currentTab": 1,
         "stacked": true
       }
     ],
@@ -177,7 +178,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "plan.base",
+                "file": "CLAUDE.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -217,11 +218,24 @@
       "bases:Create new base": false
     }
   },
-  "active": "7bfeaafddf31e732",
+  "active": "e12d23c4fe1e36f1",
   "lastOpenFiles": [
-    "Mechanics/Poison.md",
-    "agents/issue-tracker.md",
+    "agents/adr-format.md",
     "CLAUDE.md",
+    "plan.base",
+    "tickets/tasks/Clarify progressive disclosure doc.md",
+    "agents/domain.md",
+    "agents/context.md",
+    "agents/progressive-disclosure.md",
+    "agents/issue-tracker.md",
+    "agents/gdscript conventions.md",
+    "agents/feedback-loop.md",
+    "agents/triage-labels.md",
+    "agents/adr",
+    "gdd.md",
+    "agents/progressive-disclosue.md",
+    "tickets.base",
+    "Mechanics/Poison.md",
     "templates/ticket.md",
     "templates/milestone.md",
     "templates/goal.md",
@@ -230,30 +244,17 @@
     "tickets/milestones/Write prototype features.md",
     "tickets/milestones/Breakdown prototype features.md",
     "tickets/gates/Playable Prototype.md",
-    "plan.base",
     "home.md",
-    "tickets.base",
     "pitch.md",
-    "gdd.md",
     "Mechanics",
     "tickets/goals/Art skill LEVEL-UP.md",
     "tickets/goals/Vertical slice.md",
-    "tickets/goals/Marketing course.md",
-    "tickets/milestones/Test.md",
-    "tickets/goals/Alpha.md",
-    "Agents/issue-tracker.md",
     "agents",
     "Agents",
     "Plan.base",
     "tickets/tasks",
     "tickets/milestones",
-    "tickets/goals/Demo.md",
-    "tickets/goals/Beta.md",
-    "tickets/goals/Banneret release.md",
     "tickets/goals",
-    "tickets/gates",
-    "templates/hoal.md",
-    "templates/Ticket.md",
     "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large/LUS 06 1 the level-up.png",
     "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited/LUS 05 1 the level-up, edited.png",
     "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size/LUS 04 1 the level-up.png",
