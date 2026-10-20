@@ -9,6 +9,7 @@
 
 - Repo root = `../` (one repo covering the Godot project and `docs/`).
 - Never work on `main`. One branch per ticket: `<id>-<slug>` (e.g. `1.1-1.2-dash-combat`), squash-merged to `main`, then deleted.
+- Exception: ticket authoring (tickets, their templates, the tracker rules) goes straight to `main` — no ticket, no branch.
 - Prototypes stay on their own branch, and are merged only if the user keeps them. Throwaway branches are deleted, never piled into one folder.
 - Commit or merge only when asked.
 

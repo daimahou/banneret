@@ -1,5 +1,4 @@
 ---
-triage: needs-triage
 requires:
 id:
 deadline:

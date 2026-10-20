@@ -15,6 +15,11 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - Filename = title. Kind = folder.
 - Parenting hierarchy: Goal → Gate → Milestone → Task
 
+## Authorship
+
+- **Direction tickets** — goals, gates, milestones. The human authors them; the agent assists. Edit one only when asked, and only the part asked about. Never create, split, reorder or close one on your own initiative — propose instead.
+- **Work tickets** — tasks (and subtasks), bugs. Agent territory: grilled, written, implemented and closed through the skills.
+
 ## Frontmatter
 
 - `triage` — see `triage-labels.md`
