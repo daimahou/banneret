@@ -8,16 +8,36 @@
         "type": "tabs",
         "children": [
           {
-            "id": "187b8a4bca39c11a",
+            "id": "7bfeaafddf31e732",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "plan.base",
+                "viewName": "Plan"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "plan"
+            }
+          },
+          {
+            "id": "e12d23c4fe1e36f1",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Mechanics/Poison.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Poison"
             }
           }
-        ]
+        ],
+        "stacked": true
       }
     ],
     "direction": "vertical"
@@ -79,7 +99,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 483.37890625
+    "width": 380.51171875
   },
   "right": {
     "id": "0fdaaebf4ece635f",
@@ -157,6 +177,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "plan.base",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -182,7 +203,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -195,53 +217,53 @@
       "bases:Create new base": false
     }
   },
-  "active": "187b8a4bca39c11a",
+  "active": "7bfeaafddf31e732",
   "lastOpenFiles": [
+    "Mechanics/Poison.md",
+    "agents/issue-tracker.md",
+    "CLAUDE.md",
+    "templates/ticket.md",
+    "templates/milestone.md",
+    "templates/goal.md",
+    "templates/bug.md",
+    "templates/gate.md",
+    "tickets/milestones/Write prototype features.md",
+    "tickets/milestones/Breakdown prototype features.md",
+    "tickets/gates/Playable Prototype.md",
+    "plan.base",
+    "home.md",
+    "tickets.base",
+    "pitch.md",
+    "gdd.md",
+    "Mechanics",
+    "tickets/goals/Art skill LEVEL-UP.md",
+    "tickets/goals/Vertical slice.md",
+    "tickets/goals/Marketing course.md",
+    "tickets/milestones/Test.md",
+    "tickets/goals/Alpha.md",
+    "Agents/issue-tracker.md",
+    "agents",
+    "Agents",
     "Plan.base",
-    "Home.md",
-    "Background progression Idea.md",
-    "research/new-graphic-style/new-graphic-style.md",
-    "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large/LUS 06 The level-up, the figures twice as large.md",
+    "tickets/tasks",
+    "tickets/milestones",
+    "tickets/goals/Demo.md",
+    "tickets/goals/Beta.md",
+    "tickets/goals/Banneret release.md",
+    "tickets/goals",
+    "tickets/gates",
+    "templates/hoal.md",
+    "templates/Ticket.md",
     "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large/LUS 06 1 the level-up.png",
-    "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited/LUS 05 The level-up, LUS 04 edited.md",
-    "research/level-up-on-stage/level-up-on-stage.md",
-    "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large",
     "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited/LUS 05 1 the level-up, edited.png",
-    "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited",
-    "research/level-up-on-stage/LUS 03 The level-up, from the designer's layout/LUS 03 The level-up, from the designer's layout.md",
-    "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size/LUS 04 The level-up, the figures to the sketch's size.md",
     "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size/LUS 04 1 the level-up.png",
-    "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size",
     "research/level-up-on-stage/LUS 03 The level-up, from the designer's layout/LUS 03 1 the level-up.png",
-    "research/level-up-on-stage/LUS 03 The level-up, from the designer's layout",
     "research/level-up-on-stage/LUS the designer's layout sketch.png",
-    "research/level-up-on-stage/LUS 02 The level-up, on ref 30's stage/LUS 02 The level-up, on ref 30's stage.md",
     "research/level-up-on-stage/LUS 02 The level-up, on ref 30's stage/LUS 02 1 the level-up.png",
-    "research/level-up-on-stage/LUS 02 The level-up, on ref 30's stage",
-    "research/legends-of-runeterra-keywords.md",
-    "research/game-festivals.md",
-    "research/level-up-on-stage/LUS 01 The level-up, on ref 1's stage/LUS 01 The level-up, on ref 1's stage.md",
-    "Tickets.base",
     "research/level-up-on-stage/LUS 01 The level-up, on ref 1's stage/LUS 01 1 the level-up.png",
-    "research/level-up-on-stage/LUS 01 The level-up, on ref 1's stage",
-    "research/level-up-on-stage",
     "research/new-graphic-style/references/NGS ref 24.jpg",
     "research/new-graphic-style/references/NGS ref 30.jpg",
     "research/new-graphic-style/references/NGS ref 29.jpg",
-    "research/new-graphic-style/112 The fight, in ref 34's hand/112 The fight, in ref 34's hand.md",
-    "research/new-graphic-style/112 The fight, in ref 34's hand/112 2 the cast on the stage.md",
-    "research/new-graphic-style/112 The fight, in ref 34's hand/112 1 the empty stage.md",
-    "research/new-graphic-style/112 The fight, in ref 34's hand",
-    "research/new-graphic-style/118 The fight, in ref 37's hand/118 2 the cast on the stage.md",
-    "research/new-graphic-style/118 The fight, in ref 37's hand/118 The fight, in ref 37's hand.md",
-    "research/new-graphic-style/118 The fight, in ref 37's hand/118 1 the empty stage.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 The cast, beside ref 37.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 6 the effigy.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 5 the crone.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 4 the scarecrow.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 3 the warrior.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 2 the rogue.md",
-    "research/new-graphic-style/117 The cast, beside ref 37/117 1 the adept.md",
     "Untitled.canvas"
   ]
 }

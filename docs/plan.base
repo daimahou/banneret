@@ -1,0 +1,161 @@
+filters:
+  or:
+    - or:
+        - file.folder == "tickets/goals"
+        - file.folder == "tickets/gates"
+        - file.folder == "tickets/milestones"
+    - file.folder.startsWith("tickets/")
+formulas:
+  Kind: if(file.folder == "tickets/gates", "gate", "milestone")
+  State: |-
+    if(!finished.isEmpty() && finished < today() - '3d', "●",
+    if(!finished.isEmpty(), "◕",
+    if(deadline.isEmpty(), if(!started.isEmpty(), "◐", "○"),
+    if(!started.isEmpty(), "◐ ", "○ ") + (deadline - today()).days
+      + if(deadline < today(), " ⌛", ""))))
+  Open children: file.backlinks.filter(value.asFile().properties.parent == file.asLink() && value.asFile().properties.finished.isEmpty()).length
+  Window: |-
+    if(deadline.isEmpty(), "",
+    if(subject.isEmpty(), parent.asFile().backlinks,
+      subject.map(value.asFile().backlinks).flat())
+      .filter((value.asFile().properties.parent == file.properties.parent
+          || (!requires.isEmpty() && requires.contains(value)))
+        && value.asFile().folder == file.folder
+        && !value.asFile().properties.deadline.isEmpty()
+        && value.asFile().properties.deadline < deadline)
+      .map((deadline - value.asFile().properties.deadline).days)
+      .reduce(if(value < acc, value, acc), (deadline - today()).days))
+  Duration: |-
+    if(started.isEmpty() || finished.isEmpty(), "",
+    (finished - started).days + " days")
+  Key: |-
+    if(parent.isEmpty(), id + " - " + file.name,
+      parent.asFile().properties.id + " - " + parent.asFile().name)
+  Blocked by: |-
+    if(requires.isEmpty(), "",
+    requires.filter(value.asFile().properties.finished.isEmpty()))
+properties:
+  file.name:
+    displayName: Name
+  note.started:
+    displayName: Started
+  note.parent:
+    displayName: Parent
+  note.deadline:
+    displayName: Deadline
+  note.id:
+    displayName: "#"
+  note.project:
+    displayName: Project
+  formula.Blocked by:
+    displayName: Blocked by
+  formula.Kind:
+    displayName: Kind
+  formula.Key:
+    displayName: Key
+  formula.State:
+    displayName: ·
+  formula.Open children:
+    displayName: Open
+  formula.Window:
+    displayName: Window
+  formula.Duration:
+    displayName: Took
+views:
+  - type: table
+    name: Plan
+    filters:
+      and:
+        - finished.isEmpty()
+    groupBy:
+      property: formula.Key
+      direction: ASC
+    order:
+      - formula.State
+      - id
+      - formula.Open children
+      - file.name
+      - deadline
+      - formula.Window
+      - started
+      - finished
+      - formula.Duration
+      - formula.Key
+    sort:
+      - property: id
+        direction: ASC
+    summaries: {}
+    columnSize:
+      formula.State: 54
+      note.id: 101
+      formula.Open children: 83
+      file.name: 399
+      note.deadline: 115
+      formula.Window: 98
+      note.started: 115
+      note.finished: 118
+  - type: table
+    name: Open gates
+    filters:
+      and:
+        - file.folder == "tickets/gates"
+        - finished.isEmpty()
+    order:
+      - formula.State
+      - id
+      - file.name
+      - started
+      - formula.Open children
+      - deadline
+    sort:
+      - property: id
+        direction: ASC
+    columnSize:
+      formula.State: 54
+      note.id: 65
+      file.name: 420
+  - type: table
+    name: Closed gates
+    filters:
+      and:
+        - file.folder == "tickets/gates"
+        - "!finished.isEmpty()"
+    order:
+      - id
+      - file.name
+      - finished
+      - formula.Duration
+    sort:
+      - property: id
+        direction: ASC
+    columnSize:
+      file.name: 480
+  - type: table
+    name: All
+    groupBy:
+      property: formula.Key
+      direction: ASC
+    order:
+      - formula.State
+      - id
+      - formula.Open children
+      - file.name
+      - deadline
+      - formula.Window
+      - started
+      - finished
+      - formula.Duration
+      - formula.Key
+    sort:
+      - property: id
+        direction: ASC
+    summaries: {}
+    columnSize:
+      formula.State: 54
+      note.id: 101
+      formula.Open children: 83
+      file.name: 399
+      note.deadline: 115
+      formula.Window: 98
+      note.started: 115
+      note.finished: 118

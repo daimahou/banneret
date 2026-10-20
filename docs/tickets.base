@@ -1,0 +1,178 @@
+summaries:
+  ∑: values.sum()
+filters:
+  and:
+    - file.folder.contains("tickets")
+formulas:
+  Kind: |-
+    if(file.folder == "tickets/goals", "goal",
+    if(file.folder == "tickets/gates", "gate",
+    if(file.folder == "tickets/milestones", "milestone",
+    if(file.folder == "tickets/bugs", "bug", "ticket"))))
+  Band: |-
+    if(triage == "wontfix" && started.isEmpty(), "6 · archived",
+    if(!finished.isEmpty() && finished < today() - '3d', "6 · archived",
+    if(severity == "major" && file.folder == "tickets/bugs" && finished.isEmpty(), "0 · major",
+    if(!finished.isEmpty(), "5 · done",
+    if(!started.isEmpty() && formula["Active Children"].length == 0, "1 · current",
+    if(!requires.isEmpty()
+      && requires.filter(value.asFile().properties.finished.isEmpty()).length > 0, "4 · blocked",
+    if(!parent.isEmpty() && !parent.asFile().properties.started.isEmpty()
+      && parent.asFile().properties.finished.isEmpty() && (started.isEmpty() || formula["Active Children"].length == 0), "2 · up next",
+    "3 · waiting")))))))
+  Bug: |-
+    if(severity == "major", "🔴",
+    if(severity == "minor", "🟡",
+    if(requires.isEmpty(), "",
+    if(requires.filter(value.asFile().properties.finished.isEmpty()).length > 0, "⛔", ""))))
+  Blocked by: |-
+    if(requires.isEmpty(), "",
+    requires.filter(value.asFile().properties.finished.isEmpty()))
+  Active Children: file.backlinks.filter(value.asFile().properties.parent == file && value.asFile().properties.finished.isEmpty())
+properties:
+  file.name:
+    displayName: Ticket
+  note.started:
+    displayName: Started
+  note.finished:
+    displayName: Landed
+  note.triage:
+    displayName: Triage
+  note.severity:
+    displayName: Severity
+  note.parent:
+    displayName: Parent
+  note.commit:
+    displayName: Commit
+  note.project:
+    displayName: Project
+  formula.Kind:
+    displayName: Kind
+  formula.Bug:
+    displayName: ·
+  formula.Band:
+    displayName: Band
+  formula.Blocked by:
+    displayName: Blocked by
+  note.milestone:
+    displayName: Milestone
+  note.id:
+    displayName: "#"
+views:
+  - type: table
+    name: Sprint
+    filters:
+      and:
+        - or:
+            - finished.isEmpty()
+            - finished >= today() - '3d'
+        - triage != "wontfix"
+        - file.folder.startsWith("tickets/")
+    groupBy:
+      property: formula.Band
+      direction: ASC
+    order:
+      - formula.Bug
+      - deadline
+      - file.name
+      - started
+      - finished
+      - formula.Band
+      - formula.Active Children
+    sort:
+      - property: formula.Band
+        direction: ASC
+      - property: id
+        direction: ASC
+    columnSize:
+      formula.Bug: 41
+      note.deadline: 115
+      file.name: 342
+      note.started: 115
+  - type: table
+    name: Bugs
+    filters:
+      and:
+        - file.folder == "tickets/bugs"
+        - or:
+            - finished.isEmpty()
+            - finished >= today() - '3d'
+    order:
+      - formula.Bug
+      - file.name
+      - started
+      - triage
+    sort:
+      - property: severity
+        direction: ASC
+      - property: file.name
+        direction: ASC
+    columnSize:
+      formula.Bug: 44
+      file.name: 520
+  - type: table
+    name: Triage
+    filters:
+      and:
+        - or:
+            - finished.isEmpty()
+            - finished >= today() - '3d'
+        - or:
+            - triage.isEmpty()
+            - triage == "needs-triage"
+            - triage == "needs-info"
+    order:
+      - formula.Bug
+      - file.name
+      - formula.Kind
+      - triage
+      - parent
+    columnSize:
+      file.name: 520
+  - type: table
+    name: Archive
+    filters:
+      or:
+        - finished < today() - '3d'
+        - triage == "wontfix"
+    order:
+      - file.name
+      - formula.Kind
+      - triage
+      - finished
+      - commit
+      - parent
+    sort:
+      - property: finished
+        direction: DESC
+    columnSize:
+      file.name: 480
+  - type: cards
+    name: Actif
+    filters:
+      and:
+        - "!started.isEmpty()"
+        - finished.isEmpty()
+        - triage != "wontfix"
+        - or:
+            - file.folder == "tickets/tasks"
+            - file.folder == "tickets/bugs"
+    order:
+      - formula.Bug
+      - file.name
+      - triage
+      - parent
+    sort: []
+    columnSize:
+      formula.Bug: 41
+      file.name: 704
+    cardSize: 800
+  - type: table
+    name: All
+    filters:
+      and:
+        - file.folder == "tickets/tasks"
+    order:
+      - file.name
+      - started
+      - finished

@@ -1,0 +1,160 @@
+filters:
+  and:
+    - file.folder.contains("tickets")
+    - parent == this.file.asLink()
+formulas:
+  Band: |-
+    if(severity == "major", "0 · major",
+    if(!started.isEmpty() && finished.isEmpty(), "1 · in flight",
+    "2 · open"))
+  Mark: |-
+    if(severity == "major", "🔴",
+    if(severity == "minor", "🟡",
+    if(requires.isEmpty(), "",
+    if(requires.filter(value.asFile().properties.finished.isEmpty()).length > 0, "⛔", ""))))
+properties:
+  file.name:
+    displayName: Children
+  note.started:
+    displayName: Started
+  note.triage:
+    displayName: Triage
+  note.severity:
+    displayName: Bug
+  note.commit:
+    displayName: Commit
+  note.project:
+    displayName: Project
+  formula.Mark:
+    displayName: ·
+  note.finished:
+    displayName: Landed
+  note.id:
+    displayName: "#"
+  note.milestone:
+    displayName: Milestone
+views:
+  - type: table
+    name: Open gates
+    filters:
+      and:
+        - file.folder == "tickets/gates"
+        - finished.isEmpty()
+    order:
+      - id
+      - file.name
+      - started
+      - formula.Mark
+      - deadline
+    sort:
+      - property: id
+        direction: ASC
+      - property: file.name
+        direction: ASC
+    columnSize:
+      note.id: 65
+      file.name: 364
+  - type: table
+    name: Closed gates
+    filters:
+      and:
+        - file.folder == "tickets/gates"
+        - "!finished.isEmpty()"
+    order:
+      - id
+      - file.name
+      - finished
+    sort:
+      - property: id
+        direction: ASC
+    columnSize:
+      file.name: 510
+  - type: table
+    name: Open milestones
+    filters:
+      and:
+        - file.folder == "tickets/milestones"
+        - finished.isEmpty()
+        - triage != "wontfix"
+    order:
+      - formula.Mark
+      - id
+      - file.name
+      - started
+      - deadline
+    sort:
+      - property: id
+        direction: ASC
+      - property: deadline
+        direction: ASC
+      - property: formula.Band
+        direction: ASC
+    columnSize:
+      formula.Mark: 44
+      note.id: 94
+      file.name: 399
+  - type: table
+    name: Closed milestones
+    filters:
+      and:
+        - file.folder == "tickets/milestones"
+        - or:
+            - "!finished.isEmpty()"
+            - triage == "wontfix"
+    order:
+      - id
+      - file.name
+      - triage
+      - finished
+    sort:
+      - property: id
+        direction: ASC
+      - property: finished
+        direction: DESC
+    columnSize:
+      file.name: 433
+  - type: table
+    name: Open tickets
+    filters:
+      and:
+        - file.folder == "tickets/tasks"
+        - finished.isEmpty()
+        - triage != "wontfix"
+    order:
+      - formula.Mark
+      - id
+      - file.name
+      - started
+    sort:
+      - property: id
+        direction: ASC
+      - property: file.name
+        direction: ASC
+      - property: started
+        direction: DESC
+      - property: formula.Band
+        direction: ASC
+    columnSize:
+      formula.Mark: 44
+      note.id: 108
+      file.name: 401
+  - type: table
+    name: Closed tickets
+    filters:
+      and:
+        - file.folder == "tickets/tasks"
+        - or:
+            - "!finished.isEmpty()"
+            - triage == "wontfix"
+    order:
+      - id
+      - file.name
+      - started
+      - finished
+    sort:
+      - property: id
+        direction: ASC
+      - property: finished
+        direction: DESC
+    columnSize:
+      file.name: 415
