@@ -20,3 +20,6 @@ __pycache__/
 
 # The vault's style research: generated images and art sources kept off the repo
 /docs/Style research/
+
+# Obsidian per-machine UI state
+docs/.obsidian/workspace*.json
