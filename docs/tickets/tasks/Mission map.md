@@ -1,8 +1,8 @@
 ---
 triage: needs-triage
-id: "1.1-1.1"
+id: 1.1-1.1
 requires:
-started:
+started: 2026-10-20
 finished:
 parent: "[[Missions]]"
 ---
