@@ -26,3 +26,6 @@ docs/.obsidian/workspace*.json
 
 # Art sources live outside the repo; commit exports only
 *.kra
+
+# gdUnit4 rewrites its last-run test selection on every run
+addons/gdUnit4/GdUnitRunner.cfg
