@@ -1,0 +1,15 @@
+{
+  "promptDelete": false,
+  "showInlineTitle": false,
+  "showLineNumber": true,
+  "readableLineLength": true,
+  "alwaysUpdateLinks": true,
+  "propertiesInDocument": "visible",
+  "strictLineBreaks": false,
+  "foldHeading": true,
+  "foldIndent": true,
+  "newLinkFormat": "shortest",
+  "userIgnoreFilters": null,
+  "newFileLocation": "root",
+  "attachmentFolderPath": "attachments"
+}

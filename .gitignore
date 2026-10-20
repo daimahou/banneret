@@ -1,0 +1,22 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# macOS
+.DS_Store
+
+# Editor backups
+*~
+
+# gdUnit4 test reports
+/reports/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Exported builds
+/builds/
+
+# The vault's style research: generated images and art sources kept off the repo
+/docs/Style research/

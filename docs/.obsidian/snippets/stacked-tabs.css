@@ -1,0 +1,53 @@
+/* Stacked tab tweaks. Bureau overrides some of this, so rules that fight the
+   theme carry its own specificity (body.bu-anim .mod-root ...). */
+
+/* Width of each expanded pane in a stacked tab group.
+   Obsidian's default is 700px, set on .workspace-tabs.mod-stacked. */
+.workspace-tabs.mod-stacked {
+  --tab-stacked-pane-width-base: 100000px;
+  --tab-stacked-pane-width: 1000px;
+}
+
+
+/* Bureau's translate moves both edges; drop it. */
+body.bu-anim:not(.is-mobile) .mod-root .workspace-tabs.mod-stacked .workspace-tab-header,
+body.bu-anim:not(.is-mobile) .mod-root .workspace-tabs.mod-stacked .workspace-tab-header:hover,
+body.bu-anim:not(.is-mobile) .mod-root .workspace-tabs.mod-stacked .workspace-tab-header.is-active,
+body.bu-anim:not(.is-mobile) .mod-root .workspace-tabs.mod-stacked .workspace-tab-header.is-active:hover {
+  transform: none;
+  margin-left: 0;
+  margin-right: 0;
+  width: calc(var(--tab-stacked-header-width));
+}
+/* Bureau lifts the selected tab out of the strip and re-centres its label for
+   it: margin-top:-4px on .is-active (theme.css ~3068) and translateY(-2px) on
+   its inner (theme.css 2167). Both are horizontal-tab styling — rotated into a
+   vertical spine, "up" is meaningless, so the bar jumps and its title and close
+   button slide with it. Bureau only undoes the margin inside its stacked
+   ANIMATION block, so switching the animation off leaves both in force.
+
+   Not gated on body.bu-anim, so it holds with the animation on or off. */
+.mod-root .workspace-tabs.mod-stacked .workspace-tab-header.is-active .workspace-tab-header-inner {
+  transform: none;
+}
+
+
+/* A base wants the width a table needs, and a note does not. The pane width is
+   a group-level variable, so the leaf redeclares it as well as setting its own
+   width - whichever of the two the theme's layout actually reads, one of them
+   lands.
+
+   The width asks for far more than exists and max-width clamps it to whatever
+   the group has left. CSS cannot count the collapsed headers in the spine, so
+   "all the remaining room" has to be spelled as "more than there is, bounded".
+   If it overruns the spine, replace 100% with a tuned pixel value.
+
+   The view type is the one workspace.json records for the leaf. If bases stop
+   widening after an update, read it back out of there rather than guessing. */
+.workspace-tabs.mod-stacked
+  .workspace-leaf:has(.workspace-leaf-content[data-type="bases"]) {
+  --tab-stacked-pane-width: var(--tab-stacked-pane-width-base);
+  width: var(--tab-stacked-pane-width-base);
+  min-width: 0;
+  max-width: 100%;
+}

@@ -1,0 +1,13 @@
+/* Pixel art is authored at 1:1 and must never be smoothed when scaled.
+   Scoped to rendered note content so the interface's own icons keep
+   their normal filtering. */
+
+.markdown-rendered img,
+.markdown-preview-view img,
+.internal-embed img,
+.image-embed img,
+.bases-table img,
+.bases-cards img {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}

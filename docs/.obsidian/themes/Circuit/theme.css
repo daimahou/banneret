@@ -1,0 +1,3359 @@
+/*
+=====================================================
+
+CIRCUIT
+OBSIDIAN COMMUNITY THEME
+
+Technical Archive / Quiet Machine
+
+Design language:
+Deep graphite
+Signal silver
+Controlled copper
+Muted electric blue
+Soft terminal green
+
+Philosophy:
+Precise, not flashy.
+Technical, not futuristic.
+Dark, not oppressive.
+Structured, not rigid.
+Comfortable enough for long-form thinking.
+
+=====================================================
+*/
+
+
+/*=====================================================
+01 — CIRCUIT TOKENS
+=====================================================*/
+
+:root {
+
+    /* Typography */
+
+    --circuit-font-body:
+        "Inter",
+        "Noto Sans",
+        sans-serif;
+
+    --circuit-font-heading:
+        "IBM Plex Sans",
+        "Inter",
+        "Noto Sans",
+        sans-serif;
+
+    --circuit-font-code:
+        "JetBrains Mono",
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+
+
+    /* Radius */
+
+    --circuit-radius-xs:
+        4px;
+
+    --circuit-radius-sm:
+        6px;
+
+    --circuit-radius-md:
+        9px;
+
+    --circuit-radius-lg:
+        12px;
+
+
+    /* Spacing */
+
+    --circuit-space-1:
+        4px;
+
+    --circuit-space-2:
+        8px;
+
+    --circuit-space-3:
+        12px;
+
+    --circuit-space-4:
+        16px;
+
+    --circuit-space-5:
+        20px;
+
+    --circuit-space-6:
+        24px;
+
+    --circuit-space-8:
+        32px;
+
+
+    /* Motion */
+
+    --circuit-transition-fast:
+        120ms ease;
+
+    --circuit-transition:
+        180ms ease;
+
+
+    /* Reading */
+
+    --circuit-reading-width:
+        900px;
+
+
+    /* Shadows */
+
+    --circuit-shadow-soft:
+        0 8px 28px rgba(0, 0, 0, .18);
+
+    --circuit-shadow-strong:
+        0 18px 48px rgba(0, 0, 0, .30);
+
+}
+
+
+/*=====================================================
+02 — DARK CIRCUIT
+=====================================================*/
+
+.theme-dark {
+
+    /* Core background */
+
+    --circuit-background:
+        #0B0E11;
+
+    --circuit-background-secondary:
+        #0F1317;
+
+    --circuit-background-tertiary:
+        #14191E;
+
+
+    /* Surfaces */
+
+    --circuit-surface:
+        #171C21;
+
+    --circuit-surface-raised:
+        #1C2228;
+
+    --circuit-surface-hover:
+        #20272E;
+
+    --circuit-surface-active:
+        #252D35;
+
+
+    /* Borders */
+
+    --circuit-border:
+        #293139;
+
+    --circuit-border-soft:
+        #222A31;
+
+    --circuit-border-strong:
+        #38434D;
+
+
+    /* Primary signal */
+
+    --circuit-primary:
+        #7E9AA8;
+
+    --circuit-primary-hover:
+        #9BB3BF;
+
+    --circuit-primary-muted:
+        #5E7683;
+
+    --circuit-primary-soft:
+        rgba(126, 154, 168, .09);
+
+
+    /* Copper */
+
+    --circuit-copper:
+        #A9825A;
+
+    --circuit-copper-hover:
+        #BE9A6D;
+
+    --circuit-copper-soft:
+        rgba(169, 130, 90, .10);
+
+
+    /* Signal green */
+
+    --circuit-green:
+        #789982;
+
+    --circuit-green-soft:
+        rgba(120, 153, 130, .09);
+
+
+    /* Text */
+
+    --circuit-text:
+        #B6BEC5;
+
+    --circuit-text-bright:
+        #D9DEE2;
+
+    --circuit-text-muted:
+        #78828B;
+
+    --circuit-text-faint:
+        #555F67;
+
+
+    /* Links */
+
+    --circuit-link:
+        #91A9B5;
+
+    --circuit-link-hover:
+        #B4C7D0;
+
+    --circuit-link-muted:
+        #687780;
+
+
+    /* Code */
+
+    --circuit-code:
+        #AFC0C8;
+
+    --circuit-code-surface:
+        #0E1216;
+
+
+    /* States */
+
+    --circuit-success:
+        #789982;
+
+    --circuit-warning:
+        #A9825A;
+
+    --circuit-danger:
+        #A06D6D;
+
+    --circuit-info:
+        #718E9E;
+
+
+    /* Highlight */
+
+    --circuit-highlight:
+        rgba(169, 130, 90, .17);
+
+
+    /* Interaction */
+
+    --circuit-focus:
+        rgba(126, 154, 168, .16);
+
+    --circuit-selection:
+        rgba(126, 154, 168, .20);
+
+
+    /* Callouts */
+
+    --circuit-note:
+        #7E9AA8;
+
+    --circuit-note-bg:
+        rgba(126, 154, 168, .065);
+
+    --circuit-tip:
+        #789982;
+
+    --circuit-tip-bg:
+        rgba(120, 153, 130, .065);
+
+    --circuit-warning-bg:
+        rgba(169, 130, 90, .075);
+
+    --circuit-danger-bg:
+        rgba(160, 109, 109, .075);
+
+
+    /* Glass */
+
+    --circuit-glass:
+        rgba(23, 28, 33, .92);
+
+
+    /* Shadow */
+
+    --circuit-shadow:
+        rgba(0, 0, 0, .30);
+
+
+    /* Ambient */
+
+    --circuit-ambient:
+        rgba(126, 154, 168, .025);
+
+}
+
+
+/*=====================================================
+03 — LIGHT CIRCUIT
+=====================================================*/
+
+.theme-light {
+
+    --circuit-background:
+        #E7E9E8;
+
+    --circuit-background-secondary:
+        #DDE1E0;
+
+    --circuit-background-tertiary:
+        #D4D9D8;
+
+
+    --circuit-surface:
+        #F0F2F1;
+
+    --circuit-surface-raised:
+        #F6F7F6;
+
+    --circuit-surface-hover:
+        #E4E8E7;
+
+    --circuit-surface-active:
+        #DCE1E0;
+
+
+    --circuit-border:
+        #C3C9C8;
+
+    --circuit-border-soft:
+        #D2D7D6;
+
+    --circuit-border-strong:
+        #AEB6B5;
+
+
+    --circuit-primary:
+        #506C78;
+
+    --circuit-primary-hover:
+        #3F5B66;
+
+    --circuit-primary-muted:
+        #70858F;
+
+    --circuit-primary-soft:
+        rgba(80, 108, 120, .085);
+
+
+    --circuit-copper:
+        #8A6842;
+
+    --circuit-copper-hover:
+        #715331;
+
+    --circuit-copper-soft:
+        rgba(138, 104, 66, .09);
+
+
+    --circuit-green:
+        #557660;
+
+    --circuit-green-soft:
+        rgba(85, 118, 96, .075);
+
+
+    --circuit-text:
+        #4D5559;
+
+    --circuit-text-bright:
+        #252A2C;
+
+    --circuit-text-muted:
+        #737C80;
+
+    --circuit-text-faint:
+        #949C9E;
+
+
+    --circuit-link:
+        #506C78;
+
+    --circuit-link-hover:
+        #3F5B66;
+
+    --circuit-link-muted:
+        #73838A;
+
+
+    --circuit-code:
+        #4C5960;
+
+    --circuit-code-surface:
+        #E0E4E3;
+
+
+    --circuit-highlight:
+        rgba(138, 104, 66, .16);
+
+
+    --circuit-success:
+        #557660;
+
+    --circuit-warning:
+        #8A6842;
+
+    --circuit-danger:
+        #8E5F5F;
+
+    --circuit-info:
+        #536E7A;
+
+
+    --circuit-focus:
+        rgba(80, 108, 120, .13);
+
+    --circuit-selection:
+        rgba(80, 108, 120, .16);
+
+
+    --circuit-note:
+        #506C78;
+
+    --circuit-note-bg:
+        rgba(80, 108, 120, .06);
+
+    --circuit-tip:
+        #557660;
+
+    --circuit-tip-bg:
+        rgba(85, 118, 96, .06);
+
+    --circuit-warning-bg:
+        rgba(138, 104, 66, .065);
+
+    --circuit-danger-bg:
+        rgba(142, 95, 95, .06);
+
+
+    --circuit-glass:
+        rgba(246, 247, 246, .92);
+
+
+    --circuit-shadow:
+        rgba(40, 45, 44, .14);
+
+
+    --circuit-ambient:
+        rgba(80, 108, 120, .018);
+
+}
+
+
+/*=====================================================
+04 — OBSIDIAN COMPATIBILITY
+=====================================================*/
+
+.theme-dark,
+.theme-light {
+
+    --background-primary:
+        var(--circuit-background);
+
+    --background-primary-alt:
+        var(--circuit-surface);
+
+    --background-secondary:
+        var(--circuit-background-secondary);
+
+    --background-secondary-alt:
+        var(--circuit-background-tertiary);
+
+
+    --background-modifier-border:
+        var(--circuit-border);
+
+    --background-modifier-border-hover:
+        var(--circuit-border-strong);
+
+    --background-modifier-hover:
+        var(--circuit-primary-soft);
+
+    --background-modifier-active-hover:
+        var(--circuit-primary-soft);
+
+
+    --text-normal:
+        var(--circuit-text);
+
+    --text-muted:
+        var(--circuit-text-muted);
+
+    --text-faint:
+        var(--circuit-text-faint);
+
+    --text-error:
+        var(--circuit-danger);
+
+
+    --text-accent:
+        var(--circuit-primary);
+
+    --text-accent-hover:
+        var(--circuit-primary-hover);
+
+    --interactive-accent:
+        var(--circuit-primary);
+
+    --interactive-accent-hover:
+        var(--circuit-primary-hover);
+
+    --interactive-hover:
+        var(--circuit-primary-soft);
+
+
+    --divider-color:
+        var(--circuit-border);
+
+    --divider-color-hover:
+        var(--circuit-border-strong);
+
+
+    --text-selection:
+        var(--circuit-selection);
+
+
+    --font-text:
+        var(--circuit-font-body);
+
+    --font-interface:
+        var(--circuit-font-body);
+
+    --font-monospace:
+        var(--circuit-font-code);
+
+}
+
+
+/*=====================================================
+05 — BODY
+=====================================================*/
+
+body {
+
+    background:
+        var(--circuit-background);
+
+    color:
+        var(--circuit-text);
+
+    font-family:
+        var(--circuit-font-body);
+
+    font-weight:
+        400;
+
+    -webkit-font-smoothing:
+        antialiased;
+
+    -moz-osx-font-smoothing:
+        grayscale;
+
+}
+
+
+/*=====================================================
+06 — GLOBAL HEADINGS
+=====================================================*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+    font-family:
+        var(--circuit-font-heading);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+/*=====================================================
+07 — WORKSPACE
+=====================================================*/
+
+.workspace,
+.workspace-split,
+.workspace-tabs,
+.workspace-tab-container {
+
+    background:
+        var(--circuit-background);
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.workspace-leaf {
+
+    background:
+        var(--circuit-surface);
+
+    border-color:
+        var(--circuit-border);
+
+}
+
+
+.workspace-leaf-content {
+
+    background:
+        var(--circuit-background);
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.workspace-empty {
+
+    background:
+        var(--circuit-background);
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+/*=====================================================
+08 — SIDE DOCKS
+=====================================================*/
+
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split {
+
+    background:
+        var(--circuit-background-secondary);
+
+}
+
+
+.workspace-split.mod-left-split {
+
+    border-right:
+        1px solid var(--circuit-border);
+
+}
+
+
+.workspace-split.mod-right-split {
+
+    border-left:
+        1px solid var(--circuit-border);
+
+}
+
+
+/*=====================================================
+09 — FILE EXPLORER
+=====================================================*/
+
+.nav-files-container {
+
+    padding:
+        var(--circuit-space-3);
+
+}
+
+
+.nav-folder-title,
+.nav-file-title {
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+    transition:
+        background var(--circuit-transition),
+        color var(--circuit-transition);
+
+}
+
+
+.nav-folder-title:hover,
+.nav-file-title:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.nav-folder-title-content {
+
+    font-weight:
+        600;
+
+}
+
+
+.nav-folder-collapse-indicator {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.nav-file-title.is-active {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+    box-shadow:
+        inset 2px 0 0 var(--circuit-primary);
+
+}
+
+
+.nav-file-title.is-active
+.nav-file-title-content {
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+/* No indentation animation */
+
+.nav-folder,
+.nav-file {
+
+    transition:
+        none;
+
+}
+
+
+/*=====================================================
+10 — SEARCH
+=====================================================*/
+
+.search-input-container {
+
+    background:
+        var(--circuit-background);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+.search-input-container input {
+
+    background:
+        transparent;
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.search-input-container input::placeholder {
+
+    color:
+        var(--circuit-text-faint);
+
+}
+
+
+.search-input-container:focus-within {
+
+    border-color:
+        var(--circuit-primary);
+
+    box-shadow:
+        0 0 0 2px var(--circuit-focus);
+
+}
+
+
+/*=====================================================
+11 — TABS
+=====================================================*/
+
+.workspace-tab-header-container {
+
+    background:
+        var(--circuit-background-secondary);
+
+    border-bottom:
+        1px solid var(--circuit-border);
+
+}
+
+
+.workspace-tab-header {
+
+    color:
+        var(--circuit-text-muted);
+
+    border:
+        none;
+
+    border-radius:
+        var(--circuit-radius-sm)
+        var(--circuit-radius-sm)
+        0
+        0;
+
+    transition:
+        background var(--circuit-transition),
+        color var(--circuit-transition);
+
+}
+
+
+.workspace-tab-header:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.workspace-tab-header.is-active {
+
+    background:
+        var(--circuit-surface);
+
+    color:
+        var(--circuit-text-bright);
+
+    box-shadow:
+        inset 0 -1px 0 var(--circuit-primary);
+
+}
+
+
+.workspace-tab-header-inner {
+
+    padding:
+        0 var(--circuit-space-2);
+
+}
+
+
+.workspace-tab-header-inner-title {
+
+    color:
+        inherit;
+
+}
+
+
+.workspace-tab-header-inner-close-button {
+
+    color:
+        var(--circuit-text-muted);
+
+    border-radius:
+        var(--circuit-radius-xs);
+
+}
+
+
+.workspace-tab-header-inner-close-button:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+/*=====================================================
+12 — RIBBON
+=====================================================*/
+
+.workspace-ribbon {
+
+    background:
+        var(--circuit-background-secondary);
+
+    border-right:
+        1px solid var(--circuit-border);
+
+}
+
+
+.side-dock-ribbon-action {
+
+    color:
+        var(--circuit-text-muted);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+    transition:
+        color var(--circuit-transition),
+        background var(--circuit-transition);
+
+}
+
+
+.side-dock-ribbon-action:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+.side-dock-ribbon-action.is-active {
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+/*=====================================================
+13 — VIEW HEADERS
+=====================================================*/
+
+.view-header,
+.workspace-leaf-header {
+
+    background:
+        var(--circuit-background-secondary);
+
+    border-bottom:
+        1px solid var(--circuit-border);
+
+}
+
+
+.view-header-title,
+.workspace-leaf-header-title {
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.view-actions {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.view-action,
+.clickable-icon {
+
+    color:
+        var(--circuit-text-muted);
+
+    border-radius:
+        var(--circuit-radius-xs);
+
+    transition:
+        color var(--circuit-transition),
+        background var(--circuit-transition);
+
+}
+
+
+.view-action:hover,
+.clickable-icon:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+/*=====================================================
+14 — STATUS BAR
+=====================================================*/
+
+.status-bar {
+
+    background:
+        var(--circuit-background-secondary);
+
+    border-top:
+        1px solid var(--circuit-border);
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.status-bar-item {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.status-bar-item:hover {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+/*=====================================================
+15 — RESIZE HANDLES
+=====================================================*/
+
+.workspace-leaf-resize-handle {
+
+    background:
+        transparent;
+
+}
+
+
+.workspace-leaf-resize-handle:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+}
+
+
+/*=====================================================
+16 — TREE ITEMS
+=====================================================*/
+
+.tree-item-self {
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+.tree-item-self:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.tree-item-self.is-active {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.tree-item-icon {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+/*=====================================================
+17 — OUTLINE
+=====================================================*/
+
+.outline .tree-item-self {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.outline .tree-item-self:hover {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.outline .tree-item-self.is-active {
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+/*=====================================================
+18 — TAGS
+=====================================================*/
+
+.tag {
+
+    display:
+        inline-block;
+
+    background:
+        var(--circuit-primary-soft);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        999px;
+
+    color:
+        var(--circuit-text-muted);
+
+    padding:
+        2px 8px;
+
+    font-size:
+        .88em;
+
+    transition:
+        background var(--circuit-transition),
+        border-color var(--circuit-transition),
+        color var(--circuit-transition);
+
+}
+
+
+.tag:hover {
+
+    background:
+        var(--circuit-surface-hover);
+
+    border-color:
+        var(--circuit-primary-muted);
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+/*=====================================================
+19 — EDITOR FOUNDATION
+=====================================================*/
+
+.markdown-preview-view,
+.markdown-source-view,
+.cm-editor {
+
+    font-family:
+        var(--circuit-font-body);
+
+    font-size:
+        17px;
+
+    line-height:
+        1.78;
+
+    letter-spacing:
+        .003em;
+
+    color:
+        var(--circuit-text);
+
+    background:
+        var(--circuit-background);
+
+}
+
+
+/*=====================================================
+20 — READING MODE
+=====================================================*/
+
+.markdown-preview-view {
+
+    padding-left:
+        clamp(20px, 5vw, 70px);
+
+    padding-right:
+        clamp(20px, 5vw, 70px);
+
+}
+
+
+.markdown-preview-view .markdown-preview-section {
+
+    max-width:
+        var(--circuit-reading-width);
+
+    margin:
+        0 auto;
+
+    text-rendering:
+        optimizeLegibility;
+
+}
+
+
+/*=====================================================
+21 — SOURCE / LIVE PREVIEW
+=====================================================*/
+
+.markdown-source-view .cm-scroller {
+
+    padding-left:
+        clamp(20px, 4vw, 55px);
+
+    padding-right:
+        clamp(20px, 4vw, 55px);
+
+}
+
+
+.cm-content {
+
+    caret-color:
+        var(--circuit-primary);
+
+}
+
+
+.cm-cursor {
+
+    border-left-color:
+        var(--circuit-primary);
+
+}
+
+
+.cm-activeLine {
+
+    background:
+        var(--circuit-surface-hover);
+
+}
+
+
+.cm-line.cm-activeLine {
+
+    background:
+        var(--circuit-surface-hover);
+
+}
+
+
+/*=====================================================
+22 — EDITOR GUTTER
+=====================================================*/
+
+.cm-gutters {
+
+    background:
+        var(--circuit-background);
+
+    border-right:
+        none;
+
+    color:
+        var(--circuit-text-faint);
+
+}
+
+
+.cm-activeLineGutter {
+
+    background:
+        var(--circuit-surface-hover);
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+/*=====================================================
+23 — BODY TEXT
+=====================================================*/
+
+.markdown-preview-view p {
+
+    color:
+        var(--circuit-text);
+
+    margin-top:
+        0;
+
+    margin-bottom:
+        1.15em;
+
+}
+
+
+.markdown-preview-view strong {
+
+    color:
+        var(--circuit-text-bright);
+
+    font-weight:
+        700;
+
+}
+
+
+.markdown-preview-view em {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+/*=====================================================
+24 — HEADINGS
+=====================================================*/
+
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3,
+.markdown-preview-view h4,
+.markdown-preview-view h5,
+.markdown-preview-view h6 {
+
+    font-family:
+        var(--circuit-font-heading);
+
+    color:
+        var(--circuit-text-bright);
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        -.015em;
+
+}
+
+
+.markdown-preview-view h1 {
+
+    font-size:
+        2.35em;
+
+    line-height:
+        1.15;
+
+    margin-top:
+        1.35em;
+
+    margin-bottom:
+        .65em;
+
+    padding-bottom:
+        .35em;
+
+    border-bottom:
+        1px solid var(--circuit-border);
+
+}
+
+
+.markdown-preview-view h2 {
+
+    font-size:
+        1.75em;
+
+    line-height:
+        1.25;
+
+    margin-top:
+        1.3em;
+
+    margin-bottom:
+        .55em;
+
+}
+
+
+.markdown-preview-view h3 {
+
+    font-size:
+        1.4em;
+
+    line-height:
+        1.3;
+
+    margin-top:
+        1.2em;
+
+    margin-bottom:
+        .45em;
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+.markdown-preview-view h4 {
+
+    font-size:
+        1.18em;
+
+}
+
+
+.markdown-preview-view h5 {
+
+    font-size:
+        1.04em;
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.markdown-preview-view h6 {
+
+    font-size:
+        .94em;
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+
+    font-family:
+        var(--circuit-font-heading);
+
+}
+
+
+/*=====================================================
+25 — LINKS
+=====================================================*/
+
+.markdown-preview-view a,
+.markdown-preview-view .internal-link {
+
+    color:
+        var(--circuit-link);
+
+    text-decoration:
+        none;
+
+    transition:
+        color var(--circuit-transition);
+
+}
+
+
+.markdown-preview-view a:hover,
+.markdown-preview-view .internal-link:hover {
+
+    color:
+        var(--circuit-link-hover);
+
+}
+
+
+.markdown-preview-view .is-unresolved {
+
+    color:
+        var(--circuit-link-muted);
+
+}
+
+
+.external-link {
+
+    color:
+        var(--circuit-link);
+
+}
+
+
+/*=====================================================
+26 — LISTS
+=====================================================*/
+
+.markdown-preview-view ul,
+.markdown-preview-view ol {
+
+    margin-top:
+        .4em;
+
+    margin-bottom:
+        1em;
+
+    padding-left:
+        1.8em;
+
+}
+
+
+.markdown-preview-view li {
+
+    margin-bottom:
+        .32em;
+
+}
+
+
+.markdown-preview-view li > ul,
+.markdown-preview-view li > ol {
+
+    margin-top:
+        .25em;
+
+    margin-bottom:
+        .25em;
+
+}
+
+
+.markdown-preview-view li::marker {
+
+    color:
+        var(--circuit-primary-muted);
+
+}
+
+
+/*=====================================================
+27 — CHECKBOXES
+=====================================================*/
+
+.markdown-preview-view input[type="checkbox"] {
+
+    accent-color:
+        var(--circuit-primary);
+
+}
+
+
+.markdown-preview-view li.task-list-item.is-checked {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+/*=====================================================
+28 — BLOCKQUOTES
+=====================================================*/
+
+.markdown-preview-view blockquote {
+
+    margin:
+        1.4em 0;
+
+    padding:
+        .8em 1.2em;
+
+    background:
+        var(--circuit-surface);
+
+    border-left:
+        3px solid var(--circuit-primary-muted);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.markdown-preview-view blockquote p {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+/*=====================================================
+29 — HIGHLIGHTS
+=====================================================*/
+
+.markdown-preview-view mark {
+
+    background:
+        var(--circuit-highlight);
+
+    color:
+        var(--circuit-text-bright);
+
+    padding:
+        1px 4px;
+
+    border-radius:
+        4px;
+
+}
+
+
+/*=====================================================
+30 — INLINE CODE
+=====================================================*/
+
+.markdown-preview-view code {
+
+    font-family:
+        var(--circuit-font-code);
+
+    font-size:
+        .9em;
+
+    background:
+        var(--circuit-code-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    color:
+        var(--circuit-code);
+
+    padding:
+        2px 6px;
+
+    border-radius:
+        5px;
+
+}
+
+
+/*=====================================================
+31 — CODE BLOCKS
+=====================================================*/
+
+.markdown-preview-view pre {
+
+    font-family:
+        var(--circuit-font-code);
+
+    background:
+        var(--circuit-code-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    padding:
+        18px 20px;
+
+    overflow:
+        auto;
+
+}
+
+
+.markdown-preview-view pre code {
+
+    background:
+        transparent;
+
+    border:
+        none;
+
+    padding:
+        0;
+
+    color:
+        var(--circuit-code);
+
+}
+
+
+.cm-s-obsidian .HyperMD-codeblock {
+
+    font-family:
+        var(--circuit-font-code);
+
+    background:
+        var(--circuit-code-surface);
+
+}
+
+
+/*=====================================================
+32 — HORIZONTAL RULE
+=====================================================*/
+
+.markdown-preview-view hr {
+
+    border:
+        none;
+
+    border-top:
+        1px solid var(--circuit-border);
+
+    margin:
+        2.5em 0;
+
+}
+
+
+/*=====================================================
+33 — IMAGES
+=====================================================*/
+
+.markdown-preview-view img {
+
+    max-width:
+        100%;
+
+    height:
+        auto;
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    border:
+        1px solid var(--circuit-border);
+
+}
+
+
+.markdown-preview-view img:hover {
+
+    border-color:
+        var(--circuit-border-strong);
+
+}
+
+
+/*=====================================================
+34 — TABLES
+NO ZEBRA STRIPING
+ONE MATERIAL SURFACE
+=====================================================*/
+
+.markdown-preview-view table,
+.table-view-table {
+
+    width:
+        100%;
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    overflow:
+        hidden;
+
+}
+
+
+.markdown-preview-view th,
+.markdown-preview-view td,
+.table-view-table th,
+.table-view-table td {
+
+    background:
+        var(--circuit-surface);
+
+    color:
+        var(--circuit-text);
+
+    padding:
+        10px 13px;
+
+    border-color:
+        var(--circuit-border);
+
+}
+
+
+.markdown-preview-view thead th,
+.table-view-table thead th {
+
+    background:
+        var(--circuit-surface);
+
+    color:
+        var(--circuit-text-bright);
+
+    font-weight:
+        600;
+
+}
+
+
+.markdown-preview-view tbody tr:nth-child(even) td,
+.markdown-preview-view tbody tr:nth-child(odd) td,
+.table-view-table tbody tr:nth-child(even) td,
+.table-view-table tbody tr:nth-child(odd) td {
+
+    background:
+        var(--circuit-surface);
+
+}
+
+
+.markdown-preview-view tbody tr:hover td,
+.table-view-table tbody tr:hover td {
+
+    background:
+        var(--circuit-surface-hover);
+
+}
+
+
+/*=====================================================
+35 — CALLOUTS
+=====================================================*/
+
+.callout {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    box-shadow:
+        none;
+
+}
+
+
+.callout-title {
+
+    color:
+        var(--circuit-text-bright);
+
+    font-weight:
+        600;
+
+}
+
+
+.callout-content {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.callout[data-callout="note"] {
+
+    --callout-color:
+        var(--circuit-note);
+
+    background:
+        var(--circuit-note-bg);
+
+}
+
+
+.callout[data-callout="tip"] {
+
+    --callout-color:
+        var(--circuit-tip);
+
+    background:
+        var(--circuit-tip-bg);
+
+}
+
+
+.callout[data-callout="warning"] {
+
+    --callout-color:
+        var(--circuit-warning);
+
+    background:
+        var(--circuit-warning-bg);
+
+}
+
+
+.callout[data-callout="danger"] {
+
+    --callout-color:
+        var(--circuit-danger);
+
+    background:
+        var(--circuit-danger-bg);
+
+}
+
+
+.callout[data-callout="success"] {
+
+    --callout-color:
+        var(--circuit-success);
+
+    background:
+        var(--circuit-green-soft);
+
+}
+
+
+.callout[data-callout="abstract"],
+.callout[data-callout="idea"] {
+
+    --callout-color:
+        var(--circuit-primary);
+
+    background:
+        var(--circuit-primary-soft);
+
+}
+
+
+.callout[data-callout="quote"] {
+
+    --callout-color:
+        var(--circuit-text-muted);
+
+    background:
+        var(--circuit-surface);
+
+}
+
+
+/*=====================================================
+36 — PROPERTIES
+=====================================================*/
+
+.metadata-container {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+}
+
+
+.metadata-property {
+
+    border-bottom:
+        1px solid var(--circuit-border);
+
+}
+
+
+.metadata-property:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+.metadata-property-key {
+
+    color:
+        var(--circuit-text-muted);
+
+    font-weight:
+        600;
+
+}
+
+
+.metadata-property-value,
+.metadata-input-longtext {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.metadata-property:hover {
+
+    background:
+        var(--circuit-surface-hover);
+
+}
+
+
+/*=====================================================
+37 — FRONTMATTER
+=====================================================*/
+
+.frontmatter,
+.frontmatter-container,
+.cm-hmd-frontmatter {
+
+    background:
+        var(--circuit-code-surface);
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.cm-hmd-frontmatter-key,
+.cm-atom {
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+.cm-hmd-frontmatter-value,
+.cm-string {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+/*=====================================================
+38 — EMBEDS
+=====================================================*/
+
+.markdown-embed,
+.internal-embed {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+}
+
+
+.markdown-embed-title {
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.markdown-embed-link {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.markdown-embed-link:hover {
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+/*=====================================================
+39 — TASKS
+=====================================================*/
+
+.task-list-item-checkbox {
+
+    accent-color:
+        var(--circuit-primary);
+
+}
+
+
+.task-list-item {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.task-list-item[data-task="x"],
+.task-list-item[data-task="X"],
+.task-list-item.is-checked {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.task-list-item-checkbox:focus-visible {
+
+    outline:
+        2px solid var(--circuit-primary);
+
+    outline-offset:
+        2px;
+
+}
+
+
+/*=====================================================
+40 — SEARCH RESULTS
+=====================================================*/
+
+.search-result {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.search-result-file-title {
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.search-result-file-matched-text {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.search-result-file-title:hover {
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+/*=====================================================
+41 — BOOKMARKS
+=====================================================*/
+
+.bookmark {
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+.bookmark:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+}
+
+
+/*=====================================================
+42 — TAG PANE
+=====================================================*/
+
+.tag-pane-tag {
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+.tag-pane-tag:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+/*=====================================================
+43 — DATAVIEW
+=====================================================*/
+
+.dataview {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.dataview.table-view-table {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+}
+
+
+.dataview th,
+.dataview td {
+
+    background:
+        var(--circuit-surface);
+
+    color:
+        var(--circuit-text);
+
+    border-color:
+        var(--circuit-border);
+
+}
+
+
+.dataview th {
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.dataview tbody tr:nth-child(even) td,
+.dataview tbody tr:nth-child(odd) td {
+
+    background:
+        var(--circuit-surface);
+
+}
+
+
+.dataview tbody tr:hover td {
+
+    background:
+        var(--circuit-surface-hover);
+
+}
+
+
+.dataview .card {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    padding:
+        14px;
+
+}
+
+
+.dataview .card:hover {
+
+    background:
+        var(--circuit-surface-hover);
+
+    border-color:
+        var(--circuit-border-strong);
+
+}
+
+
+/*=====================================================
+44 — MODALS
+=====================================================*/
+
+.modal {
+
+    background:
+        var(--circuit-surface-raised);
+
+    border:
+        1px solid var(--circuit-border-strong);
+
+    border-radius:
+        var(--circuit-radius-lg);
+
+    box-shadow:
+        var(--circuit-shadow-strong);
+
+}
+
+
+/*=====================================================
+45 — MENUS
+=====================================================*/
+
+.menu {
+
+    background:
+        var(--circuit-surface-raised);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    box-shadow:
+        var(--circuit-shadow-soft);
+
+}
+
+
+.menu-item {
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+.menu-item:hover {
+
+    background:
+        var(--circuit-surface-hover);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+/*=====================================================
+46 — COMMAND PALETTE
+=====================================================*/
+
+.prompt {
+
+    background:
+        var(--circuit-surface-raised);
+
+    border:
+        1px solid var(--circuit-border-strong);
+
+    border-radius:
+        var(--circuit-radius-lg);
+
+}
+
+
+.prompt-input {
+
+    background:
+        var(--circuit-background);
+
+    border:
+        1px solid var(--circuit-border);
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.suggestion-item {
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+.suggestion-item.is-selected {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+/*=====================================================
+47 — BUTTONS
+=====================================================*/
+
+button {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+    transition:
+        background var(--circuit-transition),
+        border-color var(--circuit-transition),
+        color var(--circuit-transition);
+
+}
+
+
+button:hover {
+
+    background:
+        var(--circuit-surface-hover);
+
+    border-color:
+        var(--circuit-border-strong);
+
+}
+
+
+button.mod-cta {
+
+    background:
+        var(--circuit-primary);
+
+    border-color:
+        var(--circuit-primary);
+
+    color:
+        #0B0E11;
+
+}
+
+
+button.mod-cta:hover {
+
+    background:
+        var(--circuit-primary-hover);
+
+    border-color:
+        var(--circuit-primary-hover);
+
+}
+
+
+/*=====================================================
+48 — INPUTS
+=====================================================*/
+
+input,
+textarea,
+select {
+
+    background:
+        var(--circuit-background);
+
+    border:
+        1px solid var(--circuit-border);
+
+    color:
+        var(--circuit-text);
+
+    border-radius:
+        var(--circuit-radius-sm);
+
+}
+
+
+input::placeholder,
+textarea::placeholder {
+
+    color:
+        var(--circuit-text-faint);
+
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+
+    border-color:
+        var(--circuit-primary);
+
+    box-shadow:
+        0 0 0 2px var(--circuit-focus);
+
+}
+
+
+/*=====================================================
+49 — TOOLTIP
+=====================================================*/
+
+.tooltip {
+
+    background:
+        var(--circuit-surface-raised);
+
+    border:
+        1px solid var(--circuit-border);
+
+    color:
+        var(--circuit-text);
+
+    box-shadow:
+        var(--circuit-shadow-soft);
+
+}
+
+
+/*=====================================================
+50 — FOCUS
+=====================================================*/
+
+:focus-visible {
+
+    outline:
+        2px solid var(--circuit-primary);
+
+    outline-offset:
+        2px;
+
+}
+
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+
+    outline:
+        2px solid var(--circuit-primary);
+
+    outline-offset:
+        2px;
+
+}
+
+
+/*=====================================================
+51 — SELECTION
+=====================================================*/
+
+::selection {
+
+    background:
+        var(--circuit-selection);
+
+    color:
+        var(--circuit-text-bright);
+
+}
+
+
+.cm-selectionBackground {
+
+    background:
+        var(--circuit-selection);
+
+}
+
+
+/*=====================================================
+52 — SCROLLBARS
+=====================================================*/
+
+::-webkit-scrollbar {
+
+    width:
+        8px;
+
+    height:
+        8px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+    background:
+        var(--circuit-background);
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        var(--circuit-border);
+
+    border-radius:
+        20px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background:
+        var(--circuit-border-strong);
+
+}
+
+
+/*=====================================================
+53 — GRAPH VIEW
+QUIET TECHNICAL CONSTELLATION
+
+No excessive glow.
+No node enlargement.
+No animation-heavy effects.
+
+=====================================================*/
+
+.graph-view {
+
+    background:
+        radial-gradient(
+            circle at center,
+            var(--circuit-primary-soft),
+            transparent 38%
+        ),
+        var(--circuit-background);
+
+}
+
+
+.graph-view .node {
+
+    filter:
+        none;
+
+}
+
+
+.graph-view .node:hover {
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(126,154,168,.25)
+        );
+
+}
+
+
+.graph-view .node.is-focused {
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(126,154,168,.35)
+        );
+
+}
+
+
+.graph-view .link {
+
+    stroke:
+        rgba(126,154,168,.22);
+
+    stroke-width:
+        1px;
+
+}
+
+
+.graph-view .link:hover {
+
+    stroke:
+        rgba(126,154,168,.55);
+
+    stroke-width:
+        1.5px;
+
+}
+
+
+.graph-view .label {
+
+    color:
+        var(--circuit-text);
+
+    font-family:
+        var(--circuit-font-body);
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.65);
+
+}
+
+
+.graph-view .search-result {
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            rgba(169,130,90,.40)
+        );
+
+}
+
+
+.graph-view .dimmed {
+
+    opacity:
+        .18;
+
+}
+
+
+/* Graph controls */
+
+.graph-controls {
+
+    background:
+        var(--circuit-surface-raised);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    box-shadow:
+        var(--circuit-shadow-soft);
+
+}
+
+
+.graph-controls-button {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+.graph-controls-button:hover {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+/*=====================================================
+54 — BACKLINKS / OUTGOING LINKS
+=====================================================*/
+
+.embedded-backlinks {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+}
+
+
+.backlink-pane {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.search-result-container {
+
+    background:
+        transparent;
+
+}
+
+
+.tree-item-self[data-path] {
+
+    transition:
+        background var(--circuit-transition),
+        color var(--circuit-transition);
+
+}
+
+
+/*=====================================================
+55 — CANVAS
+=====================================================*/
+
+.canvas-wrapper {
+
+    background:
+        var(--circuit-background);
+
+}
+
+
+.canvas-node {
+
+    background:
+        var(--circuit-surface);
+
+    border:
+        1px solid var(--circuit-border);
+
+    border-radius:
+        var(--circuit-radius-md);
+
+    box-shadow:
+        var(--circuit-shadow-soft);
+
+}
+
+
+.canvas-node:hover {
+
+    border-color:
+        var(--circuit-border-strong);
+
+}
+
+
+.canvas-node.is-focused {
+
+    border-color:
+        var(--circuit-primary);
+
+    box-shadow:
+        0 0 0 1px
+        var(--circuit-primary-soft);
+
+}
+
+
+/*=====================================================
+56 — YAML / PROPERTY INPUTS
+=====================================================*/
+
+.metadata-input-longtext,
+.metadata-property-value {
+
+    color:
+        var(--circuit-text);
+
+}
+
+
+.metadata-property-key {
+
+    color:
+        var(--circuit-primary-muted);
+
+}
+
+
+/*=====================================================
+57 — FOOTNOTES
+=====================================================*/
+
+.footnote-ref {
+
+    color:
+        var(--circuit-link);
+
+}
+
+
+.footnotes {
+
+    color:
+        var(--circuit-text-muted);
+
+    border-top:
+        1px solid var(--circuit-border);
+
+}
+
+
+/*=====================================================
+58 — SPELLCHECK
+=====================================================*/
+
+.cm-invalidchar {
+
+    color:
+        var(--circuit-warning);
+
+}
+
+
+/*=====================================================
+59 — DRAG STATES
+=====================================================*/
+
+.nav-file-title.is-being-dragged,
+.nav-folder-title.is-being-dragged {
+
+    background:
+        var(--circuit-primary-soft);
+
+    color:
+        var(--circuit-text-bright);
+
+    border:
+        1px solid var(--circuit-primary-muted);
+
+}
+
+
+.is-being-dragged {
+
+    opacity:
+        .75;
+
+}
+
+
+/*=====================================================
+60 — EMPTY STATES
+=====================================================*/
+
+.nav-files-container .nav-empty-message,
+.view-content .nav-empty-message {
+
+    color:
+        var(--circuit-text-muted);
+
+}
+
+
+/*=====================================================
+61 — QUIET AMBIENT LAYER
+=====================================================*/
+
+.workspace {
+
+    position:
+        relative;
+
+}
+
+
+.workspace::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    pointer-events:
+        none;
+
+    background:
+        radial-gradient(
+            circle at 18% 0%,
+            var(--circuit-ambient),
+            transparent 38%
+        );
+
+    opacity:
+        .35;
+
+}
+
+
+.theme-light .workspace::before {
+
+    opacity:
+        .12;
+
+}
+
+
+/*=====================================================
+62 — LIMITED GLASS
+ONLY EXPLICITLY MARKED ELEMENTS
+=====================================================*/
+
+.circuit-glass {
+
+    background:
+        var(--circuit-glass);
+
+    border:
+        1px solid var(--circuit-border);
+
+    backdrop-filter:
+        blur(10px);
+
+}
+
+
+/*=====================================================
+63 — SIGNAL / COPPER UTILITY CLASSES
+=====================================================*/
+
+.circuit-signal {
+
+    color:
+        var(--circuit-primary);
+
+}
+
+
+.circuit-copper {
+
+    color:
+        var(--circuit-copper);
+
+}
+
+
+.circuit-green {
+
+    color:
+        var(--circuit-green);
+
+}
+
+
+.circuit-signal-surface {
+
+    background:
+        var(--circuit-primary-soft);
+
+    border-color:
+        var(--circuit-primary-muted);
+
+}
+
+
+.circuit-copper-surface {
+
+    background:
+        var(--circuit-copper-soft);
+
+    border-color:
+        var(--circuit-copper);
+
+}
+
+
+/*=====================================================
+64 — MOBILE
+=====================================================*/
+
+@media (max-width: 700px) {
+
+    .nav-files-container {
+
+        padding:
+            var(--circuit-space-2);
+
+    }
+
+
+    .workspace-split.mod-left-split,
+    .workspace-split.mod-right-split {
+
+        border:
+            none;
+
+    }
+
+
+    .workspace-ribbon {
+
+        border:
+            none;
+
+    }
+
+
+    .workspace-tab-header {
+
+        padding-left:
+            var(--circuit-space-1);
+
+        padding-right:
+            var(--circuit-space-1);
+
+    }
+
+
+    .workspace-tab-header-inner {
+
+        padding:
+            0 var(--circuit-space-1);
+
+    }
+
+
+    .status-bar {
+
+        font-size:
+            12px;
+
+    }
+
+
+    .markdown-preview-view,
+    .markdown-source-view,
+    .cm-editor {
+
+        font-size:
+            16px;
+
+        line-height:
+            1.72;
+
+    }
+
+
+    .markdown-preview-view {
+
+        padding-left:
+            16px;
+
+        padding-right:
+            16px;
+
+    }
+
+
+    .markdown-source-view .cm-scroller {
+
+        padding-left:
+            14px;
+
+        padding-right:
+            14px;
+
+    }
+
+
+    .markdown-preview-view h1 {
+
+        font-size:
+            2em;
+
+    }
+
+
+    .markdown-preview-view h2 {
+
+        font-size:
+            1.6em;
+
+    }
+
+
+    .markdown-preview-view blockquote {
+
+        padding:
+            .7em 1em;
+
+    }
+
+
+    .markdown-preview-view pre {
+
+        padding:
+            14px;
+
+    }
+
+
+    .callout {
+
+        border-radius:
+            var(--circuit-radius-sm);
+
+    }
+
+
+    .metadata-container {
+
+        border-radius:
+            var(--circuit-radius-sm);
+
+    }
+
+
+    .tag {
+
+        padding:
+            2px 7px;
+
+    }
+
+
+    .modal,
+    .menu,
+    .prompt {
+
+        border-radius:
+            var(--circuit-radius-md);
+
+        box-shadow:
+            var(--circuit-shadow-soft);
+
+    }
+
+
+    .workspace::before {
+
+        opacity:
+            .07;
+
+    }
+
+
+    .circuit-glass {
+
+        backdrop-filter:
+            none;
+
+    }
+
+}
+
+
+/*=====================================================
+65 — REDUCED MOTION
+=====================================================*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.01ms;
+
+        animation-iteration-count:
+            1;
+
+        transition-duration:
+            0.01ms;
+
+        scroll-behavior:
+            auto;
+
+    }
+
+}
+
+
+/*=====================================================
+66 — FINAL CIRCUIT SAFETY
+
+=====================================================
+
+CIRCUIT
+
+Quiet machine.
+Clear signal.
+Stable workspace.
+
+=====================================================
+*/

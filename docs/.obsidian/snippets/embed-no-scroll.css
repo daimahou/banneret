@@ -1,0 +1,26 @@
+/* Inlined notes render at full height instead of in a scrollable box. */
+
+.markdown-embed,
+.markdown-embed-content,
+.internal-embed.markdown-embed,
+.internal-embed .markdown-embed-content {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Reading view and Live Preview each wrap the embed in their own renderer. */
+.markdown-embed-content > .markdown-preview-view,
+.markdown-embed-content > .markdown-rendered,
+.markdown-embed-content > .markdown-preview-view > .markdown-preview-sizer {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  padding-bottom: 0 !important;
+  contain: none !important;
+}
+
+/* The sizer reserves blank space for virtual scrolling; drop it. */
+.markdown-embed .markdown-preview-sizer {
+  min-height: unset !important;
+}

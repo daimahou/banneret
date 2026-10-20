@@ -1,0 +1,15 @@
+{
+  "cssTheme": "Bureau",
+  "showRibbon": true,
+  "enabledCssSnippets": [
+    "callouts",
+    "pixelart",
+    "stacked-tabs",
+    "embed-no-scroll"
+  ],
+  "theme": "moonstone",
+  "nativeMenus": true,
+  "showViewHeader": true,
+  "baseFontSizeAction": false,
+  "translucency": false
+}

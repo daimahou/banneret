@@ -1,0 +1,35 @@
+/* Widen embedded Bases views past the readable line length.
+
+   Obsidian sizes an embedded base off two of its own variables (app.css):
+     .markdown-reading-view .bases-embed,
+     .markdown-source-view.mod-cm6 .cm-content > :is(.bases-embed, .cm-lang-base)
+       { width: var(--bases-embed-width, 100%);
+         transform: var(--bases-embed-transform, none); }
+   So the whole job is setting those two on base blocks. Nothing about the
+   content column is touched, which is why prose, tables and the properties
+   header are unaffected.
+
+   Width is a percentage of the readable column and transform re-centres it:
+   for a scale s the block overhangs by (s-1)/2 of the column on each side,
+   which is (s-1)/2s — i.e. 0.5 * (1 - 1/s) — of the block's own width.
+   Being a transform, it paints outside the column without changing layout, so
+   it never adds a horizontal scrollbar; past roughly 2 it will start to reach
+   under the sidebars. */
+
+body {
+  --bases-embed-scale: 1.6;
+}
+
+.bases-embed,
+.cm-lang-base,
+.block-language-base {
+  --bases-embed-width: calc(var(--bases-embed-scale) * 100%);
+  --bases-embed-transform: translateX(calc(-50% * (1 - 1 / var(--bases-embed-scale))));
+}
+
+/* A ```base code block in reading view renders as .block-language-base, which
+   Obsidian's width rule above doesn't cover. */
+.markdown-reading-view .block-language-base {
+  width: var(--bases-embed-width, 100%);
+  transform: var(--bases-embed-transform, none);
+}

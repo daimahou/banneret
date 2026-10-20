@@ -1,0 +1,8 @@
+{
+  "bureau@@bu-registry": true,
+  "bureau@@bu-registry-font": "var(--bu-font-body)",
+  "bureau@@bu-poweron": false,
+  "bureau@@bu-settings-horizontal": false,
+  "bureau@@bu-card-gap-n": 8,
+  "bureau@@bu-line-width-n": 800
+}

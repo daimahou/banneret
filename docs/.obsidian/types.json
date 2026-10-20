@@ -1,0 +1,25 @@
+{
+  "types": {
+    "started": "date",
+    "finished": "date",
+    "kind": "text",
+    "status": "text",
+    "triage": "text",
+    "severity": "text",
+    "commit": "text",
+    "parent": "text",
+    "requires": "multitext",
+    "subject": "text",
+    "aliases": "aliases",
+    "cssclasses": "multitext",
+    "tags": "tags",
+    "order": "text",
+    "deadline": "date",
+    "base_class": "multitext",
+    "class": "text",
+    "cooldown": "number",
+    "activation": "number",
+    "DMG": "number",
+    "approved": "checkbox"
+  }
+}

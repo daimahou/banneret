@@ -1,0 +1,247 @@
+{
+  "main": {
+    "id": "02c2b496ad196a4f",
+    "type": "split",
+    "children": [
+      {
+        "id": "44a7775856b76f00",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "187b8a4bca39c11a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "30bfad2e6cf25139",
+    "type": "split",
+    "children": [
+      {
+        "id": "34fe6a956d45dcde",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dd03fda3c11ba2b9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "46c57c5d44fd293a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "timeline",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "4735f84577cad2fd",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 483.37890625
+  },
+  "right": {
+    "id": "0fdaaebf4ece635f",
+    "type": "split",
+    "children": [
+      {
+        "id": "ca9fc74490a3a402",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "eefc98805d5f61f7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "assets/combat/banneret-action-stack-concept-03.png",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "80e54df915116a98",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "assets/combat/banneret-action-stack-concept-03.png",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "66a2da44a51e51f5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "415adf7795a3299b",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "a12c6fc1c0f097b0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "1e4045754482a57c",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {
+                "file": "assets/combat/banneret-action-stack-concept-03.png"
+              },
+              "icon": "lucide-info",
+              "title": "File properties"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "187b8a4bca39c11a",
+  "lastOpenFiles": [
+    "Plan.base",
+    "Home.md",
+    "Background progression Idea.md",
+    "research/new-graphic-style/new-graphic-style.md",
+    "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large/LUS 06 The level-up, the figures twice as large.md",
+    "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large/LUS 06 1 the level-up.png",
+    "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited/LUS 05 The level-up, LUS 04 edited.md",
+    "research/level-up-on-stage/level-up-on-stage.md",
+    "research/level-up-on-stage/LUS 06 The level-up, the figures twice as large",
+    "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited/LUS 05 1 the level-up, edited.png",
+    "research/level-up-on-stage/LUS 05 The level-up, LUS 04 edited",
+    "research/level-up-on-stage/LUS 03 The level-up, from the designer's layout/LUS 03 The level-up, from the designer's layout.md",
+    "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size/LUS 04 The level-up, the figures to the sketch's size.md",
+    "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size/LUS 04 1 the level-up.png",
+    "research/level-up-on-stage/LUS 04 The level-up, the figures to the sketch's size",
+    "research/level-up-on-stage/LUS 03 The level-up, from the designer's layout/LUS 03 1 the level-up.png",
+    "research/level-up-on-stage/LUS 03 The level-up, from the designer's layout",
+    "research/level-up-on-stage/LUS the designer's layout sketch.png",
+    "research/level-up-on-stage/LUS 02 The level-up, on ref 30's stage/LUS 02 The level-up, on ref 30's stage.md",
+    "research/level-up-on-stage/LUS 02 The level-up, on ref 30's stage/LUS 02 1 the level-up.png",
+    "research/level-up-on-stage/LUS 02 The level-up, on ref 30's stage",
+    "research/legends-of-runeterra-keywords.md",
+    "research/game-festivals.md",
+    "research/level-up-on-stage/LUS 01 The level-up, on ref 1's stage/LUS 01 The level-up, on ref 1's stage.md",
+    "Tickets.base",
+    "research/level-up-on-stage/LUS 01 The level-up, on ref 1's stage/LUS 01 1 the level-up.png",
+    "research/level-up-on-stage/LUS 01 The level-up, on ref 1's stage",
+    "research/level-up-on-stage",
+    "research/new-graphic-style/references/NGS ref 24.jpg",
+    "research/new-graphic-style/references/NGS ref 30.jpg",
+    "research/new-graphic-style/references/NGS ref 29.jpg",
+    "research/new-graphic-style/112 The fight, in ref 34's hand/112 The fight, in ref 34's hand.md",
+    "research/new-graphic-style/112 The fight, in ref 34's hand/112 2 the cast on the stage.md",
+    "research/new-graphic-style/112 The fight, in ref 34's hand/112 1 the empty stage.md",
+    "research/new-graphic-style/112 The fight, in ref 34's hand",
+    "research/new-graphic-style/118 The fight, in ref 37's hand/118 2 the cast on the stage.md",
+    "research/new-graphic-style/118 The fight, in ref 37's hand/118 The fight, in ref 37's hand.md",
+    "research/new-graphic-style/118 The fight, in ref 37's hand/118 1 the empty stage.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 The cast, beside ref 37.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 6 the effigy.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 5 the crone.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 4 the scarecrow.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 3 the warrior.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 2 the rogue.md",
+    "research/new-graphic-style/117 The cast, beside ref 37/117 1 the adept.md",
+    "Untitled.canvas"
+  ]
+}

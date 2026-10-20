@@ -1,0 +1,76 @@
+/* Progressive disclosure callouts.
+   frontier — a decision that is missing, phrased as a question.
+   fog      — bullets the note implies but that may not belong here. */
+
+.callout[data-callout="frontier"] {
+  --callout-color: 191, 126, 32;
+  --callout-icon: lucide-flag;
+}
+
+.callout[data-callout="fog"] {
+  --callout-color: 128, 128, 148;
+  --callout-icon: lucide-cloud-fog;
+}
+
+/* Fog is a holding pen, not a finding. Keep it quiet. */
+.callout[data-callout="fog"] {
+  opacity: 0.82;
+}
+
+/* Something decided for now and written as if agreed, but expected to be
+   replaced. Unlike fog it is usable; unlike frontier nothing is being asked. */
+
+.callout[data-callout="provisional"] {
+  --callout-color: 132, 94, 194;
+  --callout-icon: lucide-pencil-line;
+}
+
+/* Dashed edge reads as "not set yet" without dimming the text. */
+.callout[data-callout="provisional"] {
+  border: 1px dashed rgba(var(--callout-color), 0.55);
+  border-left-width: 3px;
+}
+
+.callout[data-callout="provisional"] .callout-title {
+  font-style: italic;
+}
+
+.callout[data-callout="provisional"] .callout-title-inner::before {
+  content: "Provisional: ";
+}
+
+/* Chapter navigation: previous left, next right, on one line.
+   Markdown has no way to do this, so a callout carries two paragraphs
+   and flexbox pushes them apart. */
+
+.callout[data-callout="nav"] {
+  border: none;
+  padding: 0 0.25em 0 0.25em;
+  margin: 0 0 1.5em 0;
+  mix-blend-mode: normal;
+}
+
+.callout[data-callout="nav"] .callout-title { display: none; }
+
+.callout[data-callout="nav"] .callout-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.callout[data-callout="nav"] .callout-content > p { margin: 0; }
+
+/* The chapter's boss. One per guide at most, and only where there is one. */
+
+.callout[data-callout="boss"] {
+  --callout-color: 150, 50, 60;
+  --callout-icon: lucide-swords;
+}
+
+/* Something noticed about the original while studying it. Not a question —
+   a finding, recorded where it was found. */
+
+.callout[data-callout="observation"] {
+  --callout-color: 70, 120, 130;
+  --callout-icon: lucide-eye;
+}
