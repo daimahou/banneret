@@ -9,11 +9,11 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 | `goals/` | Target | project | `goal.md` |
 | `gates/` | Major step; sequential within its goal | weeks | `gate.md` |
 | `milestones/` | One usable artifact; body = spec | days | `milestone.md` |
-| `tasks/` | One work unit | hours | `ticket.md` |
+| `tasks/` | One work unit; tasks and subtasks | leaf = one agent session | `ticket.md` |
 | `bugs/` | Raw, then triaged | hours | `bug.md` |
 
 - Filename = title. Kind = folder.
-- Parenting hierarchy: Goal → Gate → Milestone → Task
+- Parenting hierarchy: Goal → Gate → Milestone → Task → Subtask…
 
 ## Authorship
 
@@ -36,6 +36,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
   - `1.1` = goal 1, gate 1
   - `1.1-1` = milestone 1 of that gate
   - `1.1-1.1` = task 1 of that milestone
+  - `1.1-1.1.1` = subtask 1 of that task
 - Parallel goal chains take a letter prefix: `M-1`, `A-1`.
 - Numbers = where the player meets it, not build order.
 
@@ -46,6 +47,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - State a dependency once, where branches divide; children inherit it.
 - Grabbable = all `requires` finished (see `Blocked by` in `tickets.base`).
 - **Plan breadth-first, build depth-first**: expand all children of the current node, open the first, revisit the remaining siblings on the way back up.
+- A task too large for one agent session splits into subtasks **before** grilling. Only leaves are grilled and implemented.
 
 ## Lifecycle
 

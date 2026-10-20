@@ -23,3 +23,6 @@ __pycache__/
 
 # Obsidian per-machine UI state
 docs/.obsidian/workspace*.json
+
+# Art sources live outside the repo; commit exports only
+*.kra

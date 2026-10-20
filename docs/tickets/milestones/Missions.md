@@ -1,8 +1,8 @@
 ---
 requires:
-id: "1.1-1"
+id: 1.1-1
 deadline:
-started:
+started: 2026-10-20
 finished:
 parent: "[[Playable Prototype]]"
 ---
