@@ -8,9 +8,9 @@ const ROAD_DASH_TEXTURES: Array[Texture2D] = [
 ]
 
 # Road dash layout, in design units and radians.
-const ROAD_DASH_GAP := 24.0
+const ROAD_DASH_GAP := 16.0
 const ROAD_DASH_TILT := 0.05
-const ROAD_END_GAP := 8.0
+const ROAD_END_GAP := 16.0
 const ROAD_SPAN_STEP := 4.0
 
 # Road dash merging, in design units.
