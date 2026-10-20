@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=23 format=3 uid="uid://dq4nntds66bix"]
+[gd_resource type="Theme" format=3 uid="uid://dq4nntds66bix"]
 
 [ext_resource type="FontFile" uid="uid://dbbw833hg2v7o" path="res://addons/limbo_console/res/fonts/monaspace_argon_bold.otf" id="1_cry2i"]
 [ext_resource type="FontFile" uid="uid://dmeyp84repfbw" path="res://addons/limbo_console/res/fonts/monaspace_argon_bold_italic.otf" id="2_h3f73"]
@@ -145,7 +145,7 @@ texture_margin_bottom = 5.0
 
 [resource]
 default_font = ExtResource("5_p4ppy")
-default_font_size = 18
+default_font_size = 26
 ConsoleColors/colors/entry_command_found_color = Color(0.729412, 0.901961, 0.494118, 1)
 ConsoleColors/colors/entry_command_not_found_color = Color(1, 0.2, 0.2, 1)
 ConsoleColors/colors/entry_hint_color = Color(0.439216, 0.478431, 0.54902, 1)
