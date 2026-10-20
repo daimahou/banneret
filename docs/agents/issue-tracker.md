@@ -6,7 +6,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 | Folder | Kind | Size | Template |
 |---|---|---|---|
-| `goals/` | Target; goals run concurrently | project | `goal.md` |
+| `goals/` | Target | project | `goal.md` |
 | `gates/` | Major step; sequential within its goal | weeks | `gate.md` |
 | `milestones/` | One usable artifact; body = spec | days | `milestone.md` |
 | `tasks/` | One work unit | hours | `ticket.md` |
@@ -25,18 +25,19 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `triage` — see `triage-labels.md`
 - `severity` — `major` · `minor` (bugs)
 - `parent` — wikilink to node above
-- `id` — number among its siblings, in narrative order
+- `id` — the node's key (see Key)
 - `requires` — wikilinks to blocking **siblings** only
 - `started` / `finished` — dates;
 
 ## Key
 
-- Computed from `parent` ids, never stored. Shown as `Key` in `plan.base` / `tickets.base`.
+- Stored in `id`. Shown as `Key` in `plan.base` / `tickets.base`.
 - Format: `goal.gate-milestone.task`
   - `1.1` = goal 1, gate 1
   - `1.1-1` = milestone 1 of that gate
   - `1.1-1.1` = task 1 of that milestone
-- `id` = where the player meets it, not build order.
+- Parallel goal chains take a letter prefix: `M-1`, `A-1`.
+- Numbers = where the player meets it, not build order.
 
 ## Structure
 

@@ -7,7 +7,7 @@ deadline: 2026-12-01
 parent: "[[Vertical slice]]"
 ---
 
-# Playable core
+# Playable prototype
 
 ## Done when
 

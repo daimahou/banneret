@@ -3,6 +3,8 @@ started:
 finished:
 deadline: 2027-06-01
 id: "3"
+requires:
+  - "[[Demo]]"
 ---
 
 ## Done when
