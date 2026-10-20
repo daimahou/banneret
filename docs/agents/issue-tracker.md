@@ -45,6 +45,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `requires` joins siblings only. A cross-subtree dependency means the decomposition is wrong.
 - State a dependency once, where branches divide; children inherit it.
 - Grabbable = all `requires` finished (see `Blocked by` in `tickets.base`).
+- **Plan breadth-first, build depth-first**: expand all children of the current node, open the first, revisit the remaining siblings on the way back up.
 
 ## Lifecycle
 
