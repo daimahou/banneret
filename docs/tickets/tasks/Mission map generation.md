@@ -1,9 +1,9 @@
 ---
 triage: ready-for-agent
-id: "1.1-1.1.1.2"
+id: 1.1-1.1.1.2
 requires:
-started:
-finished:
+started: 2026-10-20
+finished: 2026-10-20
 parent: "[[Map layout]]"
 ---
 # Done when
