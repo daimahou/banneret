@@ -92,7 +92,7 @@ views:
     columnSize:
       formula.Mark: 44
       note.id: 94
-      file.name: 399
+      file.name: 343
   - type: table
     name: Closed milestones
     filters:
