@@ -13,6 +13,7 @@ deadline: 2027-05-01
 
 - A subset of the content plays at final quality, wider than the slice, audio included.
 - In the worst case the vertical slice ships as the demo.
+- Act 1 has its shipping content.
 - 5 outside testers play it a second time unprompted.
 - The demo ships for [steam next fest in June](https://partner.steamgames.com/doc/marketing/upcoming_events/nextfest/june_2027).
 

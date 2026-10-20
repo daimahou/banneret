@@ -8,6 +8,8 @@ deadline: 2027-02-01
 
 # Vertical slice
 
+Scope: Act 1 and its boss. Enough content to provide minimal variety with real decisions to make.
+
 ## Done when
 
 - The Steam page is live.

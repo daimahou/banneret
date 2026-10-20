@@ -11,10 +11,10 @@ parent: "[[Vertical slice]]"
 
 ## Done when
 
-- A full run plays in Godot with its real UI, on placeholder or rough art.
+- A full act plays in Godot with its final UI layout, on rough self-drawn art.
 
-## Gates
+## Milestones
 
-![[Children.base#Open gates]]
+![[Children.base#Open milestones]]
 
-![[Children.base#Closed gates]]
+![[Children.base#Closed milestones]]
