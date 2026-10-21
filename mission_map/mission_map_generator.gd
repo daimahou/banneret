@@ -2,10 +2,10 @@ class_name MissionMapGenerator
 extends RefCounted
 
 const LATTICE_COLUMN_COUNT := 3
-const ROW_COUNT := 3
+const ROW_COUNT := 4
 
 const ENCOUNTER_COLUMN := LATTICE_COLUMN_COUNT
-const ENCOUNTER_ROW := 1
+const ENCOUNTER_ROW := 2
 
 const PATH_COUNT := 3
 

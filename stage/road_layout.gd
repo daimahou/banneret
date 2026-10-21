@@ -64,6 +64,8 @@ static func lay_out(mission_map: MissionMap, flat_rects: Array[Rect2], map_node_
 
 	var road_dashes: Array[Flat.RoadDash] = []
 	for laid_road_dash in prune_road_dashes(laid):
+		for place in laid_road_dash.places:
+			laid_road_dash.road_dash.roads.append(place.road)
 		road_dashes.append(laid_road_dash.road_dash)
 	return road_dashes
 

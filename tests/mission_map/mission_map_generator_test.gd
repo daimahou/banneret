@@ -11,8 +11,9 @@ func test_step_rows_skip_an_edge_that_crosses_an_existing_one() -> void:
 
 
 func test_step_rows_from_the_bottom_row_keep_to_the_lattice() -> void:
-	var edges: Array[Vector2i] = [Vector2i(1, 2)]
-	assert_array(MissionMapGenerator.get_step_rows(edges, 2)).contains_exactly([2])
+	var bottom_row := MissionMapGenerator.ROW_COUNT - 1
+	var edges: Array[Vector2i] = [Vector2i(bottom_row - 1, bottom_row)]
+	assert_array(MissionMapGenerator.get_step_rows(edges, bottom_row)).contains_exactly([bottom_row])
 
 
 func test_step_rows_skip_a_crossing_edge_from_below() -> void:

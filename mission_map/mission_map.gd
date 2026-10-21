@@ -11,3 +11,14 @@ func get_column(column: int) -> Array[MapNode]:
 		if map_node.column == column:
 			column_nodes.append(map_node)
 	return column_nodes
+
+
+# The map nodes the coach can travel to from `current`; null is off the map, before the first column.
+func get_next_map_nodes(current: MapNode) -> Array[MapNode]:
+	if current == null:
+		return get_column(0)
+	var next_nodes: Array[MapNode] = []
+	for map_edge in map_edges:
+		if map_edge.start == current:
+			next_nodes.append(map_edge.end)
+	return next_nodes

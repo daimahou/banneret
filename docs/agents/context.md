@@ -28,3 +28,7 @@ _Avoid_: stop, waypoint, node
 
 **Event**:
 What happens at a map node; each has a type, an icon and its own data. An encounter is one kind of event.
+
+**Travel**:
+The coach's move along one road to the next map node.
+_Avoid_: move, step, hop
