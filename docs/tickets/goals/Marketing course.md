@@ -1,17 +1,13 @@
 ---
-id: M-1
+id: M1
 deadline:
 started:
 finished:
 link: https://www.progamemarketing.com/courses/1787210/lectures/62483313
 ---
-
-## Watch order
-
-- 1. How Steam Works
-
 ## Done when
 
+All classes have been watched and ticketing for implementation.
 
 ## Gates
 
