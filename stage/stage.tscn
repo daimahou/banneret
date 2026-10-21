@@ -61,6 +61,13 @@ script = ExtResource("2_flat")
 position = Vector2(760, 1100)
 texture = ExtResource("4_coach")
 
+[node name="Posters" type="Control" parent="." unique_id=1938270514]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 3840.0
+offset_bottom = 2160.0
+mouse_filter = 2
+
 [node name="Front" type="TextureRect" parent="." unique_id=1254529673]
 layout_mode = 0
 offset_right = 3840.0

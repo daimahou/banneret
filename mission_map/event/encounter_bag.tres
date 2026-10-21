@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Registry" format=3 uid="uid://cc8psnn2eqi4p"]
+
+[ext_resource type="Script" path="res://addons/yard/registry.gd" id="1_bcmqj"]
+
+[resource]
+script = ExtResource("1_bcmqj")
+_version = 2
+_scan_rulesets = Array[Dictionary]([{
+&"allowed_file_extensions": Array[String]([]),
+&"class_restrictions": Array[StringName]([&"Offer"]),
+&"recursive_scan": false,
+&"scan_directories": Array[String]([]),
+&"scan_regex_exclude": "",
+&"scan_regex_include": ""
+}])

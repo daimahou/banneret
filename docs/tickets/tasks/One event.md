@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.1-1.2
 requires:
   - "[[Mission map]]"
-started:
+started: 2026-10-21
 finished:
 parent: "[[Missions]]"
 ---

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Offer" format=3 uid="uid://duph1x47usvwl"]
+
+[ext_resource type="Script" path="res://mission_map/event/offer.gd" id="1_offer"]
+
+[resource]
+script = ExtResource("1_offer")
+name = "Offer a"

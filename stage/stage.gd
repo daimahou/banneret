@@ -3,10 +3,15 @@ extends Control
 
 signal laid_out
 signal map_node_pressed(map_node: MapNode)
+signal offer_pressed(offer: Offer)
 
 const TRAVEL_DURATION := 0.6
 const TRAVEL_TRANSITION := Tween.TRANS_SINE
 const TRAVEL_EASE := Tween.EASE_IN_OUT
+
+const POSTER_HANG_Y := 260.0
+const POSTER_SPACING := 80.0
+const POSTER_STAGGER := 0.12
 
 const VISITATION_HIGHLIGHTS: Dictionary[MissionModel.Visitation, Flat.Highlight] = {
 	MissionModel.Visitation.CLOSED: Flat.Highlight.DIMMED,
@@ -21,9 +26,11 @@ var _road_dashes: Array[Flat.RoadDash] = []
 var _mission_model: MissionModel
 var _map_node_under_mouse: MapNode
 var _coach_tween: Tween
+var _posters: Array[Poster] = []
 
 @onready var _flats_container: HBoxContainer = $Flats
 @onready var _coach: Node2D = $Coach
+@onready var _posters_layer: Control = $Posters
 @onready var _coach_start_x := _coach.position.x
 
 
@@ -52,6 +59,7 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	if _coach_tween != null:
 		_coach_tween.kill()
 	_coach.position.x = _coach_start_x
+	_clear_posters()
 
 	for column in column_count:
 		_flats[column].show_column(mission_map.get_column(column))
@@ -80,6 +88,46 @@ func show_travel(map_node: MapNode) -> void:
 	_update_highlights()
 	await _coach_tween.finished
 	_update_highlights()
+
+
+# Drops one poster per offer, centred on the stage, and returns once they all hang still.
+func show_offers(offers: Array[Offer]) -> void:
+	_clear_posters()
+	var row_width := -POSTER_SPACING
+	for offer in offers:
+		var poster := Poster.new(offer)
+		poster.pressed.connect(offer_pressed.emit.bind(offer))
+		_posters_layer.add_child(poster)
+		_posters.append(poster)
+		row_width += poster.size.x + POSTER_SPACING
+	var x := (size.x - row_width) / 2.0
+	var drop_tween: Tween
+	for index in _posters.size():
+		_posters[index].position.x = x
+		x += _posters[index].size.x + POSTER_SPACING
+		drop_tween = _posters[index].create_drop_tween(POSTER_HANG_Y, index * POSTER_STAGGER)
+	if drop_tween != null:
+		await drop_tween.finished
+	for poster in _posters:
+		poster.is_pickable = true
+
+
+# Shows the model after the pick: lifts every poster off the stage, and returns once they are gone.
+func hide_offers() -> void:
+	_update_highlights()
+	var lift_tween: Tween
+	for poster in _posters:
+		poster.is_pickable = false
+		lift_tween = poster.create_lift_tween()
+	if lift_tween != null:
+		await lift_tween.finished
+	_clear_posters()
+
+
+func _clear_posters() -> void:
+	for poster in _posters:
+		poster.queue_free()
+	_posters.clear()
 
 
 func _get_stage_rect(flat: Flat) -> Rect2:
