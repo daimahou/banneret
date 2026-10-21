@@ -32,3 +32,15 @@ What happens at a map node; each has a type, an icon and its own data. An encoun
 **Travel**:
 The coach's move along one road to the next map node.
 _Avoid_: move, step, hop
+
+**Offer**:
+One option an event puts up for the player to pick.
+_Avoid_: option, card, reward
+
+**Party**:
+The player's three heroes.
+_Avoid_: team, squad
+
+**Bag**:
+The content an event's offers are drawn from, e.g. skills.
+_Avoid_: pool, category, registry
