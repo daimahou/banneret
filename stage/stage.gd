@@ -86,9 +86,12 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	for flat in _flats:
 		flat_rects.append(_get_stage_rect(flat))
 	var map_node_positions: Dictionary[MapNode, Vector2] = {}
-	for map_node in mission_map.map_nodes:
-		var column := mission_map.get_column(map_node.column)
-		map_node_positions[map_node] = flat_rects[map_node.column].position + _flats[map_node.column].get_map_node_position(map_node, column)
+	for index in column_count:
+		var column := mission_map.get_column(index)
+		var rows: Array[int] = []
+		rows.assign(column.map(func(map_node: MapNode) -> int: return map_node.row))
+		for map_node in column:
+			map_node_positions[map_node] = flat_rects[index].position + _flats[index].get_map_node_position(map_node, rows)
 
 	# A seed of their own, so they don't replay the generator's random sequence.
 	var road_seed := hash([map_seed, "roads"])

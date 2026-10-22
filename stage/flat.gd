@@ -61,8 +61,10 @@ func _draw() -> void:
 
 func show_column(map_nodes: Array[MapNode]) -> void:
 	clear()
+	var rows: Array[int] = []
+	rows.assign(map_nodes.map(func(map_node: MapNode) -> int: return map_node.row))
 	for map_node in map_nodes:
-		_add_map_node_button(map_node, map_nodes)
+		_add_map_node_button(map_node, get_map_node_position(map_node, rows))
 
 
 # Shows `region` of the battle illustration in place of the column.
@@ -103,13 +105,12 @@ func set_map_node_highlight(map_node: MapNode, highlight: Highlight, is_pickable
 	button.modulate.a = _get_alpha(highlight)
 
 
-# The jitter towards a neighbouring row of `column` is capped, so neighbours stay MAP_NODE_MIN_SPACING apart.
-func get_map_node_position(map_node: MapNode, column: Array[MapNode]) -> Vector2:
+# The jitter towards a neighbouring row among `rows`, the column's, is capped, so neighbours stay MAP_NODE_MIN_SPACING apart.
+func get_map_node_position(map_node: MapNode, rows: Array[int]) -> Vector2:
 	var row_spacing := size.y / MissionMapGenerator.ROW_COUNT
 	# Never negative: a flat too short for the spacing loses its jitter towards neighbours rather than pushing them apart.
 	var jitter_cap := maxf((row_spacing - MAP_NODE_MIN_SPACING) / 2.0, 0.0)
 	var jitter := map_node.jitter
-	var rows := column.map(func(column_node: MapNode) -> int: return column_node.row)
 	if map_node.row - 1 in rows:
 		jitter.y = maxf(jitter.y, -jitter_cap)
 	if map_node.row + 1 in rows:
@@ -132,11 +133,11 @@ func _get_alpha(highlight: Highlight) -> float:
 
 
 # Disabled until the stage highlights it, so a column shown mid-transition can't be picked.
-func _add_map_node_button(map_node: MapNode, column: Array[MapNode]) -> void:
+func _add_map_node_button(map_node: MapNode, map_node_position: Vector2) -> void:
 	var button := TextureButton.new()
 	button.disabled = true
 	button.texture_normal = MapNode.EVENT_ICONS[map_node.event_type]
-	button.position = get_map_node_position(map_node, column) - button.texture_normal.get_size() / 2.0
+	button.position = map_node_position - button.texture_normal.get_size() / 2.0
 	button.pressed.connect(map_node_pressed.emit.bind(map_node))
 	button.mouse_entered.connect(map_node_mouse_entered.emit.bind(map_node))
 	button.mouse_exited.connect(map_node_mouse_exited.emit.bind(map_node))
