@@ -9,7 +9,7 @@ _scan_rulesets = Array[Dictionary]([{
 &"allowed_file_extensions": Array[String]([]),
 &"class_restrictions": Array[StringName]([&"Offer"]),
 &"recursive_scan": false,
-&"scan_directories": Array[String](["res://tests/doubles/bag/"]),
+&"scan_directories": Array[String](["res://tests/doubles/registry/"]),
 &"scan_regex_exclude": "",
 &"scan_regex_include": ""
 }])

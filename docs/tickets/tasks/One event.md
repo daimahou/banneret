@@ -38,8 +38,9 @@ Every event works the same way: arriving draws from the event type's bag, then t
 - **Content** in `mission_map/event/`:
   - `Offer` — `Resource`: name, description. Both bags hold it.
   - `placeholder/` — 5 placeholder offers; `placeholder_bag.tres` scans it. `encounter_bag.tres` scans it too until encounters have a folder of their own. Both Yard registries restricted to `Offer`, written by a headless script in Yard's format (Yard's own I/O needs the editor).
-- **Draw**: `Bag.draw(registry, count, filter, rng) -> Array[StringName]` — distinct IDs at random from those `BagFilter` accepts; fewer when the bag is short. Only drawn entries load.
-- **`BagFilter`**: empty, accepts every ID. Conditions land here later as `Registry.where` criteria.
+- **Pick**: `Registry.pick_random(count, filter, rng) -> Array[StringName]` — distinct IDs at random from those `RegistryFilter` accepts; fewer when the bag is short. Only picked entries load.
+- **`RegistryFilter`**: empty, accepts every ID. Conditions land here later as `Registry.where` criteria.
+- **YARD is forked**: `pick_random` and `RegistryFilter` live in `addons/yard/`; upstream updates are not pulled.
 - **Model** — `MissionModel` takes the seed; draws use their own seed derived from it.
   - `travel_to` draws at once (the model changes on click). A picked event leaves its offers pending; any other resolves with its first draw.
   - `get_offers`, `pick_offer`, `get_resolved_offer` (null when the draw was empty).
@@ -55,7 +56,7 @@ Every event works the same way: arriving draws from the event type's bag, then t
 ## Testing decisions
 
 - Seam: `MissionModel` — missions played in code: offers pending after travel, the map locked until a pick, the same seed drawing the same offers, the encounter resolving without a pick.
-- Seam: `Bag.draw` over fixture registries in `tests/doubles/`: distinct picks, a short bag returns fewer, the filter is applied, the same seed draws the same.
+- Seam: `Registry.pick_random` over a fixture registry in `tests/doubles/registry/`: distinct picks, a short registry returns fewer, the filter is applied, the same seed picks the same, no filter or rng picks from every entry.
 - Poster animation is judged by eye in the running scene.
 
 ## Out of scope

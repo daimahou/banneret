@@ -5,7 +5,7 @@ extends RefCounted
 enum Visitation { CLOSED, AHEAD, OPEN, TRAVELLED, CURRENT }
 
 var mission_map: MissionMap
-var bag_filter := BagFilter.new()
+var registry_filter := RegistryFilter.new()
 
 var _trail: Array[MapNode] = []
 var _offers: Array[Offer] = []
@@ -28,7 +28,7 @@ func travel_to(map_node: MapNode) -> void:
 	var event_type := map_node.event_type
 	var registry := MapNode.EVENT_BAGS[event_type]
 	var drawn: Array[Offer] = []
-	for id in Bag.draw(registry, MapNode.EVENT_OFFER_COUNTS[event_type], bag_filter, _rng):
+	for id in registry.pick_random(MapNode.EVENT_OFFER_COUNTS[event_type], registry_filter, _rng):
 		drawn.append(registry.load_entry(id) as Offer)
 	if event_type in MapNode.PICKED_EVENT_TYPES:
 		_offers = drawn
