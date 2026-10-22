@@ -1,9 +1,0 @@
-[gd_scene format=3 uid="uid://8usdet00n8g"]
-
-[ext_resource type="Script" uid="uid://ddgtme4lqf15u" path="res://mission/mission_controller.gd" id="1_controller"]
-[ext_resource type="PackedScene" uid="uid://6sqqxjvyhrkj" path="res://stage/stage.tscn" id="2_stage"]
-
-[node name="Mission" type="Node" unique_id=209901639]
-script = ExtResource("1_controller")
-
-[node name="Stage" parent="." unique_id=457941938 instance=ExtResource("2_stage")]

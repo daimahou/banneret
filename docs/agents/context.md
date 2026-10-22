@@ -51,6 +51,10 @@ _Avoid_: team, squad
 One member of the party.
 _Avoid_: character, unit
 
+**Puppet**:
+A hero's or enemy's figure on stage.
+_Avoid_: sprite, avatar, actor
+
 **Enemy**:
 One opponent the party fights in an encounter.
 _Avoid_: monster, foe
