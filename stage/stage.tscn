@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dcaborbs15835" path="res://art/stage/coach.png" id="4_coach"]
 [ext_resource type="Texture2D" uid="uid://dnf252pjqiy5u" path="res://art/stage/front.png" id="5_front"]
 [ext_resource type="PackedScene" uid="uid://b0ffpr3s3nt3r" path="res://stage/offer_presenter.tscn" id="6_offer_presenter"]
+[ext_resource type="Script" path="res://stage/puppet.gd" id="7_puppet"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -58,9 +59,12 @@ size_flags_horizontal = 3
 mouse_filter = 2
 script = ExtResource("2_flat")
 
-[node name="Coach" type="Sprite2D" parent="." unique_id=1574302126]
-position = Vector2(760, 1100)
+[node name="Coach" type="Node2D" parent="." unique_id=1574302126]
+position = Vector2(760, 1260)
+script = ExtResource("7_puppet")
 texture = ExtResource("4_coach")
+
+[node name="Puppets" type="Node2D" parent="." unique_id=1574302127]
 
 [node name="OfferPresenter" parent="." unique_id=1938270514 instance=ExtResource("6_offer_presenter")]
 layout_mode = 0

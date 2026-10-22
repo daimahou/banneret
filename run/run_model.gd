@@ -2,7 +2,7 @@ class_name RunModel
 extends RefCounted
 
 const HERO_REGISTRY: Registry = preload("res://hero/hero_registry.tres")
-const PARTY_HERO_IDS: Array[StringName] = [&"knight", &"archer", &"mage"]
+const PARTY_HERO_IDS: Array[StringName] = [&"knight", &"rogue", &"mage"]
 
 var party: Array[Character] = []
 

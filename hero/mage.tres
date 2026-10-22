@@ -1,8 +1,10 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://dtagurv5ooroo"]
 
 [ext_resource type="Script" uid="uid://cn4tlmf7ivxe3" path="res://character/character_data.gd" id="1_character_data"]
+[ext_resource type="Texture2D" uid="uid://b74ocflackq8l" path="res://art/puppet/mage.png" id="2_puppet"]
 
 [resource]
 script = ExtResource("1_character_data")
 name = "Mage"
 max_health = 15
+puppet = ExtResource("2_puppet")

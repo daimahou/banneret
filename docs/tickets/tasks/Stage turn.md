@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.1-3.2.2
 requires:
   - "[[Encounter art]]"
-started:
+started: 2026-10-22
 finished:
 parent: "[[Encounter transition]]"
 ---

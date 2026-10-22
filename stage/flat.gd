@@ -27,14 +27,25 @@ class RoadDash:
 
 
 var _road_dashes: Array[RoadDash] = []
-var _rows: Array[int] = []
 var _map_node_buttons: Dictionary[MapNode, TextureButton] = {}
 var _ink_materials: Dictionary[Highlight, ShaderMaterial] = {}
 # Recolored dashes draw on a layer of their own, since a shader applies to a whole canvas item.
 var _recolored_layers: Dictionary[Highlight, Node2D] = {}
+var _battle_illustration := TextureRect.new()
+
+
+# Both rects in stage space; the illustration spans `battleground_rect` whatever its texture's size.
+static func get_battle_region(flat_rect: Rect2, battleground_rect: Rect2, texture_size: Vector2) -> Rect2:
+	var texture_scale := texture_size / battleground_rect.size
+	return Rect2((flat_rect.position - battleground_rect.position) * texture_scale, flat_rect.size * texture_scale)
 
 
 func _ready() -> void:
+	_battle_illustration.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_battle_illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_battle_illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_battle_illustration.hide()
+	add_child(_battle_illustration)
 	for highlight: Highlight in INK_COLORS:
 		var ink_material := ShaderMaterial.new()
 		ink_material.shader = INK_RECOLOR_SHADER
@@ -55,9 +66,17 @@ func _draw() -> void:
 func show_column(map_nodes: Array[MapNode]) -> void:
 	clear()
 	for map_node in map_nodes:
-		_rows.append(map_node.row)
-	for map_node in map_nodes:
-		_add_map_node_button(map_node)
+		_add_map_node_button(map_node, map_nodes)
+
+
+# Shows `region` of the battle illustration in place of the column.
+func show_battle(battleground: Texture2D, region: Rect2) -> void:
+	clear()
+	var atlas_texture := AtlasTexture.new()
+	atlas_texture.atlas = battleground
+	atlas_texture.region = region
+	_battle_illustration.texture = atlas_texture
+	_battle_illustration.show()
 
 
 func clear() -> void:
@@ -65,7 +84,7 @@ func clear() -> void:
 		button.queue_free()
 	_map_node_buttons.clear()
 	_road_dashes.clear()
-	_rows.clear()
+	_battle_illustration.hide()
 	redraw_road_dashes()
 
 
@@ -88,15 +107,16 @@ func set_map_node_highlight(map_node: MapNode, highlight: Highlight, is_pickable
 	button.modulate.a = _get_alpha(highlight)
 
 
-# The jitter towards a neighbouring row of the column is capped, so neighbours stay MAP_NODE_MIN_SPACING apart.
-func get_map_node_position(map_node: MapNode) -> Vector2:
+# The jitter towards a neighbouring row of `column` is capped, so neighbours stay MAP_NODE_MIN_SPACING apart.
+func get_map_node_position(map_node: MapNode, column: Array[MapNode]) -> Vector2:
 	var row_spacing := size.y / MissionMapGenerator.ROW_COUNT
 	# Never negative: a flat too short for the spacing loses its jitter towards neighbours rather than pushing them apart.
 	var jitter_cap := maxf((row_spacing - MAP_NODE_MIN_SPACING) / 2.0, 0.0)
 	var jitter := map_node.jitter
-	if map_node.row - 1 in _rows:
+	var rows := column.map(func(column_node: MapNode) -> int: return column_node.row)
+	if map_node.row - 1 in rows:
 		jitter.y = maxf(jitter.y, -jitter_cap)
-	if map_node.row + 1 in _rows:
+	if map_node.row + 1 in rows:
 		jitter.y = minf(jitter.y, jitter_cap)
 	return Vector2(size.x / 2.0, row_spacing * (map_node.row + 0.5)) + jitter
 
@@ -115,10 +135,12 @@ func _get_alpha(highlight: Highlight) -> float:
 	return DIMMED_ALPHA if highlight == Highlight.DIMMED else 1.0
 
 
-func _add_map_node_button(map_node: MapNode) -> void:
+# Disabled until the stage highlights it, so a column shown mid-transition can't be picked.
+func _add_map_node_button(map_node: MapNode, column: Array[MapNode]) -> void:
 	var button := TextureButton.new()
+	button.disabled = true
 	button.texture_normal = MapNode.EVENT_ICONS[map_node.event_type]
-	button.position = get_map_node_position(map_node) - button.texture_normal.get_size() / 2.0
+	button.position = get_map_node_position(map_node, column) - button.texture_normal.get_size() / 2.0
 	button.pressed.connect(map_node_pressed.emit.bind(map_node))
 	button.mouse_entered.connect(map_node_mouse_entered.emit.bind(map_node))
 	button.mouse_exited.connect(map_node_mouse_exited.emit.bind(map_node))
