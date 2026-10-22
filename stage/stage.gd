@@ -3,6 +3,7 @@ extends Control
 
 signal laid_out
 signal map_node_pressed(map_node: MapNode)
+signal offer_pressed(offer: Offer)
 
 const TRAVEL_DURATION := 0.6
 const TRAVEL_TRANSITION := Tween.TRANS_SINE
@@ -24,6 +25,7 @@ var _coach_tween: Tween
 
 @onready var _flats_container: HBoxContainer = $Flats
 @onready var _coach: Node2D = $Coach
+@onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _coach_start_x := _coach.position.x
 
 
@@ -34,6 +36,7 @@ func _ready() -> void:
 			child.map_node_pressed.connect(map_node_pressed.emit)
 			child.map_node_mouse_entered.connect(_on_map_node_mouse_entered)
 			child.map_node_mouse_exited.connect(_on_map_node_mouse_exited)
+	_offer_presenter.offer_pressed.connect(offer_pressed.emit)
 	# The container sizes the flats on its first sort, which is still pending here.
 	await _flats_container.sort_children
 	laid_out.emit()
@@ -52,6 +55,7 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	if _coach_tween != null:
 		_coach_tween.kill()
 	_coach.position.x = _coach_start_x
+	_offer_presenter.clear()
 
 	for column in column_count:
 		_flats[column].show_column(mission_map.get_column(column))
@@ -80,6 +84,17 @@ func show_travel(map_node: MapNode) -> void:
 	_update_highlights()
 	await _coach_tween.finished
 	_update_highlights()
+
+
+# Returns once the offers hang still.
+func show_offers(offers: Array[Offer]) -> void:
+	await _offer_presenter.show_offers(offers)
+
+
+# Shows the model after the pick, and returns once the offers are gone.
+func hide_offers() -> void:
+	_update_highlights()
+	await _offer_presenter.hide_offers()
 
 
 func _get_stage_rect(flat: Flat) -> Rect2:

@@ -358,6 +358,24 @@ func where(criteria: Dictionary[StringName, Variant]) -> Array[StringName]:
 	return result
 
 
+## Returns up to [param count] distinct string IDs, picked at random among those [param filter] accepts.
+## Returns fewer when fewer are accepted. A [code]null[/code] [param filter] accepts every entry;
+## a [code]null[/code] [param rng] uses the global random number generator.[br][br]
+##
+## Banneret addition: YARD is forked here.
+## [codeblock]
+## var offer_ids := OFFERS.pick_random(3, RegistryFilter.new(), rng)
+## [/codeblock]
+func pick_random(count: int, filter: RegistryFilter = null, rng: RandomNumberGenerator = null) -> Array[StringName]:
+	# A copy: picking empties the list, and a filter may hand back one it keeps.
+	var ids := get_all_string_ids() if filter == null else filter.get_accepted_ids(self).duplicate()
+	var picked: Array[StringName] = []
+	while picked.size() < count and not ids.is_empty():
+		var index := randi_range(0, ids.size() - 1) if rng == null else rng.randi_range(0, ids.size() - 1)
+		picked.append(ids.pop_at(index))
+	return picked
+
+
 static func _intersect(base: Array[StringName], other: Array[StringName]) -> Array[StringName]:
 	var other_set: Dictionary[StringName, bool] = { }
 	for id: StringName in other:
