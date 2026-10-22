@@ -4,7 +4,7 @@ id: 1.1-1.2
 requires:
   - "[[Mission map]]"
 started: 2026-10-21
-finished:
+finished: 2026-10-22
 parent: "[[Missions]]"
 ---
 # Done when
