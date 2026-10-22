@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.1-3.1
 requires:
 started: 2026-10-22
-finished:
+finished: 2026-10-22
 parent: "[[Encounters]]"
 ---
 # Done when
