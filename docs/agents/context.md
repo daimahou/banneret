@@ -47,12 +47,15 @@ _Avoid_: option, card, reward
 The player's three heroes.
 _Avoid_: team, squad
 
+**Character**:
+One fighter, a hero or an enemy.
+_Avoid_: unit, fighter
+
 **Hero**:
-One member of the party.
-_Avoid_: character, unit
+A character the player controls; one member of the party.
 
 **Puppet**:
-A hero's or enemy's figure on stage.
+A character's figure on stage.
 _Avoid_: sprite, avatar, actor
 
 **Enemy**:

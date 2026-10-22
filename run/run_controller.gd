@@ -17,7 +17,7 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
-	LimboConsole.info("Party: %s" % ", ".join(run_model.party.map(func(hero: Hero) -> String: return hero.data.name)))
+	LimboConsole.info("Party: %s" % ", ".join(run_model.party.map(func(hero: Character) -> String: return hero.data.name)))
 	await _stage.laid_out
 	start_mission(randi())
 

@@ -1,4 +1,4 @@
-class_name HeroData
+class_name CharacterData
 extends Resource
 
 @export var name: String

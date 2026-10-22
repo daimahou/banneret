@@ -20,11 +20,12 @@ A run sits above the mission: it holds the party and starts each mission on the 
 
 ## Implementation decisions
 
+- **Characters** in `character/`, shared with enemies later:
+  - `CharacterData` — `Resource`: name, max health.
+  - `Character` — `RefCounted` made from a `CharacterData`; holds health, full at the start. Damage will carry between fights.
 - **Heroes** in `hero/`:
-  - `HeroData` — `Resource`: name, max health.
-  - `Hero` — `RefCounted` made from a `HeroData`; holds health, full at the start. Damage will carry between fights.
   - `knight`, `archer`, `mage` — placeholder `.tres`.
-  - `hero_registry.tres` — Yard registry restricted to `HeroData`, scanning `hero/`; written by hand in Yard's format. A registry, not a bag: the party is not drawn.
+  - `hero_registry.tres` — Yard registry restricted to `CharacterData`, scanning `hero/`; written by hand in Yard's format. A registry, not a bag: the party is not drawn.
 - **Run** in `run/`:
   - `RunModel` — holds `party`, loaded from the registry through the fixed `PARTY_HERO_IDS`.
   - `run.tscn` — the main scene: `Run` (`RunController`) with the `Stage`, which outlives any one mission.

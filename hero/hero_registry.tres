@@ -6,8 +6,8 @@
 script = ExtResource("1_e7euy")
 _version = 2
 _scan_rulesets = Array[Dictionary]([{
-&"allowed_file_extensions": Array[String]([]),
-&"class_restrictions": Array[StringName]([&"HeroData"]),
+&"allowed_file_extensions": Array[String]([".tres"]),
+&"class_restrictions": Array[StringName]([&"CharacterData"]),
 &"recursive_scan": false,
 &"scan_directories": Array[String](["res://hero/"]),
 &"scan_regex_exclude": "",
