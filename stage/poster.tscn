@@ -1,0 +1,195 @@
+[gd_scene format=3 uid="uid://cq4p0st3rsc1n"]
+
+[ext_resource type="Script" uid="uid://btjslj070g27v" path="res://stage/poster.gd" id="1_poster"]
+[ext_resource type="Texture2D" uid="uid://dpl3o11m4qohn" path="res://art/offer/poster_top.png" id="2_top"]
+[ext_resource type="Texture2D" uid="uid://b2e1nba1vo0rr" path="res://art/offer/poster_body.png" id="3_body"]
+[ext_resource type="Texture2D" uid="uid://c1ouwu0cunan2" path="res://art/offer/poster_bottom.png" id="4_bottom"]
+
+[sub_resource type="Animation" id="Animation_reset"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Scroll:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.1, 0, 0.1, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:openness")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.1, 0, 0.1, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Scroll/Body/Text:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_drop"]
+length = 0.53333336
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Scroll:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 1, 2, 2),
+"points": PackedFloat32Array(-293.7125, -0.1, 0, 0.1, 58.000824, 0, 0, 0, 0, 0, -40, -0.048654895, 0, 0.040122956, 0, -30, -0.040122956, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.18333337, 0.32929805, 0.44966692)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:openness")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.1, 0, 0.1, 0, -0.0048661567, -0.1, 0, 0.1, 0.6, 1, -0.15, 0, 0.1, 0),
+"times": PackedFloat32Array(0, 0.20806459, 0.46666667)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Scroll/Body/Text:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Scroll/Body/Text:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.26666668, 0.46666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lift"]
+length = 0.53333336
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Scroll:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(1, 1, 1, 1),
+"points": PackedFloat32Array(-30, 0, 0, 0, 0, 2.7367153, 0, 0, 0, 0, -1.2778835, 0, 0, 0, 0, -301.0346, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.06709612, 0.20375815, 0.32545885)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:openness")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(1, 1, 2, 0),
+"points": PackedFloat32Array(1, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 1.2009733, -0.01111111, 0, 0.033333335, 0, 0, -0.0020789504, 0.9722628, 0, 0),
+"times": PackedFloat32Array(0, 0.06666667, 0.1, 0.2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_poster"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"drop": SubResource("Animation_drop"),
+&"lift": SubResource("Animation_lift")
+}
+
+[node name="Poster" type="Control" unique_id=1489677774]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 462.0
+offset_bottom = 758.0
+script = ExtResource("1_poster")
+
+[node name="Scroll" type="Control" parent="." unique_id=1833179141]
+use_parent_material = true
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Body" type="TextureRect" parent="Scroll" unique_id=1767009696]
+use_parent_material = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 249.0
+offset_right = 460.0
+offset_bottom = 713.0
+mouse_filter = 2
+texture = ExtResource("3_body")
+
+[node name="Text" type="VBoxContainer" parent="Scroll/Body" unique_id=2107988394]
+use_parent_material = true
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 419.0
+offset_bottom = 424.0
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Scroll/Body/Text" unique_id=1037097421]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/font_size = 56
+text = "Offer name"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Description" type="Label" parent="Scroll/Body/Text" unique_id=787009777]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/font_size = 36
+text = "What the offer does."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Bottom" type="TextureRect" parent="Scroll" unique_id=165385707]
+use_parent_material = true
+layout_mode = 0
+offset_top = 713.0
+offset_right = 461.0
+offset_bottom = 758.00146
+mouse_filter = 2
+texture = ExtResource("4_bottom")
+
+[node name="Top" type="TextureRect" parent="Scroll" unique_id=1879221855]
+use_parent_material = true
+layout_mode = 0
+offset_right = 462.0
+offset_bottom = 249.0
+mouse_filter = 2
+texture = ExtResource("2_top")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1787992218]
+libraries/ = SubResource("AnimationLibrary_poster")

@@ -34,10 +34,10 @@ Every event works the same way: arriving draws from the event type's bag, then t
 
 - **Event table**, in `MapNode` beside `EVENT_ICONS`: bag, offer count, player picks.
   - `PLACEHOLDER` — placeholder bag, 3 offers, picked.
-  - `ENCOUNTER` — encounter bag (empty), 1 offer, resolves at once.
+  - `ENCOUNTER` — encounter bag, 1 offer, resolves at once.
 - **Content** in `mission_map/event/`:
   - `Offer` — `Resource`: name, description. Both bags hold it.
-  - `placeholder/` — 5 placeholder offers; `placeholder_bag.tres` scans it. `encounter_bag.tres` — empty. Both Yard registries restricted to `Offer`, written by a headless script in Yard's format (Yard's own I/O needs the editor).
+  - `placeholder/` — 5 placeholder offers; `placeholder_bag.tres` scans it. `encounter_bag.tres` scans it too until encounters have a folder of their own. Both Yard registries restricted to `Offer`, written by a headless script in Yard's format (Yard's own I/O needs the editor).
 - **Draw**: `Bag.draw(registry, count, filter, rng) -> Array[StringName]` — distinct IDs at random from those `BagFilter` accepts; fewer when the bag is short. Only drawn entries load.
 - **`BagFilter`**: empty, accepts every ID. Conditions land here later as `Registry.where` criteria.
 - **Model** — `MissionModel` takes the seed; draws use their own seed derived from it.
@@ -45,10 +45,11 @@ Every event works the same way: arriving draws from the event type's bag, then t
   - `get_offers`, `pick_offer`, `get_resolved_offer` (null when the draw was empty).
   - Nothing is open while offers are pending; what lies ahead keeps its visitation.
 - **Controller**: after travel, if offers are pending, awaits `Stage.show_offers`; on `offer_pressed`, picks, awaits `Stage.hide_offers`. Logs `Event resolved: <name or none>` once resolved, then `Mission ended` if it did.
-- **View** — posters centred on the stage, in front of the coach, any count, evenly spaced.
-  - Three pieces: top roll with cord, body, bottom roll. Falls rolled up from above the frame and bounces, then unrolls — the body scales on y and the bottom roll follows. A small stagger between posters.
-  - After the pick, every poster rolls back up and lifts off. Hovered poster in blue. Input ignored while posters move.
-  - Placeholder art at `art/offer/poster_top.png`, `poster_body.png`, `poster_bottom.png`; name and description are labels on the body.
+- **View** — `Stage` hands the offers to an `OfferPresenter` scene and relays its `offer_pressed`.
+  - `OfferPresenter` (`@tool`): posters hang from its top edge, centred across its width, any count; `spacing` and `stagger` exported. In the editor it previews `preview_count` open posters, shown or hidden by `is_preview_shown`.
+  - `Poster` scene: top roll with cord, body, bottom roll, name and description labels. `openness` (0 rolled, 1 open) scales the body and keeps the bottom roll on its lower edge.
+  - Its `AnimationPlayer` holds `drop` (falls rolled, bounces, unrolls), `lift` (rolls up, rises) and `RESET`, bezier-keyed on the fall height and `openness`, timed by eye in the editor.
+  - Hovered poster in blue. Input ignored while posters move.
 - **Logging**: every line through `LimboConsole.info`, with `print_to_stdout=true`, so it reaches the in-game console and the output.
 
 ## Testing decisions
