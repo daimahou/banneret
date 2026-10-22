@@ -18,6 +18,10 @@ _Avoid_: board, screen, scene
 One vertical panel at the back of the stage, holding one column of the mission map.
 _Avoid_: panel, slot
 
+**Transition**:
+The stage's change between showing the mission map and showing the fight.
+_Avoid_: turn, scene change
+
 **Coach**:
 The party's token on the mission map.
 _Avoid_: cart, wagon, player marker
