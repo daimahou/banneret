@@ -2,6 +2,12 @@
 
 The vocabulary of the game: how a run is structured and what the player sees on stage.
 
+## Run
+
+**Run**:
+The whole loop from the first mission to a win or a loss; it holds the party between missions.
+_Avoid_: board, game state
+
 ## Stage
 
 **Stage**:
@@ -40,6 +46,14 @@ _Avoid_: option, card, reward
 **Party**:
 The player's three heroes.
 _Avoid_: team, squad
+
+**Hero**:
+One member of the party.
+_Avoid_: character, unit
+
+**Enemy**:
+One opponent the party fights in an encounter.
+_Avoid_: monster, foe
 
 **Bag**:
 The content an event's offers are drawn from, e.g. skills.
