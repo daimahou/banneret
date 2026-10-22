@@ -25,7 +25,7 @@ const POSTER_SCENE := preload("res://stage/poster.tscn")
 		_update_preview()
 
 # Editor previews and runtime posters alike, in display order.
-var _posters: Array[Control] = []
+var _posters: Array[Poster] = []
 
 
 func _ready() -> void:
@@ -47,9 +47,9 @@ func show_offers(offers: Array[Offer]) -> void:
 		return
 	# The last poster drops last.
 	for index in _posters.size() - 1:
-		(_posters[index] as Poster).play_drop(index * stagger)
-	await (_posters.back() as Poster).play_drop((_posters.size() - 1) * stagger)
-	for poster: Poster in _posters:
+		_posters[index].play_drop(index * stagger)
+	await _posters.back().play_drop((_posters.size() - 1) * stagger)
+	for poster in _posters:
 		poster.is_pickable = true
 
 
@@ -57,11 +57,11 @@ func show_offers(offers: Array[Offer]) -> void:
 func hide_offers() -> void:
 	if _posters.is_empty():
 		return
-	for poster: Poster in _posters:
+	for poster in _posters:
 		poster.is_pickable = false
-	for poster: Poster in _posters.slice(0, -1):
+	for poster in _posters.slice(0, -1):
 		poster.play_lift()
-	await (_posters.back() as Poster).play_lift()
+	await _posters.back().play_lift()
 	clear()
 
 
@@ -79,7 +79,7 @@ func _update_preview() -> void:
 	if not is_preview_shown:
 		return
 	for index in preview_count:
-		var poster: Control = POSTER_SCENE.instantiate()
+		var poster: Poster = POSTER_SCENE.instantiate()
 		add_child(poster, false, Node.INTERNAL_MODE_BACK)
 		_posters.append(poster)
 	_lay_out_posters()
