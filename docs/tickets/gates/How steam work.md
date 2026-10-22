@@ -52,5 +52,7 @@ What works:
 launch or discount > 20% -> wishlists get email.
 Converts from 1-20%
 
+Early access loophole: people who wishlist a game that get into early access get an email - on release: second email.
+
 ---
 
