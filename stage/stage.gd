@@ -20,6 +20,8 @@ const PUPPET_SLIDE_DURATION := 0.8
 const OFFSTAGE_LEFT_X := -400.0
 const OFFSTAGE_RIGHT_X := 4240.0
 
+const PUPPET_SCENE := preload("res://stage/puppet.tscn")
+
 const BATTLEGROUND: Texture2D = preload("res://art/stage/battleground.png")
 # The panels painted on the background, in design units.
 const BATTLEGROUND_RECT := Rect2(971, 373, 1938, 744)
@@ -183,7 +185,7 @@ func _show_battle_on_flat(flat: Flat) -> void:
 # Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`.
 func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: Array[Vector2], offstage_x: float) -> void:
 	for index in characters.size():
-		var puppet := Puppet.new()
+		var puppet: Puppet = PUPPET_SCENE.instantiate()
 		puppet.texture = characters[index].data.puppet
 		puppet.position = Vector2(offstage_x, stand_positions[index].y)
 		_puppets.add_child(puppet)

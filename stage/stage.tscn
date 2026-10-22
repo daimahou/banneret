@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://6sqqxjvyhrkj"]
 
 [ext_resource type="Script" uid="uid://dxp5sbyq7k85x" path="res://stage/stage.gd" id="1_stage"]
-[ext_resource type="Script" uid="uid://gbk5s2tkb4ye" path="res://stage/flat.gd" id="2_flat"]
+[ext_resource type="PackedScene" path="res://stage/flat.tscn" id="2_flat"]
 [ext_resource type="Texture2D" uid="uid://g33p8e6oa1i" path="res://art/stage/background.png" id="3_background"]
 [ext_resource type="Texture2D" uid="uid://dcaborbs15835" path="res://art/stage/coach.png" id="4_coach"]
 [ext_resource type="Texture2D" uid="uid://dnf252pjqiy5u" path="res://art/stage/front.png" id="5_front"]
 [ext_resource type="PackedScene" uid="uid://b0ffpr3s3nt3r" path="res://stage/offer_presenter.tscn" id="6_offer_presenter"]
-[ext_resource type="Script" path="res://stage/puppet.gd" id="7_puppet"]
+[ext_resource type="PackedScene" path="res://stage/puppet.tscn" id="7_puppet"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -19,6 +19,7 @@ mouse_filter = 2
 script = ExtResource("1_stage")
 
 [node name="Background" type="TextureRect" parent="." unique_id=437699063]
+z_index = -2
 layout_mode = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
@@ -27,6 +28,7 @@ texture = ExtResource("3_background")
 expand_mode = 1
 
 [node name="Flats" type="HBoxContainer" parent="." unique_id=433876565]
+z_index = -1
 layout_mode = 0
 offset_left = 977.0
 offset_top = 400.0
@@ -35,33 +37,20 @@ offset_bottom = 1080.0
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-[node name="Flat1" type="Control" parent="Flats" unique_id=861660209]
+[node name="Flat1" parent="Flats" unique_id=861660209 instance=ExtResource("2_flat")]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-script = ExtResource("2_flat")
 
-[node name="Flat2" type="Control" parent="Flats" unique_id=2070736905]
+[node name="Flat2" parent="Flats" unique_id=2070736905 instance=ExtResource("2_flat")]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-script = ExtResource("2_flat")
 
-[node name="Flat3" type="Control" parent="Flats" unique_id=810281272]
+[node name="Flat3" parent="Flats" unique_id=810281272 instance=ExtResource("2_flat")]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-script = ExtResource("2_flat")
 
-[node name="Flat4" type="Control" parent="Flats" unique_id=129521923]
+[node name="Flat4" parent="Flats" unique_id=129521923 instance=ExtResource("2_flat")]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-script = ExtResource("2_flat")
 
-[node name="Coach" type="Node2D" parent="." unique_id=1574302126]
+[node name="Coach" parent="." unique_id=1574302126 instance=ExtResource("7_puppet")]
 position = Vector2(760, 1260)
-script = ExtResource("7_puppet")
 texture = ExtResource("4_coach")
 
 [node name="Puppets" type="Node2D" parent="." unique_id=1574302127]

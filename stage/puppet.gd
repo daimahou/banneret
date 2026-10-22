@@ -11,12 +11,12 @@ const SWAY_PERIOD := 2.4
 # A phase of its own, so puppets don't rock in step.
 var _sway_phase := randf() * TAU
 
+@onready var _sprite: Sprite2D = $Sprite
+
 
 func _ready() -> void:
-	var sprite := Sprite2D.new()
-	sprite.texture = texture
-	sprite.offset.y = -texture.get_height() / 2.0
-	add_child(sprite)
+	_sprite.texture = texture
+	_sprite.offset.y = -texture.get_height() / 2.0
 	create_tween().set_loops().tween_method(_set_sway, 0.0, TAU, SWAY_PERIOD)
 
 

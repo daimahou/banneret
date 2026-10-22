@@ -31,7 +31,8 @@ var _map_node_buttons: Dictionary[MapNode, TextureButton] = {}
 var _ink_materials: Dictionary[Highlight, ShaderMaterial] = {}
 # Recolored dashes draw on a layer of their own, since a shader applies to a whole canvas item.
 var _recolored_layers: Dictionary[Highlight, Node2D] = {}
-var _battle_illustration := TextureRect.new()
+
+@onready var _battle_illustration: TextureRect = $BattleIllustration
 
 
 # Both rects in stage space; the illustration spans `battleground_rect` whatever its texture's size.
@@ -41,11 +42,6 @@ static func get_battle_region(flat_rect: Rect2, battleground_rect: Rect2, textur
 
 
 func _ready() -> void:
-	_battle_illustration.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_battle_illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_battle_illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_battle_illustration.hide()
-	add_child(_battle_illustration)
 	for highlight: Highlight in INK_COLORS:
 		var ink_material := ShaderMaterial.new()
 		ink_material.shader = INK_RECOLOR_SHADER
