@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bsvvbyuy3ascd"]
+
+[ext_resource type="Script" uid="uid://doddm7t0321lq" path="res://run/run_controller.gd" id="1_controller"]
+[ext_resource type="PackedScene" uid="uid://6sqqxjvyhrkj" path="res://stage/stage.tscn" id="2_stage"]
+
+[node name="Run" type="Node"]
+script = ExtResource("1_controller")
+
+[node name="Stage" parent="." instance=ExtResource("2_stage")]

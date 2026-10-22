@@ -1,36 +1,28 @@
 class_name MissionController
-extends Node
+extends RefCounted
 
 signal mission_ended
 
 const MISSION_INDEX := 0
 
+var _stage: Stage
 var _mission_model: MissionModel
 var _is_stage_busy := false
 
-@onready var _stage: Stage = $Stage
 
-
-func _enter_tree() -> void:
-	LimboConsole.register_command(start_mission, "map_seed", "Rebuild the mission map from a seed")
-
-
-func _exit_tree() -> void:
-	LimboConsole.unregister_command(start_mission)
-
-
-func _ready() -> void:
-	_stage.map_node_pressed.connect(_on_map_node_pressed)
-	_stage.offer_pressed.connect(_on_offer_pressed)
-	await _stage.laid_out
-	start_mission(randi())
-
-
-func start_mission(map_seed: int) -> void:
+func _init(mission_stage: Stage, map_seed: int) -> void:
+	_stage = mission_stage
 	LimboConsole.info("Mission map seed: %d" % map_seed)
 	_mission_model = MissionModel.new(MissionMapGenerator.generate(map_seed, MISSION_INDEX), map_seed)
-	_is_stage_busy = false
+	_stage.map_node_pressed.connect(_on_map_node_pressed)
+	_stage.offer_pressed.connect(_on_offer_pressed)
 	_stage.show_mission(_mission_model, map_seed)
+
+
+# Stops answering the stage, so a mission that replaces this one is the only one it reaches.
+func dispose() -> void:
+	_stage.map_node_pressed.disconnect(_on_map_node_pressed)
+	_stage.offer_pressed.disconnect(_on_offer_pressed)
 
 
 # Input waits until the stage has shown each change: the travel, the offers dropping, the offers lifting.
