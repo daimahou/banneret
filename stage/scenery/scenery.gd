@@ -16,21 +16,20 @@ const VISITATION_HIGHLIGHTS: Dictionary[MissionModel.Visitation, Ink.Highlight] 
 	MissionModel.Visitation.CURRENT: Ink.Highlight.TRAVELLED,
 }
 
-var _flats: Array[Flat] = []
 var _mission_model: MissionModel
 var _mission_map_layout: MissionMapLayout
 var _map_node_under_mouse: MapNode
 var _is_mission_map_shown := false
 var _is_input_enabled := true
 
+@onready var _flats: Array[Flat] = Array(get_children(), TYPE_OBJECT, &"Control", Flat)
+
 
 func _ready() -> void:
-	for child in get_children():
-		if child is Flat:
-			_flats.append(child)
-			child.map_node_pressed.connect(map_node_pressed.emit)
-			child.map_node_mouse_entered.connect(_on_map_node_mouse_entered)
-			child.map_node_mouse_exited.connect(_on_map_node_mouse_exited)
+	for flat in _flats:
+		flat.map_node_pressed.connect(map_node_pressed.emit)
+		flat.map_node_mouse_entered.connect(_on_map_node_mouse_entered)
+		flat.map_node_mouse_exited.connect(_on_map_node_mouse_exited)
 
 
 func show_mission_map(mission_model: MissionModel, map_seed: int) -> void:
