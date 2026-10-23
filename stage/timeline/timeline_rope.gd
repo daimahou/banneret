@@ -83,39 +83,37 @@ func clear() -> void:
 
 # Where the rope passes at x, both in the entries' space. Past either end, level with that end.
 func _get_rope_position(x: float) -> Vector2:
-	var rope_x := _get_rope_x(x)
+	var rope_x := _convert_entries_to_rope_x(x)
 	var index := _get_rope_segment(rope_x)
 	if index == -1:
 		var end := _rope.points[0] if rope_x < _rope.points[0].x else _rope.points[-1]
-		return _get_entries_point(Vector2(rope_x, end.y))
+		return _convert_rope_to_entries_point(Vector2(rope_x, end.y))
 	var from := _rope.points[index]
 	var to := _rope.points[index + 1]
 	var weight := inverse_lerp(from.x, to.x, rope_x)
-	return _get_entries_point(from.lerp(to, weight))
+	return _convert_rope_to_entries_point(from.lerp(to, weight))
 
 
 # The rope's angle at x, in the entries' space, for a knot tied in it.
 func _get_rope_angle(x: float) -> float:
-	var index := _get_rope_segment(_get_rope_x(x))
+	var index := _get_rope_segment(_convert_entries_to_rope_x(x))
 	if index == -1:
 		return 0.0
-	var from := _get_entries_point(_rope.points[index])
-	var to := _get_entries_point(_rope.points[index + 1])
+	var from := _convert_rope_to_entries_point(_rope.points[index])
+	var to := _convert_rope_to_entries_point(_rope.points[index + 1])
 	return (to - from).angle()
 
 
 # The rope's first point, in the entries' space: the first entry hangs from there.
 func _get_rope_start_x() -> float:
-	return _get_entries_point(_rope.points[0]).x
+	return _convert_rope_to_entries_point(_rope.points[0]).x
 
 
-# Converts a point from the rope's space to the entries' space.
-func _get_entries_point(rope_point: Vector2) -> Vector2:
+func _convert_rope_to_entries_point(rope_point: Vector2) -> Vector2:
 	return _entries.to_local(_rope.to_global(rope_point))
 
 
-# Converts an x from the entries' space to the rope's space.
-func _get_rope_x(x: float) -> float:
+func _convert_entries_to_rope_x(x: float) -> float:
 	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
 
