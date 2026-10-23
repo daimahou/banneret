@@ -5,6 +5,7 @@ id: "1.1-3"
 deadline:
 started:
 finished:
+hours: 0.8
 parent: "[[Playable Prototype]]"
 ---
 

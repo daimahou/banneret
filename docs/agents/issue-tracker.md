@@ -28,7 +28,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `id` — the node's key (see Key)
 - `requires` — wikilinks to blocking **siblings** only
 - `started` / `finished` — dates;
-- `hours` — active time, half-hour rounded. Tasks and bugs hold their own; goal `1` holds the overhead (work in no ticket), so the column sums to the project's active time.
+- `hours` — active time in tenths of an hour, written by `tools/ticket_time.py` (see Time).
 
 ## Key
 
@@ -59,4 +59,12 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 - `finished` is the human's ack that the work is done: only the human sets it, never the agent.
 - It is set on the branch before the PR merges, so the squash commit carries it. Not set at merge time → ask the human to set it first.
-- At merge the agent writes `hours` with `python3 tools/ticket_time.py <branch> --write`, in the same commit as `finished`; it also rewrites the overhead on goal `1`.
+- At merge the agent runs `python3 tools/ticket_time.py --write` and commits the `hours` with `finished`.
+
+## Time
+
+- A leaf's `hours` = its branch: implementation only.
+- A note's `hours` = the work on `main` that shapes it: its breakdown, and the grills of its children.
+- The active goal holds the overhead: work on `main` in no ticket (tracker, docs, tooling). Every ticket's `hours` sum to the project's active time.
+- **Commit on `main` at each confirmed step, before going deeper**: a breakdown the human confirms, a grill once its spec is written. The commit carries a `Ticket: <id>` trailer naming the note the time goes to: the note broken down, or the grilled leaf's parent. Time on `main` since the previous commit goes to it; without a trailer, to the active goal.
+- Before every commit on `main`, run `python3 tools/ticket_time.py --write`, with `--ticket=<id>` when the commit carries a trailer, and commit the `hours` with it. The numbers change only on commit.

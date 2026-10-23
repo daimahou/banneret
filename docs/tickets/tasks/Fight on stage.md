@@ -6,7 +6,7 @@ requires:
   - "[[Timeline]]"
 started: 2026-10-23
 finished: 2026-10-23
-hours: 2.5
+hours: 2.2
 parent: "[[Encounters]]"
 ---
 # Done when

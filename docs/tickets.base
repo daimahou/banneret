@@ -173,9 +173,8 @@ views:
   - type: table
     name: All
     filters:
-      or:
-        - file.folder == "tickets/tasks"
-        - id == "1"
+      and:
+        - file.folder.startsWith("tickets/")
     order:
       - file.name
       - started

@@ -5,7 +5,7 @@ requires:
   - "[[Party]]"
 started: 2026-10-23
 finished: 2026-10-23
-hours: 1.5
+hours: 1.3
 parent: "[[Encounters]]"
 ---
 # Done when

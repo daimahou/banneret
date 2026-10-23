@@ -4,6 +4,7 @@ id: 1.1-1
 deadline:
 started: 2026-10-20
 finished: 2026-10-22
+hours: 0.3
 parent: "[[Playable Prototype]]"
 ---
 

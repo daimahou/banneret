@@ -4,7 +4,7 @@ id: 1.1-1.1.1.2
 requires:
 started: 2026-10-20
 finished: 2026-10-20
-hours: 1
+hours: 0.4
 parent: "[[Map layout]]"
 ---
 # Done when
