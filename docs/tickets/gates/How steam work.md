@@ -65,10 +65,5 @@ When there is a festival and a sale -> email. But valve knows to avoid spamming 
 
 ---
 
-- Bronze tier - first time dev - <7k
-- Silver tier - 7k-30k - not real steam yet (<250k USD)
-- Gold tier - 30k+ - real steam (>250k USD)
-- Diamond tier - 150k+ (millions USD)
-
 
 ![[Children.base#Open tickets]]
