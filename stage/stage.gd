@@ -15,7 +15,7 @@ const TRAVEL_EASE := Tween.EASE_IN_OUT
 const COACH_SLIDE_DURATION := 0.8
 const PUPPET_SLIDE_DURATION := 0.8
 
-# A blow: the actor lunges to this short of its target, then goes home; a pause before the next one. In design units and seconds.
+# A blow: the actor's puppet lunges to this short of its target, then goes home; a pause before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
 const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
@@ -100,19 +100,21 @@ func show_encounter(fight_model: FightModel) -> void:
 	_view = View.FIGHT
 
 
-# The actor lunges at its target and calls `on_impact` as the blow lands; returns once the actor is home and the stage has paused.
+# The actor's puppet lunges at its target's and calls `on_impact` as the blow lands; returns once it is home and the stage has paused.
 func show_action(action: Action, on_impact: Callable) -> void:
-	var actor := _fight_puppets[action.actor]
-	var target := _fight_puppets[action.target]
-	var home_x := actor.position.x
-	var lunge_x := target.position.x - signf(target.position.x - home_x) * LUNGE_GAP
+	var actor_puppet := _fight_puppets[action.actor]
+	var target_puppet := _fight_puppets[action.target]
+	var home_x := actor_puppet.position.x
+	actor_puppet.z_index = 1
+	var lunge_x := target_puppet.position.x - signf(target_puppet.position.x - home_x) * LUNGE_GAP
 	var lunge := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-	lunge.tween_property(actor, "position:x", lunge_x, LUNGE_DURATION)
+	lunge.tween_property(actor_puppet, "position:x", lunge_x, LUNGE_DURATION)
 	await lunge.finished
 	on_impact.call()
 	var back := create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	back.tween_property(actor, "position:x", home_x, RETURN_DURATION)
+	back.tween_property(actor_puppet, "position:x", home_x, RETURN_DURATION)
 	await back.finished
+	actor_puppet.z_index = 0
 	await get_tree().create_timer(BLOW_PAUSE).timeout
 
 
@@ -142,6 +144,9 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	for puppet in _puppet_offstage_xs:
 		tween.tween_property(puppet, "position:x", _puppet_offstage_xs[puppet], PUPPET_SLIDE_DURATION)
+	for character in _health_bars:
+		var offstage_x := _puppet_offstage_xs[_fight_puppets[character]]
+		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(offstage_x), PUPPET_SLIDE_DURATION)
 	await tween.finished
 	for puppet in _puppet_offstage_xs:
 		puppet.queue_free()
@@ -173,18 +178,23 @@ func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: A
 		_puppets.add_child(puppet)
 		_puppet_offstage_xs[puppet] = offstage_x
 		_fight_puppets[characters[index]] = puppet
-		_add_health_bar(characters[index], puppet)
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
+		var health_bar := _add_health_bar(characters[index], offstage_x)
+		tween.tween_property(health_bar, "position:x", _get_health_bar_x(stand_positions[index].x), PUPPET_SLIDE_DURATION)
 
 
-func _add_health_bar(character: Character, puppet: Puppet) -> void:
-	var health_bar := HealthBar.new()
-	health_bar.character = character
-	health_bar.puppet = puppet
+func _add_health_bar(character: Character, puppet_x: float) -> HealthBar:
+	var health_bar := HealthBar.new(character)
 	health_bar.size = HEALTH_BAR_SIZE
-	health_bar.position.y = HEALTH_BAR_Y
+	health_bar.position = Vector2(_get_health_bar_x(puppet_x), HEALTH_BAR_Y)
 	_health_bar_area.add_child(health_bar)
 	_health_bars[character] = health_bar
+	return health_bar
+
+
+# Centred under a puppet standing at `puppet_x`.
+func _get_health_bar_x(puppet_x: float) -> float:
+	return puppet_x + _puppets.position.x - HEALTH_BAR_SIZE.x / 2.0
 
 
 # Floats up off the puppet's head as it fades.
@@ -213,8 +223,8 @@ func _on_health_changed(character: Character, amount: int) -> void:
 
 # The puppet sinks out of sight and its bar fades; neither comes back.
 func _on_character_fell(character: Character) -> void:
-	var puppet: Puppet = _fight_puppets[character]
-	var health_bar: HealthBar = _health_bars[character]
+	var puppet := _fight_puppets[character]
+	var health_bar := _health_bars[character]
 	_fight_puppets.erase(character)
 	_health_bars.erase(character)
 	_puppet_offstage_xs.erase(puppet)

@@ -49,4 +49,4 @@ func sink() -> void:
 
 
 func _set_sway(cycle_angle: float) -> void:
-	_sprite.rotation = SWAY_ANGLE * sin(cycle_angle + _sway_phase)
+	rotation = SWAY_ANGLE * sin(cycle_angle + _sway_phase)

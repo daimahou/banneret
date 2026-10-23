@@ -12,6 +12,7 @@
 - Exception: ticket authoring (tickets, their templates, the tracker rules) goes straight to `main` — no ticket, no branch.
 - Prototypes stay on their own branch, and are merged only if the user keeps them. Throwaway branches are deleted, never piled into one folder.
 - Commit or merge only when asked.
+- Implementing a ticket ends with its branch pushed and a PR open to `main`: the PR is where the human reviews. Never merge it.
 
 ## Agent skills
 

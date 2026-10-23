@@ -1,6 +1,6 @@
 class_name HealthBar
 extends Control
-# A character's health, below the stage front: a frame, a fill and `health/max`. It keeps under its puppet's x, but not its sway.
+# A character's health, below the stage front: a frame, a fill and `health/max`. The stage slides it in and out with its puppet.
 
 const FILL_DURATION := 0.3
 const FADE_DURATION := 0.4
@@ -13,7 +13,6 @@ const FRAME_WIDTH := 6.0
 const FONT_SIZE := 44
 
 var character: Character
-var puppet: Puppet
 
 # Shown, and eased towards the character's health.
 var _health := 0.0:
@@ -22,14 +21,10 @@ var _health := 0.0:
 		queue_redraw()
 
 
-func _ready() -> void:
+func _init(bar_character: Character) -> void:
+	character = bar_character
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_health = character.health
-
-
-func _process(_delta: float) -> void:
-	if is_instance_valid(puppet):
-		position.x = (get_parent_control().get_global_transform().affine_inverse() * puppet.global_position).x - size.x / 2.0
 
 
 func _draw() -> void:

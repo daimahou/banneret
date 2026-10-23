@@ -12,11 +12,14 @@ const MEDALLION_SPACING := 224.0
 const TIE_CLEARANCE := 48.0
 
 const MOVE_DURATION := 0.3
+# A thing on the rope drops this far onto it as it comes, and lifts as far off it as it goes, in design units.
 const LIFT := 48.0
 
 var _fight_model: FightModel
-# Each node on the rope by its entry's key.
-var _nodes := {}
+# Each thing on the rope by its entry's key.
+var _entry_nodes: Dictionary[Variant, Node2D] = {}
+# The tween moving each thing on the rope; a new one replaces it.
+var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _is_refresh_queued := false
 
 @onready var _rope: Line2D = $Rope
@@ -31,6 +34,10 @@ class Entry:
 	var tick := 0
 	var action: Action
 
+	func _init(entry_tick: int, entry_action: Action) -> void:
+		tick = entry_tick
+		action = entry_action
+
 	func is_knot() -> bool:
 		return action == null
 
@@ -40,25 +47,18 @@ class Entry:
 
 
 # The rope from left to right. An action due now comes before any knot; on a shared tick, the timeline's order.
-static func get_entries(fight_model: FightModel) -> Array[Entry]:
+static func _get_entries(fight_model: FightModel) -> Array[Entry]:
 	var last_tick := fight_model.tick
 	for action in fight_model.timeline:
 		last_tick = maxi(last_tick, action.resolve_tick)
 	var entries: Array[Entry] = []
 	for tick in range(fight_model.tick, last_tick + 1):
 		if tick > fight_model.tick:
-			entries.append(_create_entry(tick, null))
+			entries.append(Entry.new(tick, null))
 		for action in fight_model.timeline:
 			if action.resolve_tick == tick:
-				entries.append(_create_entry(tick, action))
+				entries.append(Entry.new(tick, action))
 	return entries
-
-
-static func _create_entry(tick: int, action: Action) -> Entry:
-	var entry := Entry.new()
-	entry.tick = tick
-	entry.action = action
-	return entry
 
 
 # Hangs the fight's timeline on the rope, and follows it.
@@ -77,14 +77,17 @@ func clear() -> void:
 		_fight_model.action_added.disconnect(_on_fight_changed)
 		_fight_model.action_removed.disconnect(_on_fight_changed)
 		_fight_model = null
-	for node: Node2D in _nodes.values():
+	for tween in _entry_tweens.values():
+		tween.kill()
+	_entry_tweens.clear()
+	for node in _entry_nodes.values():
 		node.queue_free()
-	_nodes.clear()
+	_entry_nodes.clear()
 
 
 # Where the rope passes at x, both in the entries' space: the entries hang along it from their node's own x. Level off the rope's ends.
-func get_rope_position(x: float) -> Vector2:
-	var rope_x := _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
+func _get_rope_position(x: float) -> Vector2:
+	var rope_x := _get_rope_x(x)
 	var index := _get_rope_segment(rope_x)
 	if index == -1:
 		return Vector2(x, 0.0)
@@ -94,14 +97,18 @@ func get_rope_position(x: float) -> Vector2:
 
 
 # The rope's angle at x, in the entries' space, for a knot tied in it.
-func get_rope_angle(x: float) -> float:
-	var rope_x := _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
-	var index := _get_rope_segment(rope_x)
+func _get_rope_angle(x: float) -> float:
+	var index := _get_rope_segment(_get_rope_x(x))
 	if index == -1:
 		return 0.0
 	var from := _entries.to_local(_rope.to_global(_rope.points[index]))
 	var to := _entries.to_local(_rope.to_global(_rope.points[index + 1]))
 	return (to - from).angle()
+
+
+# The entries' x in the rope's own space.
+func _get_rope_x(x: float) -> float:
+	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
 
 # The line segment of the rope above x, in the rope's own space, or -1 off it.
@@ -127,28 +134,28 @@ func _refresh() -> void:
 	_is_refresh_queued = false
 	if _fight_model == null:
 		return
-	var placed := {}
+	var placed: Dictionary[Variant, Node2D] = {}
 	var tie_xs := _get_tie_xs()
 	var x := 0.0
-	for entry in get_entries(_fight_model):
+	for entry in _get_entries(_fight_model):
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
 		x = _get_clear_x(x, spacing, tie_xs)
 		x += spacing / 2.0
 		var key: Variant = entry.get_key()
-		var node: Node2D = _nodes.get(key)
+		var node: Node2D = _entry_nodes.get(key)
 		if node == null:
 			node = _add_entry_node(entry, x)
 		else:
-			var tween := create_tween().set_parallel().set_trans(Tween.TRANS_SINE)
-			tween.tween_property(node, "position", get_rope_position(x), MOVE_DURATION)
+			var tween := _create_entry_tween(node)
+			tween.tween_property(node, "position", _get_rope_position(x), MOVE_DURATION)
 			if entry.is_knot():
-				tween.tween_property(node, "rotation", get_rope_angle(x), MOVE_DURATION)
+				tween.tween_property(node, "rotation", _get_rope_angle(x), MOVE_DURATION)
 		placed[key] = node
 		x += spacing / 2.0
-	for key: Variant in _nodes:
+	for key: Variant in _entry_nodes:
 		if not placed.has(key):
-			_remove_entry_node(_nodes[key])
-	_nodes = placed
+			_remove_entry_node(_entry_nodes[key])
+	_entry_nodes = placed
 
 
 # Where the ties hang, in the entries' space, left to right.
@@ -173,23 +180,37 @@ func _add_entry_node(entry: Entry, x: float) -> Node2D:
 	var node: Node2D
 	if entry.is_knot():
 		node = KNOT_SCENE.instantiate()
-		node.rotation = get_rope_angle(x)
+		node.rotation = _get_rope_angle(x)
 	else:
 		var medallion: TimelineMedallion = MEDALLION_SCENE.instantiate()
 		medallion.portrait = entry.action.actor.data.portrait
 		node = medallion
-	var rope_position := get_rope_position(x)
+	var rope_position := _get_rope_position(x)
 	node.position = rope_position - Vector2(0.0, LIFT)
 	node.modulate.a = 0.0
 	_entries.add_child(node)
-	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_SINE)
+	var tween := _create_entry_tween(node)
 	tween.tween_property(node, "position:y", rope_position.y, MOVE_DURATION)
 	tween.tween_property(node, "modulate:a", 1.0, MOVE_DURATION)
 	return node
 
 
 func _remove_entry_node(node: Node2D) -> void:
-	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_SINE)
+	var tween := _create_entry_tween(node)
 	tween.tween_property(node, "position:y", node.position.y - LIFT, MOVE_DURATION)
 	tween.tween_property(node, "modulate:a", 0.0, MOVE_DURATION)
-	tween.chain().tween_callback(node.queue_free)
+	tween.chain().tween_callback(_free_entry_node.bind(node))
+
+
+func _free_entry_node(node: Node2D) -> void:
+	_entry_tweens.erase(node)
+	node.queue_free()
+
+
+# Stops the tween already moving the node, if any.
+func _create_entry_tween(node: Node2D) -> Tween:
+	if _entry_tweens.has(node):
+		_entry_tweens[node].kill()
+	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_SINE)
+	_entry_tweens[node] = tween
+	return tween
