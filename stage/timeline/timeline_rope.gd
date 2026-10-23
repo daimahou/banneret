@@ -109,12 +109,12 @@ func _get_rope_start_x() -> float:
 	return _get_entries_point(_rope.points[0]).x
 
 
-# A point in the rope's own space, in the entries' space.
+# Converts a point from the rope's space to the entries' space.
 func _get_entries_point(rope_point: Vector2) -> Vector2:
 	return _entries.to_local(_rope.to_global(rope_point))
 
 
-# The entries' x in the rope's own space.
+# Converts an x from the entries' space to the rope's space.
 func _get_rope_x(x: float) -> float:
 	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
