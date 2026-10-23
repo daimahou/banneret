@@ -145,7 +145,7 @@ func _refresh() -> void:
 	var x := _get_rope_start_x()
 	for entry in _get_entries(_fight_model):
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
-		x = _get_clear_x(x, spacing, tie_xs)
+		x = _get_left_x_past_ties(x, spacing, tie_xs)
 		x += spacing / 2.0
 		var key: Variant = entry.get_key()
 		var node: Node2D = _entry_nodes.get(key)
@@ -172,9 +172,9 @@ func _get_tie_xs() -> Array[float]:
 	return tie_xs
 
 
-# The first x from start where a thing that wide clears every tie.
-func _get_clear_x(start: float, width: float, tie_xs: Array[float]) -> float:
-	var x := start
+# The left edge for an entry `width` wide: `left_x`, or pushed right past any tie the entry would cover, `TIE_CLEARANCE` kept on both sides of the tie.
+func _get_left_x_past_ties(left_x: float, width: float, tie_xs: Array[float]) -> float:
+	var x := left_x
 	for tie_x in tie_xs:
 		if x < tie_x + TIE_CLEARANCE and x + width > tie_x - TIE_CLEARANCE:
 			x = tie_x + TIE_CLEARANCE
