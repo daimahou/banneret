@@ -41,7 +41,6 @@ var _coach_tween: Tween
 var _view := View.MISSION_MAP
 # Each fight puppet slides out to where it came in from.
 var _puppet_offstage_xs: Dictionary[Puppet, float] = {}
-# The fight's characters on stage; a fallen one leaves both.
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 var _health_bars: Dictionary[Character, HealthBar] = {}
 
@@ -51,7 +50,6 @@ var _health_bars: Dictionary[Character, HealthBar] = {}
 @onready var _coach: Puppet = $Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _timeline_rope: TimelineRope = $TimelineRope
-# Below the stage front, in stage space.
 @onready var _health_bar_area: Control = $HealthBars
 @onready var _coach_start_x := _coach.position.x
 
@@ -169,7 +167,7 @@ func _slide_coach(x: float) -> void:
 	await _coach_tween.finished
 
 
-# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`; its health bar keeps under it.
+# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`, its health bar with it.
 func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: Array[Vector2], offstage_x: float) -> void:
 	for index in characters.size():
 		var puppet: Puppet = PUPPET_SCENE.instantiate()
@@ -192,12 +190,10 @@ func _add_health_bar(character: Character, puppet_x: float) -> HealthBar:
 	return health_bar
 
 
-# Centred under a puppet standing at `puppet_x`.
 func _get_health_bar_x(puppet_x: float) -> float:
 	return puppet_x + _puppets.position.x - HEALTH_BAR_SIZE.x / 2.0
 
 
-# Floats up off the puppet's head as it fades.
 func _add_damage_number(puppet: Puppet, damage: int) -> void:
 	var label := Label.new()
 	label.text = str(damage)
@@ -221,7 +217,6 @@ func _on_health_changed(character: Character, amount: int) -> void:
 		_add_damage_number(puppet, -amount)
 
 
-# The puppet sinks out of sight and its bar fades; neither comes back.
 func _on_character_fell(character: Character) -> void:
 	var puppet := _fight_puppets[character]
 	var health_bar := _health_bars[character]

@@ -14,24 +14,23 @@ const FONT_SIZE := 44
 
 var character: Character
 
-# Shown, and eased towards the character's health.
-var _health := 0.0:
+var _shown_health := 0.0:
 	set(value):
-		_health = value
+		_shown_health = value
 		queue_redraw()
 
 
 func _init(bar_character: Character) -> void:
 	character = bar_character
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_health = character.health
+	_shown_health = character.health
 
 
 func _draw() -> void:
 	var rect := Rect2(Vector2.ZERO, size)
 	draw_rect(rect, EMPTY_COLOR)
 	var fill := rect.grow(-FRAME_WIDTH)
-	fill.size.x *= clampf(_health / character.data.max_health, 0.0, 1.0)
+	fill.size.x *= clampf(_shown_health / character.data.max_health, 0.0, 1.0)
 	draw_rect(fill, FILL_COLOR)
 	draw_rect(rect, FRAME_COLOR, false, FRAME_WIDTH)
 	var font := get_theme_default_font()
@@ -40,9 +39,8 @@ func _draw() -> void:
 	draw_string(font, Vector2(0.0, baseline), text, HORIZONTAL_ALIGNMENT_CENTER, size.x, FONT_SIZE, TEXT_COLOR)
 
 
-# Eases the fill to the character's health.
 func show_health() -> void:
-	create_tween().tween_property(self, "_health", float(character.health), FILL_DURATION)
+	create_tween().tween_property(self, "_shown_health", float(character.health), FILL_DURATION)
 
 
 func fade_out() -> void:

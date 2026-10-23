@@ -1,13 +1,11 @@
 class_name RunController
 extends Node
 
-# The fight's end stays on stage this long, in seconds.
 const END_HOLD_DURATION := 1.0
 
 var run_model := RunModel.new()
 
 var _mission_controller: MissionController
-# Set while a fight plays on stage.
 var _fight_controller: FightController
 
 @onready var _stage: Stage = $Stage

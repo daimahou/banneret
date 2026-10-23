@@ -16,9 +16,7 @@ const MOVE_DURATION := 0.3
 const LIFT := 24.0
 
 var _fight_model: FightModel
-# Each thing on the rope by its entry's key.
 var _entry_nodes: Dictionary[Variant, Node2D] = {}
-# The tween moving each thing on the rope; a new one replaces it.
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _is_refresh_queued := false
 
@@ -61,7 +59,6 @@ static func _get_entries(fight_model: FightModel) -> Array[Entry]:
 	return entries
 
 
-# Hangs the fight's timeline on the rope, and follows it.
 func show_fight(fight_model: FightModel) -> void:
 	_fight_model = fight_model
 	_fight_model.tick_changed.connect(_on_fight_changed)
@@ -70,7 +67,6 @@ func show_fight(fight_model: FightModel) -> void:
 	_queue_refresh()
 
 
-# Takes everything off the rope at once.
 func clear() -> void:
 	if _fight_model != null:
 		_fight_model.tick_changed.disconnect(_on_fight_changed)

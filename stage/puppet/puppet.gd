@@ -41,7 +41,6 @@ func shake() -> void:
 	tween.tween_property(_sprite, "position:x", 0.0, step)
 
 
-# Returns once it is out of sight.
 func sink() -> void:
 	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "position:y", position.y + get_height(), SINK_DURATION)

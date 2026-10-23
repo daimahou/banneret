@@ -3,7 +3,6 @@ extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
 
 @export var portrait: Texture2D
-# Its knot turns to follow the rope; the ring hangs straight.
 var knot_rotation := 0.0:
 	set(value):
 		knot_rotation = value

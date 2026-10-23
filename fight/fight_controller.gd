@@ -12,7 +12,7 @@ var _enemy_brain: Brain
 var _stage: Stage
 
 
-# The same seed plays the same fight. Without a stage, it plays at once.
+# The same seed plays the same fight.
 func _init(heroes: Array[Character], enemies: Array[Character], fight_seed: int, fight_stage: Stage = null) -> void:
 	fight_model = FightModel.new(heroes, enemies)
 	_stage = fight_stage
