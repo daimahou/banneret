@@ -3,8 +3,8 @@ extends Node
 # The console's debug commands. They drive the game from outside, through what it exposes; nothing in the game knows of them. Gone from a release build.
 
 
-# While off, the heroes play themselves, in this fight and the next ones.
-var _is_player_brain_on := true
+# While on, the heroes play themselves, in this fight and the next ones.
+var _is_auto_combat_on := false
 
 
 func _ready() -> void:
@@ -13,7 +13,7 @@ func _ready() -> void:
 		return
 	LimboConsole.register_command(win_fight, "fight win", "Knock out every enemy: the fight is won")
 	LimboConsole.register_command(lose_fight, "fight lose", "Knock out every hero: the fight, and the run, are lost")
-	LimboConsole.register_command(toggle_player_brain, "fight toggle_player_brain", "Toggle the heroes between the player's choices and random ones, in this fight and the next")
+	LimboConsole.register_command(toggle_auto_combat, "fight auto_combat", "Toggle the heroes between the player's choices and random ones, in this fight and the next")
 
 
 func _exit_tree() -> void:
@@ -21,7 +21,7 @@ func _exit_tree() -> void:
 		return
 	LimboConsole.unregister_command(win_fight)
 	LimboConsole.unregister_command(lose_fight)
-	LimboConsole.unregister_command(toggle_player_brain)
+	LimboConsole.unregister_command(toggle_auto_combat)
 
 
 func win_fight() -> void:
@@ -32,17 +32,17 @@ func lose_fight() -> void:
 	_knock_out_in_run(FightModel.Side.HERO)
 
 
-func toggle_player_brain() -> void:
+func toggle_auto_combat() -> void:
 	var run_controller := get_tree().current_scene as RunController
 	if run_controller == null:
 		LimboConsole.warn("No run is playing")
 		return
 	if not run_controller.fight_started.is_connected(_on_fight_started):
 		run_controller.fight_started.connect(_on_fight_started.bind(run_controller))
-	_is_player_brain_on = not _is_player_brain_on
-	LimboConsole.info("Heroes: %s" % ("the player's" if _is_player_brain_on else "random"))
+	_is_auto_combat_on = not _is_auto_combat_on
+	LimboConsole.info("Auto combat: %s" % ("on" if _is_auto_combat_on else "off"))
 	if run_controller.fight_controller != null:
-		await set_player_brain(run_controller.fight_controller, _get_stage(run_controller), _is_player_brain_on)
+		await set_player_brain(run_controller.fight_controller, _get_stage(run_controller), not _is_auto_combat_on)
 
 
 # The player's brain gives way to a random one, or back, and the stage, if any, shows the choices or not. A waiting player brain hands on the random brain's choice as its own, or passes, so the fight plays on.
@@ -89,7 +89,7 @@ func knock_out(fight_controller: FightController, side: FightModel.Side) -> void
 
 
 func _on_fight_started(fight_controller: FightController, run_controller: RunController) -> void:
-	if not _is_player_brain_on:
+	if _is_auto_combat_on:
 		set_player_brain(fight_controller, _get_stage(run_controller), false)
 
 
