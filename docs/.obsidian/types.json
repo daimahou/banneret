@@ -2,6 +2,7 @@
   "types": {
     "started": "date",
     "finished": "date",
+    "hours": "number",
     "kind": "text",
     "status": "text",
     "triage": "text",

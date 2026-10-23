@@ -5,6 +5,7 @@ requires:
   - "[[Map layout]]"
 started: 2026-10-21
 finished: 2026-10-21
+hours: 1.5
 parent: "[[Mission map]]"
 ---
 # Done when

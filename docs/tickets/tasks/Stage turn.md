@@ -5,6 +5,7 @@ requires:
   - "[[Encounter art]]"
 started: 2026-10-22
 finished: 2026-10-23
+hours: 3.5
 parent: "[[Encounter transition]]"
 ---
 # Done when

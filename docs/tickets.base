@@ -36,6 +36,8 @@ properties:
     displayName: Started
   note.finished:
     displayName: Landed
+  note.hours:
+    displayName: Hours
   note.triage:
     displayName: Triage
   note.severity:
@@ -140,6 +142,7 @@ views:
       - formula.Kind
       - triage
       - finished
+      - hours
       - commit
       - parent
     sort:
@@ -176,3 +179,4 @@ views:
       - file.name
       - started
       - finished
+      - hours

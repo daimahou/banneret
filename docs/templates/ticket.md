@@ -4,6 +4,7 @@ id:
 requires:
 started:
 finished:
+hours:
 ---
 # Done when
 

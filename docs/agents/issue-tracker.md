@@ -28,6 +28,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `id` — the node's key (see Key)
 - `requires` — wikilinks to blocking **siblings** only
 - `started` / `finished` — dates;
+- `hours` — active time, half-hour rounded (tasks and bugs).
 
 ## Key
 
@@ -58,3 +59,4 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 - `finished` is the human's ack that the work is done: only the human sets it, never the agent.
 - It is set on the branch before the PR merges, so the squash commit carries it. Not set at merge time → ask the human to set it first.
+- At merge the agent writes `hours` with `python3 tools/ticket_time.py <branch> --write`, in the same commit as `finished`.

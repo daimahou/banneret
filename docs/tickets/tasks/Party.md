@@ -4,6 +4,7 @@ id: 1.1-3.1
 requires:
 started: 2026-10-22
 finished: 2026-10-22
+hours: 0.5
 parent: "[[Encounters]]"
 ---
 # Done when

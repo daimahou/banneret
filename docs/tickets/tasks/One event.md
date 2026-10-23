@@ -5,6 +5,7 @@ requires:
   - "[[Mission map]]"
 started: 2026-10-21
 finished: 2026-10-22
+hours: 2
 parent: "[[Missions]]"
 ---
 # Done when
