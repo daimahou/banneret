@@ -34,6 +34,8 @@ var _hop_time := 0.0
 var _raise := 0.0
 var _raise_tween: Tween
 var _bob := 0.0
+var _bob_tween: Tween
+var _is_pressed := false
 
 @onready var _sprite: Sprite2D = $Sprite
 
@@ -77,11 +79,26 @@ func set_ink(ink_material: ShaderMaterial) -> void:
 	_sprite.material = ink_material
 
 
-# Pressed down, like a button.
+# Pressed down and let go, like a button.
 func bob() -> void:
-	var tween := create_tween().set_trans(Tween.TRANS_SINE)
+	var tween := _create_bob_tween()
 	tween.tween_property(self, "_bob", BOB_DEPTH, BOB_DURATION).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "_bob", 0.0, BOB_DURATION).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "_bob", BOB_DEPTH if _is_pressed else 0.0, BOB_DURATION).set_ease(Tween.EASE_IN)
+
+
+# Held down, like a button under the cursor.
+func set_pressed(is_pressed: bool) -> void:
+	if is_pressed == _is_pressed:
+		return
+	_is_pressed = is_pressed
+	_create_bob_tween().tween_property(self, "_bob", BOB_DEPTH if is_pressed else 0.0, BOB_DURATION).set_ease(Tween.EASE_OUT)
+
+
+func _create_bob_tween() -> Tween:
+	if _bob_tween != null:
+		_bob_tween.kill()
+	_bob_tween = create_tween().set_trans(Tween.TRANS_SINE)
+	return _bob_tween
 
 
 func shake() -> void:

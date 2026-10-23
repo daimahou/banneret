@@ -209,6 +209,7 @@ func _show_choices() -> void:
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
 		puppet.set_ink(_get_ink(character))
+		puppet.set_pressed(character == _hovered_character and _player_brain != null and _player_brain.is_target(character))
 	var highlighted: Array[Character] = []
 	if is_waiting:
 		highlighted.append(_player_brain.hero)
@@ -218,13 +219,13 @@ func _show_choices() -> void:
 	_timeline_rope.set_marks(highlighted, _player_brain.get_dropped_action() if _player_brain != null else null)
 
 
-# A pickable puppet under the cursor, or a hovered medallion's actor, takes the hover ink over any target's.
+# A target keeps its red under the cursor: it is pressed down instead. Any other pickable puppet under the cursor, or a hovered medallion's actor, takes the hover ink.
 func _get_ink(character: Character) -> ShaderMaterial:
+	if _player_brain != null and _player_brain.is_target(character):
+		return _aimed_ink if character == _player_brain.aimed_target else _target_ink
 	var is_hovered := character == _hovered_character and _player_brain != null and _player_brain.is_pickable(character)
 	if is_hovered or (_hovered_action != null and character == _hovered_action.actor):
 		return _hover_ink
-	if _player_brain != null and _player_brain.is_target(character):
-		return _aimed_ink if character == _player_brain.aimed_target else _target_ink
 	return null
 
 
