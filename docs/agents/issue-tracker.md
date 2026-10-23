@@ -1,6 +1,6 @@
 # Issue tracker
 
-Issues are Markdown notes in `tickets/`, one per node. No API: create = write the file; close = edit it in the same commit as the code.
+Issues are Markdown notes in `tickets/`, one per node. No API: create = write the file; close = the human sets `finished` (see Closing).
 
 ## Layout
 
@@ -56,4 +56,5 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 ## Closing
 
-- The squash commit sets `finished`.
+- `finished` is the human's ack that the work is done: only the human sets it, never the agent.
+- It is set on the branch before the PR merges, so the squash commit carries it. Not set at merge time → ask the human to set it first.
