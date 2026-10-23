@@ -47,7 +47,6 @@ var _coach_tween: Tween
 var _view := View.MISSION_MAP
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 var _health_bars: Dictionary[Character, HealthBar] = {}
-# Null while the heroes play themselves.
 var _player_brain: PlayerBrain
 var _hovered_character: Character
 var _hovered_action: Action
