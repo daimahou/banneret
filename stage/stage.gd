@@ -16,7 +16,7 @@ const COACH_SLIDE_DURATION := 0.8
 const FLAT_FLIP_DURATION := 0.4
 const PUPPET_SLIDE_DURATION := 0.8
 
-# Beyond the curtains, in design units.
+# Beyond the curtains, in design units, in stage space.
 const OFFSTAGE_LEFT_X := -400.0
 const OFFSTAGE_RIGHT_X := 4240.0
 
@@ -44,13 +44,15 @@ var _view := View.MISSION_MAP
 var _puppet_offstage_xs: Dictionary[Puppet, float] = {}
 
 @onready var _flats_container: HBoxContainer = $Flats
-@onready var _coach: Puppet = $Coach
-@onready var _puppets: Node2D = $Puppets
+# Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
+@onready var _puppets: Control = $Puppets
+@onready var _coach: Puppet = $Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _coach_start_x := _coach.position.x
 
 
 func _ready() -> void:
+	_coach.position.y = _puppets.size.y
 	for child in _flats_container.get_children():
 		if child is Flat:
 			_flats.append(child)
@@ -118,12 +120,12 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 # Plays the transition to the fight, and returns once it is done.
 func show_encounter(party: Array[Character], enemies: Array[Character]) -> void:
 	_view = View.TRANSITION
-	await _slide_coach(OFFSTAGE_RIGHT_X)
+	await _slide_coach(_get_puppet_x(OFFSTAGE_RIGHT_X))
 	await _flip_flats(_show_battle_on_flat)
-	var flats_rect := Rect2(_flats_container.position, _flats_container.size)
+	var area := Rect2(Vector2.ZERO, _puppets.size)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	_add_puppets(tween, party, PuppetLayout.get_stand_positions(flats_rect, party.size(), PuppetLayout.Side.LEFT), OFFSTAGE_LEFT_X)
-	_add_puppets(tween, enemies, PuppetLayout.get_stand_positions(flats_rect, enemies.size(), PuppetLayout.Side.RIGHT), OFFSTAGE_RIGHT_X)
+	_add_puppets(tween, party, PuppetLayout.get_stand_positions(area, party.size(), PuppetLayout.Side.LEFT), _get_puppet_x(OFFSTAGE_LEFT_X))
+	_add_puppets(tween, enemies, PuppetLayout.get_stand_positions(area, enemies.size(), PuppetLayout.Side.RIGHT), _get_puppet_x(OFFSTAGE_RIGHT_X))
 	await tween.finished
 	_view = View.FIGHT
 
@@ -131,7 +133,7 @@ func show_encounter(party: Array[Character], enemies: Array[Character]) -> void:
 # Shows the model after the coach travelled to `map_node`, and returns once the coach is there.
 func show_travel(map_node: MapNode) -> void:
 	_coach_tween = create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	_coach_tween.tween_property(_coach, "position:x", _get_stage_rect(_flats[map_node.column]).get_center().x, TRAVEL_DURATION)
+	_coach_tween.tween_property(_coach, "position:x", _get_puppet_x(_get_stage_rect(_flats[map_node.column]).get_center().x), TRAVEL_DURATION)
 	_update_highlights()
 	await _coach_tween.finished
 	_update_highlights()
@@ -158,7 +160,7 @@ func _play_transition_to_mission(show_column_on_flat: Callable) -> void:
 		puppet.queue_free()
 	_puppet_offstage_xs.clear()
 	await _flip_flats(show_column_on_flat)
-	_coach.position.x = OFFSTAGE_LEFT_X
+	_coach.position.x = _get_puppet_x(OFFSTAGE_LEFT_X)
 	await _slide_coach(_coach_start_x)
 	_view = View.MISSION_MAP
 	_update_highlights()
@@ -194,6 +196,10 @@ func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: A
 		_puppets.add_child(puppet)
 		_puppet_offstage_xs[puppet] = offstage_x
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
+
+
+func _get_puppet_x(stage_x: float) -> float:
+	return stage_x - _puppets.position.x
 
 
 func _get_stage_rect(flat: Flat) -> Rect2:

@@ -3,16 +3,17 @@ extends RefCounted
 
 enum Side { LEFT, RIGHT }
 
-# Low enough that the stage front hides each puppet's stick.
-const FOOT_Y := 1260.0
+# Kept clear between the two fronts, in design units.
+const MIDDLE_GAP := 300.0
 
 
-# Spread across the side's half of the flats, front first: the front of a line is nearest the middle.
-static func get_stand_positions(flats_rect: Rect2, count: int, side: PuppetLayout.Side) -> Array[Vector2]:
+# Spread across the side's half of `area`, front first: the front of a line is nearest the middle.
+# Feet stand on the area's bottom edge.
+static func get_stand_positions(area: Rect2, count: int, side: PuppetLayout.Side) -> Array[Vector2]:
 	var direction := -1.0 if side == Side.LEFT else 1.0
-	var half_width := flats_rect.size.x / 2.0
+	var line_width := area.size.x / 2.0 - MIDDLE_GAP / 2.0
 	var positions: Array[Vector2] = []
 	for index in count:
-		var x := flats_rect.get_center().x + direction * half_width * (index + 0.5) / count
-		positions.append(Vector2(x, FOOT_Y))
+		var x := area.get_center().x + direction * (MIDDLE_GAP / 2.0 + line_width * (index + 0.5) / count)
+		positions.append(Vector2(x, area.end.y))
 	return positions
