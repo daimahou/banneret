@@ -3,9 +3,9 @@ triage: ready-for-agent
 id: 1.1-3.5
 requires:
   - "[[Fight on stage]]"
-started:
-finished:
-hours: 1
+started: 2026-10-23
+finished: 2026-10-23
+hours: 3.7
 parent: "[[Encounters]]"
 ---
 # Done when
@@ -20,7 +20,7 @@ The player has no say in the fight.
 
 ## Solution
 
-A `PlayerBrain` replaces the heroes' `RandomBrain` on stage. It turns input into the hero, skill and target picked, and asks `FightRules` what is legal. The fight stops for a free hero, or when the player asks; the player gives orders, then passes or lets the fight run on. Ported from prototype C's `PlayerBrain` and `FightControls`.
+A `PlayerBrain` replaces the heroes' `RandomBrain` on stage. Its `PlayerInput` turns every input into calls on it; `Stage` and `SkillBar` only show its choices. It asks `FightRules` what is legal. The fight stops for a free hero, or when the player asks; the player gives orders, then passes or lets the fight run on. Ported from prototype C's `PlayerBrain` and `FightControls`.
 
 ## Implementation decisions
 
@@ -28,7 +28,7 @@ A `PlayerBrain` replaces the heroes' `RandomBrain` on stage. It turns input into
 - **Stop ends** — a stop for a free hero ends once no hero is free. A requested stop lasts until Pass.
 - **Pass** — the brain returns null: the next action resolves.
 - **Reschedule** — `get_timeline_delta` drops the actor's pending action, if any, in the same delta. The new action resolves `delay` on from now, chosen last. No cancelling without a replacement.
-- **Hero brain** — `FightController` holds one `hero_brain`; `FightRunner` and the default use `RandomBrain`, the stage a `PlayerBrain`. A debug command toggles the stage's heroes to random and back, kept on `RunController` across fights; a waiting player brain passes when swapped out.
+- **Hero brain** — `FightController.new(fight_model, enemies_brain, heroes_brain = PlayerBrain)`, its stage through `set_stage`; callers seed the random brains. `fight auto_combat` toggles random heroes: debug keeps the state, and swaps the hero brain now and on each `RunController.fight_started`. A waiting player brain hands on the random brain's choice, or passes.
 - **Selection** — when a stop starts, the first free hero is selected, else the first hero. After a confirm, the next free hero. Tab / Shift+Tab cycle the heroes; a click selects one. Nothing is pickable while the fight runs.
 - **Arm** — 1–N or a button arms a skill; another skill replaces it. Esc or right click disarms.
 - **Aim** — arming aims the first valid target, left to right on screen. With a skill armed, 1–N aims a target; the same number again confirms. Arrows cycle the aim. An aim from arming or arrows never counts as the first digit press. Enter confirms the aimed target; a click on a valid target confirms it.

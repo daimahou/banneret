@@ -33,6 +33,10 @@ const DAMAGE_COLOR := Color("c0392b")
 const HEALTH_BAR_Y := 1460.0
 const HEALTH_BAR_SIZE := Vector2(220.0, 64.0)
 
+# The armed skill's targets are inked red, the aimed one a brighter red.
+const TARGET_INK_COLOR := Color("7a2a20")
+const AIMED_INK_COLOR := Color("d8402c")
+
 # Beyond the curtains, in design units, in stage space.
 const OFFSTAGE_LEFT_X := -400.0
 const OFFSTAGE_RIGHT_X := 4240.0
@@ -43,6 +47,9 @@ var _coach_tween: Tween
 var _view := View.MISSION_MAP
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 var _health_bars: Dictionary[Character, HealthBar] = {}
+var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
+var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
+var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
 @onready var _scenery: Scenery = $Scenery
 # Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
@@ -51,6 +58,7 @@ var _health_bars: Dictionary[Character, HealthBar] = {}
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _timeline_rope: TimelineRope = $TimelineRope
 @onready var _health_bar_area: Control = $HealthBars
+@onready var skill_bar: SkillBar = $SkillBar
 @onready var _coach_start_x := _coach.position.x
 
 
@@ -98,6 +106,56 @@ func show_encounter(fight_model: FightModel) -> void:
 	_view = View.FIGHT
 
 
+# Stopped, a free hero hops and the selected hero stands raised; otherwise every puppet sways.
+func show_choices(brain: PlayerBrain) -> void:
+	var is_waiting := brain.is_waiting()
+	for character in _fight_puppets:
+		var puppet := _fight_puppets[character]
+		var stance := Puppet.Stance.SWAY
+		if is_waiting and character == brain.hero:
+			stance = Puppet.Stance.RAISED
+		elif is_waiting and brain.is_free(character):
+			stance = Puppet.Stance.HOP
+		puppet.set_stance(stance)
+		puppet.set_sprite_material(_get_ink(brain, character))
+		puppet.set_pressed(character == brain.hovered_character and brain.is_target(character))
+	var highlighted: Array[Character] = []
+	if is_waiting:
+		highlighted.append(brain.hero)
+	if brain.hovered_character != null:
+		highlighted.append(brain.hovered_character)
+	var ghost_action := brain.get_ghost_action()
+	if ghost_action != null:
+		_timeline_rope.show_ghost(ghost_action)
+	else:
+		_timeline_rope.hide_ghost()
+	_timeline_rope.set_marks(highlighted, brain.get_dropped_action())
+
+
+func hide_choices() -> void:
+	for puppet: Puppet in _fight_puppets.values():
+		puppet.set_stance(Puppet.Stance.SWAY)
+		puppet.set_sprite_material(null)
+		puppet.set_pressed(false)
+	_timeline_rope.hide_ghost()
+	_timeline_rope.set_marks([], null)
+
+
+func bob_puppet(character: Character) -> void:
+	_fight_puppets[character].bob()
+
+
+func get_character_at(global_point: Vector2) -> Character:
+	for character in _fight_puppets:
+		if _fight_puppets[character].has_point(global_point):
+			return character
+	return null
+
+
+func get_action_at(global_point: Vector2) -> Action:
+	return _timeline_rope.get_action_at(global_point)
+
+
 # The actor's puppet lunges at its target's and calls `on_impact` as the blow lands; returns once it is home and the stage has paused.
 func show_action(action: Action, on_impact: Callable) -> void:
 	var actor_puppet := _fight_puppets[action.actor]
@@ -137,8 +195,20 @@ func hide_offers() -> void:
 	await _offer_presenter.hide_offers()
 
 
+# A target keeps its red under the cursor: it is pressed down instead. Any other pickable puppet under the cursor, or a hovered medallion's actor, takes the hover ink.
+func _get_ink(brain: PlayerBrain, character: Character) -> ShaderMaterial:
+	if brain.is_target(character):
+		return _aimed_ink if character == brain.aimed_target else _target_ink
+	var is_hovered := character == brain.hovered_character and brain.is_pickable(character)
+	var hovered_action := brain.hovered_action
+	if is_hovered or (hovered_action != null and character == hovered_action.actor):
+		return _hover_ink
+	return null
+
+
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_view = View.TRANSITION
+	hide_choices()
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	# The side still standing marches on in its line, off to the right, until the hindmost is beyond the curtain.
 	var march := 0.0

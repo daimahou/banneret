@@ -3,7 +3,7 @@ id: "1.1"
 requires: []
 started: 2026-10-01
 finished:
-total_hours: 15.6
+total_hours: 18.3
 deadline: 2026-12-01
 parent: "[[Vertical slice]]"
 ---

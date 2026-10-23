@@ -5,3 +5,7 @@ extends Resource
 
 func add_changes(_fight_model: FightModel, _delta: Delta, _action: Action) -> void:
 	pass
+
+
+func get_description() -> String:
+	return ""

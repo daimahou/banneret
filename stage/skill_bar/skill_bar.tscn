@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cr21bicmgje5g"]
+
+[ext_resource type="Script" uid="uid://cuwqbdkp3awdj" path="res://stage/skill_bar/skill_bar.gd" id="1_controls"]
+
+[node name="SkillBar" type="HBoxContainer" unique_id=1621530]
+script = ExtResource("1_controls")
+
+[node name="StopButton" type="Button" parent="." unique_id=236132220]
+custom_minimum_size = Vector2(220, 100)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Stop"
+
+[node name="Gap" type="Control" parent="." unique_id=787575941]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Skills" type="HBoxContainer" parent="." unique_id=805777002]
+layout_mode = 2

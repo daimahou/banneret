@@ -1,12 +1,12 @@
 ---
 requires:
   - "[[Missions]]"
-id: "1.1-3"
+id: 1.1-3
 deadline:
-started:
-finished:
+started: 2026-10-22
+finished: 2026-10-23
 hours: 0
-total_hours: 9.1
+total_hours: 11.8
 parent: "[[Playable Prototype]]"
 ---
 
