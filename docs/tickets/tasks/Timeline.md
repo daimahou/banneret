@@ -40,7 +40,7 @@ Ported from prototype C's `fight/`, cut to one skill on one character of the oth
   - Each step: a free enemy chooses; else, nothing due this tick, a free hero chooses; else the next action resolves.
   - On a shared tick the action chosen last resolves first.
   - A character falls at 0 health: it loses its pending action, and every action aimed at it is cancelled, freeing its actor.
-- **Run** — `RunController` plays the fight once `show_encounter` returns, logs each resolved action and the outcome to LimboConsole. A win stays on the fight until `end_encounter`; a defeat logs `Run lost`, replaces `run_model` and starts a new mission.
+- **Run** — `RunController` plays the fight once `show_encounter` returns, logs each resolved action and the outcome to LimboConsole. Either way the stage goes back to a new mission; a defeat first logs `Run lost` and replaces `run_model`. `end_encounter` is gone: the fight is over before it could be called.
 
 ## Testing decisions
 
