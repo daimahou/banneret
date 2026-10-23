@@ -38,6 +38,8 @@ properties:
     displayName: Landed
   note.hours:
     displayName: Hours
+  note.total_hours:
+    displayName: Total
   note.triage:
     displayName: Triage
   note.severity:

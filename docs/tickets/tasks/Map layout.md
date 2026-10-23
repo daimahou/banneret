@@ -4,6 +4,7 @@ id: 1.1-1.1.1
 requires:
 started: 2026-10-20
 finished: 2026-10-21
+total_hours: 2.9
 parent: "[[Mission map]]"
 ---
 # Done when

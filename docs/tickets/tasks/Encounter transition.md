@@ -6,6 +6,7 @@ requires:
 started: 2026-10-22
 finished: 2026-10-23
 hours: 0.4
+total_hours: 3.4
 parent: "[[Encounters]]"
 ---
 # Done when

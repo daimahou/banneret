@@ -5,6 +5,7 @@ requires:
 started: 2026-10-20
 finished: 2026-10-21
 hours: 0.4
+total_hours: 4.3
 parent: "[[Missions]]"
 ---
 # Done when

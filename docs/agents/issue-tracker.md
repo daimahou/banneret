@@ -29,6 +29,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `requires` — wikilinks to blocking **siblings** only
 - `started` / `finished` — dates;
 - `hours` — active time in tenths of an hour, written by `tools/ticket_time.py` (see Time).
+- `total_hours` — on a ticket with children: its `hours` and all its descendants'. Written by the same script.
 
 ## Key
 

@@ -6,6 +6,7 @@ deadline:
 started:
 finished:
 hours: 0.8
+total_hours: 8
 parent: "[[Playable Prototype]]"
 ---
 

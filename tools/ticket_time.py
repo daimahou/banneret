@@ -4,6 +4,7 @@
 - A note gets the time on main that ends in a commit carrying `Ticket: <its id>`: its breakdown, or the grills of its children.
 - Untagged time on main just before a session moves to a ticket branch is that ticket's grill; it goes to the ticket's parent.
 - The rest is overhead (setup, docs, tracker), written on the active goal, so every ticket's hours sum to the project's active time.
+- A ticket with children also gets `total_hours`: its own hours and all its descendants'.
 
 Run before every commit on main: main time since the last commit goes to the coming commit's ticket, or to the active goal. A gap over 15 minutes is a break. Hours are rounded to the tenth.
 
@@ -134,20 +135,27 @@ def get_hours(seconds):
 	return round(seconds / 360) / 10
 
 
-def write_hours(path, hours):
+# Its own hours and all its descendants'.
+def get_total_hours(tickets, hours, ticket_id):
+	children = [child_id for child_id in tickets if get_parent_id(tickets, child_id) == ticket_id]
+	return round(hours.get(ticket_id, 0.0) + sum(get_total_hours(tickets, hours, child_id) for child_id in children), 1)
+
+
+# Sets the field, after `after_field` when it is new.
+def write_field(path, field, value, after_field):
 	with open(path) as file:
 		front = file.read().split("---", 2)
-	if re.search(r"^hours:.*$", front[1], re.M):
-		front[1] = re.sub(r"^hours:.*$", "hours: %g" % hours, front[1], flags=re.M)
+	if re.search(r"^%s:.*$" % field, front[1], re.M):
+		front[1] = re.sub(r"^%s:.*$" % field, "%s: %g" % (field, value), front[1], flags=re.M)
 	else:
-		front[1] = re.sub(r"^(finished:.*)$", r"\1\nhours: %g" % hours, front[1], flags=re.M)
+		front[1] = re.sub(r"^(%s:.*)$" % after_field, r"\1\n%s: %g" % (field, value), front[1], flags=re.M)
 	with open(path, "w") as file:
 		file.write("---".join(front))
 
 
-def _has_hours(path):
+def _has_field(path, field):
 	with open(path) as file:
-		return re.search(r"^hours: *\S", file.read().split("---", 2)[1], re.M) is not None
+		return re.search(r"^%s: *\S" % field, file.read().split("---", 2)[1], re.M) is not None
 
 
 def main():
@@ -159,13 +167,22 @@ def main():
 	hours = {ticket_id: get_hours(value) for ticket_id, value in seconds.items() if ticket_id in tickets}
 	# Overhead takes up the rounding, so the hours sum to the project's active time.
 	hours[goal_id] = round(get_hours(sum(seconds.values())) - sum(value for ticket_id, value in hours.items() if ticket_id != goal_id), 1)
-	for ticket_id in sorted(hours):
-		if hours[ticket_id] == 0 and not _has_hours(tickets[ticket_id]["path"]):
+	for ticket_id in sorted(tickets):
+		path = tickets[ticket_id]["path"]
+		own = hours.get(ticket_id, 0.0)
+		has_children = any(get_parent_id(tickets, child_id) == ticket_id for child_id in tickets)
+		total = get_total_hours(tickets, hours, ticket_id) if has_children else 0.0
+		is_own_shown = own != 0 or _has_field(path, "hours")
+		is_total_shown = total != 0 or _has_field(path, "total_hours")
+		if not is_own_shown and not is_total_shown:
 			continue
 		if is_writing:
-			write_hours(tickets[ticket_id]["path"], hours[ticket_id])
-		print("%-14s %-30s %4g h" % (ticket_id, tickets[ticket_id]["name"], hours[ticket_id]))
-	print("%-45s %4g h" % ("total", sum(hours.values())))
+			if is_own_shown:
+				write_field(path, "hours", own, "finished")
+			if is_total_shown:
+				write_field(path, "total_hours", total, "hours" if is_own_shown else "finished")
+		print("%-14s %-30s %5g h%s" % (ticket_id, tickets[ticket_id]["name"], own, "   total %g h" % total if is_total_shown else ""))
+	print("%-45s %5g h" % ("total", round(sum(hours.values()), 1)))
 
 
 if __name__ == "__main__":
