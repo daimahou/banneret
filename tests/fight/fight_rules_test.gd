@@ -1,22 +1,25 @@
 extends GdUnitTestSuite
 
 
-func test_a_choice_resolves_its_skills_delay_on() -> void:
+func test_an_action_resolves_its_skills_delay_after_it_was_chosen() -> void:
 	var fight_model := _create_fight_model()
-	fight_model.apply(FightRules.get_timeline_delta(_create_choice(fight_model, fight_model.heroes[0], 3)))
+	var first := _create_choice(fight_model, fight_model.heroes[0], 2)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, first))
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, first))
+	var second := _create_choice(fight_model, fight_model.heroes[0], 3)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, second))
 
-	var delta := FightRules.get_resolve_delta(fight_model, fight_model.get_next_action())
-	fight_model.apply(delta)
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, fight_model.get_next_action()))
 
-	assert_int(fight_model.tick).is_equal(3)
+	assert_int(fight_model.tick).is_equal(5)
 
 
 func test_on_a_shared_tick_the_action_chosen_last_resolves_first() -> void:
 	var fight_model := _create_fight_model()
 	var first := _create_choice(fight_model, fight_model.heroes[0], 4)
 	var last := _create_choice(fight_model, fight_model.heroes[1], 4)
-	fight_model.apply(FightRules.get_timeline_delta(first))
-	fight_model.apply(FightRules.get_timeline_delta(last))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, first))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, last))
 
 	assert_array(fight_model.timeline).contains_exactly([last, first])
 
@@ -24,7 +27,7 @@ func test_on_a_shared_tick_the_action_chosen_last_resolves_first() -> void:
 func test_a_hit_takes_its_damage_off_the_target() -> void:
 	var fight_model := _create_fight_model()
 	var choice := _create_choice(fight_model, fight_model.heroes[0], 4, 3)
-	fight_model.apply(FightRules.get_timeline_delta(choice))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, choice))
 
@@ -35,8 +38,8 @@ func test_a_fallen_character_loses_its_pending_action() -> void:
 	var fight_model := _create_fight_model()
 	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
 	var pending := _create_choice(fight_model, fight_model.enemies[0], 4)
-	fight_model.apply(FightRules.get_timeline_delta(blow))
-	fight_model.apply(FightRules.get_timeline_delta(pending))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, blow))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, pending))
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
 
@@ -48,8 +51,8 @@ func test_an_action_aimed_at_a_fallen_character_is_cancelled_and_its_actor_freed
 	var fight_model := _create_fight_model()
 	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
 	var aimed := _create_choice(fight_model, fight_model.heroes[1], 4)
-	fight_model.apply(FightRules.get_timeline_delta(blow))
-	fight_model.apply(FightRules.get_timeline_delta(aimed))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, blow))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, aimed))
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
 
@@ -68,10 +71,12 @@ func _create_character(health: int) -> Character:
 	return Character.new(character_data)
 
 
-# Gives the actor one skill, and chooses it on the first enemy or hero.
+# A new skill, aimed at the first standing character of the other side.
 func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, skill_damage := 1) -> Action:
-	var skill := SkillData.new()
-	skill.delay = skill_delay
-	skill.damage = skill_damage
-	actor.data.skills = [skill]
-	return FightRules.get_choices(fight_model, actor)[0]
+	var choice := Action.new()
+	choice.actor = actor
+	choice.skill = SkillData.new()
+	choice.skill.delay = skill_delay
+	choice.skill.damage = skill_damage
+	choice.target = FightRules.get_targets(fight_model, actor, choice.skill)[0]
+	return choice

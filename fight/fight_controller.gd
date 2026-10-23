@@ -25,7 +25,7 @@ func play() -> void:
 		if choice == null and (next_action == null or next_action.resolve_tick > fight_model.tick):
 			choice = await _hero_brain.get_next_action(fight_model)
 		if choice != null:
-			fight_model.apply(FightRules.get_timeline_delta(choice))
+			fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 		else:
 			fight_model.apply(FightRules.get_resolve_delta(fight_model, next_action))
 			action_resolved.emit(next_action)

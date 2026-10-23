@@ -1,25 +1,22 @@
 class_name FightRules
-# The rules of a fight: given the fight model and one action, the delta it makes. They apply nothing, and nothing in them is random.
+# The rules of a fight: given the fight model and one action, the delta it makes. They apply nothing to the fight, and nothing in them is random.
 
 
-# Every action the character could choose now: each of its skills, on each standing character of the other side.
-static func get_choices(fight_model: FightModel, character: Character) -> Array[Action]:
-	var other_side := FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO
-	var choices: Array[Action] = []
-	for skill in character.data.skills:
-		for target in fight_model.get_standing(other_side):
-			var choice := Action.new()
-			choice.actor = character
-			choice.skill = skill
-			choice.target = target
-			choice.resolve_tick = fight_model.tick + skill.delay
-			choices.append(choice)
-	return choices
+# Every skill the character can use now.
+static func get_usable_skills(character: Character) -> Array[SkillData]:
+	return character.data.skills
 
 
-static func get_timeline_delta(choice: Action) -> Delta:
+# Every character the skill can be aimed at: the standing characters of the other side.
+static func get_targets(fight_model: FightModel, character: Character, _skill: SkillData) -> Array[Character]:
+	return fight_model.get_standing(FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO)
+
+
+# The chosen action goes on the timeline: it resolves its skill's delay on from now.
+static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta:
+	action.resolve_tick = fight_model.tick + action.skill.delay
 	var delta := Delta.new()
-	delta.add_action(choice)
+	delta.add_action(action)
 	return delta
 
 

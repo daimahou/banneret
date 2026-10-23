@@ -31,8 +31,8 @@ Ported from prototype C's `fight/`, cut to one skill on one character of the oth
   - `Action` — `actor`, `skill`, `target`, `resolve_tick`. No factory.
   - `FightModel` — the tick, the run's hero and enemy `Character`s held directly (no copy), the timeline of pending actions. Applies a `Delta` and signals each change.
   - `Delta` — the ticks it moves on and its `Change`s: `Health`, `AddAction`, `RemoveAction`. Applies nothing.
-  - `FightRules` — pure: `get_choices`, `get_timeline_delta`, `get_resolve_delta`.
-  - `Brain` — awaited `get_next_action(fight_model)`: an action for one of its side's free characters, or null. `RandomBrain` picks at random among the first free character's choices, seeded per side (`seed`, `seed + 1`).
+  - `FightRules` — pure: `get_usable_skills`, `get_targets`, `get_timeline_delta` (sets the action's resolve tick), `get_resolve_delta`.
+  - `Brain` — awaited `get_next_action(fight_model)`: an action for one of its side's free characters, or null. `RandomBrain` picks a random usable skill for the first free character, then a random target, seeded per side (`seed`, `seed + 1`).
   - `FightController` — `RefCounted`, `FightController.new(heroes, enemies, seed)`; `play()` loops until one side has fallen.
   - `FightRunner` — headless `SceneTree` script over `FightController`: `--fights=N --seed=S`, prints win %, ticks and health left; `print`, never LimboConsole.
 - **Rules**:
