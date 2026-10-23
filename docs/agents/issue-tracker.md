@@ -30,6 +30,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `started` / `finished` — dates;
 - `hours` — active time in tenths of an hour, written by `tools/ticket_time.py` (see Time).
 - `total_hours` — on a ticket with children: its `hours` and all its descendants'. Written by the same script.
+- `extra_hours` — time worked outside any session (art, playtesting), added to `hours` by the script. Written only from the human's answer (see Time).
 
 ## Key
 
@@ -68,4 +69,5 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - A note's `hours` = its breakdown on `main`.
 - The active goal holds the overhead: work on `main` in no ticket (tracker, docs, tooling). Every ticket's `hours` sum to the project's active time.
 - **Commit on `main` at each confirmed step, before going deeper**: a breakdown the human confirms, a grill once its spec is written. The commit carries a `Ticket: <id>` trailer naming the ticket the time goes to: the note broken down, or the leaf specced or grilled. Time on `main` since the previous commit goes to it; without a trailer, to the active goal.
+- **Ask about breaks that look like work.** Sessions only log active time: a gap over 15 minutes is a break. When one sits inside otherwise continuous work — above all while waiting on the human for art, a playtest or a review — ask how long they worked and on which ticket, and add it to that ticket's `extra_hours`. Never guess a number. Check `python3 tools/ticket_time.py --gaps` before each commit on `main` and at each merge.
 - Before every commit on `main`, run `python3 tools/ticket_time.py --write`, with `--ticket=<id>` when the commit carries a trailer, and commit the `hours` with it. The numbers change only on commit.

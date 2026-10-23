@@ -4,6 +4,7 @@
 - A leaf also gets the time on its branch: its implementation.
 - Untagged time on main just before a session moves to a ticket branch is that ticket's grill; it goes to the ticket.
 - The rest is overhead (setup, docs, tracker), written on the active goal, so every ticket's hours sum to the project's active time.
+- A ticket's `extra_hours`, time worked outside any session (art, playtesting), is added to its hours.
 - A ticket with children also gets `total_hours`: its own hours and all its descendants'.
 
 Run before every commit on main: main time since the last commit goes to the coming commit's ticket, or to the active goal. A gap over 15 minutes is a break. Hours are rounded to the tenth.
@@ -11,6 +12,7 @@ Run before every commit on main: main time since the last commit goes to the com
     python3 tools/ticket_time.py                         # every ticket's hours
     python3 tools/ticket_time.py --write                 # also writes them as `hours` in the tickets
     python3 tools/ticket_time.py --write --ticket=1.1-3  # the coming commit carries `Ticket: 1.1-3`
+    python3 tools/ticket_time.py --gaps=2026-10-23        # the breaks dropped that day, to ask about; today without a date
 """
 import collections
 import datetime
@@ -22,6 +24,8 @@ import subprocess
 import sys
 
 BREAK = 15 * 60
+# A longer gap is the end of the day, not a break worth asking about.
+LONGEST_GAP = 4 * 60 * 60
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TICKETS = os.path.join(REPO, "docs/tickets")
 TICKET_BRANCH = re.compile(r"^(\d[\w.]*-[\d.]+)-[a-z]")
@@ -66,12 +70,14 @@ def get_tickets():
 		parent = re.search(r"^parent: \"?\[\[([^\]]+)\]\]\"?$", front[1], re.M)
 		is_started = re.search(r"^started: *\S", front[1], re.M) is not None
 		is_finished = re.search(r"^finished: *\S", front[1], re.M) is not None
+		extra_hours = re.search(r"^extra_hours: *([\d.]+)", front[1], re.M)
 		if ticket_id and ticket_id.group(1):
 			tickets[ticket_id.group(1)] = {
 				"path": path,
 				"name": os.path.basename(path)[:-3],
 				"parent": parent.group(1) if parent else None,
 				"is_active_goal": os.path.basename(os.path.dirname(path)) == "goals" and is_started and not is_finished,
+				"extra_hours": float(extra_hours.group(1)) if extra_hours else 0.0,
 			}
 	return tickets
 
@@ -157,7 +163,27 @@ def _has_field(path, field):
 		return re.search(r"^%s: *\S" % field, file.read().split("---", 2)[1], re.M) is not None
 
 
+# Each break dropped from the active time on the day, as its start, its end and the branch it fell on.
+def get_gaps(day):
+	gaps = []
+	for events in get_sessions():
+		for (time, branch), (next_time, _next_branch) in zip(events, events[1:]):
+			gap = (next_time - time).total_seconds()
+			if time.astimezone().date() == day and BREAK < gap <= LONGEST_GAP:
+				gaps.append((time.astimezone(), next_time.astimezone(), branch))
+	return sorted(gaps)
+
+
+def print_gaps(day):
+	for start, end, branch in get_gaps(day):
+		print("%s-%s  %3d min  on %s" % (start.strftime("%H:%M"), end.strftime("%H:%M"), (end - start).total_seconds() // 60, branch))
+
+
 def main():
+	gaps_day = next((argument.partition("=")[2] for argument in sys.argv if argument.startswith("--gaps")), None)
+	if gaps_day is not None:
+		print_gaps(datetime.date.fromisoformat(gaps_day) if gaps_day else datetime.date.today())
+		return
 	is_writing = "--write" in sys.argv
 	coming_ticket_id = next((argument.split("=", 1)[1] for argument in sys.argv if argument.startswith("--ticket=")), None)
 	tickets = get_tickets()
@@ -166,6 +192,9 @@ def main():
 	hours = {ticket_id: get_hours(value) for ticket_id, value in seconds.items() if ticket_id in tickets}
 	# Overhead takes up the rounding, so the hours sum to the project's active time.
 	hours[goal_id] = round(get_hours(sum(seconds.values())) - sum(value for ticket_id, value in hours.items() if ticket_id != goal_id), 1)
+	for ticket_id, ticket in tickets.items():
+		if ticket["extra_hours"]:
+			hours[ticket_id] = round(hours.get(ticket_id, 0.0) + ticket["extra_hours"], 1)
 	for ticket_id in sorted(tickets):
 		path = tickets[ticket_id]["path"]
 		own = hours.get(ticket_id, 0.0)
