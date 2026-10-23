@@ -16,7 +16,6 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	LimboConsole.unregister_command(start_mission)
 	LimboConsole.unregister_command(start_fight)
-	LimboConsole.unregister_command(start_fight)
 
 
 func _ready() -> void:
