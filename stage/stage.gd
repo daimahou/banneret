@@ -218,7 +218,7 @@ func _show_choices() -> void:
 		elif is_waiting and _player_brain.is_free(character):
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
-		puppet.set_ink(_get_ink(character))
+		puppet.set_sprite_material(_get_ink(character))
 		puppet.set_pressed(character == _hovered_character and _player_brain != null and _player_brain.is_target(character))
 	var highlighted: Array[Character] = []
 	if is_waiting:

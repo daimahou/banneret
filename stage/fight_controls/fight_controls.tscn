@@ -1,21 +1,21 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cr21bicmgje5g"]
 
-[ext_resource type="Script" path="res://stage/fight_controls/fight_controls.gd" id="1_controls"]
+[ext_resource type="Script" uid="uid://cuwqbdkp3awdj" path="res://stage/fight_controls/fight_controls.gd" id="1_controls"]
 
-[node name="FightControls" type="HBoxContainer"]
+[node name="FightControls" type="HBoxContainer" unique_id=1621530]
 script = ExtResource("1_controls")
 
-[node name="Skills" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Gap" type="Control" parent="."]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="StopButton" type="Button" parent="."]
+[node name="StopButton" type="Button" parent="." unique_id=236132220]
 custom_minimum_size = Vector2(220, 100)
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Stop"
+
+[node name="Gap" type="Control" parent="." unique_id=787575941]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Skills" type="HBoxContainer" parent="." unique_id=805777002]
+layout_mode = 2

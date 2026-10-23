@@ -6,9 +6,9 @@ const SWAY_ANGLE := 0.03
 const SWAY_PERIOD := 2.4
 
 # A hop, a raise and a bob down under a press, in design units and seconds.
-const HOP_HEIGHT := 28.0
+const HOP_HEIGHT := 18.0
 const HOP_PERIOD := 0.45
-const RAISE_HEIGHT := 120.0
+const RAISE_HEIGHT := 60.0
 const RAISE_DURATION := 0.3
 const BOB_DEPTH := 18.0
 const BOB_DURATION := 0.08
@@ -74,9 +74,8 @@ func set_stance(new_stance: Stance) -> void:
 	_raise_tween.tween_property(self, "_raise", RAISE_HEIGHT if new_stance == Stance.RAISED else 0.0, RAISE_DURATION)
 
 
-# Null keeps the ink's own color.
-func set_ink(ink_material: ShaderMaterial) -> void:
-	_sprite.material = ink_material
+func set_sprite_material(sprite_material: ShaderMaterial) -> void:
+	_sprite.material = sprite_material
 
 
 func bob() -> void:
