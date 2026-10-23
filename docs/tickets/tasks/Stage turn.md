@@ -25,12 +25,15 @@ The stage transitions between the mission map and the fight in three beats, and 
 
 - **Puppet** — `stage/puppet.gd`, a `Node2D` with a sprite whose origin is its stick foot. Sways on a looping sine tween of its rotation, from a random phase so puppets don't rock in step; it keeps swaying while it moves.
 - The coach becomes a puppet.
+- **Puppets** — a `Control` on the stage marking where puppets stand; the coach and the fight puppets are its children, feet on its bottom edge.
 - `CharacterData` gains `puppet: Texture2D`.
 - **Rogue** — `hero/archer.tres` becomes `hero/rogue.tres` ("Rogue"), in `PARTY_HERO_IDS`; puppet `art/puppet/rogue.png`.
 - **Enemy** — `enemy/brigand.tres`, a placeholder `CharacterData`. The encounter's enemies are the fixed `[brigand]` until [[Timeline]] gives the encounter a model.
-- **Stand positions** — on the floor line in front of the flats. Heroes spread across the left half of the `Flats` rect, enemies across the right half; front of each line towards the middle. Party order = `PARTY_HERO_IDS`, the first at the front. Computed from the `Flats` rect, so any count lays out. They enter and leave beyond the curtains.
-- **Battle illustration** — `art/stage/battleground.png` sits at `Stage.BATTLEGROUND_RECT`, the painted panel area in stage space (~x 971–2909, y 373–1117). Each flat shows the part of the art under its own rect: a crop, no stretch.
-- **Flats** — size and layout logic unchanged. A flip = the whole `Flat` scales x to 0 about its centre, its content swaps, scales back.
+- **Stand positions** — `PuppetLayout`: heroes spread across the left half of the puppets area, enemies across the right half, a middle gap kept clear; front of each line towards the middle. Party order = `PARTY_HERO_IDS`, the first at the front. They enter and leave beyond the curtains.
+- **Scenery** — `stage/scenery.gd` on the flats' `HBoxContainer`. Owns the flats: shows and flips them, tracks hover, works out every node and road dash highlight. Flats only draw.
+- **Mission map layout** — `MissionMapLayout`, computed once per mission from the flat size, separation and count: map node positions and road dashes per flat, in flat space. A road dash's highlight is the flat's, not the layout's.
+- **Battle illustration** — `art/stage/battleground.png`, centred on the scenery; each flat shows the part under it. Bigger is cropped; smaller warns.
+- **Flip** — the whole `Flat` scales x to 0 about its centre, its content swaps, scales back.
 - **To the fight** — `Stage.show_encounter(party, enemies)`, returns when done:
   1. The coach slides off the stage to the right.
   2. The flats flip one after another, left to right, from the map to their part of the battle illustration.
@@ -45,6 +48,7 @@ The stage transitions between the mission map and the fight in three beats, and 
 
 - Unit tests only, no scene:
   - `PuppetLayout.get_stand_positions(area, count, side)` — one position per puppet, front first, inside its half, clear of the middle gap, on the area's bottom edge.
+  - `MissionMapLayout.create(...)` — every map node and road dash inside its flat; neighbouring nodes keep their spacing despite jitter.
 - Flow, timing and motion are judged by playing.
 - `tests/run/run_controller_test.gd` stays as is.
 
@@ -52,7 +56,7 @@ The stage transitions between the mission map and the fight in three beats, and 
 
 - The fight itself, health, names — [[Timeline]], [[Fight on stage]].
 - Enemies drawn per encounter.
-- Flat size, layout, icon margin, flat panel art — [[Flat fit]].
+- Flat panel art.
 
 ![[Children.base#Open tickets]]
 
