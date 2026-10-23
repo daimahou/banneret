@@ -34,6 +34,8 @@ A grill is always on a ticket that already exists. Read the ticket, its mileston
 
 **Read `docs/agents/gdscript conventions.md` before writing a script** - project code conventions.
 
+**No comment by default.** A comment earns its place only by saying what the name can't: a rule, a reason, what null means. One that restates its declaration — `# The hero whose skills the buttons show.` over `_shown_hero` — is never written. Check every comment before committing.
+
 **Art is authored at its final size.** Never scale it in a scene or in code: no `scale`, no stretch to fit. Size layout to the art, not the art to the layout.
 
 **`docs/agents/feedback-loop.md` is how a change is checked** — the headless run, the gdUnit4 suite, the import scan.
