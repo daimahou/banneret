@@ -1,6 +1,7 @@
 class_name FightController
 extends RefCounted
 # Plays a fight one delta at a time: a free enemy chooses first; a free hero chooses once nothing is due this tick; otherwise the next action resolves.
+# Choices apply at once; a resolve waits for the stage, if any, to land its blow.
 
 signal action_resolved(action: Action)
 
@@ -8,11 +9,13 @@ var fight_model: FightModel
 
 var _hero_brain: Brain
 var _enemy_brain: Brain
+var _stage: Stage
 
 
 # The same seed plays the same fight.
-func _init(heroes: Array[Character], enemies: Array[Character], fight_seed: int) -> void:
+func _init(heroes: Array[Character], enemies: Array[Character], fight_seed: int, fight_stage: Stage = null) -> void:
 	fight_model = FightModel.new(heroes, enemies)
+	_stage = fight_stage
 	_hero_brain = RandomBrain.new(FightModel.Side.HERO, fight_seed)
 	_enemy_brain = RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1)
 
@@ -27,5 +30,9 @@ func play() -> void:
 		if choice != null:
 			fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 		else:
-			fight_model.apply(FightRules.get_resolve_delta(fight_model, next_action))
+			var delta := FightRules.get_resolve_delta(fight_model, next_action)
+			if _stage == null:
+				fight_model.apply(delta)
+			else:
+				await _stage.show_action(next_action, fight_model.apply.bind(delta))
 			action_resolved.emit(next_action)

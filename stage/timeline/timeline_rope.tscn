@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://stage/timeline/timeline_rope.gd" id="1_rope"]
+
+[node name="TimelineRope" type="Node2D"]
+script = ExtResource("1_rope")
+
+[node name="Rope" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 195, -35, 397, -102, 630, -27, 870, 0, 1050, -35, 1177, -114, 1380, -27, 1590, 10, 1770, -57, 1897, -117, 2070, -42, 2295, 0, 2460, -35, 2565, -72)
+width = 6.0
+
+[node name="Ties" type="Node2D" parent="."]
+
+[node name="Tie1" type="Marker2D" parent="Ties"]
+position = Vector2(397, -102)
+
+[node name="Tie2" type="Marker2D" parent="Ties"]
+position = Vector2(1177, -114)
+
+[node name="Tie3" type="Marker2D" parent="Ties"]
+position = Vector2(1897, -117)
+
+[node name="Entries" type="Node2D" parent="."]

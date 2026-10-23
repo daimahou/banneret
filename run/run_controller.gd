@@ -1,7 +1,10 @@
 class_name RunController
 extends Node
 
+const HOLD_DURATION := 0.4
+
 var run_model := RunModel.new()
+var fight_controller: FightController
 
 var _mission_controller: MissionController
 
@@ -35,6 +38,9 @@ func start_mission(map_seed: int) -> void:
 	if _stage.is_in_transition():
 		LimboConsole.warn("The stage is in a transition")
 		return
+	if fight_controller != null:
+		LimboConsole.warn("A fight is playing")
+		return
 	if _mission_controller != null:
 		_mission_controller.dispose()
 	_mission_controller = MissionController.new(_stage, map_seed)
@@ -47,6 +53,9 @@ func start_fight(fight_seed := randi()) -> void:
 		await _stage.laid_out
 	if _stage.is_in_transition():
 		LimboConsole.warn("The stage is in a transition")
+		return
+	if fight_controller != null:
+		LimboConsole.warn("A fight is playing")
 		return
 	await _start_encounter(fight_seed)
 
@@ -70,17 +79,21 @@ func _start_encounter(fight_seed: int) -> void:
 	var enemies: Array[Character] = []
 	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
-	await _stage.show_encounter(run_model.party, enemies)
-	await _play_fight(enemies, fight_seed)
-
-
-# Either way the stage goes back to a new mission; a defeat loses the run first, and a new one starts.
-func _play_fight(enemies: Array[Character], fight_seed: int) -> void:
 	LimboConsole.info("Fight seed: %d" % fight_seed)
-	var fight_controller := FightController.new(run_model.party, enemies, fight_seed)
+	fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
+	await _stage.show_encounter(fight_controller.fight_model)
+	await get_tree().create_timer(HOLD_DURATION).timeout
+	await _play_fight()
+
+
+# Either way the stage goes back to a new mission, after a hold on the fight's end; a defeat loses the run first, and a new one starts.
+func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
-	if fight_controller.fight_model.is_won():
+	await get_tree().create_timer(HOLD_DURATION).timeout
+	var is_won := fight_controller.fight_model.is_won()
+	fight_controller = null
+	if is_won:
 		LimboConsole.info("Fight won")
 	else:
 		LimboConsole.info("Run lost")

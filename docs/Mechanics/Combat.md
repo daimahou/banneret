@@ -20,8 +20,7 @@ How an encounter plays: the party against its enemies, until one side falls.
 > [!frontier] Who chooses first when both sides are free?
 > Provisional: enemies first, so the player reads their intent before choosing.
 
-> [!frontier] Does the player see what the enemies have queued?
-> Provisional: yes — reading the timeline is the decision.
+- Both sides' pending actions show on the timeline — reading it is the decision.
 
 ## Skills
 

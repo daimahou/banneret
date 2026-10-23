@@ -12,6 +12,7 @@
 - Exception: ticket authoring (tickets, their templates, the tracker rules) goes straight to `main` — no ticket, no branch.
 - Prototypes stay on their own branch, and are merged only if the user keeps them. Throwaway branches are deleted, never piled into one folder.
 - Commit or merge only when asked.
+- Implementing a ticket ends with its branch pushed and a PR open to `main`: the PR is where the human reviews. Never merge it. While it is open, commit and push every change to it without asking.
 
 ## Agent skills
 
@@ -30,5 +31,7 @@ A grill is always on a ticket that already exists. Read the ticket, its mileston
 ## Code
 
 **Read `docs/agents/gdscript conventions.md` before writing a script** - project code conventions.
+
+**Art is authored at its final size.** Never scale it in a scene or in code: no `scale`, no stretch to fit. Size layout to the art, not the art to the layout.
 
 **`docs/agents/feedback-loop.md` is how a change is checked** — the headless run, the gdUnit4 suite, the import scan.

@@ -3,7 +3,9 @@ extends HBoxContainer
 
 signal map_node_pressed(map_node: MapNode)
 
+# A flat's flip, and the time from one flat starting to the next: below the duration, flips overlap.
 const FLIP_DURATION := 0.4
+const FLIP_STAGGER := 0.1
 const FLIP_TRANSITION := Tween.TRANS_SINE
 
 const BATTLEGROUND: Texture2D = preload("res://art/stage/battleground.png")
@@ -104,15 +106,18 @@ func _set_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_mission_map_layout = MissionMapLayout.create(mission_model.mission_map, map_seed, _flats[0].size, get_theme_constant("separation"), _flats.size())
 
 
-# One flat after another, left to right; each swaps its content while edge-on.
+# One flat after another, left to right, each starting a stagger after the last; each swaps its content while edge-on. Returns once the last flat has flipped.
 func _flip_flats(swap_content: Callable) -> void:
-	for flat in _flats:
+	var tween := create_tween().set_parallel().set_trans(FLIP_TRANSITION)
+	for index in _flats.size():
+		var flat := _flats[index]
 		flat.pivot_offset = flat.size / 2.0
-		var tween := create_tween().set_trans(FLIP_TRANSITION)
-		tween.tween_property(flat, "scale:x", 0.0, FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN)
-		tween.tween_callback(swap_content.bind(flat))
-		tween.tween_property(flat, "scale:x", 1.0, FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT)
-		await tween.finished
+		var start := index * FLIP_STAGGER
+		var edge_on := start + FLIP_DURATION / 2.0
+		tween.tween_property(flat, "scale:x", 0.0, FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN).set_delay(start)
+		tween.tween_callback(swap_content.bind(flat)).set_delay(edge_on)
+		tween.tween_property(flat, "scale:x", 1.0, FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT).set_delay(edge_on)
+	await tween.finished
 
 
 func _is_pickable(map_node: MapNode) -> bool:

@@ -64,3 +64,7 @@ return floori(records.size() / float(RECORD_SIZE))
 ```
 
 **Never reach for `@warning_ignore`.** It hides the question instead of answering it, and the next reader learns nothing from a line that was only made quiet.
+
+## Debug tooling
+
+**Debug tools live in `debug/`, outside the game.** Console commands, debug arguments and debug-only behaviour sit there, and drive the game through what it already exposes: signals, models, public methods. Nothing outside `debug/` registers a command or grows a method for debugging.

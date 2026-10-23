@@ -5,9 +5,14 @@
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="3_skill_data"]
 [ext_resource type="Resource" uid="uid://3bpbae2bacqx" path="res://skill/strike.tres" id="4_strike"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_portrait"]
+atlas = ExtResource("2_puppet")
+region = Rect2(155, 45, 70, 70)
+
 [resource]
 script = ExtResource("1_character_data")
 name = "Knight"
 max_health = 30
 puppet = ExtResource("2_puppet")
+portrait = SubResource("AtlasTexture_portrait")
 skills = Array[ExtResource("3_skill_data")]([ExtResource("4_strike")])
