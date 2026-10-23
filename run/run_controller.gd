@@ -96,10 +96,10 @@ func _start_encounter(fight_seed: int) -> void:
 func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
-	fight_controller.dispose()
-	await get_tree().create_timer(HOLD_DURATION).timeout
 	var is_won := fight_controller.fight_model.is_won()
+	fight_controller.dispose()
 	fight_controller = null
+	await get_tree().create_timer(HOLD_DURATION).timeout
 	if is_won:
 		LimboConsole.info("Fight won")
 	else:
