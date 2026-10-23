@@ -33,7 +33,7 @@ const DAMAGE_COLOR := Color("c0392b")
 const HEALTH_BAR_Y := 1460.0
 const HEALTH_BAR_SIZE := Vector2(220.0, 64.0)
 
-# The armed skill's targets are inked red, the aimed one, or one under the cursor, a brighter red.
+# The armed skill's targets are inked red, the aimed one a brighter red.
 const TARGET_INK_COLOR := Color("7a2a20")
 const AIMED_INK_COLOR := Color("d8402c")
 
@@ -218,13 +218,13 @@ func _show_choices() -> void:
 	_timeline_rope.set_marks(highlighted, _player_brain.get_dropped_action() if _player_brain != null else null)
 
 
-# A target under the cursor shows as aimed; any other pickable puppet, or a hovered medallion's actor, takes the hover ink.
+# A pickable puppet under the cursor, or a hovered medallion's actor, takes the hover ink over any target's.
 func _get_ink(character: Character) -> ShaderMaterial:
 	var is_hovered := character == _hovered_character and _player_brain != null and _player_brain.is_pickable(character)
-	if _player_brain != null and _player_brain.is_target(character):
-		return _aimed_ink if is_hovered or character == _player_brain.aimed_target else _target_ink
 	if is_hovered or (_hovered_action != null and character == _hovered_action.actor):
 		return _hover_ink
+	if _player_brain != null and _player_brain.is_target(character):
+		return _aimed_ink if character == _player_brain.aimed_target else _target_ink
 	return null
 
 
