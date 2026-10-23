@@ -14,7 +14,6 @@ var hovered_skill: SkillData
 
 var _fight_model: FightModel
 var _is_waiting := false
-# Whether the brain waited at its last turn: a new stop starts on the first hero, one going on keeps its hero.
 var _is_stopped := false
 
 # A requested stop lasts until a pass.
