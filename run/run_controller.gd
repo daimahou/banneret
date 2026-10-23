@@ -22,6 +22,7 @@ func _ready() -> void:
 	LimboConsole.info("Party: %s" % ", ".join(run_model.party.map(func(hero: Character) -> String: return hero.data.name)))
 	await _stage.laid_out
 	start_mission(randi())
+	_start_fight_from_arguments()
 
 
 # Null until the stage is laid out.
@@ -48,6 +49,17 @@ func start_fight(fight_seed := randi()) -> void:
 		LimboConsole.warn("The stage is in a transition")
 		return
 	await _start_encounter(fight_seed)
+
+
+# For debugging: `--fight` or `--fight=<seed>` on the command line, e.g. in Debug > Customize Run Instances, goes straight to the fight.
+func _start_fight_from_arguments() -> void:
+	for argument in OS.get_cmdline_args() + OS.get_cmdline_user_args():
+		if argument == "--fight":
+			start_fight(randi())
+			return
+		if argument.begins_with("--fight="):
+			start_fight(int(argument.trim_prefix("--fight=")))
+			return
 
 
 func _on_mission_ended() -> void:
