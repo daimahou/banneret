@@ -72,8 +72,9 @@ func set_stance(new_stance: Stance) -> void:
 	_raise_tween.tween_property(self, "_raise", RAISE_HEIGHT if new_stance == Stance.RAISED else 0.0, RAISE_DURATION)
 
 
-func set_tint(tint: Color) -> void:
-	_sprite.modulate = tint
+# Null keeps the ink's own color.
+func set_ink(ink_material: ShaderMaterial) -> void:
+	_sprite.material = ink_material
 
 
 # Pressed down, like a button.

@@ -33,10 +33,9 @@ const DAMAGE_COLOR := Color("c0392b")
 const HEALTH_BAR_Y := 1460.0
 const HEALTH_BAR_SIZE := Vector2(220.0, 64.0)
 
-# The player's choices on the puppets: a pickable one brightens under the cursor, the armed skill's targets are red, the aimed one redder.
-const HOVER_TINT := Color(1.35, 1.35, 1.35)
-const TARGET_TINT := Color(1.0, 0.62, 0.58)
-const AIMED_TINT := Color(1.0, 0.3, 0.25)
+# The armed skill's targets are inked red, the aimed one, or one under the cursor, a brighter red.
+const TARGET_INK_COLOR := Color("7a2a20")
+const AIMED_INK_COLOR := Color("d8402c")
 
 # Beyond the curtains, in design units, in stage space.
 const OFFSTAGE_LEFT_X := -400.0
@@ -52,6 +51,9 @@ var _health_bars: Dictionary[Character, HealthBar] = {}
 var _player_brain: PlayerBrain
 var _hovered_character: Character
 var _hovered_action: Action
+var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
+var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
+var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
 @onready var _scenery: Scenery = $Scenery
 # Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
@@ -206,7 +208,7 @@ func _show_choices() -> void:
 		elif is_waiting and _player_brain.is_free(character):
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
-		puppet.set_tint(_get_tint(character))
+		puppet.set_ink(_get_ink(character))
 	var highlighted: Array[Character] = []
 	if is_waiting:
 		highlighted.append(_player_brain.hero)
@@ -216,16 +218,14 @@ func _show_choices() -> void:
 	_timeline_rope.set_marks(highlighted, _player_brain.get_dropped_action() if _player_brain != null else null)
 
 
-func _get_tint(character: Character) -> Color:
-	var tint := Color.WHITE
-	if _player_brain != null and character == _player_brain.aimed_target:
-		tint = AIMED_TINT
-	elif _player_brain != null and _player_brain.is_target(character):
-		tint = TARGET_TINT
+# A target under the cursor shows as aimed; any other pickable puppet, or a hovered medallion's actor, takes the hover ink.
+func _get_ink(character: Character) -> ShaderMaterial:
 	var is_hovered := character == _hovered_character and _player_brain != null and _player_brain.is_pickable(character)
+	if _player_brain != null and _player_brain.is_target(character):
+		return _aimed_ink if is_hovered or character == _player_brain.aimed_target else _target_ink
 	if is_hovered or (_hovered_action != null and character == _hovered_action.actor):
-		tint *= HOVER_TINT
-	return tint
+		return _hover_ink
+	return null
 
 
 # An action gone from the rope is no longer under the cursor.

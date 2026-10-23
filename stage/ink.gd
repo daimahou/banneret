@@ -18,9 +18,14 @@ const RECOLOR_SHADER := preload("res://stage/ink_recolor.gdshader")
 static func create_material(highlight: Ink.Highlight) -> ShaderMaterial:
 	if highlight not in COLORS:
 		return null
+	return create_color_material(COLORS[highlight])
+
+
+# Dark ink takes the color; light fills keep theirs.
+static func create_color_material(ink_color: Color) -> ShaderMaterial:
 	var material := ShaderMaterial.new()
 	material.shader = RECOLOR_SHADER
-	material.set_shader_parameter("ink_color", COLORS[highlight])
+	material.set_shader_parameter("ink_color", ink_color)
 	return material
 
 
