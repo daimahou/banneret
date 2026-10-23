@@ -4,9 +4,9 @@ extends Node
 const END_HOLD_DURATION := 1.0
 
 var run_model := RunModel.new()
+var fight_controller: FightController
 
 var _mission_controller: MissionController
-var _fight_controller: FightController
 
 @onready var _stage: Stage = $Stage
 
@@ -14,15 +14,11 @@ var _fight_controller: FightController
 func _enter_tree() -> void:
 	LimboConsole.register_command(start_mission, "map_seed", "Rebuild the mission map from a seed")
 	LimboConsole.register_command(start_fight, "fight", "Skip the mission: play the encounter at once, from a seed or a random one")
-	LimboConsole.register_command(win_fight, "fight_win", "Knock out every enemy: the fight is won")
-	LimboConsole.register_command(lose_fight, "fight_lose", "Knock out every hero: the fight, and the run, are lost")
 
 
 func _exit_tree() -> void:
 	LimboConsole.unregister_command(start_mission)
 	LimboConsole.unregister_command(start_fight)
-	LimboConsole.unregister_command(win_fight)
-	LimboConsole.unregister_command(lose_fight)
 
 
 func _ready() -> void:
@@ -42,7 +38,7 @@ func start_mission(map_seed: int) -> void:
 	if _stage.is_in_transition():
 		LimboConsole.warn("The stage is in a transition")
 		return
-	if _fight_controller != null:
+	if fight_controller != null:
 		LimboConsole.warn("A fight is playing")
 		return
 	if _mission_controller != null:
@@ -58,18 +54,10 @@ func start_fight(fight_seed := randi()) -> void:
 	if _stage.is_in_transition():
 		LimboConsole.warn("The stage is in a transition")
 		return
-	if _fight_controller != null:
+	if fight_controller != null:
 		LimboConsole.warn("A fight is playing")
 		return
 	await _start_encounter(fight_seed)
-
-
-func win_fight() -> void:
-	_knock_out(FightModel.Side.ENEMY)
-
-
-func lose_fight() -> void:
-	_knock_out(FightModel.Side.HERO)
 
 
 # For debugging: `--fight` or `--fight=<seed>` on the command line, e.g. in Debug > Customize Run Instances, goes straight to the fight.
@@ -83,13 +71,6 @@ func _start_fight_from_arguments() -> void:
 			return
 
 
-func _knock_out(side: FightModel.Side) -> void:
-	if _fight_controller == null:
-		LimboConsole.warn("No fight is playing")
-		return
-	_fight_controller.knock_out(side)
-
-
 func _on_mission_ended() -> void:
 	await _start_encounter(randi())
 
@@ -100,18 +81,18 @@ func _start_encounter(fight_seed: int) -> void:
 		enemies.append(Character.new(enemy_data))
 		enemies.append(Character.new(enemy_data))
 	LimboConsole.info("Fight seed: %d" % fight_seed)
-	_fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
-	await _stage.show_encounter(_fight_controller.fight_model)
+	fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
+	await _stage.show_encounter(fight_controller.fight_model)
 	await _play_fight()
 
 
 # Either way the stage goes back to a new mission, after a hold on the fight's end; a defeat loses the run first, and a new one starts.
 func _play_fight() -> void:
-	_fight_controller.action_resolved.connect(_on_action_resolved)
-	await _fight_controller.play()
+	fight_controller.action_resolved.connect(_on_action_resolved)
+	await fight_controller.play()
 	await get_tree().create_timer(END_HOLD_DURATION).timeout
-	var is_won := _fight_controller.fight_model.is_won()
-	_fight_controller = null
+	var is_won := fight_controller.fight_model.is_won()
+	fight_controller = null
 	if is_won:
 		LimboConsole.info("Fight won")
 	else:

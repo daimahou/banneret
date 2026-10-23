@@ -46,22 +46,6 @@ func test_a_win_leaves_the_heroes_health_as_the_fight_left_it() -> void:
 	fail("No seed won")
 
 
-func test_a_knocked_out_side_falls_at_once_and_loses() -> void:
-	for side in [FightModel.Side.HERO, FightModel.Side.ENEMY]:
-		var fight_controller := _create_fight_controller(1)
-		var fight_model := fight_controller.fight_model
-		var resolved: Array[Action] = []
-		fight_controller.action_resolved.connect(resolved.append)
-
-		fight_controller.knock_out(side)
-		await fight_controller.play()
-
-		assert_array(resolved).is_empty()
-		assert_bool(fight_model.get_standing(side).is_empty()).is_true()
-		assert_bool(fight_model.is_won()).is_equal(side == FightModel.Side.ENEMY)
-		assert_array(fight_model.timeline).is_empty()
-
-
 # Each resolved action as its actor, target and tick, by index among the fight's characters.
 func _record_fight(fight_seed: int) -> Array[Vector3i]:
 	var fight_controller := _create_fight_controller(fight_seed)
