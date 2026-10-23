@@ -10,6 +10,10 @@ func is_stop_requested() -> bool:
 	return false
 
 
+func dispose() -> void:
+	pass
+
+
 # A coroutine, so the awaits on it are not redundant: this one passes after a frame.
 func get_next_action(_fight_model: FightModel) -> Action:
 	await (Engine.get_main_loop() as SceneTree).process_frame

@@ -22,6 +22,11 @@ func set_stage(value: Stage) -> void:
 	_stage = value
 
 
+func dispose() -> void:
+	hero_brain.dispose()
+	_enemy_brain.dispose()
+
+
 # Returns once one side has fallen.
 func play() -> void:
 	while not fight_model.is_over():
