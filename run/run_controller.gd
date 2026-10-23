@@ -81,6 +81,7 @@ func _start_encounter(fight_seed: int) -> void:
 	var enemies: Array[Character] = []
 	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
+		enemies.append(Character.new(enemy_data))
 	LimboConsole.info("Fight seed: %d" % fight_seed)
 	_fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
 	await _stage.show_encounter(_fight_controller.fight_model)

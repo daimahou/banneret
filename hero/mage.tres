@@ -7,7 +7,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_portrait"]
 atlas = ExtResource("2_puppet")
-region = Rect2(30, 20, 150, 150)
+region = Rect2(65, 35, 70, 70)
 
 [resource]
 script = ExtResource("1_character_data")

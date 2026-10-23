@@ -52,8 +52,11 @@ layout_mode = 2
 [node name="Flat4" parent="Scenery" unique_id=129521923 instance=ExtResource("2_flat")]
 layout_mode = 2
 
-[node name="TimelineRope" parent="." instance=ExtResource("9_timeline_rope")]
+[node name="TimelineRope" parent="." unique_id=721963837 instance=ExtResource("9_timeline_rope")]
 position = Vector2(580, 302)
+
+[node name="Rope" parent="TimelineRope" index="0"]
+points = PackedVector2Array(456, -75, 617, -19, 825, 4, 1035, -25, 1200, -109, 1388, -29, 1590, 10, 1777, -42, 1897, -117, 2080, -35, 2296, 2, 2459, -43, 2591, -97)
 
 [node name="Puppets" type="Control" parent="." unique_id=1574302127]
 anchors_preset = 0
@@ -76,6 +79,7 @@ offset_bottom = 846.0
 is_preview_shown = false
 
 [node name="Front" type="TextureRect" parent="." unique_id=1254529673]
+z_index = 100
 layout_mode = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
@@ -83,8 +87,11 @@ mouse_filter = 2
 texture = ExtResource("5_front")
 expand_mode = 1
 
-[node name="HealthBars" type="Control" parent="."]
-layout_mode = 0
+[node name="HealthBars" type="Control" parent="." unique_id=948251180]
+z_index = 200
+anchors_preset = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
 mouse_filter = 2
+
+[editable path="TimelineRope"]

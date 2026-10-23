@@ -32,4 +32,6 @@ A grill is always on a ticket that already exists. Read the ticket, its mileston
 
 **Read `docs/agents/gdscript conventions.md` before writing a script** - project code conventions.
 
+**Art is authored at its final size.** Never scale it in a scene or in code: no `scale`, no stretch to fit. Size layout to the art, not the art to the layout.
+
 **`docs/agents/feedback-loop.md` is how a change is checked** — the headless run, the gdUnit4 suite, the import scan.

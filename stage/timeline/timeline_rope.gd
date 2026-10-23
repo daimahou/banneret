@@ -6,14 +6,14 @@ extends Node2D
 const KNOT_SCENE := preload("res://stage/timeline/timeline_knot.tscn")
 const MEDALLION_SCENE := preload("res://stage/timeline/timeline_medallion.tscn")
 
-const KNOT_SPACING := 68.0
-const MEDALLION_SPACING := 224.0
+const KNOT_SPACING := 72.0
+const MEDALLION_SPACING := 148.0
 # Nothing hangs this close to either side of a tie.
-const TIE_CLEARANCE := 48.0
+const TIE_CLEARANCE := 24.0
 
 const MOVE_DURATION := 0.3
 # A thing on the rope drops this far onto it as it comes, and lifts as far off it as it goes, in design units.
-const LIFT := 48.0
+const LIFT := 24.0
 
 var _fight_model: FightModel
 # Each thing on the rope by its entry's key.
@@ -85,12 +85,13 @@ func clear() -> void:
 	_entry_nodes.clear()
 
 
-# Where the rope passes at x, both in the entries' space: the entries hang along it from their node's own x. Level off the rope's ends.
+# Where the rope passes at x, both in the entries' space. Past either end, level with that end.
 func _get_rope_position(x: float) -> Vector2:
 	var rope_x := _get_rope_x(x)
 	var index := _get_rope_segment(rope_x)
 	if index == -1:
-		return Vector2(x, 0.0)
+		var end := _rope.points[0] if rope_x < _rope.points[0].x else _rope.points[-1]
+		return _entries.to_local(_rope.to_global(Vector2(rope_x, end.y)))
 	var from := _rope.points[index]
 	var to := _rope.points[index + 1]
 	return _entries.to_local(_rope.to_global(from.lerp(to, inverse_lerp(from.x, to.x, rope_x))))
@@ -104,6 +105,11 @@ func _get_rope_angle(x: float) -> float:
 	var from := _entries.to_local(_rope.to_global(_rope.points[index]))
 	var to := _entries.to_local(_rope.to_global(_rope.points[index + 1]))
 	return (to - from).angle()
+
+
+# The rope's first point, in the entries' space: the first entry hangs from there.
+func _get_rope_start_x() -> float:
+	return _entries.to_local(_rope.to_global(_rope.points[0])).x
 
 
 # The entries' x in the rope's own space.
@@ -136,7 +142,7 @@ func _refresh() -> void:
 		return
 	var placed: Dictionary[Variant, Node2D] = {}
 	var tie_xs := _get_tie_xs()
-	var x := 0.0
+	var x := _get_rope_start_x()
 	for entry in _get_entries(_fight_model):
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
 		x = _get_clear_x(x, spacing, tie_xs)
@@ -148,8 +154,7 @@ func _refresh() -> void:
 		else:
 			var tween := _create_entry_tween(node)
 			tween.tween_property(node, "position", _get_rope_position(x), MOVE_DURATION)
-			if entry.is_knot():
-				tween.tween_property(node, "rotation", _get_rope_angle(x), MOVE_DURATION)
+			tween.tween_property(node, "rotation" if entry.is_knot() else "knot_rotation", _get_rope_angle(x), MOVE_DURATION)
 		placed[key] = node
 		x += spacing / 2.0
 	for key: Variant in _entry_nodes:
@@ -184,6 +189,7 @@ func _add_entry_node(entry: Entry, x: float) -> Node2D:
 	else:
 		var medallion: TimelineMedallion = MEDALLION_SCENE.instantiate()
 		medallion.portrait = entry.action.actor.data.portrait
+		medallion.knot_rotation = _get_rope_angle(x)
 		node = medallion
 	var rope_position := _get_rope_position(x)
 	node.position = rope_position - Vector2(0.0, LIFT)
