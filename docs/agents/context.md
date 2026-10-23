@@ -73,3 +73,29 @@ _Avoid_: monster, foe
 **Bag**:
 The content an event's offers are drawn from, e.g. skills.
 _Avoid_: pool, category, registry
+
+## Fight
+
+**Fight**:
+An encounter played out: the party against the enemies, until one side has fallen.
+_Avoid_: battle, combat, board
+
+**Tick**:
+The fight's unit of time.
+_Avoid_: turn, step
+
+**Timeline**:
+The fight's queue of pending actions, in the order they resolve.
+_Avoid_: queue, initiative
+
+**Action**:
+A character's chosen skill and target, pending on the timeline until its resolve tick.
+_Avoid_: move, order
+
+**Brain**:
+What chooses the actions of one side: the player or chance.
+_Avoid_: AI, controller
+
+**Effect**:
+One thing a skill does when it resolves, e.g. damage.
+_Avoid_: outcome, result
