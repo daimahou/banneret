@@ -42,6 +42,7 @@ func dispose() -> void:
 		_input = null
 	if _stage != null:
 		_stage.hide_choices()
+		_stage.skill_bar.hide()
 		_stage = null
 
 
@@ -240,8 +241,21 @@ func _on_action_removed(action: Action) -> void:
 
 
 func _show_choices() -> void:
-	if _stage != null:
-		_stage.show_choices(self)
+	if _stage == null:
+		return
+	_stage.show_choices(self)
+	var skill_bar := _stage.skill_bar
+	var skills: Array[SkillData] = []
+	if hero != null:
+		skills = FightRules.get_usable_skills(hero)
+	skill_bar.show_skills(skills, _is_waiting)
+	skill_bar.set_armed_skill(armed_skill)
+	var pending_action := get_pending_action()
+	skill_bar.set_pending_skill(null if pending_action == null else pending_action.skill)
+	if _is_waiting:
+		skill_bar.show_pass_button()
+	else:
+		skill_bar.show_stop_button(_is_stop_requested)
 
 
 func _has_no_action(character: Character) -> bool:
