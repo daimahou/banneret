@@ -44,8 +44,7 @@ The stage transitions between the mission map and the fight in three beats, and 
 ## Testing decisions
 
 - Unit tests only, no scene:
-  - `PuppetLayout.get_stand_positions(flats_rect, count, side)` — one position per puppet, front first, inside its half, on the floor line.
-  - `Flat.get_battle_region(flat_rect, battleground_rect, texture_size)` — the part of the art under one flat.
+  - `PuppetLayout.get_stand_positions(area, count, side)` — one position per puppet, front first, inside its half, clear of the middle gap, on the area's bottom edge.
 - Flow, timing and motion are judged by playing.
 - `tests/run/run_controller_test.gd` stays as is.
 

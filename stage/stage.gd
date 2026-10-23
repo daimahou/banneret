@@ -183,8 +183,10 @@ func _flip_flats(swap_content: Callable) -> void:
 		await tween.finished
 
 
+# The art is exported at the size of BATTLEGROUND_RECT, so the part under a flat is a plain crop.
 func _show_battle_on_flat(flat: Flat) -> void:
-	flat.show_battle(BATTLEGROUND, Flat.get_battle_region(_get_stage_rect(flat), BATTLEGROUND_RECT, BATTLEGROUND.get_size()))
+	var flat_rect := _get_stage_rect(flat)
+	flat.show_battle(BATTLEGROUND, Rect2(flat_rect.position - BATTLEGROUND_RECT.position, flat_rect.size))
 
 
 # Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`.

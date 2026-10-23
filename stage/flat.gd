@@ -35,12 +35,6 @@ var _recolored_layers: Dictionary[Highlight, Node2D] = {}
 @onready var _battle_illustration: TextureRect = $BattleIllustration
 
 
-# Both rects in stage space; the illustration spans `battleground_rect` whatever its texture's size.
-static func get_battle_region(flat_rect: Rect2, battleground_rect: Rect2, texture_size: Vector2) -> Rect2:
-	var texture_scale := texture_size / battleground_rect.size
-	return Rect2((flat_rect.position - battleground_rect.position) * texture_scale, flat_rect.size * texture_scale)
-
-
 func _ready() -> void:
 	for highlight: Highlight in INK_COLORS:
 		var ink_material := ShaderMaterial.new()
