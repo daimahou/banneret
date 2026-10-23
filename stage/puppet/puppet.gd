@@ -8,8 +8,8 @@ const SWAY_PERIOD := 2.4
 # A hop, a raise and a bob down under a press, in design units and seconds.
 const HOP_HEIGHT := 28.0
 const HOP_PERIOD := 0.45
-const RAISE_HEIGHT := 48.0
-const RAISE_DURATION := 0.2
+const RAISE_HEIGHT := 120.0
+const RAISE_DURATION := 0.3
 const BOB_DEPTH := 18.0
 const BOB_DURATION := 0.08
 
@@ -68,7 +68,7 @@ func set_stance(new_stance: Stance) -> void:
 	_hop_time = 0.0
 	if _raise_tween != null:
 		_raise_tween.kill()
-	_raise_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_raise_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_raise_tween.tween_property(self, "_raise", RAISE_HEIGHT if new_stance == Stance.RAISED else 0.0, RAISE_DURATION)
 
 

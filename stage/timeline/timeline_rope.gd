@@ -193,8 +193,10 @@ func _refresh() -> void:
 		else:
 			if entry.is_ghost:
 				(node as TimelineMedallion).portrait = entry.action.actor.data.portrait
+			# A move cuts any fade in short, so it finishes the fade too.
 			var tween := _create_entry_tween(node)
 			tween.tween_property(node, "position", _get_rope_position(x), MOVE_DURATION)
+			tween.tween_property(node, "modulate:a", _get_alpha(entry), MOVE_DURATION)
 			tween.tween_property(node, "rotation" if entry.is_knot() else "knot_rotation", _get_rope_angle(x), MOVE_DURATION)
 		placed[key] = node
 		x += spacing / 2.0
@@ -247,8 +249,12 @@ func _add_entry_node(entry: Entry, x: float) -> Node2D:
 	_entries.add_child(node)
 	var tween := _create_entry_tween(node)
 	tween.tween_property(node, "position:y", rope_position.y, MOVE_DURATION)
-	tween.tween_property(node, "modulate:a", GHOST_ALPHA if entry.is_ghost else 1.0, MOVE_DURATION)
+	tween.tween_property(node, "modulate:a", _get_alpha(entry), MOVE_DURATION)
 	return node
+
+
+static func _get_alpha(entry: Entry) -> float:
+	return GHOST_ALPHA if entry.is_ghost else 1.0
 
 
 func _remove_entry_node(node: Node2D) -> void:
