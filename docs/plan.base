@@ -81,6 +81,8 @@ views:
       - finished
       - formula.Duration
       - formula.Key
+      - hours
+      - total_hours
     sort:
       - property: id
         direction: ASC
@@ -144,6 +146,7 @@ views:
       - formula.Duration
       - formula.Key
       - hours
+      - total_hours
     sort:
       - property: id
         direction: ASC
@@ -158,3 +161,4 @@ views:
       formula.Window: 98
       note.started: 115
       note.finished: 118
+      note.total_hours: 71
