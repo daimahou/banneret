@@ -25,11 +25,12 @@ static func get_resolve_delta(fight_model: FightModel, action: Action) -> Delta:
 	var delta := Delta.new()
 	delta.ticks = action.resolve_tick - fight_model.tick
 	delta.remove_action(action.actor)
-	_add_damage(fight_model, delta, action.target, action.skill.damage)
+	for effect in action.skill.effects:
+		effect.add_changes(fight_model, delta, action)
 	return delta
 
 
-static func _add_damage(fight_model: FightModel, delta: Delta, character: Character, damage: int) -> void:
+static func add_damage(fight_model: FightModel, delta: Delta, character: Character, damage: int) -> void:
 	var health := delta.get_health(character)
 	var dealt := mini(damage, health)
 	delta.add_health(character, -dealt)

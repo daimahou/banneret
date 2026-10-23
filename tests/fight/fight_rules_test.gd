@@ -72,11 +72,13 @@ func _create_character(health: int) -> Character:
 
 
 # A new skill, aimed at the first standing character of the other side.
-func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, skill_damage := 1) -> Action:
+func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, damage_amount := 1) -> Action:
 	var choice := Action.new()
 	choice.actor = actor
 	choice.skill = SkillData.new()
 	choice.skill.delay = skill_delay
-	choice.skill.damage = skill_damage
+	var damage := DamageEffect.new()
+	damage.amount = damage_amount
+	choice.skill.effects = [damage]
 	choice.target = FightRules.get_targets(fight_model, actor, choice.skill)[0]
 	return choice

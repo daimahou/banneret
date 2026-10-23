@@ -95,3 +95,7 @@ _Avoid_: move, order
 **Brain**:
 What chooses the actions of one side: the player or chance.
 _Avoid_: AI, controller
+
+**Effect**:
+One thing a skill does when it resolves, e.g. damage.
+_Avoid_: outcome, result

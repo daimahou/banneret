@@ -24,8 +24,9 @@ Ported from prototype C's `fight/`, cut to one skill on one character of the oth
 ## Implementation decisions
 
 - **Skill** in `skill/`:
-  - `SkillData` — `Resource`: `name`, `delay` (ticks from choosing to resolving), `damage`.
-  - `strike.tres` — the one skill, placeholder numbers.
+  - `SkillData` — `Resource`: `name`, `delay` (ticks from choosing to resolving), `effects`, applied in order.
+  - `Effect` — `Resource` in `skill/effect/`; each kind adds its own changes to the delta. `DamageEffect` (`amount`) goes through `FightRules.add_damage`, where the fall rule lives.
+  - `strike.tres` — the one skill, one inline `DamageEffect`, placeholder numbers.
   - `CharacterData` gains `skills: Array[SkillData]`; knight, rogue, mage and brigand hold `strike`.
 - **Fight** in `fight/`:
   - `Action` — `actor`, `skill`, `target`, `resolve_tick`. No factory.

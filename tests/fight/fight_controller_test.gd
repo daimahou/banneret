@@ -72,7 +72,9 @@ func _create_enemies() -> Array[Character]:
 func _create_character(health: int) -> Character:
 	var skill := SkillData.new()
 	skill.delay = 4
-	skill.damage = 3
+	var damage := DamageEffect.new()
+	damage.amount = 3
+	skill.effects = [damage]
 	var character_data := CharacterData.new()
 	character_data.max_health = health
 	character_data.skills = [skill]
