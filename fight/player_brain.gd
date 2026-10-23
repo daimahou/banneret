@@ -3,8 +3,6 @@ extends Brain
 # The heroes played by the player. The fight stops for a free hero, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
 # Given a stage, it shows its choices there and takes the player's input through its own PlayerInput, until disposed. Nothing is pickable while the fight runs.
 
-signal choices_changed
-signal target_pressed(target: Character)
 signal _decided(action: Action)
 
 var hero: Character
@@ -34,7 +32,7 @@ func _init(stage: Stage = null) -> void:
 	_stage = stage
 	_input = PlayerInput.new(self, stage)
 	(Engine.get_main_loop() as SceneTree).root.add_child(_input)
-	stage.show_choices(self)
+	_show_choices()
 
 
 # No more input, and the stage stops showing the choices.
@@ -70,22 +68,25 @@ func get_next_action(fight_model: FightModel) -> Action:
 		hero = fight_model.get_standing(side)[0]
 	_is_stopped = true
 	_is_waiting = true
-	choices_changed.emit()
+	_show_choices()
 	return await _decided
 
 
+# Shows the choices even when nothing changes: the stop button toggles itself when pressed.
 func request_stop() -> void:
-	if not _is_waiting and not _is_stop_requested:
+	if not _is_waiting:
 		_is_stop_requested = true
-		choices_changed.emit()
+	_show_choices()
 
 
 # The next action resolves; a free hero stops the fight again after it.
 func pass_stop() -> void:
-	if _is_waiting:
-		_is_stop_requested = false
-		_is_stopped = false
-		_decide(null)
+	if not _is_waiting:
+		_show_choices()
+		return
+	_is_stop_requested = false
+	_is_stopped = false
+	_decide(null)
 
 
 func select_hero(character: Character) -> void:
@@ -94,7 +95,7 @@ func select_hero(character: Character) -> void:
 	hero = character
 	hovered_skill = null
 	_disarm()
-	choices_changed.emit()
+	_show_choices()
 
 
 func cycle_hero(step: int) -> void:
@@ -112,13 +113,13 @@ func arm_skill(skill: SkillData) -> void:
 	var targets := get_targets()
 	aimed_target = null if targets.is_empty() else targets[0]
 	_digit_target = null
-	choices_changed.emit()
+	_show_choices()
 
 
 func disarm() -> void:
 	if _is_waiting:
 		_disarm()
-		choices_changed.emit()
+		_show_choices()
 
 
 # Unarmed, arms the skill; armed, aims the target, and confirms it if this digit aimed it already.
@@ -134,13 +135,14 @@ func press_number(index: int) -> void:
 	if index >= targets.size():
 		return
 	var target := targets[index]
-	target_pressed.emit(target)
+	if _stage != null:
+		_stage.bob_puppet(target)
 	if target == _digit_target:
 		confirm()
 		return
 	aimed_target = target
 	_digit_target = target
-	choices_changed.emit()
+	_show_choices()
 
 
 func cycle_aim(step: int) -> void:
@@ -149,7 +151,7 @@ func cycle_aim(step: int) -> void:
 	var targets := get_targets()
 	aimed_target = targets[posmod(targets.find(aimed_target) + step, targets.size())]
 	_digit_target = null
-	choices_changed.emit()
+	_show_choices()
 
 
 func confirm() -> void:
@@ -174,19 +176,19 @@ func pick(character: Character) -> void:
 func hover_skill(skill: SkillData) -> void:
 	if skill != hovered_skill:
 		hovered_skill = skill
-		choices_changed.emit()
+		_show_choices()
 
 
 func hover_character(character: Character) -> void:
 	if character != hovered_character:
 		hovered_character = character
-		choices_changed.emit()
+		_show_choices()
 
 
 func hover_action(action: Action) -> void:
 	if action != hovered_action:
 		hovered_action = action
-		choices_changed.emit()
+		_show_choices()
 
 
 # The armed skill's targets, left to right on stage: the enemies stand front first, the front towards the middle.
@@ -237,6 +239,11 @@ func _on_action_removed(action: Action) -> void:
 		hover_action(null)
 
 
+func _show_choices() -> void:
+	if _stage != null:
+		_stage.show_choices(self)
+
+
 func _has_no_action(character: Character) -> bool:
 	return _fight_model.get_action(character) == null
 
@@ -251,5 +258,5 @@ func _decide(action: Action) -> void:
 	_is_waiting = false
 	hovered_skill = null
 	_disarm()
-	choices_changed.emit()
+	_show_choices()
 	_decided.emit(action)

@@ -12,7 +12,6 @@ const SKILL_BUTTON_SIZE := Vector2(280.0, 100.0)
 const PENDING_BORDER_COLOR := Color("e8c547")
 const PENDING_BORDER_WIDTH := 6
 
-var _player_brain: PlayerBrain
 var _shown_hero: Character
 
 @onready var _skills: HBoxContainer = $Skills
@@ -22,42 +21,31 @@ var _shown_hero: Character
 func _ready() -> void:
 	theme = Theme.new()
 	theme.default_font_size = FONT_SIZE
-	_stop_button.pressed.connect(_on_stop_button_pressed)
+	_stop_button.pressed.connect(stop_pressed.emit)
 	hide()
 
 
 func show_choices(brain: PlayerBrain) -> void:
-	hide_choices()
-	_player_brain = brain
-	brain.choices_changed.connect(_show_choices)
 	show()
-	_show_choices()
-
-
-func hide_choices() -> void:
-	if _player_brain != null:
-		_player_brain.choices_changed.disconnect(_show_choices)
-		_player_brain = null
-	_shown_hero = null
-	hide()
-
-
-func _show_choices() -> void:
-	if _player_brain.hero != _shown_hero:
-		_shown_hero = _player_brain.hero
+	if brain.hero != _shown_hero:
+		_shown_hero = brain.hero
 		_add_skill_buttons()
-	var pending_action := _player_brain.get_pending_action()
+	var pending_action := brain.get_pending_action()
 	for button: Button in _skills.get_children():
 		if button.is_queued_for_deletion():
 			continue
 		var skill: SkillData = button.get_meta(&"skill")
-		button.disabled = not _player_brain.is_waiting()
-		button.set_pressed_no_signal(skill == _player_brain.armed_skill)
+		button.disabled = not brain.is_waiting()
+		button.set_pressed_no_signal(skill == brain.armed_skill)
 		_show_pending(button, pending_action != null and pending_action.skill == skill)
-	_stop_button.text = "Pass" if _player_brain.is_waiting() else "Stop"
+	_stop_button.text = "Pass" if brain.is_waiting() else "Stop"
 	# Held down from the request until the stop lands.
-	_stop_button.set_pressed_no_signal(_player_brain.is_stop_requested() and not _player_brain.is_waiting())
+	_stop_button.set_pressed_no_signal(brain.is_stop_requested() and not brain.is_waiting())
 
+
+func hide_choices() -> void:
+	_shown_hero = null
+	hide()
 
 func _add_skill_buttons() -> void:
 	for child in _skills.get_children():
@@ -98,8 +86,3 @@ func _describe_skill(skill: SkillData) -> String:
 		lines.append(effect.get_description())
 	return "\n".join(PackedStringArray(lines))
 
-
-# Shown again, in case the press changed nothing in the brain.
-func _on_stop_button_pressed() -> void:
-	stop_pressed.emit()
-	_show_choices()
