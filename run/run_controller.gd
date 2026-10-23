@@ -14,11 +14,15 @@ var _fight_controller: FightController
 func _enter_tree() -> void:
 	LimboConsole.register_command(start_mission, "map_seed", "Rebuild the mission map from a seed")
 	LimboConsole.register_command(start_fight, "fight", "Skip the mission: play the encounter at once, from a seed or a random one")
+	LimboConsole.register_command(win_fight, "fight_win", "Knock out every enemy: the fight is won")
+	LimboConsole.register_command(lose_fight, "fight_lose", "Knock out every hero: the fight, and the run, are lost")
 
 
 func _exit_tree() -> void:
 	LimboConsole.unregister_command(start_mission)
 	LimboConsole.unregister_command(start_fight)
+	LimboConsole.unregister_command(win_fight)
+	LimboConsole.unregister_command(lose_fight)
 
 
 func _ready() -> void:
@@ -60,6 +64,14 @@ func start_fight(fight_seed := randi()) -> void:
 	await _start_encounter(fight_seed)
 
 
+func win_fight() -> void:
+	_knock_out(FightModel.Side.ENEMY)
+
+
+func lose_fight() -> void:
+	_knock_out(FightModel.Side.HERO)
+
+
 # For debugging: `--fight` or `--fight=<seed>` on the command line, e.g. in Debug > Customize Run Instances, goes straight to the fight.
 func _start_fight_from_arguments() -> void:
 	for argument in OS.get_cmdline_args() + OS.get_cmdline_user_args():
@@ -69,6 +81,13 @@ func _start_fight_from_arguments() -> void:
 		if argument.begins_with("--fight="):
 			start_fight(int(argument.trim_prefix("--fight=")))
 			return
+
+
+func _knock_out(side: FightModel.Side) -> void:
+	if _fight_controller == null:
+		LimboConsole.warn("No fight is playing")
+		return
+	_fight_controller.knock_out(side)
 
 
 func _on_mission_ended() -> void:
