@@ -1,6 +1,9 @@
 class_name RunController
 extends Node
 
+# The fight's end stays on stage this long, in seconds.
+const END_HOLD_DURATION := 1.0
+
 var run_model := RunModel.new()
 
 var _mission_controller: MissionController
@@ -70,16 +73,17 @@ func _start_encounter(fight_seed: int) -> void:
 	var enemies: Array[Character] = []
 	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
-	await _stage.show_encounter(run_model.party, enemies)
-	await _play_fight(enemies, fight_seed)
-
-
-# Either way the stage goes back to a new mission; a defeat loses the run first, and a new one starts.
-func _play_fight(enemies: Array[Character], fight_seed: int) -> void:
 	LimboConsole.info("Fight seed: %d" % fight_seed)
-	var fight_controller := FightController.new(run_model.party, enemies, fight_seed)
+	var fight_controller := FightController.new(run_model.party, enemies, fight_seed, _stage)
+	await _stage.show_encounter(fight_controller.fight_model)
+	await _play_fight(fight_controller)
+
+
+# Either way the stage goes back to a new mission, after a hold on the fight's end; a defeat loses the run first, and a new one starts.
+func _play_fight(fight_controller: FightController) -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
+	await get_tree().create_timer(END_HOLD_DURATION).timeout
 	if fight_controller.fight_model.is_won():
 		LimboConsole.info("Fight won")
 	else:

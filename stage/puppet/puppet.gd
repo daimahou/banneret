@@ -5,6 +5,14 @@ extends Node2D
 const SWAY_ANGLE := 0.03
 const SWAY_PERIOD := 2.4
 
+# A shake under a blow, in design units and seconds.
+const SHAKE_DISTANCE := 18.0
+const SHAKE_COUNT := 3
+const SHAKE_DURATION := 0.3
+
+# A fall sinks it out of sight below the stage front, in seconds.
+const SINK_DURATION := 0.7
+
 # Drawn with its stick foot on the origin, the point it sways about.
 @export var texture: Texture2D
 
@@ -20,5 +28,25 @@ func _ready() -> void:
 	create_tween().set_loops().tween_method(_set_sway, 0.0, TAU, SWAY_PERIOD)
 
 
+func get_height() -> float:
+	return texture.get_height()
+
+
+func shake() -> void:
+	var tween := create_tween()
+	var step := SHAKE_DURATION / (SHAKE_COUNT * 2 + 1)
+	for index in SHAKE_COUNT:
+		tween.tween_property(_sprite, "position:x", SHAKE_DISTANCE, step)
+		tween.tween_property(_sprite, "position:x", -SHAKE_DISTANCE, step)
+	tween.tween_property(_sprite, "position:x", 0.0, step)
+
+
+# Returns once it is out of sight.
+func sink() -> void:
+	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "position:y", position.y + get_height(), SINK_DURATION)
+	await tween.finished
+
+
 func _set_sway(cycle_angle: float) -> void:
-	rotation = SWAY_ANGLE * sin(cycle_angle + _sway_phase)
+	_sprite.rotation = SWAY_ANGLE * sin(cycle_angle + _sway_phase)
