@@ -82,10 +82,9 @@ func _start_encounter(fight_seed: int) -> void:
 	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
 	LimboConsole.info("Fight seed: %d" % fight_seed)
-	fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
-	await _stage.show_encounter(fight_controller.fight_model)
 	var player_brain := PlayerBrain.new()
-	fight_controller.hero_brain = player_brain
+	fight_controller = FightController.new(run_model.party, enemies, fight_seed, player_brain, _stage)
+	await _stage.show_encounter(fight_controller.fight_model)
 	_stage.show_choices(player_brain)
 	fight_started.emit(fight_controller)
 	await get_tree().create_timer(HOLD_DURATION).timeout

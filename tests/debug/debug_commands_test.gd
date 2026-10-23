@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 
 func test_a_knocked_out_side_falls_as_the_next_action_resolves() -> void:
 	for side in [FightModel.Side.HERO, FightModel.Side.ENEMY]:
-		var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1)
+		var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1, RandomBrain.new(FightModel.Side.HERO, 1))
 		var fight_model := fight_controller.fight_model
 		var resolved: Array[Action] = []
 		fight_controller.action_resolved.connect(resolved.append)
@@ -20,10 +20,9 @@ func test_a_knocked_out_side_falls_as_the_next_action_resolves() -> void:
 
 func test_a_knocked_out_side_falls_at_once_while_the_player_chooses() -> void:
 	for side in [FightModel.Side.HERO, FightModel.Side.ENEMY]:
-		var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1)
-		var fight_model := fight_controller.fight_model
 		var player_brain := PlayerBrain.new()
-		fight_controller.hero_brain = player_brain
+		var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1, player_brain)
+		var fight_model := fight_controller.fight_model
 		var resolved: Array[Action] = []
 		fight_controller.action_resolved.connect(resolved.append)
 		var debug_commands: DebugCommands = auto_free(DebugCommands.new())
@@ -38,10 +37,9 @@ func test_a_knocked_out_side_falls_at_once_while_the_player_chooses() -> void:
 
 
 func test_random_heroes_take_over_a_waiting_player_brain_with_their_choice() -> void:
-	var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1)
-	var fight_model := fight_controller.fight_model
 	var player_brain := PlayerBrain.new()
-	fight_controller.hero_brain = player_brain
+	var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1, player_brain)
+	var fight_model := fight_controller.fight_model
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 	fight_controller.play()
 	var actors: Array[Character] = []
@@ -55,7 +53,7 @@ func test_random_heroes_take_over_a_waiting_player_brain_with_their_choice() -> 
 
 
 func test_heroes_no_longer_random_go_back_to_the_player() -> void:
-	var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1)
+	var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1, RandomBrain.new(FightModel.Side.HERO, 1))
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 
 	await debug_commands.set_player_brain(fight_controller, null, true)
