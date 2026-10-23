@@ -8,12 +8,12 @@ const FLIP_TRANSITION := Tween.TRANS_SINE
 
 const BATTLEGROUND: Texture2D = preload("res://art/stage/battleground.png")
 
-const VISITATION_HIGHLIGHTS: Dictionary[MissionModel.Visitation, Flat.Highlight] = {
-	MissionModel.Visitation.CLOSED: Flat.Highlight.DIMMED,
-	MissionModel.Visitation.AHEAD: Flat.Highlight.NONE,
-	MissionModel.Visitation.OPEN: Flat.Highlight.NONE,
-	MissionModel.Visitation.TRAVELLED: Flat.Highlight.TRAVELLED,
-	MissionModel.Visitation.CURRENT: Flat.Highlight.TRAVELLED,
+const VISITATION_HIGHLIGHTS: Dictionary[MissionModel.Visitation, Ink.Highlight] = {
+	MissionModel.Visitation.CLOSED: Ink.Highlight.DIMMED,
+	MissionModel.Visitation.AHEAD: Ink.Highlight.NONE,
+	MissionModel.Visitation.OPEN: Ink.Highlight.NONE,
+	MissionModel.Visitation.TRAVELLED: Ink.Highlight.TRAVELLED,
+	MissionModel.Visitation.CURRENT: Ink.Highlight.TRAVELLED,
 }
 
 var _flats: Array[Flat] = []
@@ -84,13 +84,13 @@ func update_highlights() -> void:
 		for map_node in _mission_map_layout.get_map_nodes(index):
 			var highlight := VISITATION_HIGHLIGHTS[_mission_model.get_map_node_visitation(map_node)]
 			if map_node == hovered_map_node:
-				highlight = Flat.Highlight.HOVERED
+				highlight = Ink.Highlight.HOVERED
 			flat.set_map_node_highlight(map_node, highlight, _is_pickable(map_node))
-		var road_dash_highlights: Dictionary[Flat.RoadDash, Flat.Highlight] = {}
+		var road_dash_highlights: Dictionary[Flat.RoadDash, Ink.Highlight] = {}
 		for road_dash in _mission_map_layout.get_road_dashes(index):
-			var highlight := Flat.Highlight.DIMMED
+			var highlight := Ink.Highlight.DIMMED
 			for road in road_dash.roads:
-				highlight = maxi(highlight, _get_road_highlight(road, hovered_map_node)) as Flat.Highlight
+				highlight = maxi(highlight, _get_road_highlight(road, hovered_map_node)) as Ink.Highlight
 			road_dash_highlights[road_dash] = highlight
 		flat.set_road_dash_highlights(road_dash_highlights)
 
@@ -133,7 +133,7 @@ func _on_map_node_mouse_exited(map_node: MapNode) -> void:
 	update_highlights()
 
 
-func _get_road_highlight(road: RoadLayout.Road, hovered_map_node: MapNode) -> Flat.Highlight:
+func _get_road_highlight(road: RoadLayout.Road, hovered_map_node: MapNode) -> Ink.Highlight:
 	if road.end_node == hovered_map_node and road.start_node == _mission_model.get_current_map_node():
-		return Flat.Highlight.HOVERED
+		return Ink.Highlight.HOVERED
 	return VISITATION_HIGHLIGHTS[_mission_model.get_road_visitation(road.start_node, road.end_node)]

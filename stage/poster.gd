@@ -18,7 +18,7 @@ var is_pickable := false:
 		_update_highlight()
 
 var _is_mouse_over := false
-var _hover_material := ShaderMaterial.new()
+var _hover_material: ShaderMaterial
 
 @onready var _animation_player: AnimationPlayer = $AnimationPlayer
 @onready var _body: Control = $Scroll/Body
@@ -31,8 +31,7 @@ func _ready() -> void:
 		return
 	%Name.text = offer.name
 	%Description.text = offer.description
-	_hover_material.shader = Flat.INK_RECOLOR_SHADER
-	_hover_material.set_shader_parameter("ink_color", Flat.INK_COLORS[Flat.Highlight.HOVERED])
+	_hover_material = Ink.create_material(Ink.Highlight.HOVERED)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
