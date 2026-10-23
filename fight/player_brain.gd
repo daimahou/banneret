@@ -30,7 +30,20 @@ func _init(stage: Stage = null) -> void:
 	if stage == null:
 		return
 	_stage = stage
-	_input = PlayerInput.new(self, stage)
+	_input = PlayerInput.new(stage)
+	_input.stop_pressed.connect(request_stop)
+	_input.pass_pressed.connect(pass_stop)
+	_input.stop_button_pressed.connect(_on_stop_button_pressed)
+	_input.hero_cycled.connect(cycle_hero)
+	_input.number_pressed.connect(press_number)
+	_input.aim_cycled.connect(cycle_aim)
+	_input.confirm_pressed.connect(confirm)
+	_input.cancel_pressed.connect(disarm)
+	_input.character_hovered.connect(hover_character)
+	_input.action_hovered.connect(hover_action)
+	_input.character_clicked.connect(pick)
+	_input.skill_pressed.connect(arm_skill)
+	_input.skill_hovered.connect(hover_skill)
 	(Engine.get_main_loop() as SceneTree).root.add_child(_input)
 	_show_choices()
 
@@ -233,6 +246,13 @@ func get_ghost_action() -> Action:
 	ghost.skill = shown
 	ghost.resolve_tick = _fight_model.tick + shown.delay
 	return ghost
+
+
+func _on_stop_button_pressed() -> void:
+	if _is_waiting:
+		pass_stop()
+	else:
+		request_stop()
 
 
 func _on_action_removed(action: Action) -> void:

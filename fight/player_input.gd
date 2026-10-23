@@ -1,27 +1,41 @@
 class_name PlayerInput
 extends Node
-# The player's input in a fight: the keys, the mouse on puppets and medallions, the skill bar. Each becomes a call on the brain.
+# The player's input in a fight: the keys, the mouse on puppets and medallions, the skill bar. It reports what the player did, and knows nothing of what it means.
 
-var _brain: PlayerBrain
+signal stop_pressed
+signal pass_pressed
+# Stop or Pass, by the button's own label.
+signal stop_button_pressed
+signal hero_cycled(step: int)
+signal number_pressed(index: int)
+signal aim_cycled(step: int)
+signal confirm_pressed
+signal cancel_pressed
+# Null when the cursor is on no puppet, or no medallion.
+signal character_hovered(character: Character)
+signal action_hovered(action: Action)
+signal character_clicked(character: Character)
+signal skill_pressed(skill: SkillData)
+signal skill_hovered(skill: SkillData)
+
 var _stage: Stage
 
 
-func _init(brain: PlayerBrain, stage: Stage) -> void:
-	_brain = brain
+func _init(stage: Stage) -> void:
 	_stage = stage
 
 
 func _ready() -> void:
-	_stage.skill_bar.skill_pressed.connect(_on_skill_pressed)
-	_stage.skill_bar.skill_hovered.connect(_on_skill_hovered)
-	_stage.skill_bar.stop_pressed.connect(_on_stop_pressed)
+	_stage.skill_bar.skill_pressed.connect(skill_pressed.emit)
+	_stage.skill_bar.skill_hovered.connect(skill_hovered.emit)
+	_stage.skill_bar.stop_pressed.connect(stop_button_pressed.emit)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var point := _stage.get_global_mouse_position()
-		_brain.hover_character(_stage.get_character_at(point))
-		_brain.hover_action(_stage.get_action_at(point))
+		character_hovered.emit(_stage.get_character_at(point))
+		action_hovered.emit(_stage.get_action_at(point))
 		return
 	var click := event as InputEventMouseButton
 	if click != null:
@@ -39,9 +53,9 @@ func _handle_click(click: InputEventMouseButton) -> void:
 		var character := _stage.get_character_at(_stage.get_global_mouse_position())
 		if character == null:
 			return
-		_brain.pick(character)
+		character_clicked.emit(character)
 	elif click.button_index == MOUSE_BUTTON_RIGHT:
-		_brain.disarm()
+		cancel_pressed.emit()
 	else:
 		return
 	get_viewport().set_input_as_handled()
@@ -50,37 +64,21 @@ func _handle_click(click: InputEventMouseButton) -> void:
 func _handle_key(key: InputEventKey) -> void:
 	match key.keycode:
 		KEY_SPACE:
-			_brain.request_stop()
+			stop_pressed.emit()
 		KEY_P:
-			_brain.pass_stop()
+			pass_pressed.emit()
 		KEY_TAB:
-			_brain.cycle_hero(-1 if key.shift_pressed else 1)
+			hero_cycled.emit(-1 if key.shift_pressed else 1)
 		KEY_ESCAPE:
-			_brain.disarm()
+			cancel_pressed.emit()
 		KEY_ENTER, KEY_KP_ENTER:
-			_brain.confirm()
+			confirm_pressed.emit()
 		KEY_LEFT:
-			_brain.cycle_aim(-1)
+			aim_cycled.emit(-1)
 		KEY_RIGHT:
-			_brain.cycle_aim(1)
+			aim_cycled.emit(1)
 		_:
 			if key.keycode < KEY_1 or key.keycode > KEY_9:
 				return
-			_brain.press_number(key.keycode - KEY_1)
+			number_pressed.emit(key.keycode - KEY_1)
 	get_viewport().set_input_as_handled()
-
-
-func _on_skill_pressed(skill: SkillData) -> void:
-	_brain.arm_skill(skill)
-
-
-func _on_skill_hovered(skill: SkillData) -> void:
-	_brain.hover_skill(skill)
-
-
-# The one button: Pass while stopped, Stop while the fight runs.
-func _on_stop_pressed() -> void:
-	if _brain.is_waiting():
-		_brain.pass_stop()
-	else:
-		_brain.request_stop()
