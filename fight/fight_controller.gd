@@ -6,7 +6,6 @@ extends RefCounted
 signal action_resolved(action: Action)
 
 var fight_model: FightModel
-# Random unless replaced; a new brain takes over the next time the heroes are asked.
 var hero_brain: Brain
 
 var _enemy_brain: Brain
