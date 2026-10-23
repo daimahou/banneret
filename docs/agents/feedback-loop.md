@@ -23,6 +23,8 @@ A `SceneTree` script that calls `quit(0)` exits 0 and one that calls `quit(100)`
 
 **A test asserts behaviour, never a stored value.** A test that sets a field and reads it back proves nothing. Neither does one that checks a constant or a default against a particular value. The values in a `.tres` are placeholders and are never tested.
 
+**Tests never cover layout.** Positions, sizes and spacing are judged by playing.
+
 ## The binary
 
 `/Applications/Godot.app/Contents/MacOS/Godot` is 4.7.2 stable, matching `project.godot`'s `config/features`. `Godot_4.8.app` is also installed and is not it. Override for one run with a different path.

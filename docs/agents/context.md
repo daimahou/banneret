@@ -92,6 +92,10 @@ _Avoid_: queue, initiative
 A character's chosen skill and target, pending on the timeline until its resolve tick.
 _Avoid_: move, order
 
+**Medallion**:
+An action as shown on the timeline: a token hanging on the rope with its actor's portrait.
+_Avoid_: token, icon, card
+
 **Brain**:
 What chooses the actions of one side: the player or chance.
 _Avoid_: AI, controller
