@@ -1,8 +1,8 @@
 """Active time per ticket, from the Claude Code session transcripts.
 
-- A leaf gets the time on its branch: its implementation.
-- A note gets the time on main that ends in a commit carrying `Ticket: <its id>`: its breakdown, or the grills of its children.
-- Untagged time on main just before a session moves to a ticket branch is that ticket's grill; it goes to the ticket's parent.
+- A ticket gets the time on main that ends in a commit carrying `Ticket: <its id>`: a note's breakdown, a leaf's spec and grill.
+- A leaf also gets the time on its branch: its implementation.
+- Untagged time on main just before a session moves to a ticket branch is that ticket's grill; it goes to the ticket.
 - The rest is overhead (setup, docs, tracker), written on the active goal, so every ticket's hours sum to the project's active time.
 - A ticket with children also gets `total_hours`: its own hours and all its descendants'.
 
@@ -85,7 +85,7 @@ def get_parent_id(tickets, ticket_id):
 	return next((other_id for other_id, ticket in tickets.items() if ticket["name"] == parent_name), None)
 
 
-def get_ticket_seconds(tickets, goal_id, coming_ticket_id):
+def get_ticket_seconds(goal_id, coming_ticket_id):
 	commits = get_main_commits()
 	birth = commits[0][0]
 	seconds = collections.Counter()
@@ -114,8 +114,7 @@ def get_ticket_seconds(tickets, goal_id, coming_ticket_id):
 				seconds[goal_id] += gap
 			if next_branch != branch:
 				if branch == "main" and TICKET_BRANCH.match(next_branch):
-					grilled_id = TICKET_BRANCH.match(next_branch).group(1)
-					seconds[get_parent_id(tickets, grilled_id) or goal_id] += untagged
+					seconds[TICKET_BRANCH.match(next_branch).group(1)] += untagged
 				else:
 					seconds[goal_id] += untagged
 				untagged = 0.0
@@ -163,7 +162,7 @@ def main():
 	coming_ticket_id = next((argument.split("=", 1)[1] for argument in sys.argv if argument.startswith("--ticket=")), None)
 	tickets = get_tickets()
 	goal_id = get_active_goal_id(tickets)
-	seconds = get_ticket_seconds(tickets, goal_id, coming_ticket_id)
+	seconds = get_ticket_seconds(goal_id, coming_ticket_id)
 	hours = {ticket_id: get_hours(value) for ticket_id, value in seconds.items() if ticket_id in tickets}
 	# Overhead takes up the rounding, so the hours sum to the project's active time.
 	hours[goal_id] = round(get_hours(sum(seconds.values())) - sum(value for ticket_id, value in hours.items() if ticket_id != goal_id), 1)

@@ -11,7 +11,7 @@
 - Never work on `main`. One branch per ticket: `<id>-<slug>` (e.g. `1.1-1.2-dash-combat`), squash-merged to `main`, then deleted.
 - Exception: ticket authoring (tickets, their templates, the tracker rules) goes straight to `main` — no ticket, no branch.
 - Prototypes stay on their own branch, and are merged only if the user keeps them. Throwaway branches are deleted, never piled into one folder.
-- Commit or merge only when asked.
+- Commit or merge only when asked. No `Co-Authored-By` line in commit messages.
 - The human pushes `main`. When it is ahead of `origin`, remind them before starting a branch, merging, or anything else that relies on it being pushed.
 - Every commit on `main` and every merge updates ticket time first: see Time in [[issue-tracker]].
 - Implementing a ticket ends with its branch pushed and a PR open to `main`: the PR is where the human reviews. Never merge it. While it is open, commit and push every change to it without asking.

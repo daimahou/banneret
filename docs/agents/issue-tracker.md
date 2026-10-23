@@ -64,8 +64,8 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 ## Time
 
-- A leaf's `hours` = its branch: implementation only.
-- A note's `hours` = the work on `main` that shapes it: its breakdown, and the grills of its children.
+- A leaf's `hours` = its spec and grill on `main`, and its branch.
+- A note's `hours` = its breakdown on `main`.
 - The active goal holds the overhead: work on `main` in no ticket (tracker, docs, tooling). Every ticket's `hours` sum to the project's active time.
-- **Commit on `main` at each confirmed step, before going deeper**: a breakdown the human confirms, a grill once its spec is written. The commit carries a `Ticket: <id>` trailer naming the note the time goes to: the note broken down, or the grilled leaf's parent. Time on `main` since the previous commit goes to it; without a trailer, to the active goal.
+- **Commit on `main` at each confirmed step, before going deeper**: a breakdown the human confirms, a grill once its spec is written. The commit carries a `Ticket: <id>` trailer naming the ticket the time goes to: the note broken down, or the leaf specced or grilled. Time on `main` since the previous commit goes to it; without a trailer, to the active goal.
 - Before every commit on `main`, run `python3 tools/ticket_time.py --write`, with `--ticket=<id>` when the commit carries a trailer, and commit the `hours` with it. The numbers change only on commit.
