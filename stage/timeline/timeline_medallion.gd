@@ -1,9 +1,9 @@
 class_name TimelineMedallion
 extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
-# Highlighted, it hangs larger; a cross over its face marks an action about to be dropped.
+# Highlighted, its ring brightens; a cross over its face marks an action about to be dropped.
 
-const HIGHLIGHT_SCALE := 1.2
+const HIGHLIGHT_TINT := Color(1.8, 1.8, 1.8)
 
 @export var portrait: Texture2D:
 	set(value):
@@ -33,7 +33,7 @@ func has_point(global_point: Vector2) -> bool:
 
 
 func set_highlighted(is_highlighted: bool) -> void:
-	scale = Vector2.ONE * (HIGHLIGHT_SCALE if is_highlighted else 1.0)
+	_ring.modulate = HIGHLIGHT_TINT if is_highlighted else Color.WHITE
 
 
 func set_dropped(is_dropped: bool) -> void:

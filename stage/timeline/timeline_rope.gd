@@ -23,7 +23,7 @@ var _fight_model: FightModel
 var _entry_nodes: Dictionary[Variant, Node2D] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _is_refresh_queued := false
-var _ghost: Action
+var _ghost_action: Action
 var _highlighted_actors: Array[Character] = []
 var _dropped_action: Action
 
@@ -56,18 +56,18 @@ class Entry:
 
 
 # The rope from left to right. An action due now comes before any knot; on a shared tick, the timeline's order, after the ghost: chosen last, it would resolve first.
-static func _get_entries(fight_model: FightModel, ghost: Action) -> Array[Entry]:
+static func _get_entries(fight_model: FightModel, ghost_action: Action) -> Array[Entry]:
 	var last_tick := fight_model.tick
 	for action in fight_model.timeline:
 		last_tick = maxi(last_tick, action.resolve_tick)
-	if ghost != null:
-		last_tick = maxi(last_tick, ghost.resolve_tick)
+	if ghost_action != null:
+		last_tick = maxi(last_tick, ghost_action.resolve_tick)
 	var entries: Array[Entry] = []
 	for tick in range(fight_model.tick, last_tick + 1):
 		if tick > fight_model.tick:
 			entries.append(Entry.new(tick, null))
-		if ghost != null and ghost.resolve_tick == tick:
-			entries.append(Entry.new(tick, ghost, true))
+		if ghost_action != null and ghost_action.resolve_tick == tick:
+			entries.append(Entry.new(tick, ghost_action, true))
 		for action in fight_model.timeline:
 			if action.resolve_tick == tick:
 				entries.append(Entry.new(tick, action))
@@ -82,16 +82,16 @@ func show_fight(fight_model: FightModel) -> void:
 	_queue_refresh()
 
 
-# Null takes the ghost down.
-func set_ghost(ghost: Action) -> void:
-	_ghost = ghost
+# The action the ghost stands for; null takes the ghost down.
+func set_ghost_action(action: Action) -> void:
+	_ghost_action = action
 	_queue_refresh()
 
 
 # The medallions of these actors hang highlighted; the dropped action's is crossed out.
-func set_marks(highlighted_actors: Array[Character], dropped_action: Action) -> void:
-	_highlighted_actors = highlighted_actors
-	_dropped_action = dropped_action
+func set_marks(actors: Array[Character], dropped: Action) -> void:
+	_highlighted_actors = actors
+	_dropped_action = dropped
 	_show_marks()
 
 
@@ -104,7 +104,7 @@ func get_action_at(global_point: Vector2) -> Action:
 
 
 func clear() -> void:
-	_ghost = null
+	_ghost_action = null
 	_highlighted_actors = []
 	_dropped_action = null
 	if _fight_model != null:
@@ -182,7 +182,7 @@ func _refresh() -> void:
 	var placed: Dictionary[Variant, Node2D] = {}
 	var tie_xs := _get_tie_xs()
 	var x := _get_rope_start_x()
-	for entry in _get_entries(_fight_model, _ghost):
+	for entry in _get_entries(_fight_model, _ghost_action):
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
 		x = _get_left_x_past_ties(x, spacing, tie_xs)
 		x += spacing / 2.0

@@ -24,14 +24,14 @@ func _ready() -> void:
 
 
 # Null hides the controls: the heroes play themselves, or no fight is on.
-func show_choices(player_brain: PlayerBrain) -> void:
+func show_choices(brain: PlayerBrain) -> void:
 	if _player_brain != null:
 		_player_brain.choices_changed.disconnect(_show_choices)
-	_player_brain = player_brain
+	_player_brain = brain
 	_shown_hero = null
-	visible = player_brain != null
-	if player_brain != null:
-		player_brain.choices_changed.connect(_show_choices)
+	visible = brain != null
+	if brain != null:
+		brain.choices_changed.connect(_show_choices)
 		_show_choices()
 
 

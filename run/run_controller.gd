@@ -13,6 +13,7 @@ var is_hero_brain_random := false:
 			_set_hero_brain()
 
 var _mission_controller: MissionController
+var _fight_seed := 0
 
 @onready var _stage: Stage = $Stage
 
@@ -86,6 +87,7 @@ func _start_encounter(fight_seed: int) -> void:
 	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
 	LimboConsole.info("Fight seed: %d" % fight_seed)
+	_fight_seed = fight_seed
 	fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
 	await _stage.show_encounter(fight_controller.fight_model)
 	_set_hero_brain()
@@ -97,7 +99,7 @@ func _start_encounter(fight_seed: int) -> void:
 func _set_hero_brain() -> void:
 	var player_brain := fight_controller.hero_brain as PlayerBrain
 	if is_hero_brain_random:
-		fight_controller.hero_brain = RandomBrain.new(FightModel.Side.HERO, randi())
+		fight_controller.hero_brain = RandomBrain.new(FightModel.Side.HERO, _fight_seed)
 		_stage.show_choices(null)
 		if player_brain != null:
 			player_brain.pass_stop()

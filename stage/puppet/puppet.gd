@@ -61,15 +61,15 @@ func has_point(global_point: Vector2) -> bool:
 	return _sprite.get_rect().has_point(_sprite.to_local(global_point))
 
 
-func set_stance(stance: Stance) -> void:
-	if stance == _stance:
+func set_stance(new_stance: Stance) -> void:
+	if new_stance == _stance:
 		return
-	_stance = stance
+	_stance = new_stance
 	_hop_time = 0.0
 	if _raise_tween != null:
 		_raise_tween.kill()
 	_raise_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	_raise_tween.tween_property(self, "_raise", RAISE_HEIGHT if stance == Stance.RAISED else 0.0, RAISE_DURATION)
+	_raise_tween.tween_property(self, "_raise", RAISE_HEIGHT if new_stance == Stance.RAISED else 0.0, RAISE_DURATION)
 
 
 func set_tint(tint: Color) -> void:

@@ -16,8 +16,12 @@ var hovered_skill: SkillData
 
 var _fight_model: FightModel
 var _is_waiting := false
+# Whether the brain waited at its last turn: a new stop starts on the first hero, one going on keeps its hero.
+var _is_stopped := false
+
 # A requested stop lasts until a pass.
 var _is_stop_requested := false
+
 # Only a target aimed by a digit is confirmed by the same digit again.
 var _digit_target: Character
 
@@ -37,13 +41,15 @@ func is_waiting() -> bool:
 # Returns null at once while the fight runs on. Stopped, it selects the first free hero, else the first hero, and waits.
 func get_next_action(fight_model: FightModel) -> Action:
 	_fight_model = fight_model
-	var free := fight_model.get_standing(side).filter(_has_no_action)
-	if free.is_empty() and not _is_stop_requested:
+	var free_heroes := fight_model.get_standing(side).filter(_has_no_action)
+	if free_heroes.is_empty() and not _is_stop_requested:
+		_is_stopped = false
 		return null
-	if not free.is_empty() and hero not in free:
-		hero = free[0]
-	elif hero == null or hero.is_fallen():
+	if not free_heroes.is_empty():
+		hero = free_heroes[0]
+	elif not _is_stopped or hero.is_fallen():
 		hero = fight_model.get_standing(side)[0]
+	_is_stopped = true
 	_is_waiting = true
 	choices_changed.emit()
 	return await _decided
@@ -59,6 +65,7 @@ func request_stop() -> void:
 func pass_stop() -> void:
 	if _is_waiting:
 		_is_stop_requested = false
+		_is_stopped = false
 		_decide(null)
 
 
@@ -182,7 +189,7 @@ func get_dropped_action() -> Action:
 
 
 # The action the hovered skill, else the armed one, would hang on the timeline, or null.
-func get_ghost() -> Action:
+func get_ghost_action() -> Action:
 	if not _is_waiting or hero == null:
 		return null
 	var shown := hovered_skill if hovered_skill != null else armed_skill
@@ -205,7 +212,6 @@ func _disarm() -> void:
 	_digit_target = null
 
 
-# The hero stays selected: the next stop starts from it.
 func _decide(action: Action) -> void:
 	_is_waiting = false
 	hovered_skill = null

@@ -103,21 +103,22 @@ func show_encounter(fight_model: FightModel) -> void:
 	_add_puppets(tween, fight_model.enemies, PuppetLayout.get_stand_positions(area, fight_model.enemies.size(), PuppetLayout.Side.RIGHT), _get_puppet_x(OFFSTAGE_RIGHT_X))
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
+	fight_model.action_removed.connect(_on_action_removed)
 	_timeline_rope.show_fight(fight_model)
 	await tween.finished
 	_view = View.FIGHT
 
 
 # Shows the player brain's choices, and takes the clicks on puppets for it. Null takes them down: the heroes play themselves.
-func show_choices(player_brain: PlayerBrain) -> void:
+func show_choices(brain: PlayerBrain) -> void:
 	if _player_brain != null:
 		_player_brain.choices_changed.disconnect(_show_choices)
 		_player_brain.target_pressed.disconnect(_on_target_pressed)
-	_player_brain = player_brain
-	if player_brain != null:
-		player_brain.choices_changed.connect(_show_choices)
-		player_brain.target_pressed.connect(_on_target_pressed)
-	_fight_controls.show_choices(player_brain)
+	_player_brain = brain
+	if brain != null:
+		brain.choices_changed.connect(_show_choices)
+		brain.target_pressed.connect(_on_target_pressed)
+	_fight_controls.show_choices(brain)
 	_show_choices()
 
 
@@ -211,7 +212,7 @@ func _show_choices() -> void:
 		highlighted.append(_player_brain.hero)
 	if _hovered_character != null:
 		highlighted.append(_hovered_character)
-	_timeline_rope.set_ghost(_player_brain.get_ghost() if _player_brain != null else null)
+	_timeline_rope.set_ghost_action(_player_brain.get_ghost_action() if _player_brain != null else null)
 	_timeline_rope.set_marks(highlighted, _player_brain.get_dropped_action() if _player_brain != null else null)
 
 
@@ -225,6 +226,13 @@ func _get_tint(character: Character) -> Color:
 	if is_hovered or (_hovered_action != null and character == _hovered_action.actor):
 		tint *= HOVER_TINT
 	return tint
+
+
+# An action gone from the rope is no longer under the cursor.
+func _on_action_removed(action: Action) -> void:
+	if action == _hovered_action:
+		_hovered_action = null
+		_show_choices()
 
 
 func _on_target_pressed(target: Character) -> void:
