@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://cn4tlmf7ivxe3" path="res://character/character_data.gd" id="1_character_data"]
 [ext_resource type="Texture2D" uid="uid://bqmgg86glf0oj" path="res://art/puppet/mage.png" id="2_puppet"]
+[ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="3_skill_data"]
+[ext_resource type="Resource" uid="uid://3bpbae2bacqx" path="res://skill/strike.tres" id="4_strike"]
 
 [resource]
 script = ExtResource("1_character_data")
 name = "Mage"
 max_health = 15
 puppet = ExtResource("2_puppet")
+skills = Array[ExtResource("3_skill_data")]([ExtResource("4_strike")])

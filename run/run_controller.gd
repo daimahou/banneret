@@ -56,4 +56,24 @@ func _on_mission_ended() -> void:
 	var enemies: Array[Character] = []
 	for enemy_data in ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
-	_stage.show_encounter(run_model.party, enemies)
+	await _stage.show_encounter(run_model.party, enemies)
+	await _play_fight(enemies)
+
+
+# A win stays on the fight until `end_encounter`; a defeat loses the run, and a new one starts.
+func _play_fight(enemies: Array[Character]) -> void:
+	var fight_seed := randi()
+	LimboConsole.info("Fight seed: %d" % fight_seed)
+	var fight_controller := FightController.new(run_model.party, enemies, fight_seed)
+	fight_controller.action_resolved.connect(_on_action_resolved)
+	await fight_controller.play()
+	if fight_controller.fight_model.is_won():
+		LimboConsole.info("Fight won")
+		return
+	LimboConsole.info("Run lost")
+	run_model = RunModel.new()
+	start_mission(randi())
+
+
+func _on_action_resolved(action: Action) -> void:
+	LimboConsole.info("%s: %s on %s, %d health left" % [action.actor.data.name, action.skill.name, action.target.data.name, action.target.health])

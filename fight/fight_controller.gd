@@ -1,0 +1,31 @@
+class_name FightController
+extends RefCounted
+# Plays a fight one delta at a time: a free enemy chooses first; a free hero chooses once nothing is due this tick; otherwise the next action resolves.
+
+signal action_resolved(action: Action)
+
+var fight_model: FightModel
+
+var _hero_brain: Brain
+var _enemy_brain: Brain
+
+
+# The same seed plays the same fight.
+func _init(heroes: Array[Character], enemies: Array[Character], fight_seed: int) -> void:
+	fight_model = FightModel.new(heroes, enemies)
+	_hero_brain = RandomBrain.new(FightModel.Side.HERO, fight_seed)
+	_enemy_brain = RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1)
+
+
+# Returns once one side has fallen.
+func play() -> void:
+	while not fight_model.is_over():
+		var choice := await _enemy_brain.get_next_action(fight_model)
+		var next_action := fight_model.get_next_action()
+		if choice == null and (next_action == null or next_action.resolve_tick > fight_model.tick):
+			choice = await _hero_brain.get_next_action(fight_model)
+		if choice != null:
+			fight_model.apply(FightRules.get_timeline_delta(choice))
+		else:
+			fight_model.apply(FightRules.get_resolve_delta(fight_model, next_action))
+			action_resolved.emit(next_action)
