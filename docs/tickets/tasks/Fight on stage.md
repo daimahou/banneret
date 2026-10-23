@@ -10,7 +10,7 @@ parent: "[[Encounters]]"
 ---
 # Done when
 
-- The fight plays on stage as it unfolds: actions on the timeline, damage, falls; the heroes on the random brain for now.
+- The fight plays on stage as it unfolds: actions on the timeline, damage, HP bars, falls; the heroes on the random brain for now.
 
 ## Problem
 

@@ -34,7 +34,7 @@ layout_mode = 0
 offset_left = 975.0
 offset_top = 379.0
 offset_right = 2895.0
-offset_bottom = 1125.0
+offset_bottom = 1119.0
 mouse_filter = 2
 theme_override_constants/separation = 12
 script = ExtResource("8_scenery")
@@ -69,6 +69,7 @@ offset_left = 1000.0
 offset_top = 88.0
 offset_right = 2840.0
 offset_bottom = 846.0
+is_preview_shown = false
 
 [node name="Front" type="TextureRect" parent="." unique_id=1254529673]
 layout_mode = 0
