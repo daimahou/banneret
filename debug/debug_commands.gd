@@ -13,7 +13,7 @@ func _ready() -> void:
 		return
 	LimboConsole.register_command(win_fight, "fight win", "Knock out every enemy: the fight is won")
 	LimboConsole.register_command(lose_fight, "fight lose", "Knock out every hero: the fight, and the run, are lost")
-	LimboConsole.register_command(toggle_auto_combat, "fight auto_combat", "Toggle the heroes between the player's choices and random ones, in this fight and the next")
+	LimboConsole.register_command(toggle_auto_combat, "fight auto_combat", "Toggle random heroes, in this fight and the next")
 
 
 func _exit_tree() -> void:

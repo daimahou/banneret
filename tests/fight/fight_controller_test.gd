@@ -71,7 +71,8 @@ func _create_fight_controller(fight_seed: int) -> FightController:
 
 
 func _create_fight_controller_for(heroes: Array[Character], fight_seed: int, heroes_brain: Brain) -> FightController:
-	return FightController.new(FightModel.new(heroes, _create_enemies()), RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1), heroes_brain)
+	var enemies_brain := RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1)
+	return FightController.new(FightModel.new(heroes, _create_enemies()), enemies_brain, heroes_brain)
 
 
 func _create_random_heroes(fight_seed: int) -> RandomBrain:

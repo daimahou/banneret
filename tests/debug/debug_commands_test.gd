@@ -62,7 +62,8 @@ func test_heroes_no_longer_random_go_back_to_the_player() -> void:
 
 
 func _create_fight_controller(heroes_brain: Brain) -> FightController:
-	return FightController.new(FightModel.new(_create_side(10, 3), _create_side(15, 2)), RandomBrain.new(FightModel.Side.ENEMY, 2), heroes_brain)
+	var fight_model := FightModel.new(_create_side(10, 3), _create_side(15, 2))
+	return FightController.new(fight_model, RandomBrain.new(FightModel.Side.ENEMY, 2), heroes_brain)
 
 
 func _create_side(health: int, count: int) -> Array[Character]:
