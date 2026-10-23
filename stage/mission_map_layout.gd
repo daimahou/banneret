@@ -3,7 +3,7 @@ extends RefCounted
 
 const MAP_NODE_MIN_SPACING := 190.0
 # Kept clear above the first row and below the last, in design units.
-const MAP_NODE_MARGIN := 40.0
+const MAP_NODE_MARGIN := 90.0
 
 # Positions are in flat space.
 var _map_node_positions: Dictionary[MapNode, Vector2] = {}

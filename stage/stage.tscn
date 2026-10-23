@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dnf252pjqiy5u" path="res://art/stage/front.png" id="5_front"]
 [ext_resource type="PackedScene" uid="uid://b0ffpr3s3nt3r" path="res://stage/offer_presenter.tscn" id="6_offer_presenter"]
 [ext_resource type="PackedScene" path="res://stage/puppet.tscn" id="7_puppet"]
-[ext_resource type="Script" path="res://stage/scenery.gd" id="8_scenery"]
+[ext_resource type="Script" uid="uid://ccwx6ndh3mv71" path="res://stage/scenery.gd" id="8_scenery"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -31,10 +31,10 @@ expand_mode = 1
 [node name="Scenery" type="HBoxContainer" parent="." unique_id=433876565]
 z_index = -1
 layout_mode = 0
-offset_left = 977.0
-offset_top = 400.0
-offset_right = 2886.0
-offset_bottom = 1080.0
+offset_left = 975.0
+offset_top = 379.0
+offset_right = 2895.0
+offset_bottom = 1125.0
 mouse_filter = 2
 theme_override_constants/separation = 12
 script = ExtResource("8_scenery")
@@ -52,7 +52,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Puppets" type="Control" parent="." unique_id=1574302127]
-layout_mode = 0
+anchors_preset = 0
 offset_left = 977.0
 offset_top = 400.0
 offset_right = 2886.0

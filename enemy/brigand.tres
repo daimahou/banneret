@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterData" format=3]
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://odjg0mr0hq1s"]
 
 [ext_resource type="Script" uid="uid://cn4tlmf7ivxe3" path="res://character/character_data.gd" id="1_character_data"]
 [ext_resource type="Texture2D" uid="uid://cunqwqkyongfv" path="res://art/puppet/brigand.png" id="2_puppet"]
