@@ -173,10 +173,13 @@ views:
   - type: table
     name: All
     filters:
-      and:
+      or:
         - file.folder == "tickets/tasks"
+        - id == "1"
     order:
       - file.name
       - started
       - finished
       - hours
+    summaries:
+      hours: Sum

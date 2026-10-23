@@ -3,6 +3,7 @@ id: "1"
 requires:
 started: 2026-10-01
 finished:
+hours: 6
 deadline: 2027-02-01
 ---
 
