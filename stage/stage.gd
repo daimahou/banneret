@@ -138,11 +138,14 @@ func hide_offers() -> void:
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_view = View.TRANSITION
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	# The side still standing marches on, off to the right.
-	var offstage_x := _get_puppet_x(OFFSTAGE_RIGHT_X)
+	# The side still standing marches on in its line, off to the right, until the hindmost is beyond the curtain.
+	var march := 0.0
+	for puppet in _fight_puppets.values():
+		march = maxf(march, _get_puppet_x(OFFSTAGE_RIGHT_X) - puppet.position.x)
 	for character in _fight_puppets:
-		tween.tween_property(_fight_puppets[character], "position:x", offstage_x, PUPPET_SLIDE_DURATION)
-		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(offstage_x), PUPPET_SLIDE_DURATION)
+		var puppet := _fight_puppets[character]
+		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION)
+		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(puppet.position.x + march), PUPPET_SLIDE_DURATION)
 	await tween.finished
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
