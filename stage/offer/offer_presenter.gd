@@ -4,7 +4,7 @@ extends Control
 
 signal offer_pressed(offer: Offer)
 
-const POSTER_SCENE := preload("res://stage/poster.tscn")
+const POSTER_SCENE := preload("res://stage/offer/poster.tscn")
 
 # Posters hang from the top edge, centred across the width.
 @export var spacing := 80.0:

@@ -23,14 +23,14 @@ The stage transitions between the mission map and the fight in three beats, and 
 
 ## Implementation decisions
 
-- **Puppet** — `stage/puppet.gd`, a `Node2D` with a sprite whose origin is its stick foot. Sways on a looping sine tween of its rotation, from a random phase so puppets don't rock in step; it keeps swaying while it moves.
+- **Puppet** — `stage/puppet/puppet.gd`, a `Node2D` with a sprite whose origin is its stick foot. Sways on a looping sine tween of its rotation, from a random phase so puppets don't rock in step; it keeps swaying while it moves.
 - The coach becomes a puppet.
 - **Puppets** — a `Control` on the stage marking where puppets stand; the coach and the fight puppets are its children, feet on its bottom edge.
 - `CharacterData` gains `puppet: Texture2D`.
 - **Rogue** — `hero/archer.tres` becomes `hero/rogue.tres` ("Rogue"), in `PARTY_HERO_IDS`; puppet `art/puppet/rogue.png`.
 - **Enemy** — `enemy/brigand.tres`, a placeholder `CharacterData`. The encounter's enemies are the fixed `[brigand]` until [[Timeline]] gives the encounter a model.
 - **Stand positions** — `PuppetLayout`: heroes spread across the left half of the puppets area, enemies across the right half, a middle gap kept clear; front of each line towards the middle. Party order = `PARTY_HERO_IDS`, the first at the front. They enter and leave beyond the curtains.
-- **Scenery** — `stage/scenery.gd` on the flats' `HBoxContainer`. Owns the flats: shows and flips them, tracks hover, works out every node and road dash highlight. Flats only draw.
+- **Scenery** — `stage/scenery/scenery.gd` on the flats' `HBoxContainer`. Owns the flats: shows and flips them, tracks hover, works out every node and road dash highlight. Flats only draw.
 - **Mission map layout** — `MissionMapLayout`, computed once per mission from the flat size, separation and count: map node positions and road dashes per flat, in flat space. A road dash's highlight is the flat's, not the layout's.
 - **Battle illustration** — `art/stage/battleground.png`, centred on the scenery; each flat shows the part under it. Bigger is cropped; smaller warns.
 - **Flip** — the whole `Flat` scales x to 0 about its centre, its content swaps, scales back.

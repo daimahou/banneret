@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://stage/puppet.gd" id="1_puppet"]
+[ext_resource type="Script" path="res://stage/puppet/puppet.gd" id="1_puppet"]
 
 [node name="Puppet" type="Node2D"]
 script = ExtResource("1_puppet")

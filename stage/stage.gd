@@ -19,7 +19,7 @@ const PUPPET_SLIDE_DURATION := 0.8
 const OFFSTAGE_LEFT_X := -400.0
 const OFFSTAGE_RIGHT_X := 4240.0
 
-const PUPPET_SCENE := preload("res://stage/puppet.tscn")
+const PUPPET_SCENE := preload("res://stage/puppet/puppet.tscn")
 
 var _coach_tween: Tween
 var _view := View.MISSION_MAP
