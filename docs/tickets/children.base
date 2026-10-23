@@ -104,8 +104,8 @@ views:
     order:
       - id
       - file.name
-      - triage
       - finished
+      - hours
     sort:
       - property: id
         direction: ASC
@@ -125,19 +125,18 @@ views:
       - id
       - file.name
       - started
+      - deadline
     sort:
       - property: id
         direction: ASC
       - property: file.name
         direction: ASC
-      - property: started
-        direction: DESC
       - property: formula.Band
         direction: ASC
     columnSize:
       formula.Mark: 44
       note.id: 108
-      file.name: 401
+      file.name: 351
   - type: table
     name: Closed tickets
     filters:
@@ -149,12 +148,14 @@ views:
     order:
       - id
       - file.name
-      - started
       - finished
+      - hours
     sort:
       - property: id
         direction: ASC
       - property: finished
         direction: DESC
+    summaries:
+      hours: Sum
     columnSize:
-      file.name: 415
+      file.name: 295

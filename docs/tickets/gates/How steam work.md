@@ -61,6 +61,9 @@ When there is a festival and a sale -> email. But valve knows to avoid spamming 
 ## How many wishlists do I need and where to get them
 
 - >7000: minimum for popular upcoming (no golden ticket - still needs to sell) - this is steam letting the gate open
-- 
+- 30.000: comfortable amount - good buffer for full time job
+
+---
+
 
 ![[Children.base#Open tickets]]

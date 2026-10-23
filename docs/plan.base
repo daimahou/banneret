@@ -132,9 +132,6 @@ views:
       file.name: 480
   - type: table
     name: All
-    groupBy:
-      property: formula.Key
-      direction: ASC
     order:
       - formula.State
       - id
@@ -146,10 +143,12 @@ views:
       - finished
       - formula.Duration
       - formula.Key
+      - hours
     sort:
       - property: id
         direction: ASC
-    summaries: {}
+    summaries:
+      hours: Sum
     columnSize:
       formula.State: 54
       note.id: 101
