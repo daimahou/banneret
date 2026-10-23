@@ -224,7 +224,11 @@ func _show_choices() -> void:
 		highlighted.append(_player_brain.hero)
 	if _hovered_character != null:
 		highlighted.append(_hovered_character)
-	_timeline_rope.set_ghost_action(_player_brain.get_ghost_action() if _player_brain != null else null)
+	var ghost_action := _player_brain.get_ghost_action() if _player_brain != null else null
+	if ghost_action != null:
+		_timeline_rope.show_ghost(ghost_action)
+	else:
+		_timeline_rope.hide_ghost()
 	_timeline_rope.set_marks(highlighted, _player_brain.get_dropped_action() if _player_brain != null else null)
 
 

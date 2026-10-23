@@ -18,7 +18,6 @@ func _init(model: FightModel, enemies_brain: Brain, heroes_brain: Brain = Player
 	hero_brain = heroes_brain
 
 
-# Null plays the fight at once.
 func set_stage(value: Stage) -> void:
 	_stage = value
 

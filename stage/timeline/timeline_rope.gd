@@ -82,9 +82,13 @@ func show_fight(fight_model: FightModel) -> void:
 	_queue_refresh()
 
 
-# Null takes the ghost down.
-func set_ghost_action(action: Action) -> void:
+func show_ghost(action: Action) -> void:
 	_ghost_action = action
+	_queue_refresh()
+
+
+func hide_ghost() -> void:
+	_ghost_action = null
 	_queue_refresh()
 
 
