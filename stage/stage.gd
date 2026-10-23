@@ -39,8 +39,6 @@ const PUPPET_SCENE := preload("res://stage/puppet/puppet.tscn")
 
 var _coach_tween: Tween
 var _view := View.MISSION_MAP
-# Each fight puppet slides out to where it came in from.
-var _puppet_offstage_xs: Dictionary[Puppet, float] = {}
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 var _health_bars: Dictionary[Character, HealthBar] = {}
 
@@ -140,15 +138,14 @@ func hide_offers() -> void:
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_view = View.TRANSITION
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	for puppet in _puppet_offstage_xs:
-		tween.tween_property(puppet, "position:x", _puppet_offstage_xs[puppet], PUPPET_SLIDE_DURATION)
-	for character in _health_bars:
-		var offstage_x := _puppet_offstage_xs[_fight_puppets[character]]
+	# The side still standing marches on, off to the right.
+	var offstage_x := _get_puppet_x(OFFSTAGE_RIGHT_X)
+	for character in _fight_puppets:
+		tween.tween_property(_fight_puppets[character], "position:x", offstage_x, PUPPET_SLIDE_DURATION)
 		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(offstage_x), PUPPET_SLIDE_DURATION)
 	await tween.finished
-	for puppet in _puppet_offstage_xs:
+	for puppet in _fight_puppets.values():
 		puppet.queue_free()
-	_puppet_offstage_xs.clear()
 	for health_bar in _health_bars.values():
 		health_bar.queue_free()
 	_health_bars.clear()
@@ -174,7 +171,6 @@ func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: A
 		puppet.texture = characters[index].data.puppet
 		puppet.position = Vector2(offstage_x, stand_positions[index].y)
 		_puppets.add_child(puppet)
-		_puppet_offstage_xs[puppet] = offstage_x
 		_fight_puppets[characters[index]] = puppet
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
 		var health_bar := _add_health_bar(characters[index], offstage_x)
@@ -222,7 +218,6 @@ func _on_character_fell(character: Character) -> void:
 	var health_bar := _health_bars[character]
 	_fight_puppets.erase(character)
 	_health_bars.erase(character)
-	_puppet_offstage_xs.erase(puppet)
 	health_bar.fade_out()
 	await puppet.sink()
 	puppet.queue_free()
