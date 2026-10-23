@@ -47,18 +47,18 @@ func test_random_heroes_take_over_a_waiting_player_brain_with_their_choice() -> 
 	var actors: Array[Character] = []
 	fight_model.action_added.connect(func(action: Action) -> void: actors.append(action.actor))
 
-	await debug_commands.toggle_hero_brain(fight_controller, null)
+	await debug_commands.set_heroes_random(fight_controller, null, true)
 
 	assert_bool(fight_controller.hero_brain is RandomBrain).is_true()
 	assert_bool(player_brain.is_waiting()).is_false()
 	assert_object(actors[0]).is_same(player_brain.hero)
 
 
-func test_toggling_random_heroes_back_gives_the_player_the_heroes() -> void:
+func test_heroes_no_longer_random_go_back_to_the_player() -> void:
 	var fight_controller := FightController.new(_create_side(10, 3), _create_side(15, 2), 1)
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 
-	await debug_commands.toggle_hero_brain(fight_controller, null)
+	await debug_commands.set_heroes_random(fight_controller, null, false)
 
 	assert_bool(fight_controller.hero_brain is PlayerBrain).is_true()
 

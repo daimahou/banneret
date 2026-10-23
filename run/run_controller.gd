@@ -1,6 +1,9 @@
 class_name RunController
 extends Node
 
+# The encounter is on stage and the heroes have their brain; the fight is about to play.
+signal fight_started(fight_controller: FightController)
+
 const HOLD_DURATION := 0.4
 
 var run_model := RunModel.new()
@@ -85,6 +88,7 @@ func _start_encounter(fight_seed: int) -> void:
 	var player_brain := PlayerBrain.new()
 	fight_controller.hero_brain = player_brain
 	_stage.show_choices(player_brain)
+	fight_started.emit(fight_controller)
 	await get_tree().create_timer(HOLD_DURATION).timeout
 	await _play_fight()
 

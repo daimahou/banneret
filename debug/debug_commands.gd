@@ -3,13 +3,17 @@ extends Node
 # The console's debug commands. They drive the game from outside, through what it exposes; nothing in the game knows of them. Gone from a release build.
 
 
+# The heroes play themselves while set, in this fight and the next ones.
+var _are_heroes_random := false
+
+
 func _ready() -> void:
 	if not OS.is_debug_build():
 		queue_free()
 		return
 	LimboConsole.register_command(win_fight, "fight_win", "Knock out every enemy: the fight is won")
 	LimboConsole.register_command(lose_fight, "fight_lose", "Knock out every hero: the fight, and the run, are lost")
-	LimboConsole.register_command(toggle_random_heroes, "fight_random_heroes", "Toggle the heroes between the player's choices and random ones, for this fight")
+	LimboConsole.register_command(toggle_random_heroes, "fight_random_heroes", "Toggle the heroes between the player's choices and random ones, in this fight and the next")
 
 
 func _exit_tree() -> void:
@@ -30,22 +34,28 @@ func lose_fight() -> void:
 
 func toggle_random_heroes() -> void:
 	var run_controller := get_tree().current_scene as RunController
-	if run_controller == null or run_controller.fight_controller == null:
-		LimboConsole.warn("No fight is playing")
+	if run_controller == null:
+		LimboConsole.warn("No run is playing")
 		return
-	var fight_controller := run_controller.fight_controller
-	await toggle_hero_brain(fight_controller, run_controller.get_node(^"Stage") as Stage)
-	LimboConsole.info("Heroes: %s" % ("random" if fight_controller.hero_brain is RandomBrain else "the player's"))
+	if not run_controller.fight_started.is_connected(_on_fight_started):
+		run_controller.fight_started.connect(_on_fight_started.bind(run_controller))
+	_are_heroes_random = not _are_heroes_random
+	LimboConsole.info("Heroes: %s" % ("random" if _are_heroes_random else "the player's"))
+	if run_controller.fight_controller != null:
+		await set_heroes_random(run_controller.fight_controller, _get_stage(run_controller), _are_heroes_random)
 
 
 # The player's brain gives way to a random one, or back, and the stage, if any, shows the choices or not. A waiting player brain hands on the random brain's choice as its own, or passes, so the fight plays on.
-func toggle_hero_brain(fight_controller: FightController, stage: Stage) -> void:
+func set_heroes_random(fight_controller: FightController, stage: Stage, are_random: bool) -> void:
 	var player_brain := fight_controller.hero_brain as PlayerBrain
+	if not are_random:
+		if player_brain == null:
+			player_brain = PlayerBrain.new()
+			fight_controller.hero_brain = player_brain
+			if stage != null:
+				stage.show_choices(player_brain)
+		return
 	if player_brain == null:
-		player_brain = PlayerBrain.new()
-		fight_controller.hero_brain = player_brain
-		if stage != null:
-			stage.show_choices(player_brain)
 		return
 	var random_brain := RandomBrain.new(FightModel.Side.HERO, randi())
 	fight_controller.hero_brain = random_brain
@@ -76,6 +86,16 @@ func knock_out(fight_controller: FightController, side: FightModel.Side) -> void
 	fight_model.apply(delta)
 	if player_brain != null:
 		player_brain.pass_stop()
+
+
+# Each fight starts with the player's brain; random heroes take it over.
+func _on_fight_started(fight_controller: FightController, run_controller: RunController) -> void:
+	if _are_heroes_random:
+		set_heroes_random(fight_controller, _get_stage(run_controller), true)
+
+
+func _get_stage(run_controller: RunController) -> Stage:
+	return run_controller.get_node(^"Stage") as Stage
 
 
 func _knock_out_in_run(side: FightModel.Side) -> void:
