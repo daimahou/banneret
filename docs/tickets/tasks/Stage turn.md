@@ -4,7 +4,7 @@ id: 1.1-3.2.2
 requires:
   - "[[Encounter art]]"
 started: 2026-10-22
-finished:
+finished: 2026-10-23
 parent: "[[Encounter transition]]"
 ---
 # Done when

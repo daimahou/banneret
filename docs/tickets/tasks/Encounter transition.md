@@ -3,8 +3,8 @@ triage: needs-info
 id: 1.1-3.2
 requires:
   - "[[Party]]"
-started:
-finished:
+started: 2026-10-22
+finished: 2026-10-23
 parent: "[[Encounters]]"
 ---
 # Done when
