@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b0ffpr3s3nt3r"]
 
-[ext_resource type="Script" uid="uid://scw18bvqtrjf" path="res://stage/offer_presenter.gd" id="1_presenter"]
+[ext_resource type="Script" uid="uid://scw18bvqtrjf" path="res://stage/offer/offer_presenter.gd" id="1_presenter"]
 
 [node name="OfferPresenter" type="Control" unique_id=1119042991]
 layout_mode = 3

@@ -10,8 +10,8 @@ const EVENT_ICONS: Dictionary[EventType, Texture2D] = {
 
 # What an event draws on arrival, and whether the player picks among the draw or it resolves with the first.
 const EVENT_BAGS: Dictionary[EventType, Registry] = {
-	EventType.PLACEHOLDER: preload("res://mission_map/event/placeholder_bag.tres"),
-	EventType.ENCOUNTER: preload("res://mission_map/event/encounter_bag.tres"),
+	EventType.PLACEHOLDER: preload("res://mission/event/placeholder_bag.tres"),
+	EventType.ENCOUNTER: preload("res://mission/event/encounter_bag.tres"),
 }
 const EVENT_OFFER_COUNTS: Dictionary[EventType, int] = {
 	EventType.PLACEHOLDER: 3,

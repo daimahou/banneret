@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="Registry" format=3 uid="uid://cc8psnn2eqi4p"]
+[gd_resource type="Resource" script_class="Registry" format=3 uid="uid://hyprw2wwh5nl"]
 
-[ext_resource type="Script" uid="uid://dqtv77mng5dyh" path="res://addons/yard/registry.gd" id="1_bcmqj"]
+[ext_resource type="Script" uid="uid://dqtv77mng5dyh" path="res://addons/yard/registry.gd" id="1_e7euy"]
 
 [resource]
-script = ExtResource("1_bcmqj")
+script = ExtResource("1_e7euy")
 _version = 2
 _scan_rulesets = Array[Dictionary]([{
-&"allowed_file_extensions": Array[String]([".tres"]),
+&"allowed_file_extensions": Array[String]([]),
 &"class_restrictions": Array[StringName]([&"Offer"]),
 &"recursive_scan": false,
-&"scan_directories": Array[String](["res://mission_map/event/placeholder"]),
+&"scan_directories": Array[String](["res://mission/event/placeholder/"]),
 &"scan_regex_exclude": "",
 &"scan_regex_include": ""
 }])
