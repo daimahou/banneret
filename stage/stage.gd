@@ -14,6 +14,8 @@ const TRAVEL_EASE := Tween.EASE_IN_OUT
 # A transition's slides, in seconds; they ease like travel.
 const COACH_SLIDE_DURATION := 0.8
 const PUPPET_SLIDE_DURATION := 0.8
+# Each marcher sets off up to this late, at random; too late and the one behind would catch up.
+const MARCH_STAGGER := 0.05
 
 # A blow: the actor's puppet lunges to this short of its target, then goes home; a pause before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
@@ -144,8 +146,9 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 		march = maxf(march, _get_puppet_x(OFFSTAGE_RIGHT_X) - puppet.position.x)
 	for character in _fight_puppets:
 		var puppet := _fight_puppets[character]
-		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION)
-		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(puppet.position.x + march), PUPPET_SLIDE_DURATION)
+		var delay := randf() * MARCH_STAGGER
+		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION).set_delay(delay)
+		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(puppet.position.x + march), PUPPET_SLIDE_DURATION).set_delay(delay)
 	await tween.finished
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
