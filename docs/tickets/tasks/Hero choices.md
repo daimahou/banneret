@@ -4,8 +4,8 @@ id: 1.1-3.5
 requires:
   - "[[Fight on stage]]"
 started: 2026-10-23
-finished:
-hours: 1
+finished: 2026-10-23
+hours: 3.7
 parent: "[[Encounters]]"
 ---
 # Done when
