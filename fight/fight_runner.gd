@@ -13,6 +13,8 @@ class Outcome:
 
 
 func _initialize() -> void:
+	# The autoloads are ready a frame on; LimboConsole's greeting then prints before the summary, not after.
+	await process_frame
 	var options := {"fights": 1000, "seed": 1}
 	for argument in OS.get_cmdline_user_args():
 		var parts := argument.trim_prefix("--").split("=")
@@ -61,6 +63,6 @@ func _get_summary(outcomes: Array[Outcome]) -> String:
 
 func _create_enemies() -> Array[Character]:
 	var enemies: Array[Character] = []
-	for enemy_data in RunController.ENCOUNTER_ENEMIES:
+	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
 	return enemies
