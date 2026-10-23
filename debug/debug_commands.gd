@@ -60,7 +60,7 @@ func set_player_brain(fight_controller: FightController, stage: Stage, is_on: bo
 	var random_brain := RandomBrain.new(FightModel.Side.HERO, randi())
 	fight_controller.hero_brain = random_brain
 	if stage != null:
-		stage.show_choices(null)
+		stage.hide_choices()
 	if not player_brain.is_waiting():
 		return
 	var action := await random_brain.get_next_action(fight_controller.fight_model)

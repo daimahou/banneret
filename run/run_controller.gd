@@ -84,7 +84,8 @@ func _start_encounter(fight_seed: int) -> void:
 	LimboConsole.info("Fight seed: %d" % fight_seed)
 	var player_brain := PlayerBrain.new()
 	var fight_model := FightModel.new(run_model.party, enemies)
-	fight_controller = FightController.new(fight_model, RandomBrain.new(FightModel.Side.ENEMY, fight_seed), player_brain)
+	var enemy_brain := RandomBrain.new(FightModel.Side.ENEMY, fight_seed)
+	fight_controller = FightController.new(fight_model, enemy_brain, player_brain)
 	fight_controller.set_stage(_stage)
 	await _stage.show_encounter(fight_controller.fight_model)
 	_stage.show_choices(player_brain)
@@ -97,7 +98,7 @@ func _start_encounter(fight_seed: int) -> void:
 func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
-	_stage.show_choices(null)
+	_stage.hide_choices()
 	await get_tree().create_timer(HOLD_DURATION).timeout
 	var is_won := fight_controller.fight_model.is_won()
 	fight_controller = null

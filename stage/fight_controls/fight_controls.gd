@@ -22,16 +22,20 @@ func _ready() -> void:
 	hide()
 
 
-# Null hides the controls: the heroes play themselves, or no fight is on.
 func show_choices(brain: PlayerBrain) -> void:
+	hide_choices()
+	_player_brain = brain
+	brain.choices_changed.connect(_show_choices)
+	show()
+	_show_choices()
+
+
+func hide_choices() -> void:
 	if _player_brain != null:
 		_player_brain.choices_changed.disconnect(_show_choices)
-	_player_brain = brain
+		_player_brain = null
 	_shown_hero = null
-	visible = brain != null
-	if brain != null:
-		brain.choices_changed.connect(_show_choices)
-		_show_choices()
+	hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:

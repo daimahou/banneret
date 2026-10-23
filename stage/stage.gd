@@ -111,16 +111,19 @@ func show_encounter(fight_model: FightModel) -> void:
 	_view = View.FIGHT
 
 
-# Shows the player brain's choices, and takes the clicks on puppets for it. Null takes them down: the heroes play themselves.
+# Takes the clicks on puppets for the brain.
 func show_choices(brain: PlayerBrain) -> void:
-	if _player_brain != null:
-		_player_brain.choices_changed.disconnect(_show_choices)
-		_player_brain.target_pressed.disconnect(_on_target_pressed)
+	_release_player_brain()
 	_player_brain = brain
-	if brain != null:
-		brain.choices_changed.connect(_show_choices)
-		brain.target_pressed.connect(_on_target_pressed)
+	brain.choices_changed.connect(_show_choices)
+	brain.target_pressed.connect(_on_target_pressed)
 	_fight_controls.show_choices(brain)
+	_show_choices()
+
+
+func hide_choices() -> void:
+	_release_player_brain()
+	_fight_controls.hide_choices()
 	_show_choices()
 
 
@@ -190,6 +193,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+func _release_player_brain() -> void:
+	if _player_brain != null:
+		_player_brain.choices_changed.disconnect(_show_choices)
+		_player_brain.target_pressed.disconnect(_on_target_pressed)
+		_player_brain = null
+
+
 func _get_character_at(global_point: Vector2) -> Character:
 	for character in _fight_puppets:
 		if _fight_puppets[character].has_point(global_point):
@@ -242,7 +252,7 @@ func _on_target_pressed(target: Character) -> void:
 
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_view = View.TRANSITION
-	show_choices(null)
+	hide_choices()
 	_hovered_character = null
 	_hovered_action = null
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
