@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cr21bicmgje5g"]
 
-[ext_resource type="Script" uid="uid://cuwqbdkp3awdj" path="res://stage/fight_controls/fight_controls.gd" id="1_controls"]
+[ext_resource type="Script" uid="uid://cuwqbdkp3awdj" path="res://stage/skill_bar/skill_bar.gd" id="1_controls"]
 
-[node name="FightControls" type="HBoxContainer" unique_id=1621530]
+[node name="SkillBar" type="HBoxContainer" unique_id=1621530]
 script = ExtResource("1_controls")
 
 [node name="StopButton" type="Button" parent="." unique_id=236132220]

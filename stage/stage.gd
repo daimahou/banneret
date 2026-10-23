@@ -48,8 +48,6 @@ var _view := View.MISSION_MAP
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 var _health_bars: Dictionary[Character, HealthBar] = {}
 var _player_brain: PlayerBrain
-var _hovered_character: Character
-var _hovered_action: Action
 var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
@@ -61,7 +59,7 @@ var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _timeline_rope: TimelineRope = $TimelineRope
 @onready var _health_bar_area: Control = $HealthBars
-@onready var _fight_controls: FightControls = $FightControls
+@onready var skill_bar: SkillBar = $SkillBar
 @onready var _coach_start_x := _coach.position.x
 
 
@@ -104,26 +102,36 @@ func show_encounter(fight_model: FightModel) -> void:
 	_add_puppets(tween, fight_model.enemies, PuppetLayout.get_stand_positions(area, fight_model.enemies.size(), PuppetLayout.Side.RIGHT), _get_puppet_x(OFFSTAGE_RIGHT_X))
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
-	fight_model.action_removed.connect(_on_action_removed)
 	_timeline_rope.show_fight(fight_model)
 	await tween.finished
 	_view = View.FIGHT
 
 
-# Takes the clicks on puppets for the brain.
 func show_choices(brain: PlayerBrain) -> void:
 	_release_player_brain()
 	_player_brain = brain
 	brain.choices_changed.connect(_show_choices)
 	brain.target_pressed.connect(_on_target_pressed)
-	_fight_controls.show_choices(brain)
+	skill_bar.show_choices(brain)
 	_show_choices()
 
 
+# Every look back to neutral; nothing is read from a brain any more.
 func hide_choices() -> void:
 	_release_player_brain()
-	_fight_controls.hide_choices()
+	skill_bar.hide_choices()
 	_show_choices()
+
+
+func get_character_at(global_point: Vector2) -> Character:
+	for character in _fight_puppets:
+		if _fight_puppets[character].has_point(global_point):
+			return character
+	return null
+
+
+func get_action_at(global_point: Vector2) -> Action:
+	return _timeline_rope.get_action_at(global_point)
 
 
 # The actor's puppet lunges at its target's and calls `on_impact` as the blow lands; returns once it is home and the stage has paused.
@@ -165,45 +173,11 @@ func hide_offers() -> void:
 	await _offer_presenter.hide_offers()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if _view != View.FIGHT:
-		return
-	var point := get_global_mouse_position()
-	if event is InputEventMouseMotion:
-		var hovered_character := _get_character_at(point)
-		var hovered_action := _timeline_rope.get_action_at(point)
-		if hovered_character != _hovered_character or hovered_action != _hovered_action:
-			_hovered_character = hovered_character
-			_hovered_action = hovered_action
-			_show_choices()
-		return
-	var click := event as InputEventMouseButton
-	if _player_brain == null or click == null or not click.pressed:
-		return
-	if click.button_index == MOUSE_BUTTON_LEFT:
-		var character := _get_character_at(point)
-		if character == null:
-			return
-		_player_brain.pick(character)
-	elif click.button_index == MOUSE_BUTTON_RIGHT:
-		_player_brain.disarm()
-	else:
-		return
-	get_viewport().set_input_as_handled()
-
-
 func _release_player_brain() -> void:
 	if _player_brain != null:
 		_player_brain.choices_changed.disconnect(_show_choices)
 		_player_brain.target_pressed.disconnect(_on_target_pressed)
 		_player_brain = null
-
-
-func _get_character_at(global_point: Vector2) -> Character:
-	for character in _fight_puppets:
-		if _fight_puppets[character].has_point(global_point):
-			return character
-	return null
 
 
 # Stopped, a free hero hops and the selected hero stands raised; otherwise every puppet sways.
@@ -218,12 +192,12 @@ func _show_choices() -> void:
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
 		puppet.set_sprite_material(_get_ink(character))
-		puppet.set_pressed(character == _hovered_character and _player_brain != null and _player_brain.is_target(character))
+		puppet.set_pressed(_player_brain != null and character == _player_brain.hovered_character and _player_brain.is_target(character))
 	var highlighted: Array[Character] = []
 	if is_waiting:
 		highlighted.append(_player_brain.hero)
-	if _hovered_character != null:
-		highlighted.append(_hovered_character)
+	if _player_brain != null and _player_brain.hovered_character != null:
+		highlighted.append(_player_brain.hovered_character)
 	var ghost_action := _player_brain.get_ghost_action() if _player_brain != null else null
 	if ghost_action != null:
 		_timeline_rope.show_ghost(ghost_action)
@@ -234,19 +208,15 @@ func _show_choices() -> void:
 
 # A target keeps its red under the cursor: it is pressed down instead. Any other pickable puppet under the cursor, or a hovered medallion's actor, takes the hover ink.
 func _get_ink(character: Character) -> ShaderMaterial:
-	if _player_brain != null and _player_brain.is_target(character):
+	if _player_brain == null:
+		return null
+	if _player_brain.is_target(character):
 		return _aimed_ink if character == _player_brain.aimed_target else _target_ink
-	var is_hovered := character == _hovered_character and _player_brain != null and _player_brain.is_pickable(character)
-	if is_hovered or (_hovered_action != null and character == _hovered_action.actor):
+	var is_hovered := character == _player_brain.hovered_character and _player_brain.is_pickable(character)
+	var hovered_action := _player_brain.hovered_action
+	if is_hovered or (hovered_action != null and character == hovered_action.actor):
 		return _hover_ink
 	return null
-
-
-# An action gone from the rope is no longer under the cursor.
-func _on_action_removed(action: Action) -> void:
-	if action == _hovered_action:
-		_hovered_action = null
-		_show_choices()
 
 
 func _on_target_pressed(target: Character) -> void:
@@ -256,8 +226,6 @@ func _on_target_pressed(target: Character) -> void:
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_view = View.TRANSITION
 	hide_choices()
-	_hovered_character = null
-	_hovered_action = null
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	# The side still standing marches on in its line, off to the right, until the hindmost is beyond the curtain.
 	var march := 0.0
@@ -342,8 +310,6 @@ func _on_character_fell(character: Character) -> void:
 	var puppet := _fight_puppets[character]
 	var health_bar := _health_bars[character]
 	_fight_puppets.erase(character)
-	if character == _hovered_character:
-		_hovered_character = null
 	_health_bars.erase(character)
 	health_bar.fade_out()
 	await puppet.sink()

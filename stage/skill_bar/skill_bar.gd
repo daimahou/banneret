@@ -1,7 +1,11 @@
-class_name FightControls
+class_name SkillBar
 extends HBoxContainer
-# The fight's plain controls, below the heroes' health bars: the selected hero's skills, a gap, then Stop or Pass. It also takes the fight's keys.
-# It changes nothing itself: it makes the player brain's calls, and shows its choices.
+# Below the heroes' health bars: the selected hero's skills, a gap, then Stop or Pass. It shows the player brain's choices, and only reports its buttons.
+
+signal skill_pressed(skill: SkillData)
+# Null once the cursor leaves the skill.
+signal skill_hovered(skill: SkillData)
+signal stop_pressed
 
 const FONT_SIZE := 48
 const SKILL_BUTTON_SIZE := Vector2(280.0, 100.0)
@@ -38,32 +42,6 @@ func hide_choices() -> void:
 	hide()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	var key := event as InputEventKey
-	if _player_brain == null or key == null or not key.pressed or key.echo:
-		return
-	match key.keycode:
-		KEY_SPACE:
-			_player_brain.request_stop()
-		KEY_P:
-			_player_brain.pass_stop()
-		KEY_TAB:
-			_player_brain.cycle_hero(-1 if key.shift_pressed else 1)
-		KEY_ESCAPE:
-			_player_brain.disarm()
-		KEY_ENTER, KEY_KP_ENTER:
-			_player_brain.confirm()
-		KEY_LEFT:
-			_player_brain.cycle_aim(-1)
-		KEY_RIGHT:
-			_player_brain.cycle_aim(1)
-		_:
-			if key.keycode < KEY_1 or key.keycode > KEY_9:
-				return
-			_player_brain.press_number(key.keycode - KEY_1)
-	get_viewport().set_input_as_handled()
-
-
 func _show_choices() -> void:
 	if _player_brain.hero != _shown_hero:
 		_shown_hero = _player_brain.hero
@@ -94,9 +72,9 @@ func _add_skill_buttons() -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		button.tooltip_text = _describe_skill(skill)
 		button.set_meta(&"skill", skill)
-		button.pressed.connect(_player_brain.arm_skill.bind(skill))
-		button.mouse_entered.connect(_player_brain.hover_skill.bind(skill))
-		button.mouse_exited.connect(_player_brain.hover_skill.bind(null))
+		button.pressed.connect(skill_pressed.emit.bind(skill))
+		button.mouse_entered.connect(skill_hovered.emit.bind(skill))
+		button.mouse_exited.connect(skill_hovered.emit.bind(null))
 		_skills.add_child(button)
 
 
@@ -121,9 +99,7 @@ func _describe_skill(skill: SkillData) -> String:
 	return "\n".join(PackedStringArray(lines))
 
 
+# Shown again, in case the press changed nothing in the brain.
 func _on_stop_button_pressed() -> void:
-	if _player_brain.is_waiting():
-		_player_brain.pass_stop()
-	else:
-		_player_brain.request_stop()
+	stop_pressed.emit()
 	_show_choices()

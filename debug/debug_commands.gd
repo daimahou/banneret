@@ -45,22 +45,18 @@ func toggle_auto_combat() -> void:
 		await set_player_brain(run_controller.fight_controller, _get_stage(run_controller), not _is_auto_combat_on)
 
 
-# The player's brain gives way to a random one, or back, and the stage, if any, shows the choices or not. A waiting player brain hands on the random brain's choice as its own, or passes, so the fight plays on.
+# A waiting player brain, swapped out, hands on the random brain's choice as its own, or passes, so the fight plays on.
 func set_player_brain(fight_controller: FightController, stage: Stage, is_on: bool) -> void:
 	var player_brain := fight_controller.hero_brain as PlayerBrain
 	if is_on:
 		if player_brain == null:
-			player_brain = PlayerBrain.new()
-			fight_controller.hero_brain = player_brain
-			if stage != null:
-				stage.show_choices(player_brain)
+			fight_controller.hero_brain = PlayerBrain.new(stage)
 		return
 	if player_brain == null:
 		return
 	var random_brain := RandomBrain.new(FightModel.Side.HERO, randi())
 	fight_controller.hero_brain = random_brain
-	if stage != null:
-		stage.hide_choices()
+	player_brain.dispose()
 	if not player_brain.is_waiting():
 		return
 	var action := await random_brain.get_next_action(fight_controller.fight_model)

@@ -20,7 +20,7 @@ The player has no say in the fight.
 
 ## Solution
 
-A `PlayerBrain` replaces the heroes' `RandomBrain` on stage. It turns input into the hero, skill and target picked, and asks `FightRules` what is legal. The fight stops for a free hero, or when the player asks; the player gives orders, then passes or lets the fight run on. Ported from prototype C's `PlayerBrain` and `FightControls`.
+A `PlayerBrain` replaces the heroes' `RandomBrain` on stage. Its `PlayerInput` turns every input into calls on it; `Stage` and `SkillBar` only show its choices. It asks `FightRules` what is legal. The fight stops for a free hero, or when the player asks; the player gives orders, then passes or lets the fight run on. Ported from prototype C's `PlayerBrain` and `FightControls`.
 
 ## Implementation decisions
 

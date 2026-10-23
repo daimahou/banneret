@@ -1,7 +1,7 @@
 class_name PlayerBrain
 extends Brain
 # The heroes played by the player. The fight stops for a free hero, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
-# It takes the player's input as calls, so whatever the controls are, they only make the calls. Nothing is pickable while the fight runs.
+# Given a stage, it shows its choices there and takes the player's input through its own PlayerInput, until disposed. Nothing is pickable while the fight runs.
 
 signal choices_changed
 signal target_pressed(target: Character)
@@ -11,7 +11,11 @@ var hero: Character
 var armed_skill: SkillData
 var aimed_target: Character
 var hovered_skill: SkillData
+var hovered_character: Character
+var hovered_action: Action
 
+var _stage: Stage
+var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
 var _is_stopped := false
@@ -23,8 +27,24 @@ var _is_stop_requested := false
 var _digit_target: Character
 
 
-func _init() -> void:
+func _init(stage: Stage = null) -> void:
 	side = FightModel.Side.HERO
+	if stage == null:
+		return
+	_stage = stage
+	_input = PlayerInput.new(self, stage)
+	(Engine.get_main_loop() as SceneTree).root.add_child(_input)
+	stage.show_choices(self)
+
+
+# No more input, and the stage stops showing the choices.
+func dispose() -> void:
+	if _input != null:
+		_input.queue_free()
+		_input = null
+	if _stage != null:
+		_stage.hide_choices()
+		_stage = null
 
 
 func is_stop_requested() -> bool:
@@ -37,7 +57,9 @@ func is_waiting() -> bool:
 
 # Returns null at once while the fight runs on. Stopped, it selects the first free hero, else the first hero, and waits.
 func get_next_action(fight_model: FightModel) -> Action:
-	_fight_model = fight_model
+	if fight_model != _fight_model:
+		_fight_model = fight_model
+		fight_model.action_removed.connect(_on_action_removed)
 	var free_heroes := fight_model.get_standing(side).filter(_has_no_action)
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
@@ -155,6 +177,18 @@ func hover_skill(skill: SkillData) -> void:
 		choices_changed.emit()
 
 
+func hover_character(character: Character) -> void:
+	if character != hovered_character:
+		hovered_character = character
+		choices_changed.emit()
+
+
+func hover_action(action: Action) -> void:
+	if action != hovered_action:
+		hovered_action = action
+		choices_changed.emit()
+
+
 # The armed skill's targets, left to right on stage: the enemies stand front first, the front towards the middle.
 func get_targets() -> Array[Character]:
 	if armed_skill == null:
@@ -196,6 +230,11 @@ func get_ghost_action() -> Action:
 	ghost.skill = shown
 	ghost.resolve_tick = _fight_model.tick + shown.delay
 	return ghost
+
+
+func _on_action_removed(action: Action) -> void:
+	if action == hovered_action:
+		hover_action(null)
 
 
 func _has_no_action(character: Character) -> bool:

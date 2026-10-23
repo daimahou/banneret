@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" path="res://stage/puppet/puppet.tscn" id="7_puppet"]
 [ext_resource type="Script" uid="uid://ccwx6ndh3mv71" path="res://stage/scenery/scenery.gd" id="8_scenery"]
 [ext_resource type="PackedScene" path="res://stage/timeline/timeline_rope.tscn" id="9_timeline_rope"]
-[ext_resource type="PackedScene" path="res://stage/fight_controls/fight_controls.tscn" id="10_fight_controls"]
+[ext_resource type="PackedScene" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -95,7 +95,7 @@ offset_right = 3840.0
 offset_bottom = 2160.0
 mouse_filter = 2
 
-[node name="FightControls" parent="." unique_id=298821898 instance=ExtResource("10_fight_controls")]
+[node name="SkillBar" parent="." unique_id=298821898 instance=ExtResource("10_skill_bar")]
 z_index = 200
 layout_mode = 0
 offset_left = 360.0
