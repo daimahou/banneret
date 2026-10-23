@@ -202,7 +202,7 @@ func _release_player_brain() -> void:
 
 func _get_character_at(global_point: Vector2) -> Character:
 	for character in _fight_puppets:
-		if _fight_puppets[character].contains(global_point):
+		if _fight_puppets[character].has_point(global_point):
 			return character
 	return null
 

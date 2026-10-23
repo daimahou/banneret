@@ -98,7 +98,7 @@ func set_marks(actors: Array[Character], dropped: Action) -> void:
 # The pending action whose medallion is under the point, in global space, or null.
 func get_action_at(global_point: Vector2) -> Action:
 	for key: Variant in _entry_nodes:
-		if key is Action and (_entry_nodes[key] as TimelineMedallion).contains(global_point):
+		if key is Action and (_entry_nodes[key] as TimelineMedallion).has_point(global_point):
 			return key
 	return null
 

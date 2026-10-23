@@ -59,7 +59,7 @@ func get_height() -> float:
 
 
 # The sprite's rectangle, not its pixels.
-func contains(global_point: Vector2) -> bool:
+func has_point(global_point: Vector2) -> bool:
 	return _sprite.get_rect().has_point(_sprite.to_local(global_point))
 
 
