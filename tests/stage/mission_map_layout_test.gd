@@ -24,6 +24,15 @@ func test_every_road_dash_sits_inside_its_flat() -> void:
 	assert_int(road_dash_count).is_greater(0)
 
 
+func test_the_first_and_last_rows_keep_clear_of_the_flat_border() -> void:
+	var mission_map := MissionMap.new()
+	var top := MissionMapFixture.add_map_node(mission_map, 0, 0)
+	var bottom := MissionMapFixture.add_map_node(mission_map, 0, MissionMapGenerator.ROW_COUNT - 1)
+	var layout := MissionMapLayout.create(mission_map, 1, FLAT_SIZE, SEPARATION, FLAT_COUNT)
+	assert_float(layout.get_map_node_position(top).y).is_greater_equal(MissionMapLayout.MAP_NODE_MARGIN)
+	assert_float(layout.get_map_node_position(bottom).y).is_less_equal(FLAT_SIZE.y - MissionMapLayout.MAP_NODE_MARGIN)
+
+
 func test_neighbouring_map_nodes_keep_their_spacing_despite_jitter() -> void:
 	var mission_map := MissionMap.new()
 	var upper := MissionMapFixture.add_map_node(mission_map, 0, 1)
@@ -31,7 +40,7 @@ func test_neighbouring_map_nodes_keep_their_spacing_despite_jitter() -> void:
 	upper.jitter = Vector2(0, 100)
 	lower.jitter = Vector2(0, -100)
 	# Tall enough that the rows leave room for jitter.
-	var layout := MissionMapLayout.create(mission_map, 1, Vector2(400, 1000), SEPARATION, FLAT_COUNT)
+	var layout := MissionMapLayout.create(mission_map, 1, Vector2(400, 1100), SEPARATION, FLAT_COUNT)
 	var spacing := layout.get_map_node_position(lower).y - layout.get_map_node_position(upper).y
 	assert_float(spacing).is_greater_equal(MissionMapLayout.MAP_NODE_MIN_SPACING)
 

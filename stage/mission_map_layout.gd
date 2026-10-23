@@ -2,6 +2,8 @@ class_name MissionMapLayout
 extends RefCounted
 
 const MAP_NODE_MIN_SPACING := 190.0
+# Kept clear above the first row and below the last, in design units.
+const MAP_NODE_MARGIN := 40.0
 
 # Positions are in flat space.
 var _map_node_positions: Dictionary[MapNode, Vector2] = {}
@@ -53,7 +55,7 @@ func get_road_dashes(flat_index: int) -> Array[Flat.RoadDash]:
 
 # The jitter towards a neighbouring row among `rows`, the column's, is capped, so neighbours stay MAP_NODE_MIN_SPACING apart.
 static func _get_map_node_position(map_node: MapNode, rows: Array[int], flat_size: Vector2) -> Vector2:
-	var row_spacing := flat_size.y / MissionMapGenerator.ROW_COUNT
+	var row_spacing := (flat_size.y - MAP_NODE_MARGIN * 2.0) / MissionMapGenerator.ROW_COUNT
 	# Never negative: a flat too short for the spacing loses its jitter towards neighbours rather than pushing them apart.
 	var jitter_cap := maxf((row_spacing - MAP_NODE_MIN_SPACING) / 2.0, 0.0)
 	var jitter := map_node.jitter
@@ -61,4 +63,4 @@ static func _get_map_node_position(map_node: MapNode, rows: Array[int], flat_siz
 		jitter.y = maxf(jitter.y, -jitter_cap)
 	if map_node.row + 1 in rows:
 		jitter.y = minf(jitter.y, jitter_cap)
-	return Vector2(flat_size.x / 2.0, row_spacing * (map_node.row + 0.5)) + jitter
+	return Vector2(flat_size.x / 2.0, MAP_NODE_MARGIN + row_spacing * (map_node.row + 0.5)) + jitter
