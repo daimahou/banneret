@@ -82,7 +82,7 @@ func show_fight(fight_model: FightModel) -> void:
 	_queue_refresh()
 
 
-# The action the ghost stands for; null takes the ghost down.
+# Null takes the ghost down.
 func set_ghost_action(action: Action) -> void:
 	_ghost_action = action
 	_queue_refresh()

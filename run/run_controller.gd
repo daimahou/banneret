@@ -1,7 +1,6 @@
 class_name RunController
 extends Node
 
-# The encounter is on stage and the heroes have their brain; the fight is about to play.
 signal fight_started(fight_controller: FightController)
 
 const HOLD_DURATION := 0.4

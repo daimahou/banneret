@@ -21,7 +21,6 @@ static func create_material(highlight: Ink.Highlight) -> ShaderMaterial:
 	return create_color_material(COLORS[highlight])
 
 
-# Dark ink takes the color; light fills keep theirs.
 static func create_color_material(ink_color: Color) -> ShaderMaterial:
 	var material := ShaderMaterial.new()
 	material.shader = RECOLOR_SHADER

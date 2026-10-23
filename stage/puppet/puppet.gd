@@ -58,7 +58,7 @@ func get_height() -> float:
 	return texture.get_height()
 
 
-# Whether the point, in global space, is inside its sprite's rectangle.
+# The sprite's rectangle, not its pixels.
 func has_point(global_point: Vector2) -> bool:
 	return _sprite.get_rect().has_point(_sprite.to_local(global_point))
 
@@ -79,14 +79,12 @@ func set_ink(ink_material: ShaderMaterial) -> void:
 	_sprite.material = ink_material
 
 
-# Pressed down and let go, like a button.
 func bob() -> void:
 	var tween := _create_bob_tween()
 	tween.tween_property(self, "_bob", BOB_DEPTH, BOB_DURATION).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "_bob", BOB_DEPTH if _is_pressed else 0.0, BOB_DURATION).set_ease(Tween.EASE_IN)
 
 
-# Held down, like a button under the cursor.
 func set_pressed(is_pressed: bool) -> void:
 	if is_pressed == _is_pressed:
 		return

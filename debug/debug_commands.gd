@@ -88,7 +88,6 @@ func knock_out(fight_controller: FightController, side: FightModel.Side) -> void
 		player_brain.pass_stop()
 
 
-# Each fight starts with the player's brain; random heroes take it over.
 func _on_fight_started(fight_controller: FightController, run_controller: RunController) -> void:
 	if not _is_player_brain_on:
 		set_player_brain(fight_controller, _get_stage(run_controller), false)

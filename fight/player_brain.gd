@@ -4,14 +4,12 @@ extends Brain
 # It takes the player's input as calls, so whatever the controls are, they only make the calls. Nothing is pickable while the fight runs.
 
 signal choices_changed
-# A digit landed on the aimed target.
 signal target_pressed(target: Character)
 signal _decided(action: Action)
 
 var hero: Character
 var armed_skill: SkillData
 var aimed_target: Character
-# The skill the cursor rests on, or null.
 var hovered_skill: SkillData
 
 var _fight_model: FightModel
@@ -178,7 +176,6 @@ func is_free(character: Character) -> bool:
 	return _is_waiting and _fight_model.get_side(character) == side and _has_no_action(character)
 
 
-# The selected hero's pending action, or null.
 func get_pending_action() -> Action:
 	return _fight_model.get_action(hero) if _is_waiting and hero != null else null
 

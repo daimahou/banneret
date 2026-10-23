@@ -9,7 +9,6 @@ const PENDING_BORDER_COLOR := Color("e8c547")
 const PENDING_BORDER_WIDTH := 6
 
 var _player_brain: PlayerBrain
-# The hero whose skills the buttons show.
 var _shown_hero: Character
 
 @onready var _skills: HBoxContainer = $Skills
@@ -97,7 +96,6 @@ func _add_skill_buttons() -> void:
 		_skills.add_child(button)
 
 
-# The skill in the hero's pending action is outlined.
 func _show_pending(button: Button, is_pending: bool) -> void:
 	for style_name: StringName in [&"normal", &"hover", &"pressed", &"disabled"]:
 		if not is_pending:

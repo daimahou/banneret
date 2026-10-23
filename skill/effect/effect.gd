@@ -7,6 +7,5 @@ func add_changes(_fight_model: FightModel, _delta: Delta, _action: Action) -> vo
 	pass
 
 
-# One line of the skill's card.
 func get_description() -> String:
 	return ""
