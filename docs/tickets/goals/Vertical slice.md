@@ -3,8 +3,8 @@ id: "1"
 requires:
 started: 2026-10-01
 finished:
-hours: 8.5
-total_hours: 23.4
+hours: 8.4
+total_hours: 24
 deadline: 2027-02-01
 ---
 

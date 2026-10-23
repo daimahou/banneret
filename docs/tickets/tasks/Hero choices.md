@@ -1,17 +1,18 @@
 ---
-triage: needs-info
+triage: ready-for-agent
 id: 1.1-3.5
 requires:
   - "[[Fight on stage]]"
 started:
 finished:
+hours: 1
 parent: "[[Encounters]]"
 ---
 # Done when
 
-- The player chooses each hero's skill and target, with buttons and keys, in place of the heroes' random brain.
-- The player can pass, and can reschedule a busy hero.
-- The rope shows where a skill would resolve before it is chosen; hovering a medallion shows who acts.
+- The player chooses each hero's skill and target, with buttons, keys and clicks, in place of the heroes' random brain.
+- The player can stop the fight, pass, and reschedule a busy hero.
+- The rope shows a ghost where a skill would resolve; a medallion and its puppet highlight each other.
 
 ## Problem
 
@@ -19,30 +20,41 @@ The player has no say in the fight.
 
 ## Solution
 
-A `PlayerBrain` replaces the heroes' `RandomBrain` on stage; it only turns input into the hero, skill and target picked, and asks `FightRules` what is legal. `FightRunner` keeps random brains. Ported from prototype C's `PlayerBrain` and `FightControls`.
+A `PlayerBrain` replaces the heroes' `RandomBrain` on stage. It turns input into the hero, skill and target picked, and asks `FightRules` what is legal. The fight stops for a free hero, or when the player asks; the player gives orders, then passes or lets the fight run on. Ported from prototype C's `PlayerBrain` and `FightControls`.
 
-## Decisions so far
+## Implementation decisions
 
-- **Flow** — hero → skill (armed) → valid targets tinted → target → confirmed. Another skill can be armed while one is armed. Esc or right click disarms the skill.
-- **Hero** — when the fight waits on the heroes, the first free hero is selected. Tab cycles the heroes. After a confirm, the next free hero is selected.
-- **Reschedule** — a busy hero can be selected and given a new action; its pending action is dropped, its progress lost.
-- **Skills** — plain themed buttons in the bottom half, name only; a tooltip carries the rest (delay, effects). Art comes once we know what the player reads.
-- **Keys** — 1–N arms a skill. Once one is armed, 1–N picks among the valid targets, left to right on screen; the same number again, or Enter, confirms. Targets can also be clicked on their puppet.
-- **Pass** — a button and `P`: the next action resolves even with heroes free; then they are asked again. Not Space: too easy to hit by accident.
-- **Puppets** — a free hero hops instead of swaying; the selected hero stops hopping and stands raised. Valid targets and hovered-medallion actors are tinted.
-- **Preview ghost** — an armed or hovered skill hangs a faded medallion where it would resolve on the rope.
-- **Medallion hover** — tints its actor's puppet, so two brigands can be told apart.
-- **Tests** — none for `PlayerBrain`, it only maps input. Rescheduling is a rule change: `FightRules` tests cover it.
+- **Stop** — the controller asks the hero brain when nothing is due this tick, or when it asked for a stop: `Brain.is_stop_requested()`, false by default. A requested stop lands after the blow playing, even between actions on the same tick.
+- **Stop ends** — a stop for a free hero ends once no hero is free. A requested stop lasts until Pass.
+- **Pass** — the brain returns null: the next action resolves.
+- **Reschedule** — `get_timeline_delta` drops the actor's pending action, if any, in the same delta. The new action resolves `delay` on from now, chosen last. No cancelling without a replacement.
+- **Hero brain** — `FightController` holds one `hero_brain`; `FightRunner` and the default use `RandomBrain`, the stage a `PlayerBrain`. A debug command toggles the stage's heroes to random and back, kept on `RunController` across fights; a waiting player brain passes when swapped out.
+- **Selection** — when a stop starts, the first free hero is selected, else the first hero. After a confirm, the next free hero. Tab / Shift+Tab cycle the heroes; a click selects one. Nothing is pickable while the fight runs.
+- **Arm** — 1–N or a button arms a skill; another skill replaces it. Esc or right click disarms.
+- **Aim** — arming aims the first valid target, left to right on screen. With a skill armed, 1–N aims a target; the same number again confirms. Arrows cycle the aim. An aim from arming or arrows never counts as the first digit press. Enter confirms the aimed target; a click on a valid target confirms it.
+- **Controls** — one fixed row at the bottom of the heroes' half, below the health bars: the selected hero's skills, a gap, the Stop/Pass button. Plain themed buttons, no key labels.
+  - The button reads Stop while the fight runs, Pass while stopped. Space stops: the button shows held down until the stop lands. P passes.
+  - The skill of the hero's pending action is outlined; the armed skill shows pressed.
+  - Skill tooltip, card-like: name, `Delay: X`, a line per effect from `Effect.get_description()`.
+- **Puppets**:
+  - A free hero hops during a stop; the selected hero stands raised and still; every other puppet sways.
+  - Hover brightens a pickable puppet. Valid targets tinted red, the aimed one a stronger red. A digit press bobs the aimed puppet down.
+- **Rope**:
+  - Ghost — the armed or hovered skill hangs faded where it would resolve.
+  - Red X — on the pending action a reschedule would drop, while a skill is armed.
+  - Selecting or hovering a puppet highlights its medallion; hovering a medallion brightens its puppet, always.
+- Looks are placeholders, tuned by playing.
 
-## Open for the grill
+## Testing decisions
 
-- **Reschedule while all heroes are busy:** the fight only waits when a hero is free. Can the player interrupt a running fight to reschedule, or only during a wait?
-- **Reschedule rule:** does the new action's resolve tick start from now, and does dropping the old one count as a choice for the shared-tick order?
+- `FightRules`: a reschedule drops the old action; the new one resolves `delay` on from now.
+- `FightController`: a hero brain that requests a stop is asked with an action due.
+- No tests for `PlayerBrain`: it maps input. Input and looks are judged by playing.
 
 ## Out of scope
 
 - Who an enemy aims at.
-- Art for buttons, tint and marks.
+- Art for buttons, highlights and marks.
 - More skills, reaches, cooldowns.
 
 ![[Children.base#Open tickets]]

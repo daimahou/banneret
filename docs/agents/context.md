@@ -96,6 +96,18 @@ _Avoid_: move, order
 An action as shown on the timeline: a token hanging on the rope with its actor's portrait.
 _Avoid_: token, icon, card
 
+**Ghost**:
+A medallion for an action not yet chosen, hanging where it would resolve.
+_Avoid_: preview, shadow
+
+**Stop**:
+A pause in the fight while the heroes take orders.
+_Avoid_: pause, freeze
+
+**Reschedule**:
+A busy hero's pending action replaced by a new one.
+_Avoid_: cancel, retarget
+
 **Brain**:
 What chooses the actions of one side: the player or chance.
 _Avoid_: AI, controller
