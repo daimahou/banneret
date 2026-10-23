@@ -1,7 +1,7 @@
 class_name RunController
 extends Node
 
-const END_HOLD_DURATION := 1.0
+const HOLD_DURATION := 0.4
 
 var run_model := RunModel.new()
 var fight_controller: FightController
@@ -79,10 +79,10 @@ func _start_encounter(fight_seed: int) -> void:
 	var enemies: Array[Character] = []
 	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
 		enemies.append(Character.new(enemy_data))
-		enemies.append(Character.new(enemy_data))
 	LimboConsole.info("Fight seed: %d" % fight_seed)
 	fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
 	await _stage.show_encounter(fight_controller.fight_model)
+	await get_tree().create_timer(HOLD_DURATION).timeout
 	await _play_fight()
 
 
@@ -90,7 +90,7 @@ func _start_encounter(fight_seed: int) -> void:
 func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
-	await get_tree().create_timer(END_HOLD_DURATION).timeout
+	await get_tree().create_timer(HOLD_DURATION).timeout
 	var is_won := fight_controller.fight_model.is_won()
 	fight_controller = null
 	if is_won:
