@@ -5,7 +5,7 @@ requires:
   - "[[Encounter transition]]"
   - "[[Timeline]]"
 started: 2026-10-23
-finished:
+finished: 2026-10-23
 parent: "[[Encounters]]"
 ---
 # Done when
