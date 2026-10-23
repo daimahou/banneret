@@ -29,9 +29,9 @@ func _initialize() -> void:
 
 
 func _play(fight_seed: int) -> Outcome:
-	var fight_controller := FightController.new(RunModel.new().party, _create_enemies(), fight_seed, RandomBrain.new(FightModel.Side.HERO, fight_seed))
+	var fight_model := FightModel.new(RunModel.new().party, _create_enemies())
+	var fight_controller := FightController.new(fight_model, RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1), RandomBrain.new(FightModel.Side.HERO, fight_seed))
 	await fight_controller.play()
-	var fight_model := fight_controller.fight_model
 	var outcome := Outcome.new()
 	outcome.is_won = fight_model.is_won()
 	outcome.ticks = fight_model.tick

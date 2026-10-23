@@ -30,7 +30,7 @@ func test_the_same_seed_plays_the_same_fight() -> void:
 func test_a_win_leaves_the_heroes_health_as_the_fight_left_it() -> void:
 	for fight_seed in SEEDS:
 		var heroes := _create_heroes()
-		var fight_controller := FightController.new(heroes, _create_enemies(), fight_seed, _create_random_heroes(fight_seed))
+		var fight_controller := _create_fight_controller_for(heroes, fight_seed, _create_random_heroes(fight_seed))
 		var damage_taken: Dictionary[Character, int] = {}
 		fight_controller.fight_model.health_changed.connect(func(character: Character, amount: int) -> void: damage_taken[character] = damage_taken.get(character, 0) - amount)
 
@@ -48,7 +48,7 @@ func test_a_win_leaves_the_heroes_health_as_the_fight_left_it() -> void:
 
 func test_a_hero_brain_that_requests_a_stop_is_asked_with_an_action_due() -> void:
 	var hero_brain := StoppingBrain.new()
-	var fight_controller := FightController.new(_create_heroes(), _create_enemies(), 1, hero_brain)
+	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, hero_brain)
 
 	await fight_controller.play()
 
@@ -67,7 +67,11 @@ func _record_fight(fight_seed: int) -> Array[Vector3i]:
 
 
 func _create_fight_controller(fight_seed: int) -> FightController:
-	return FightController.new(_create_heroes(), _create_enemies(), fight_seed, _create_random_heroes(fight_seed))
+	return _create_fight_controller_for(_create_heroes(), fight_seed, _create_random_heroes(fight_seed))
+
+
+func _create_fight_controller_for(heroes: Array[Character], fight_seed: int, heroes_brain: Brain) -> FightController:
+	return FightController.new(FightModel.new(heroes, _create_enemies()), RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1), heroes_brain)
 
 
 func _create_random_heroes(fight_seed: int) -> RandomBrain:
