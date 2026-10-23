@@ -3,7 +3,6 @@ triage: needs-info
 id: 1.1-3.3
 requires:
   - "[[Party]]"
-  - "[[Combat design]]"
 started:
 finished:
 parent: "[[Encounters]]"

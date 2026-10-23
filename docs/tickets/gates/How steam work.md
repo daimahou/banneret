@@ -54,5 +54,7 @@ Converts from 1-20%
 
 Early access loophole: people who wishlist a game that get into early access get an email - on release: second email.
 
+When there is a festival and a sale -> email. But valve knows to avoid spamming people and throttle the second one if too close.
+
 ---
 
