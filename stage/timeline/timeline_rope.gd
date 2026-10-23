@@ -2,6 +2,7 @@ class_name TimelineRope
 extends Node2D
 # The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with the actor's portrait for each pending action, hung after the knot of the tick it resolves on.
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It follows the fight model, and changes nothing in it.
+# A ghost, an action not yet chosen, hangs faded where it would resolve.
 
 const KNOT_SCENE := preload("res://stage/timeline/timeline_knot.tscn")
 const MEDALLION_SCENE := preload("res://stage/timeline/timeline_medallion.tscn")
@@ -11,6 +12,9 @@ const MEDALLION_SPACING := 148.0
 # Nothing hangs this close to either side of a tie.
 const TIE_CLEARANCE := 24.0
 
+const GHOST_ALPHA := 0.4
+const GHOST_KEY := &"ghost"
+
 const MOVE_DURATION := 0.3
 # A thing on the rope drops this far onto it as it comes, and lifts as far off it as it goes, in design units.
 const LIFT := 24.0
@@ -19,6 +23,9 @@ var _fight_model: FightModel
 var _entry_nodes: Dictionary[Variant, Node2D] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _is_refresh_queued := false
+var _ghost: Action
+var _highlighted_actors: Array[Character] = []
+var _dropped_action: Action
 
 @onready var _rope: Line2D = $Rope
 @onready var _ties: Node2D = $Ties
@@ -31,28 +38,36 @@ class Entry:
 
 	var tick := 0
 	var action: Action
+	var is_ghost := false
 
-	func _init(entry_tick: int, entry_action: Action) -> void:
+	func _init(entry_tick: int, entry_action: Action, entry_is_ghost := false) -> void:
 		tick = entry_tick
 		action = entry_action
+		is_ghost = entry_is_ghost
 
 	func is_knot() -> bool:
 		return action == null
 
-	# What its node is known by from one change to the next: a knot by its tick, a medallion by its action.
+	# What its node is known by from one change to the next: a knot by its tick, a medallion by its action, the ghost by itself.
 	func get_key() -> Variant:
+		if is_ghost:
+			return GHOST_KEY
 		return tick if is_knot() else action
 
 
-# The rope from left to right. An action due now comes before any knot; on a shared tick, the timeline's order.
-static func _get_entries(fight_model: FightModel) -> Array[Entry]:
+# The rope from left to right. An action due now comes before any knot; on a shared tick, the timeline's order, after the ghost: chosen last, it would resolve first.
+static func _get_entries(fight_model: FightModel, ghost: Action) -> Array[Entry]:
 	var last_tick := fight_model.tick
 	for action in fight_model.timeline:
 		last_tick = maxi(last_tick, action.resolve_tick)
+	if ghost != null:
+		last_tick = maxi(last_tick, ghost.resolve_tick)
 	var entries: Array[Entry] = []
 	for tick in range(fight_model.tick, last_tick + 1):
 		if tick > fight_model.tick:
 			entries.append(Entry.new(tick, null))
+		if ghost != null and ghost.resolve_tick == tick:
+			entries.append(Entry.new(tick, ghost, true))
 		for action in fight_model.timeline:
 			if action.resolve_tick == tick:
 				entries.append(Entry.new(tick, action))
@@ -67,7 +82,31 @@ func show_fight(fight_model: FightModel) -> void:
 	_queue_refresh()
 
 
+# Null takes the ghost down.
+func set_ghost(ghost: Action) -> void:
+	_ghost = ghost
+	_queue_refresh()
+
+
+# The medallions of these actors hang highlighted; the dropped action's is crossed out.
+func set_marks(highlighted_actors: Array[Character], dropped_action: Action) -> void:
+	_highlighted_actors = highlighted_actors
+	_dropped_action = dropped_action
+	_show_marks()
+
+
+# The pending action whose medallion is under the point, in global space, or null.
+func get_action_at(global_point: Vector2) -> Action:
+	for key: Variant in _entry_nodes:
+		if key is Action and (_entry_nodes[key] as TimelineMedallion).has_point(global_point):
+			return key
+	return null
+
+
 func clear() -> void:
+	_ghost = null
+	_highlighted_actors = []
+	_dropped_action = null
 	if _fight_model != null:
 		_fight_model.tick_changed.disconnect(_on_fight_changed)
 		_fight_model.action_added.disconnect(_on_fight_changed)
@@ -143,7 +182,7 @@ func _refresh() -> void:
 	var placed: Dictionary[Variant, Node2D] = {}
 	var tie_xs := _get_tie_xs()
 	var x := _get_rope_start_x()
-	for entry in _get_entries(_fight_model):
+	for entry in _get_entries(_fight_model, _ghost):
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
 		x = _get_left_x_past_ties(x, spacing, tie_xs)
 		x += spacing / 2.0
@@ -152,6 +191,8 @@ func _refresh() -> void:
 		if node == null:
 			node = _add_entry_node(entry, x)
 		else:
+			if entry.is_ghost:
+				(node as TimelineMedallion).portrait = entry.action.actor.data.portrait
 			var tween := _create_entry_tween(node)
 			tween.tween_property(node, "position", _get_rope_position(x), MOVE_DURATION)
 			tween.tween_property(node, "rotation" if entry.is_knot() else "knot_rotation", _get_rope_angle(x), MOVE_DURATION)
@@ -161,6 +202,15 @@ func _refresh() -> void:
 		if not placed.has(key):
 			_remove_entry_node(_entry_nodes[key])
 	_entry_nodes = placed
+	_show_marks()
+
+
+func _show_marks() -> void:
+	for key: Variant in _entry_nodes:
+		if key is Action:
+			var medallion: TimelineMedallion = _entry_nodes[key]
+			medallion.set_highlighted((key as Action).actor in _highlighted_actors)
+			medallion.set_dropped(key == _dropped_action)
 
 
 # Where the ties hang, in the entries' space, left to right.
@@ -197,7 +247,7 @@ func _add_entry_node(entry: Entry, x: float) -> Node2D:
 	_entries.add_child(node)
 	var tween := _create_entry_tween(node)
 	tween.tween_property(node, "position:y", rope_position.y, MOVE_DURATION)
-	tween.tween_property(node, "modulate:a", 1.0, MOVE_DURATION)
+	tween.tween_property(node, "modulate:a", GHOST_ALPHA if entry.is_ghost else 1.0, MOVE_DURATION)
 	return node
 
 

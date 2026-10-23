@@ -5,6 +5,12 @@ const HOLD_DURATION := 0.4
 
 var run_model := RunModel.new()
 var fight_controller: FightController
+# The heroes play themselves while set, in this fight and the next ones; set during a stop, the player's brain passes first.
+var is_hero_brain_random := false:
+	set(value):
+		is_hero_brain_random = value
+		if fight_controller != null:
+			_set_hero_brain()
 
 var _mission_controller: MissionController
 
@@ -82,14 +88,30 @@ func _start_encounter(fight_seed: int) -> void:
 	LimboConsole.info("Fight seed: %d" % fight_seed)
 	fight_controller = FightController.new(run_model.party, enemies, fight_seed, _stage)
 	await _stage.show_encounter(fight_controller.fight_model)
+	_set_hero_brain()
 	await get_tree().create_timer(HOLD_DURATION).timeout
 	await _play_fight()
+
+
+# The new brain takes over before the old one passes, so the heroes' next turn to choose is already its.
+func _set_hero_brain() -> void:
+	var player_brain := fight_controller.hero_brain as PlayerBrain
+	if is_hero_brain_random:
+		fight_controller.hero_brain = RandomBrain.new(FightModel.Side.HERO, randi())
+		_stage.show_choices(null)
+		if player_brain != null:
+			player_brain.pass_stop()
+	elif player_brain == null:
+		player_brain = PlayerBrain.new()
+		fight_controller.hero_brain = player_brain
+		_stage.show_choices(player_brain)
 
 
 # Either way the stage goes back to a new mission, after a hold on the fight's end; a defeat loses the run first, and a new one starts.
 func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
+	_stage.show_choices(null)
 	await get_tree().create_timer(HOLD_DURATION).timeout
 	var is_won := fight_controller.fight_model.is_won()
 	fight_controller = null

@@ -9,6 +9,7 @@ func _ready() -> void:
 		return
 	LimboConsole.register_command(win_fight, "fight_win", "Knock out every enemy: the fight is won")
 	LimboConsole.register_command(lose_fight, "fight_lose", "Knock out every hero: the fight, and the run, are lost")
+	LimboConsole.register_command(toggle_random_heroes, "fight_random_heroes", "Toggle the heroes between the player's choices and random ones, in this fight and the next")
 
 
 func _exit_tree() -> void:
@@ -16,6 +17,7 @@ func _exit_tree() -> void:
 		return
 	LimboConsole.unregister_command(win_fight)
 	LimboConsole.unregister_command(lose_fight)
+	LimboConsole.unregister_command(toggle_random_heroes)
 
 
 func win_fight() -> void:
@@ -24,6 +26,15 @@ func win_fight() -> void:
 
 func lose_fight() -> void:
 	_knock_out_in_run(FightModel.Side.HERO)
+
+
+func toggle_random_heroes() -> void:
+	var run_controller := get_tree().current_scene as RunController
+	if run_controller == null:
+		LimboConsole.warn("No run is playing")
+		return
+	run_controller.is_hero_brain_random = not run_controller.is_hero_brain_random
+	LimboConsole.info("Heroes: %s" % ("random" if run_controller.is_hero_brain_random else "the player's"))
 
 
 # The side falls as the next action resolves, between two steps of the fight, as if struck down.

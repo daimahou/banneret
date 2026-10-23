@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.1-3.5
 requires:
   - "[[Fight on stage]]"
-started:
+started: 2026-10-23
 finished:
 hours: 1
 parent: "[[Encounters]]"

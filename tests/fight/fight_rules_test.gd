@@ -59,6 +59,21 @@ func test_an_action_aimed_at_a_fallen_character_is_cancelled_and_its_actor_freed
 	assert_object(fight_model.get_action(fight_model.heroes[1])).is_null()
 
 
+func test_a_reschedule_drops_the_pending_action_and_resolves_the_new_one_its_delay_on_from_now() -> void:
+	var fight_model := _create_fight_model()
+	var blow := _create_choice(fight_model, fight_model.enemies[0], 2)
+	var pending := _create_choice(fight_model, fight_model.heroes[0], 6)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, blow))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, pending))
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
+	var rescheduled := _create_choice(fight_model, fight_model.heroes[0], 3)
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, rescheduled))
+
+	assert_array(fight_model.timeline).contains_exactly([rescheduled])
+	assert_int(rescheduled.resolve_tick).is_equal(5)
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character(10), _create_character(10)]
 	var enemies: Array[Character] = [_create_character(10), _create_character(10)]

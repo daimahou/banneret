@@ -46,6 +46,16 @@ func test_a_win_leaves_the_heroes_health_as_the_fight_left_it() -> void:
 	fail("No seed won")
 
 
+func test_a_hero_brain_that_requests_a_stop_is_asked_with_an_action_due() -> void:
+	var fight_controller := _create_fight_controller(1)
+	var hero_brain := StoppingBrain.new()
+	fight_controller.hero_brain = hero_brain
+
+	await fight_controller.play()
+
+	assert_bool(hero_brain.is_asked_with_action_due).is_true()
+
+
 # Each resolved action as its actor, target and tick, by index among the fight's characters.
 func _record_fight(fight_seed: int) -> Array[Vector3i]:
 	var fight_controller := _create_fight_controller(fight_seed)
@@ -79,3 +89,19 @@ func _create_character(health: int) -> Character:
 	character_data.max_health = health
 	character_data.skills = [skill]
 	return Character.new(character_data)
+
+
+# Always requests a stop, then passes, noting whether an action was due when it was asked.
+class StoppingBrain:
+	extends Brain
+
+	var is_asked_with_action_due := false
+
+	func is_stop_requested() -> bool:
+		return true
+
+	func get_next_action(fight_model: FightModel) -> Action:
+		var next_action := fight_model.get_next_action()
+		if next_action != null and next_action.resolve_tick == fight_model.tick:
+			is_asked_with_action_due = true
+		return await super(fight_model)
