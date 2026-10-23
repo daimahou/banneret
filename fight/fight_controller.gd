@@ -13,10 +13,10 @@ var _stage: Stage
 
 
 # The enemies choose from the seed; so do the heroes, given a random brain on the same seed.
-func _init(heroes: Array[Character], enemies: Array[Character], fight_seed: int, fight_hero_brain: Brain = PlayerBrain.new(), fight_stage: Stage = null) -> void:
+func _init(heroes: Array[Character], enemies: Array[Character], fight_seed: int, ai_player: Brain = PlayerBrain.new(), fight_stage: Stage = null) -> void:
 	fight_model = FightModel.new(heroes, enemies)
 	_stage = fight_stage
-	hero_brain = fight_hero_brain
+	hero_brain = ai_player
 	_enemy_brain = RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1)
 
 
