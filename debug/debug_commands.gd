@@ -37,9 +37,11 @@ func toggle_random_heroes() -> void:
 	LimboConsole.info("Heroes: %s" % ("random" if run_controller.is_hero_brain_random else "the player's"))
 
 
-# The side falls as the next action resolves, between two steps of the fight, as if struck down.
+# The side falls between two steps of the fight, as if struck down: at once while the player chooses, which then passes; else as the blow playing lands.
 func knock_out(fight_controller: FightController, side: FightModel.Side) -> void:
-	await fight_controller.action_resolved
+	var player_brain := fight_controller.hero_brain as PlayerBrain
+	if player_brain == null or not player_brain.is_waiting():
+		await fight_controller.action_resolved
 	var fight_model := fight_controller.fight_model
 	if fight_model.is_over():
 		return
@@ -47,6 +49,8 @@ func knock_out(fight_controller: FightController, side: FightModel.Side) -> void
 	for character in fight_model.get_standing(side):
 		FightRules.add_damage(fight_model, delta, character, character.health)
 	fight_model.apply(delta)
+	if player_brain != null:
+		player_brain.pass_stop()
 
 
 func _knock_out_in_run(side: FightModel.Side) -> void:
