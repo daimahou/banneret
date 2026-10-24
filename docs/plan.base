@@ -26,8 +26,11 @@ formulas:
       .map((deadline - value.asFile().properties.deadline).days)
       .reduce(if(value < acc, value, acc), (deadline - today()).days))
   Duration: |-
-    if(started.isEmpty() || finished.isEmpty(), "",
-    (finished - started).days + " days")
+    if(formula.Hours.isEmpty() || formula.Hours == 0, "",
+    if(formula.Hours.round() == 0, "<1h",
+    if((formula.Hours.round() / 8).floor() > 0, (formula.Hours.round() / 8).floor() + "d ", "")
+      + if(formula.Hours.round() % 8 > 0, formula.Hours.round() % 8 + "h", "")))
+  Hours: if(total_hours.isEmpty(), hours, total_hours)
   Key: |-
     if(parent.isEmpty(), id + " - " + file.name,
       parent.asFile().properties.id + " - " + parent.asFile().name)
