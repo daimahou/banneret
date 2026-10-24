@@ -135,7 +135,7 @@ func _create_character(health: int) -> Character:
 	return Character.new(character_data)
 
 
-# A new skill, added to the actor's, aimed at the first standing character of the other side.
+# A new skill, aimed at the first standing character of the other side.
 func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, damage_amount := 1, skill_cooldown := 0) -> Action:
 	var choice := Action.new()
 	choice.actor = actor

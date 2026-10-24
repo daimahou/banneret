@@ -1,6 +1,6 @@
 class_name TimelineRope
 extends Node2D
-# The timeline, strung across the top of the stage: a knot for each tick to come, a beat knot on a beat, the rope ending on a beat, and a medallion with the actor's portrait for each pending action, hung after the knot of the tick it resolves on.
+# The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with the actor's portrait for each pending action, hung after the knot of the tick it resolves on.
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It follows the fight model, and changes nothing in it.
 # A ghost, an action not yet chosen, hangs faded where it would resolve.
 
