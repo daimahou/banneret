@@ -7,7 +7,11 @@ const BEAT_TICKS := 4
 
 # Every skill the character can use now.
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
-	return character.data.skills.filter(func(skill: SkillData) -> bool: return get_cooldown_beats(fight_model, character, skill) == 0)
+	var skills: Array[SkillData] = []
+	for skill in character.data.skills:
+		if get_cooldown_beats(fight_model, character, skill) == 0:
+			skills.append(skill)
+	return skills
 
 
 static func get_cooldown_beats(fight_model: FightModel, character: Character, skill: SkillData) -> int:
