@@ -2,9 +2,9 @@
 triage: ready-for-agent
 id: 1.2-1.2.1
 requires:
-started:
-finished:
-hours:
+started: 2026-10-24
+finished: 2026-10-24
+hours: 0.6
 parent: "[[Beat and cooldowns]]"
 ---
 # Done when
