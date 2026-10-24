@@ -26,7 +26,6 @@ func _ready() -> void:
 	hide()
 
 
-# A skill on cooldown is disabled, dimmed, and shows its beats left.
 func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Dictionary[SkillData, int]) -> void:
 	show()
 	if skills != _shown_skills:

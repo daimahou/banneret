@@ -5,12 +5,12 @@ class_name FightRules
 const BEAT_TICKS := 4
 
 
-# Every skill the character can use now: those not on cooldown.
+# Every skill the character can use now.
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
 	return character.data.skills.filter(func(skill: SkillData) -> bool: return get_cooldown_beats(fight_model, character, skill) == 0)
 
 
-# The beats left to cross before the skill is ready again; 0 when it is.
+# 0 once the skill is ready.
 static func get_cooldown_beats(fight_model: FightModel, character: Character, skill: SkillData) -> int:
 	var ticks: int = character.ready_ticks.get(skill, 0) - fight_model.tick
 	return maxi(ceili(ticks / float(BEAT_TICKS)), 0)
