@@ -72,6 +72,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
 		fight_model.action_removed.connect(_on_action_removed)
+		fight_model.tick_changed.connect(_on_tick_changed)
 	var free_heroes := fight_model.get_standing(side).filter(_has_no_action)
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
@@ -121,7 +122,7 @@ func cycle_hero(step: int) -> void:
 
 # Aims the first target.
 func arm_skill(skill: SkillData) -> void:
-	if not _is_waiting or skill not in FightRules.get_usable_skills(hero):
+	if not _is_waiting or skill not in FightRules.get_usable_skills(_fight_model, hero):
 		return
 	armed_skill = skill
 	var targets := get_targets()
@@ -141,7 +142,7 @@ func press_number(index: int) -> void:
 	if not _is_waiting:
 		return
 	if armed_skill == null:
-		var skills := FightRules.get_usable_skills(hero)
+		var skills := hero.data.skills
 		if index < skills.size():
 			arm_skill(skills[index])
 		return
@@ -260,15 +261,22 @@ func _on_action_removed(action: Action) -> void:
 		hover_action(null)
 
 
+func _on_tick_changed(_tick: int) -> void:
+	_show_choices()
+
+
 func _show_choices() -> void:
 	if _stage == null:
 		return
 	_stage.show_choices(self)
 	var skill_bar := _stage.skill_bar
 	var skills: Array[SkillData] = []
+	var cooldown_beats: Dictionary[SkillData, int] = {}
 	if hero != null:
-		skills = FightRules.get_usable_skills(hero)
-	skill_bar.show_skills(skills, _is_waiting)
+		skills = hero.data.skills
+		for skill in skills:
+			cooldown_beats[skill] = FightRules.get_cooldown_beats(_fight_model, hero, skill)
+	skill_bar.show_skills(skills, _is_waiting, cooldown_beats)
 	skill_bar.set_armed_skill(armed_skill)
 	var pending_action := get_pending_action()
 	skill_bar.set_pending_skill(null if pending_action == null else pending_action.skill)

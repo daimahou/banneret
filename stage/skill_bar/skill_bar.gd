@@ -11,6 +11,7 @@ const FONT_SIZE := 48
 const SKILL_BUTTON_SIZE := Vector2(280.0, 100.0)
 const PENDING_BORDER_COLOR := Color("e8c547")
 const PENDING_BORDER_WIDTH := 6
+const COOLDOWN_ALPHA := 0.5
 
 var _shown_skills: Array[SkillData] = []
 
@@ -25,13 +26,18 @@ func _ready() -> void:
 	hide()
 
 
-func show_skills(skills: Array[SkillData], are_enabled: bool) -> void:
+# A skill on cooldown is disabled, dimmed, and shows its beats left.
+func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Dictionary[SkillData, int]) -> void:
 	show()
 	if skills != _shown_skills:
 		_shown_skills = skills
 		_add_skill_buttons()
 	for button in _get_skill_buttons():
-		button.disabled = not are_enabled
+		var skill: SkillData = button.get_meta(&"skill")
+		var beats: int = cooldown_beats.get(skill, 0)
+		button.disabled = not are_enabled or beats > 0
+		button.modulate.a = COOLDOWN_ALPHA if beats > 0 else 1.0
+		button.text = skill.name if beats == 0 else "%s (%d)" % [skill.name, beats]
 
 
 func set_armed_skill(armed_skill: SkillData) -> void:

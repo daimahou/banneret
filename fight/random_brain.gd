@@ -14,7 +14,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 	for character in fight_model.get_standing(side):
 		if fight_model.get_action(character) != null:
 			continue
-		var skills := FightRules.get_usable_skills(character)
+		var skills := FightRules.get_usable_skills(fight_model, character)
 		if skills.is_empty():
 			continue
 		var action := Action.new()

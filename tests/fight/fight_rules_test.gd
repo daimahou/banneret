@@ -74,6 +74,55 @@ func test_a_reschedule_drops_the_pending_action_and_resolves_the_new_one_its_del
 	assert_int(rescheduled.resolve_tick).is_equal(5)
 
 
+func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat_crossed() -> void:
+	var fight_model := _create_fight_model()
+	_advance(fight_model, 5)
+	var choice := _create_choice(fight_model, fight_model.heroes[0], 2, 1, 2)
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	_advance(fight_model, 6)
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	_advance(fight_model, 1)
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+
+
+func test_a_skill_chosen_on_a_beat_does_not_count_that_beat() -> void:
+	var fight_model := _create_fight_model()
+	_advance(fight_model, 8)
+	var choice := _create_choice(fight_model, fight_model.heroes[0], 2, 1, 1)
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+
+	_advance(fight_model, 3)
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	_advance(fight_model, 1)
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+
+
+func test_a_rescheduled_skill_stays_on_cooldown() -> void:
+	var fight_model := _create_fight_model()
+	var dropped := _create_choice(fight_model, fight_model.heroes[0], 6, 1, 2)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, dropped))
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, _create_choice(fight_model, fight_model.heroes[0], 2)))
+
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([dropped.skill])
+
+
+func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
+	var fight_model := _create_fight_model()
+	var enemy := fight_model.enemies[0]
+	var choice := _create_choice(fight_model, enemy, 2, 1, 1)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, choice))
+	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
+	fight_model.enemies[1].data.skills = []
+
+	assert_object(await brain.get_next_action(fight_model)).is_null()
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character(10), _create_character(10)]
 	var enemies: Array[Character] = [_create_character(10), _create_character(10)]
@@ -86,14 +135,22 @@ func _create_character(health: int) -> Character:
 	return Character.new(character_data)
 
 
-# A new skill, aimed at the first standing character of the other side.
-func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, damage_amount := 1) -> Action:
+# A new skill, added to the actor's, aimed at the first standing character of the other side.
+func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, damage_amount := 1, skill_cooldown := 0) -> Action:
 	var choice := Action.new()
 	choice.actor = actor
 	choice.skill = SkillData.new()
 	choice.skill.delay = skill_delay
+	choice.skill.cooldown = skill_cooldown
+	actor.data.skills.append(choice.skill)
 	var damage := DamageEffect.new()
 	damage.amount = damage_amount
 	choice.skill.effects = [damage]
 	choice.target = FightRules.get_targets(fight_model, actor, choice.skill)[0]
 	return choice
+
+
+func _advance(fight_model: FightModel, ticks: int) -> void:
+	var delta := Delta.new()
+	delta.ticks = ticks
+	fight_model.apply(delta)
