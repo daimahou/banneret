@@ -35,9 +35,7 @@ static func get_targets(fight_model: FightModel, character: Character, _skill: S
 	return fight_model.get_standing(FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO)
 
 
-# The chosen action goes on the timeline: it resolves its skill's delay on from now. It replaces its actor's pending action, if any.
-# Its skill goes on cooldown now, even if the action is later dropped: ready again on the Nth beat after now; a beat on now does not count.
-static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta:
+# The chosen action goes on the timeline: it resolves its skill's delay on from now. It replaces its actor's pending action, if any.static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta:
 	action.resolve_tick = fight_model.tick + action.skill.delay
 	var delta := Delta.new()
 	if fight_model.get_action(action.actor) != null:
