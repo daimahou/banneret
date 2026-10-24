@@ -19,6 +19,14 @@ func add_action(added: Action) -> void:
 	changes.append(change)
 
 
+func add_cooldown(character: Character, skill: SkillData, ready_beat: int) -> void:
+	var change := Change.Cooldown.new()
+	change.character = character
+	change.skill = skill
+	change.ready_beat = ready_beat
+	changes.append(change)
+
+
 func remove_action(removed_actor: Character) -> void:
 	var change := Change.RemoveAction.new()
 	change.actor = removed_actor

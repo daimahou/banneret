@@ -32,6 +32,17 @@ class AddAction:
 		fight_model.action_added.emit(action)
 
 
+class Cooldown:
+	extends Change
+
+	var character: Character
+	var skill: SkillData
+	var ready_beat: int
+
+	func apply(_fight_model: FightModel) -> void:
+		character.skill_cooldowns[skill] = ready_beat
+
+
 class RemoveAction:
 	extends Change
 

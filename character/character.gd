@@ -3,6 +3,7 @@ extends RefCounted
 
 var data: CharacterData
 var health: int
+var skill_cooldowns: Dictionary[SkillData, int] = {}
 
 
 func _init(character_data: CharacterData) -> void:

@@ -5,6 +5,7 @@ extends Node2D
 # A ghost, an action not yet chosen, hangs faded where it would resolve.
 
 const KNOT_SCENE := preload("res://stage/timeline/timeline_knot.tscn")
+const BEAT_KNOT_SCENE := preload("res://stage/timeline/timeline_beat_knot.tscn")
 const MEDALLION_SCENE := preload("res://stage/timeline/timeline_medallion.tscn")
 
 const KNOT_SPACING := 72.0
@@ -62,6 +63,7 @@ static func _get_entries(fight_model: FightModel, ghost_action: Action) -> Array
 		last_tick = maxi(last_tick, action.resolve_tick)
 	if ghost_action != null:
 		last_tick = maxi(last_tick, ghost_action.resolve_tick)
+	last_tick = FightRules.get_beat_at_or_after(last_tick)
 	var entries: Array[Entry] = []
 	for tick in range(fight_model.tick, last_tick + 1):
 		if tick > fight_model.tick:
@@ -240,7 +242,7 @@ func _get_left_x_past_ties(left_x: float, width: float, tie_xs: Array[float]) ->
 func _add_entry_node(entry: Entry, x: float) -> Node2D:
 	var node: Node2D
 	if entry.is_knot():
-		node = KNOT_SCENE.instantiate()
+		node = (BEAT_KNOT_SCENE if FightRules.is_beat(entry.tick) else KNOT_SCENE).instantiate()
 		node.rotation = _get_rope_angle(x)
 	else:
 		var medallion: TimelineMedallion = MEDALLION_SCENE.instantiate()
