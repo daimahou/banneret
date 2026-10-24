@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b6p6mko1e862w"
-path="res://.godot/imported/knight.png-58c0562c8d0f5193d67576a1d545f7fd.ctex"
+path="res://.godot/imported/warrior.png-e555239887863212a9730a4b29aed809.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/puppet/knight.png"
-dest_files=["res://.godot/imported/knight.png-58c0562c8d0f5193d67576a1d545f7fd.ctex"]
+source_file="res://art/puppet/warrior.png"
+dest_files=["res://.godot/imported/warrior.png-e555239887863212a9730a4b29aed809.ctex"]
 
 [params]
 
