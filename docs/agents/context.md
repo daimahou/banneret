@@ -80,6 +80,10 @@ _Avoid_: battle, combat, board
 The fight's unit of time.
 _Avoid_: turn, step
 
+**Beat**:
+A tick that recurs at a fixed interval across the whole fight; the clock cooldowns count in.
+_Avoid_: round
+
 **Timeline**:
 The fight's queue of pending actions, in the order they resolve.
 _Avoid_: queue, initiative
