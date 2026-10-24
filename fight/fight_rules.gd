@@ -10,12 +10,10 @@ static func get_usable_skills(fight_model: FightModel, character: Character) -> 
 	return character.data.skills.filter(func(skill: SkillData) -> bool: return get_cooldown_beats(fight_model, character, skill) == 0)
 
 
-# 0 once the skill is ready.
 static func get_cooldown_beats(fight_model: FightModel, character: Character, skill: SkillData) -> int:
 	return maxi(character.skill_cooldowns.get(skill, 0) - get_beat(fight_model.tick), 0)
 
 
-# The last beat at or before the tick, by number: tick 0 is beat 0.
 static func get_beat(tick: int) -> int:
 	return floori(tick / float(BEAT_TICKS))
 
