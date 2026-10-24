@@ -3,7 +3,7 @@ extends RefCounted
 
 var data: CharacterData
 var health: int
-# The tick each skill on cooldown is ready again on.
+# A skill is ready again on its tick; one ready long since may stay.
 var ready_ticks: Dictionary[SkillData, int] = {}
 
 
