@@ -3,8 +3,10 @@ id: "1.2"
 requires:
   - "[[Playable Prototype]]"
 deadline:
-started:
+started: 2026-10-24
 finished:
+hours: 0.1
+total_hours: 0.1
 parent: "[[Vertical slice]]"
 ---
 
