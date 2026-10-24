@@ -10,7 +10,6 @@ const WIPE_STEPS := 64
 
 var skill: SkillData
 
-# Of the skill's cooldown, still to wait.
 var _wipe_fraction := 0.0
 
 @onready var _icon: TextureRect = $Icon
@@ -18,7 +17,7 @@ var _wipe_fraction := 0.0
 @onready var _description: RichTextLabel = $Description
 @onready var _delay: Label = $Delay
 @onready var _wipe: Control = $Wipe
-@onready var _cooldown_beats: Label = $Wipe/CooldownBeats
+@onready var _cooldown_label: Label = $Wipe/CooldownLabel
 @onready var _armed_ink := Ink.create_material(Ink.Highlight.HOVERED)
 
 
@@ -36,7 +35,7 @@ func _ready() -> void:
 func show_cooldown(beats: int) -> void:
 	modulate = COOLDOWN_MODULATE if beats > 0 else Color.WHITE
 	_wipe.visible = beats > 0
-	_cooldown_beats.text = str(beats)
+	_cooldown_label.text = str(beats)
 	_wipe_fraction = beats / float(skill.cooldown) if beats > 0 else 0.0
 	_wipe.queue_redraw()
 

@@ -32,8 +32,7 @@ const DAMAGE_COLOR := Color("c0392b")
 # The health bars stand in one row below the stage front, each side's from its own edge, its front nearest the middle; in stage space.
 const HEALTH_BAR_Y := 1465.0
 const HEALTH_BAR_MARGIN := 74.0
-const HEALTH_BAR_STEP := 607.0
-const HEALTH_BAR_WIDTH := 587.0
+const HEALTH_BAR_GAP := 20.0
 
 # The armed skill's targets are inked red, the aimed one a brighter red.
 const TARGET_INK_COLOR := Color("7a2a20")
@@ -253,25 +252,25 @@ func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side:
 		_puppets.add_child(puppet)
 		_fight_puppets[characters[index]] = puppet
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
-		var health_bar := _add_health_bar(characters[index], _get_health_bar_x(index, characters.size(), side))
+		var health_bar := _add_health_bar(characters[index])
+		health_bar.position = Vector2(_get_health_bar_x(health_bar.size.x, index, characters.size(), side), HEALTH_BAR_Y)
 		health_bar.modulate.a = 0.0
 		tween.tween_property(health_bar, "modulate:a", 1.0, PUPPET_SLIDE_DURATION)
 
 
-func _add_health_bar(character: Character, x: float) -> HealthBar:
+func _add_health_bar(character: Character) -> HealthBar:
 	var health_bar: HealthBar = HEALTH_BAR_SCENE.instantiate()
 	health_bar.character = character
-	health_bar.position = Vector2(x, HEALTH_BAR_Y)
 	_health_bar_area.add_child(health_bar)
 	_health_bars[character] = health_bar
 	return health_bar
 
 
-func _get_health_bar_x(index: int, count: int, side: PuppetLayout.Side) -> float:
-	var offset := HEALTH_BAR_MARGIN + (count - 1 - index) * HEALTH_BAR_STEP
+func _get_health_bar_x(width: float, index: int, count: int, side: PuppetLayout.Side) -> float:
+	var offset := HEALTH_BAR_MARGIN + (count - 1 - index) * (width + HEALTH_BAR_GAP)
 	if side == PuppetLayout.Side.LEFT:
 		return offset
-	return _health_bar_area.size.x - offset - HEALTH_BAR_WIDTH
+	return _health_bar_area.size.x - offset - width
 
 
 func _add_damage_number(puppet: Puppet, damage: int) -> void:
