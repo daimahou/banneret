@@ -37,10 +37,10 @@ class Cooldown:
 
 	var character: Character
 	var skill: SkillData
-	var ready_tick: int
+	var ready_beat: int
 
 	func apply(_fight_model: FightModel) -> void:
-		character.ready_ticks[skill] = ready_tick
+		character.skill_cooldowns[skill] = ready_beat
 
 
 class RemoveAction:

@@ -19,11 +19,11 @@ func add_action(added: Action) -> void:
 	changes.append(change)
 
 
-func add_cooldown(character: Character, skill: SkillData, ready_tick: int) -> void:
+func add_cooldown(character: Character, skill: SkillData, ready_beat: int) -> void:
 	var change := Change.Cooldown.new()
 	change.character = character
 	change.skill = skill
-	change.ready_tick = ready_tick
+	change.ready_beat = ready_beat
 	changes.append(change)
 
 

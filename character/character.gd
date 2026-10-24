@@ -3,7 +3,8 @@ extends RefCounted
 
 var data: CharacterData
 var health: int
-var ready_ticks: Dictionary[SkillData, int] = {}
+# By skill, the beat it is ready on.
+var skill_cooldowns: Dictionary[SkillData, int] = {}
 
 
 func _init(character_data: CharacterData) -> void:

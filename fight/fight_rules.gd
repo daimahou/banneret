@@ -12,8 +12,12 @@ static func get_usable_skills(fight_model: FightModel, character: Character) -> 
 
 # 0 once the skill is ready.
 static func get_cooldown_beats(fight_model: FightModel, character: Character, skill: SkillData) -> int:
-	var ticks: int = character.ready_ticks.get(skill, 0) - fight_model.tick
-	return maxi(ceili(ticks / float(BEAT_TICKS)), 0)
+	return maxi(character.skill_cooldowns.get(skill, 0) - get_beat(fight_model.tick), 0)
+
+
+# The last beat at or before the tick, by number: tick 0 is beat 0.
+static func get_beat(tick: int) -> int:
+	return floori(tick / float(BEAT_TICKS))
 
 
 static func is_beat(tick: int) -> bool:
@@ -38,8 +42,7 @@ static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta
 		delta.remove_action(action.actor)
 	delta.add_action(action)
 	if action.skill.cooldown > 0:
-		var next_beat := get_beat_at_or_after(fight_model.tick + 1)
-		delta.add_cooldown(action.actor, action.skill, next_beat + (action.skill.cooldown - 1) * BEAT_TICKS)
+		delta.add_cooldown(action.actor, action.skill, get_beat(fight_model.tick) + action.skill.cooldown)
 	return delta
 
 
