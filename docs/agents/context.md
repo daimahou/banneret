@@ -51,10 +51,6 @@ _Avoid_: move, step, hop
 One option an event puts up for the player to pick.
 _Avoid_: option, card, reward
 
-**Party**:
-The player's three heroes.
-_Avoid_: team, squad
-
 **Character**:
 One fighter, a hero or an enemy.
 _Avoid_: unit, fighter

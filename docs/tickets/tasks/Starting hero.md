@@ -4,7 +4,7 @@ id: 1.2-1.1
 requires:
 started:
 finished:
-hours:
+hours: 0.2
 parent: "[[Warrior kit]]"
 ---
 # Done when
@@ -17,15 +17,16 @@ The party is fixed at three heroes, and the slice grows it one hero at a time.
 
 ## Solution
 
-`RunModel` builds the party from a starting hero instead of `PARTY_HERO_IDS`. Everything downstream already reads the party's size: `PuppetLayout`, the health bars, `PlayerBrain`'s hero cycling.
+`RunModel.PARTY_HERO_IDS` holds only `warrior`. Everything downstream already reads the party's size: `PuppetLayout`, the health bars, `PlayerBrain`'s hero cycling, `FightRunner`.
 
 ## Implementation decisions
 
-- The warrior is the base class: `knight` is renamed `warrior` — id, `.tres` and name. Its puppet and portrait stay.
+- The warrior is the base class: `knight` is renamed `warrior` — id, `.tres`, name and `art/puppet/knight.png`. Its puppet art, portrait crop, Strike and 30 health stay.
+- `rogue` and `mage` stay in `hero/` and the registry, unused.
 
 ## Testing decisions
 
-- `RunController`: a new run holds only the starting hero, at full health.
+- The existing `RunController` test covers it as written: a new run holds exactly the listed heroes, at full health.
 - One hero on stage, with Tab cycling and selection, is judged by playing.
 
 ## Out of scope
