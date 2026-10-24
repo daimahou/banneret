@@ -278,8 +278,6 @@ func _show_choices() -> void:
 			cooldown_beats[skill] = FightRules.get_cooldown_beats(_fight_model, hero, skill)
 	skill_bar.show_skills(skills, _is_waiting, cooldown_beats)
 	skill_bar.set_armed_skill(armed_skill)
-	var pending_action := get_pending_action()
-	skill_bar.set_pending_skill(null if pending_action == null else pending_action.skill)
 	if _is_waiting:
 		skill_bar.show_pass_button()
 	else:

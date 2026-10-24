@@ -1,19 +1,19 @@
 class_name HealthBar
 extends Control
-# A character's health, below the stage front: a frame, a fill and `health/max`. The stage slides it in and out with its puppet.
+# A character's frame, in the row below the stage front: the portrait, a health fill and `health/max`, and an AP pip that is only art for now.
 
 # Health just lost shows as damage, holds, then drains; in seconds.
 const DAMAGE_HOLD_DURATION := 0.4
 const DAMAGE_DRAIN_DURATION := 0.3
 const FADE_DURATION := 0.4
 
-const FRAME_COLOR := Color("2b2118")
+# Inside the frame art's top bar.
+const FILL_RECT := Rect2(226.0, 76.0, 333.0, 40.0)
 const FILL_COLOR := Color("a83a2a")
 const DAMAGE_COLOR := Color("e8c547")
 const EMPTY_COLOR := Color("5c534a")
 const TEXT_COLOR := Color.WHITE
-const FRAME_WIDTH := 6.0
-const FONT_SIZE := 44
+const FONT_SIZE := 36
 
 var character: Character
 
@@ -24,24 +24,22 @@ var _shown_health := 0.0:
 		queue_redraw()
 var _drain_tween: Tween
 
+@onready var _portrait: TextureRect = $Portrait
 
-func _init(bar_character: Character) -> void:
-	character = bar_character
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _ready() -> void:
 	_shown_health = character.health
+	_portrait.texture = character.data.portrait
 
 
 func _draw() -> void:
-	var rect := Rect2(Vector2.ZERO, size)
-	draw_rect(rect, EMPTY_COLOR)
-	var inside := rect.grow(-FRAME_WIDTH)
-	draw_rect(_get_fill(inside, _shown_health), DAMAGE_COLOR)
-	draw_rect(_get_fill(inside, character.health), FILL_COLOR)
-	draw_rect(rect, FRAME_COLOR, false, FRAME_WIDTH)
+	draw_rect(FILL_RECT, EMPTY_COLOR)
+	draw_rect(_get_fill(_shown_health), DAMAGE_COLOR)
+	draw_rect(_get_fill(character.health), FILL_COLOR)
 	var font := get_theme_default_font()
 	var text := "%d/%d" % [character.health, character.data.max_health]
-	var baseline := (size.y + font.get_ascent(FONT_SIZE) - font.get_descent(FONT_SIZE)) / 2.0
-	draw_string(font, Vector2(0.0, baseline), text, HORIZONTAL_ALIGNMENT_CENTER, size.x, FONT_SIZE, TEXT_COLOR)
+	var baseline := FILL_RECT.position.y + (FILL_RECT.size.y + font.get_ascent(FONT_SIZE) - font.get_descent(FONT_SIZE)) / 2.0
+	draw_string(font, Vector2(FILL_RECT.position.x, baseline), text, HORIZONTAL_ALIGNMENT_CENTER, FILL_RECT.size.x, FONT_SIZE, TEXT_COLOR)
 
 
 func show_health() -> void:
@@ -59,7 +57,7 @@ func fade_out() -> void:
 	create_tween().tween_property(self, "modulate:a", 0.0, FADE_DURATION)
 
 
-func _get_fill(inside: Rect2, health: float) -> Rect2:
-	var fill := inside
+func _get_fill(health: float) -> Rect2:
+	var fill := FILL_RECT
 	fill.size.x *= clampf(health / character.data.max_health, 0.0, 1.0)
 	return fill

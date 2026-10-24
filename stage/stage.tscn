@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" path="res://stage/puppet/puppet.tscn" id="7_puppet"]
 [ext_resource type="Script" uid="uid://ccwx6ndh3mv71" path="res://stage/scenery/scenery.gd" id="8_scenery"]
 [ext_resource type="PackedScene" path="res://stage/timeline/timeline_rope.tscn" id="9_timeline_rope"]
-[ext_resource type="PackedScene" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
+[ext_resource type="PackedScene" uid="uid://cr21bicmgje5g" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -98,9 +98,9 @@ mouse_filter = 2
 [node name="SkillBar" parent="." unique_id=298821898 instance=ExtResource("10_skill_bar")]
 z_index = 200
 layout_mode = 0
-offset_left = 360.0
-offset_top = 1580.0
-offset_right = 1880.0
-offset_bottom = 1680.0
+offset_left = 73.0
+offset_top = 1773.0
+offset_right = 73.0
+offset_bottom = 1773.0
 
 [editable path="TimelineRope"]

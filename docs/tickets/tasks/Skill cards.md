@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.2-1.2.2
 requires:
   - "[[Cooldown rules]]"
-started:
+started: 2026-10-24
 finished:
 hours:
 parent: "[[Beat and cooldowns]]"

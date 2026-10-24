@@ -29,9 +29,11 @@ const DAMAGE_DURATION := 0.9
 const DAMAGE_FONT_SIZE := 96
 const DAMAGE_COLOR := Color("c0392b")
 
-# Every health bar's top and size, in stage space.
-const HEALTH_BAR_Y := 1460.0
-const HEALTH_BAR_SIZE := Vector2(220.0, 64.0)
+# The health bars stand in one row below the stage front, each side's from its own edge, its front nearest the middle; in stage space.
+const HEALTH_BAR_Y := 1465.0
+const HEALTH_BAR_MARGIN := 74.0
+const HEALTH_BAR_STEP := 607.0
+const HEALTH_BAR_WIDTH := 587.0
 
 # The armed skill's targets are inked red, the aimed one a brighter red.
 const TARGET_INK_COLOR := Color("7a2a20")
@@ -42,6 +44,7 @@ const OFFSTAGE_LEFT_X := -400.0
 const OFFSTAGE_RIGHT_X := 4240.0
 
 const PUPPET_SCENE := preload("res://stage/puppet/puppet.tscn")
+const HEALTH_BAR_SCENE := preload("res://stage/health_bar/health_bar.tscn")
 
 var _coach_tween: Tween
 var _view := View.MISSION_MAP
@@ -97,8 +100,8 @@ func show_encounter(fight_model: FightModel) -> void:
 	await _scenery.flip_to_battle()
 	var area := Rect2(Vector2.ZERO, _puppets.size)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	_add_puppets(tween, fight_model.heroes, PuppetLayout.get_stand_positions(area, fight_model.heroes.size(), PuppetLayout.Side.LEFT), _get_puppet_x(OFFSTAGE_LEFT_X))
-	_add_puppets(tween, fight_model.enemies, PuppetLayout.get_stand_positions(area, fight_model.enemies.size(), PuppetLayout.Side.RIGHT), _get_puppet_x(OFFSTAGE_RIGHT_X))
+	_add_puppets(tween, fight_model.heroes, area, PuppetLayout.Side.LEFT, _get_puppet_x(OFFSTAGE_LEFT_X))
+	_add_puppets(tween, fight_model.enemies, area, PuppetLayout.Side.RIGHT, _get_puppet_x(OFFSTAGE_RIGHT_X))
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
 	_timeline_rope.show_fight(fight_model)
@@ -218,7 +221,7 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 		var puppet := _fight_puppets[character]
 		var delay := randf() * MARCH_STAGGER
 		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION).set_delay(delay)
-		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(puppet.position.x + march), PUPPET_SLIDE_DURATION).set_delay(delay)
+		tween.tween_property(_health_bars[character], "modulate:a", 0.0, PUPPET_SLIDE_DURATION)
 	await tween.finished
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
@@ -240,8 +243,9 @@ func _slide_coach(x: float) -> void:
 	await _coach_tween.finished
 
 
-# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`, its health bar with it.
-func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: Array[Vector2], offstage_x: float) -> void:
+# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween` as its health bar fades in.
+func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side: PuppetLayout.Side, offstage_x: float) -> void:
+	var stand_positions := PuppetLayout.get_stand_positions(area, characters.size(), side)
 	for index in characters.size():
 		var puppet: Puppet = PUPPET_SCENE.instantiate()
 		puppet.texture = characters[index].data.puppet
@@ -249,21 +253,25 @@ func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: A
 		_puppets.add_child(puppet)
 		_fight_puppets[characters[index]] = puppet
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
-		var health_bar := _add_health_bar(characters[index], offstage_x)
-		tween.tween_property(health_bar, "position:x", _get_health_bar_x(stand_positions[index].x), PUPPET_SLIDE_DURATION)
+		var health_bar := _add_health_bar(characters[index], _get_health_bar_x(index, characters.size(), side))
+		health_bar.modulate.a = 0.0
+		tween.tween_property(health_bar, "modulate:a", 1.0, PUPPET_SLIDE_DURATION)
 
 
-func _add_health_bar(character: Character, puppet_x: float) -> HealthBar:
-	var health_bar := HealthBar.new(character)
-	health_bar.size = HEALTH_BAR_SIZE
-	health_bar.position = Vector2(_get_health_bar_x(puppet_x), HEALTH_BAR_Y)
+func _add_health_bar(character: Character, x: float) -> HealthBar:
+	var health_bar: HealthBar = HEALTH_BAR_SCENE.instantiate()
+	health_bar.character = character
+	health_bar.position = Vector2(x, HEALTH_BAR_Y)
 	_health_bar_area.add_child(health_bar)
 	_health_bars[character] = health_bar
 	return health_bar
 
 
-func _get_health_bar_x(puppet_x: float) -> float:
-	return puppet_x + _puppets.position.x - HEALTH_BAR_SIZE.x / 2.0
+func _get_health_bar_x(index: int, count: int, side: PuppetLayout.Side) -> float:
+	var offset := HEALTH_BAR_MARGIN + (count - 1 - index) * HEALTH_BAR_STEP
+	if side == PuppetLayout.Side.LEFT:
+		return offset
+	return _health_bar_area.size.x - offset - HEALTH_BAR_WIDTH
 
 
 func _add_damage_number(puppet: Puppet, damage: int) -> void:

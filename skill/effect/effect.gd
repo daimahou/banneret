@@ -7,5 +7,6 @@ func add_changes(_fight_model: FightModel, _delta: Delta, _action: Action) -> vo
 	pass
 
 
+# One line, in BBCode: each effect colours its own numbers.
 func get_description() -> String:
 	return ""
