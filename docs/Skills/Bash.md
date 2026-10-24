@@ -1,12 +1,12 @@
 ---
 class: "[[Warrior]]"
-status: idea
-summary: "[[Stagger]]"
+status: planned
+summary: "4 damage; [[Stagger]]: pushes the target's pending action back 2 ticks."
 spheres:
   - STR
-DMG: low
-delay: fast
-cooldown: high
+DMG: 4
+delay: 2
+cooldown: 2
 ---
 ## Upgrades
 

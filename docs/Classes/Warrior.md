@@ -8,7 +8,9 @@ base_class:
 
 **Sword.** Builds protection to withstand and deliver heavy blows.
 
-**Strike:** damage. **Guard:** Armor. Simple, inefficient weapon skills in the first two slots.
+**AP:** 1 pip per beat, holds 2. Every skill costs 1 AP; cooldowns count in beats.
+
+Kit: [[Strike]] is the filler, [[Bash]] pushes back a telegraphed hit, [[Overpower]] lands in the gap it buys.
 
 ![[Skills.base#Skills]]
 

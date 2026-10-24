@@ -1,10 +1,10 @@
 ---
 type: timeline
-summary: How many actions a character can have pending at once.
+summary: The pips a character spends to schedule skills, regenerated each beat.
 ---
 # AP economy
 
-A character chooses while its pending actions are fewer than its **AP**. Today's rule is AP 1.
+A character spends **AP** to schedule a skill. AP regenerates one pip per beat and carries over up to a cap, so a hero can bank more than one and hold it for a burst. The [[Warrior]] holds 2.
 
 > [!fog] Scheduled together, actions each resolve at their own delay.
 > A hero with more AP lines up several skills on one beat, e.g. to one-shot an enemy before its heal-over-time ticks.
@@ -22,8 +22,6 @@ A character chooses while its pending actions are fewer than its **AP**. Today's
 > [!fog] Several of one character's medallions on the same tick crowd the rope.
 > That stack is also the burst worth showing, so it needs a deliberate look.
 
-> [!fog] AP regenerates one pip per beat and carries over, so a hero can bank more than one.
-> Holding onto AP for a burst becomes worth it.
 
 > [!fog] A burst weighs AP, energy and cooldown together; some skills cost different amounts of each.
 

@@ -1,7 +1,7 @@
 ---
 requires:
   - "[[Warrior kit]]"
-id: "1.2-2"
+id: 1.2-2
 deadline:
 started:
 finished:
