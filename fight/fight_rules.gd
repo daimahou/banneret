@@ -5,7 +5,6 @@ class_name FightRules
 const BEAT_TICKS := 4
 
 
-# Every skill the character can use now.
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
 	var skills: Array[SkillData] = []
 	for skill in character.data.skills:
@@ -35,7 +34,6 @@ static func get_targets(fight_model: FightModel, character: Character, _skill: S
 	return fight_model.get_standing(FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO)
 
 
-# The chosen action goes on the timeline: it resolves its skill's delay on from now. It replaces its actor's pending action, if any.
 static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta:
 	action.resolve_tick = fight_model.tick + action.skill.delay
 	var delta := Delta.new()
@@ -47,7 +45,6 @@ static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta
 	return delta
 
 
-# The action resolved, the fight moved on to its tick.
 static func get_resolve_delta(fight_model: FightModel, action: Action) -> Delta:
 	var delta := Delta.new()
 	delta.ticks = action.resolve_tick - fight_model.tick
