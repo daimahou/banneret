@@ -1,5 +1,5 @@
 ---
-triage: needs-info
+triage: ready-for-agent
 id: 1.2-1.1
 requires:
 started:
@@ -19,7 +19,9 @@ The party is fixed at three heroes, and the slice grows it one hero at a time.
 
 `RunModel` builds the party from a starting hero instead of `PARTY_HERO_IDS`. Everything downstream already reads the party's size: `PuppetLayout`, the health bars, `PlayerBrain`'s hero cycling.
 
-> [!frontier] Is the warrior the current knight, renamed, or a new hero?
+## Implementation decisions
+
+- The warrior is the base class: `knight` is renamed `warrior` — id, `.tres` and name. Its puppet and portrait stay.
 
 ## Testing decisions
 

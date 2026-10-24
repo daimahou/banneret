@@ -1,0 +1,63 @@
+filters:
+  and:
+    - file.folder == "Enemies"
+    - file.ext == "md"
+properties:
+  file.name:
+    displayName: Enemy
+  note.summary:
+    displayName: Design
+  note.vassal:
+    displayName: Vassal
+  note.role:
+    displayName: Role
+  note.health:
+    displayName: HP
+  note.mechanics:
+    displayName: Mechanics
+views:
+  - type: table
+    name: Library
+    filters:
+      and:
+        - status != "parked"
+    groupBy:
+      property: vassal
+      direction: ASC
+    order:
+      - file.name
+      - role
+      - summary
+      - health
+      - mechanics
+      - status
+    columnSize:
+      file.name: 92
+      note.role: 101
+      note.summary: 94
+      note.health: 70
+      note.mechanics: 156
+  - type: table
+    name: Enemies
+    filters:
+      and:
+        - vassal == this.asLink()
+        - status != "parked"
+    order:
+      - file.name
+      - role
+      - summary
+      - health
+      - mechanics
+  - type: table
+    name: Parked
+    filters:
+      and:
+        - status == "parked"
+    groupBy:
+      property: vassal
+      direction: ASC
+    order:
+      - file.name
+      - role
+      - summary

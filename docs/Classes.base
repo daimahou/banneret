@@ -1,0 +1,75 @@
+filters:
+  and:
+    - file.folder == "Classes"
+    - file.ext == "md"
+properties:
+  file.name:
+    displayName: Class
+  note.base_class:
+    displayName: Base class
+views:
+  - type: table
+    name: All classes
+    groupBy:
+      property: base_class
+      direction: ASC
+    order:
+      - file.name
+      - spheres
+      - fantasy
+      - base_class
+    sort:
+      - property: base_class
+        direction: ASC
+    columnSize:
+      file.name: 79
+      note.spheres: 102
+      note.fantasy: 108
+  - type: table
+    name: Sub-classes
+    filters:
+      and:
+        - base_class.contains(this.asLink())
+    order:
+      - file.name
+      - spheres
+      - fantasy
+  - type: table
+    name: STR classes
+    filters:
+      and:
+        - base_class.contains(link("Warrior"))
+    groupBy:
+      property: base_class
+      direction: ASC
+    order:
+      - file.name
+      - spheres
+      - fantasy
+      - base_class
+  - type: table
+    name: AGI classes
+    filters:
+      and:
+        - base_class.contains(link("Rogue"))
+    groupBy:
+      property: base_class
+      direction: ASC
+    order:
+      - file.name
+      - spheres
+      - fantasy
+      - base_class
+  - type: table
+    name: INT classes
+    filters:
+      and:
+        - base_class.contains(link("Adept"))
+    groupBy:
+      property: base_class
+      direction: ASC
+    order:
+      - file.name
+      - spheres
+      - fantasy
+      - base_class

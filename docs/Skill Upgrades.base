@@ -1,0 +1,50 @@
+filters:
+  and:
+    - file.folder.startsWith("Skills/Upgrades")
+    - file.ext == "md"
+properties:
+  note.specialization:
+    displayName: Spec
+views:
+  - type: table
+    name: All upgrades
+    groupBy:
+      property: skill
+      direction: ASC
+    order:
+      - file.name
+      - summary
+    columnSize:
+      file.name: 113
+  - type: table
+    name: Upgrades
+    filters:
+      and:
+        - skill == this.asLink()
+        - file.folder == "Skills/Upgrades/" + this.file.name
+    order:
+      - file.name
+      - summary
+      - specialization
+    columnSize:
+      note.summary: 231
+  - type: table
+    name: Specialization
+    filters:
+      and:
+        - specialization == this.asLink()
+    groupBy:
+      property: skill
+      direction: ASC
+    order:
+      - file.name
+  - type: table
+    name: Non-allocated
+    filters:
+      and:
+        - file.folder == "Skills/Upgrades"
+    order:
+      - file.name
+      - skill
+      - specialization
+      - class

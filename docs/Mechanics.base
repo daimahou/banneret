@@ -1,0 +1,26 @@
+filters:
+  and:
+    - file.folder == "Mechanics"
+    - file.ext == "md"
+properties:
+  file.name:
+    displayName: Mechanic
+views:
+  - type: table
+    name: Mechanics
+    groupBy:
+      property: type
+      direction: ASC
+    order:
+      - file.name
+      - type
+      - class
+      - summary
+  - type: table
+    name: Class mechanics
+    filters:
+      and:
+        - class == this.asLink()
+    order:
+      - file.name
+      - summary

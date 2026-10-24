@@ -1,0 +1,51 @@
+filters:
+  and:
+    - file.folder == "Skills"
+    - file.ext == "md"
+properties:
+  file.name:
+    displayName: Skill
+  note.summary:
+    displayName: Design
+  note.class:
+    displayName: Class
+  note.spheres:
+    displayName: Sphere
+  note.cooldown:
+    displayName: CD
+views:
+  - type: table
+    name: Library
+    groupBy:
+      property: class
+      direction: ASC
+    order:
+      - file.name
+      - class
+      - summary
+      - DMG
+      - delay
+      - cooldown
+      - spheres
+    sort:
+      - property: file.name
+        direction: ASC
+    columnSize:
+      file.name: 93
+      note.class: 168
+      note.summary: 186
+      note.cooldown: 59
+  - type: table
+    name: Skills
+    filters:
+      and:
+        - class == this.asLink()
+    order:
+      - file.name
+      - summary
+      - DMG
+      - delay
+      - cooldown
+      - spheres
+    columnSize:
+      note.summary: 164

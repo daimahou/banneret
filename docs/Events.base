@@ -1,0 +1,34 @@
+filters:
+  and:
+    - file.folder.startsWith("Events")
+    - file.ext == "md"
+properties:
+  file.name:
+    displayName: Event
+  note.summary:
+    displayName: Design
+views:
+  - type: table
+    name: Library
+    filters:
+      and:
+        - file.folder == "Events"
+    groupBy:
+      property: type
+      direction: ASC
+    order:
+      - file.name
+      - type
+      - summary
+    columnSize:
+      file.name: 144
+      note.type: 131
+  - type: table
+    name: Offers
+    filters:
+      and:
+        - event == this.asLink()
+        - file.folder == "Events/" + this.file.name
+    order:
+      - file.name
+      - summary
