@@ -1,5 +1,4 @@
 ---
-subject:
 id:
 deadline:
 started:

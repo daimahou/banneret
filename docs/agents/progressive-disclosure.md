@@ -33,7 +33,8 @@ Both are design questions. The frontier can be decided today. The fog can't be a
 ## Shared form
 
 - About **this note's content**.
-- One per callout. **The title is the whole question, on one line.** A short trailing clause is fine where it still fits — what settles it, or where the doubt came from. Only when it will not fit does that move into the callout body.
+- One per callout. The title states the open point on one line; it need not be phrased as a question. What it needs to be read — the options, the lean, where the doubt came from — goes in the callout body. A body adds what the title lacks; never a paraphrase of it. Most callouts need none.
+- **Keep the wording it came from.** A point already stated clearly in discussion goes in as stated. Never compress a clear sentence into a terse question to fit the form.
 - Inline, directly under the section it belongs to. There is no `## Frontier` or `## Fog` section.
 
 ## Lifecycle

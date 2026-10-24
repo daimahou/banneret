@@ -3,8 +3,8 @@ id: "1"
 requires:
 started: 2026-10-01
 finished:
-hours: 8.5
-total_hours: 27.5
+hours: 9.3
+total_hours: 28.3
 deadline: 2027-02-01
 ---
 
@@ -18,9 +18,29 @@ Scope: Act 1 and its boss. Enough content to provide minimal variety with real d
 - The designer plays a second run for its own sake.
 - Every system in the slice is at shipping look and feel.
 
+> [!frontier] Before the run — what does the player choose, if anything (heroes, starting skills)?
+
+> [!frontier] On the map — which road, and why?
+
+> [!frontier] At an event — which offer, and what does it change?
+
+> [!frontier] In a fight — which skill, on whom, when?
+
+> [!fog] One main hero leading throwaway followers, in place of a party of heroes?
+> Followers would be recruited along the way and may die without consequence. Open: do they take orders, or act on their own?
+>
+> Recruits as full heroes need to be at party level: their skill load might not fit the party, at level 1 they are underpowered, and free levels feel cheap. Followers sidestep it, and open pet builds: a necromancer summons his own.
+
 > [!frontier] Does the slice reach outside testers through Steam Playtest, or by hand?
 
 > [!fog] Keeping the build exclusive to a fest may beat a public Playtest.
+
+## Design
+
+### Party
+
+### Encounters
+
 
 ## Gates
 
