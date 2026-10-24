@@ -27,7 +27,8 @@ views:
       - summary
       - specialization
     columnSize:
-      note.summary: 231
+      file.name: 189
+      note.summary: 269
   - type: table
     name: Specialization
     filters:

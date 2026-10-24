@@ -18,9 +18,10 @@
     "deadline": "date",
     "base_class": "multitext",
     "class": "text",
-    "cooldown": "number",
+    "cooldown": "text",
     "activation": "number",
-    "DMG": "number",
-    "approved": "checkbox"
+    "DMG": "text",
+    "approved": "checkbox",
+    "delay": "text"
   }
 }

@@ -16,6 +16,8 @@ views:
       - type
       - class
       - summary
+    columnSize:
+      note.type: 104
   - type: table
     name: Class mechanics
     filters:

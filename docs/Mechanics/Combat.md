@@ -16,6 +16,12 @@ How an encounter plays: the party against its enemies, until one side falls.
 - Ties are broken in LIFO
 
 > [!frontier] When does a hero or enemy choose — only once it has nothing queued?
+> Idea: while its pending actions are fewer than its AP — [[AP economy]].
+
+> [!fog] Stops: click a knot to run the fight until that tick, or stop every beat.
+> Running to a knot may also need to stop when something new lands on the rope before it.
+
+> [!fog] What a skill costs beyond its cooldown — [[Energy]].
 
 > [!frontier] Who chooses first when both sides are free?
 > Provisional: enemies first, so the player reads their intent before choosing.
@@ -33,6 +39,7 @@ How an encounter plays: the party against its enemies, until one side falls.
 > [!fog] Statuses — what they do, and when they tick.
 
 > [!fog] A beat — a recurring tick on which cooldowns and statuses resolve.
+> Named beat or round once the stop model is chosen.
 
 ## Outcome
 

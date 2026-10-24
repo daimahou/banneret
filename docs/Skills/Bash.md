@@ -1,10 +1,12 @@
 ---
 class: "[[Warrior]]"
-summary: Stagger 2
+status: idea
+summary: "[[Stagger]]"
 spheres:
-DMG: 5
-delay: 3
-cooldown: 2
+  - STR
+DMG: low
+delay: fast
+cooldown: high
 ---
 ## Upgrades
 

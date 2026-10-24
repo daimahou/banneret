@@ -1,0 +1,7 @@
+/* Obsidian fills a hovered inactive tab's inner box with
+   --tab-inner-background-hover; Bureau never sets it, so a beige box covered
+   the label. */
+.workspace-tab-header-container {
+  --tab-inner-background-hover: transparent;
+  --tab-inner-border-color-hover: transparent;
+}

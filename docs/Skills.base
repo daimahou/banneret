@@ -26,15 +26,18 @@ views:
       - DMG
       - delay
       - cooldown
+      - status
       - spheres
     sort:
       - property: file.name
         direction: ASC
     columnSize:
-      file.name: 93
-      note.class: 168
-      note.summary: 186
-      note.cooldown: 59
+      file.name: 134
+      note.class: 121
+      note.summary: 276
+      note.cooldown: 67
+      note.status: 95
+      note.spheres: 197
   - type: table
     name: Skills
     filters:
@@ -42,6 +45,7 @@ views:
         - class == this.asLink()
     order:
       - file.name
+      - status
       - summary
       - DMG
       - delay

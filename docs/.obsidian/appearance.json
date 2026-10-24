@@ -2,10 +2,11 @@
   "cssTheme": "Bureau",
   "showRibbon": true,
   "enabledCssSnippets": [
-    "callouts",
-    "pixelart",
     "stacked-tabs",
-    "embed-no-scroll"
+    "pixelart",
+    "embed-no-scroll",
+    "callouts",
+    "tab-hover"
   ],
   "theme": "moonstone",
   "nativeMenus": true,
