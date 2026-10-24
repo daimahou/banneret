@@ -4,7 +4,7 @@ requires:
 started: 2026-10-01
 finished:
 hours: 8.5
-total_hours: 26.8
+total_hours: 27.5
 deadline: 2027-02-01
 ---
 
