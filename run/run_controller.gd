@@ -45,6 +45,7 @@ func start_mission(map_seed: int) -> void:
 		return
 	if _mission_controller != null:
 		_mission_controller.dispose()
+	_stage.show_party(run_model.party)
 	_mission_controller = MissionController.new(_stage, map_seed)
 	_mission_controller.mission_ended.connect(_on_mission_ended)
 

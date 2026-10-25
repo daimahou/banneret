@@ -30,6 +30,10 @@ _Avoid_: turn, scene change
 The party's token on the mission map.
 _Avoid_: cart, wagon, player marker
 
+**Nameplate**:
+A character's portrait, name and readouts, in the row below the stage.
+_Avoid_: health bar, frame, unit frame
+
 ## Mission
 
 **Mission map**:

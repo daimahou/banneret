@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://cxmjiq23lnqjq"]
+
+[ext_resource type="Script" uid="uid://c2uyblopvcmhu" path="res://stage/skill_bar/skill_card.gd" id="1_card"]
+[ext_resource type="Texture2D" uid="uid://cjae4jqetpse3" path="res://art/ui/skill_slot_empty.png" id="2_slot_empty"]
+[ext_resource type="Texture2D" uid="uid://dcysyklvfxxx1" path="res://art/ui/skill_ap_pip.png" id="3_ap_pip"]
+
+[node name="SkillCard" type="TextureButton" unique_id=638568603]
+disabled = true
+focus_mode = 0
+texture_normal = ExtResource("2_slot_empty")
+script = ExtResource("1_card")
+
+[node name="Content" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="ApPip" type="TextureRect" parent="Content" unique_id=1269904314]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 21.0
+offset_right = 104.0
+offset_bottom = 79.0
+mouse_filter = 2
+texture = ExtResource("3_ap_pip")
+
+[node name="Icon" type="TextureRect" parent="Content" unique_id=712400543]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 91.0
+offset_right = 237.0
+offset_bottom = 283.0
+mouse_filter = 2
+stretch_mode = 3
+
+[node name="Wipe" type="Control" parent="Content" unique_id=1358436978]
+visible = false
+clip_contents = true
+anchors_preset = 0
+offset_left = 57.0
+offset_top = 103.0
+offset_right = 231.0
+offset_bottom = 276.0
+mouse_filter = 2
+
+[node name="CooldownLabel" type="Label" parent="Content/Wipe" unique_id=493013201]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name" type="Label" parent="Content" unique_id=1785971541]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 76.0
+offset_right = 545.0
+offset_bottom = 142.0
+theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/font_size = 52
+text_overrun_behavior = 3
+
+[node name="Description" type="RichTextLabel" parent="Content" unique_id=274443765]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 150.0
+offset_right = 545.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/normal_font_size = 38
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Delay" type="Label" parent="Content" unique_id=2132234637]
+layout_mode = 0
+offset_left = 615.0
+offset_top = 96.0
+offset_right = 690.0
+offset_bottom = 166.0
+theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/font_size = 52
+horizontal_alignment = 1
+vertical_alignment = 1

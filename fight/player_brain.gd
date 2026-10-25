@@ -55,7 +55,7 @@ func dispose() -> void:
 		_input = null
 	if _stage != null:
 		_stage.hide_choices()
-		_stage.skill_bar.hide()
+		_stage.skill_bar.clear()
 		_stage = null
 
 
@@ -72,7 +72,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
 		fight_model.action_removed.connect(_on_action_removed)
-		fight_model.tick_changed.connect(_on_tick_changed)
+		fight_model.changed.connect(_show_choices)
 	var free_heroes := fight_model.get_standing(side).filter(_has_no_action)
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
@@ -261,10 +261,6 @@ func _on_action_removed(action: Action) -> void:
 		hover_action(null)
 
 
-func _on_tick_changed(_tick: int) -> void:
-	_show_choices()
-
-
 func _show_choices() -> void:
 	if _stage == null:
 		return
@@ -275,11 +271,9 @@ func _show_choices() -> void:
 	if hero != null:
 		skills = hero.data.skills
 		for skill in skills:
-			cooldown_beats[skill] = FightRules.get_cooldown_beats(_fight_model, hero, skill)
+			cooldown_beats[skill] = FightRules.get_cooldown_beats(hero, skill)
 	skill_bar.show_skills(skills, _is_waiting, cooldown_beats)
 	skill_bar.set_armed_skill(armed_skill)
-	var pending_action := get_pending_action()
-	skill_bar.set_pending_skill(null if pending_action == null else pending_action.skill)
 	if _is_waiting:
 		skill_bar.show_pass_button()
 	else:

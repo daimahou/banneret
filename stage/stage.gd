@@ -23,15 +23,14 @@ const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
 const BLOW_PAUSE := 0.25
 
+# The fight holds on each beat this long, in seconds, so what the beat changed shows.
+const BEAT_HOLD_DURATION := 0.4
+
 # A damage number floats this far up off its target's head as it fades, in design units and seconds.
 const DAMAGE_RISE := 140.0
 const DAMAGE_DURATION := 0.9
 const DAMAGE_FONT_SIZE := 96
 const DAMAGE_COLOR := Color("c0392b")
-
-# Every health bar's top and size, in stage space.
-const HEALTH_BAR_Y := 1460.0
-const HEALTH_BAR_SIZE := Vector2(220.0, 64.0)
 
 # The armed skill's targets are inked red, the aimed one a brighter red.
 const TARGET_INK_COLOR := Color("7a2a20")
@@ -46,7 +45,9 @@ const PUPPET_SCENE := preload("res://stage/puppet/puppet.tscn")
 var _coach_tween: Tween
 var _view := View.MISSION_MAP
 var _fight_puppets: Dictionary[Character, Puppet] = {}
-var _health_bars: Dictionary[Character, HealthBar] = {}
+# Left to right, each side's filled from its own edge so that its front stands nearest the middle.
+var _hero_nameplates: Array[Nameplate] = []
+var _enemy_nameplates: Array[Nameplate] = []
 var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
@@ -57,12 +58,13 @@ var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 @onready var _coach: Puppet = $Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _timeline_rope: TimelineRope = $TimelineRope
-@onready var _health_bar_area: Control = $HealthBars
 @onready var skill_bar: SkillBar = $SkillBar
 @onready var _coach_start_x := _coach.position.x
 
 
 func _ready() -> void:
+	_hero_nameplates.assign($Nameplates/Heroes.get_children())
+	_enemy_nameplates.assign($Nameplates/Enemies.get_children())
 	_coach.position.y = _puppets.size.y
 	_scenery.map_node_pressed.connect(map_node_pressed.emit)
 	_offer_presenter.offer_pressed.connect(offer_pressed.emit)
@@ -89,7 +91,11 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_scenery.show_mission_map(mission_model, map_seed)
 
 
-# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model: the rope, the health bars, the falls.
+func show_party(party: Array[Character]) -> void:
+	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
+
+
+# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model: the rope, the nameplates, the falls.
 func show_encounter(fight_model: FightModel) -> void:
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
@@ -97,8 +103,10 @@ func show_encounter(fight_model: FightModel) -> void:
 	await _scenery.flip_to_battle()
 	var area := Rect2(Vector2.ZERO, _puppets.size)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	_add_puppets(tween, fight_model.heroes, PuppetLayout.get_stand_positions(area, fight_model.heroes.size(), PuppetLayout.Side.LEFT), _get_puppet_x(OFFSTAGE_LEFT_X))
-	_add_puppets(tween, fight_model.enemies, PuppetLayout.get_stand_positions(area, fight_model.enemies.size(), PuppetLayout.Side.RIGHT), _get_puppet_x(OFFSTAGE_RIGHT_X))
+	_add_puppets(tween, fight_model.heroes, area, PuppetLayout.Side.LEFT, _get_puppet_x(OFFSTAGE_LEFT_X))
+	_add_puppets(tween, fight_model.enemies, area, PuppetLayout.Side.RIGHT, _get_puppet_x(OFFSTAGE_RIGHT_X))
+	_show_nameplates(_hero_nameplates, fight_model.heroes, PuppetLayout.Side.LEFT)
+	_show_nameplates(_enemy_nameplates, fight_model.enemies, PuppetLayout.Side.RIGHT)
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
 	_timeline_rope.show_fight(fight_model)
@@ -138,7 +146,7 @@ func hide_choices() -> void:
 		puppet.set_sprite_material(null)
 		puppet.set_pressed(false)
 	_timeline_rope.hide_ghost()
-	_timeline_rope.set_marks([], null)
+	_timeline_rope.clear_marks()
 
 
 func bob_puppet(character: Character) -> void:
@@ -172,6 +180,11 @@ func show_action(action: Action, on_impact: Callable) -> void:
 	await back.finished
 	actor_puppet.z_index = 0
 	await get_tree().create_timer(BLOW_PAUSE).timeout
+
+
+# Returns once the hold on the beat is over.
+func show_beat() -> void:
+	await get_tree().create_timer(BEAT_HOLD_DURATION).timeout
 
 
 # Shows the model after the coach travelled to `map_node`, and returns once the coach is there.
@@ -218,13 +231,10 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 		var puppet := _fight_puppets[character]
 		var delay := randf() * MARCH_STAGGER
 		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION).set_delay(delay)
-		tween.tween_property(_health_bars[character], "position:x", _get_health_bar_x(puppet.position.x + march), PUPPET_SLIDE_DURATION).set_delay(delay)
+	_hide_nameplates(_enemy_nameplates)
 	await tween.finished
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
-	for health_bar in _health_bars.values():
-		health_bar.queue_free()
-	_health_bars.clear()
 	_fight_puppets.clear()
 	_timeline_rope.clear()
 	await _scenery.flip_to_mission_map(mission_model, map_seed)
@@ -240,8 +250,9 @@ func _slide_coach(x: float) -> void:
 	await _coach_tween.finished
 
 
-# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`, its health bar with it.
-func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: Array[Vector2], offstage_x: float) -> void:
+# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`.
+func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side: PuppetLayout.Side, offstage_x: float) -> void:
+	var stand_positions := PuppetLayout.get_stand_positions(area, characters.size(), side)
 	for index in characters.size():
 		var puppet: Puppet = PUPPET_SCENE.instantiate()
 		puppet.texture = characters[index].data.puppet
@@ -249,21 +260,32 @@ func _add_puppets(tween: Tween, characters: Array[Character], stand_positions: A
 		_puppets.add_child(puppet)
 		_fight_puppets[characters[index]] = puppet
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
-		var health_bar := _add_health_bar(characters[index], offstage_x)
-		tween.tween_property(health_bar, "position:x", _get_health_bar_x(stand_positions[index].x), PUPPET_SLIDE_DURATION)
 
 
-func _add_health_bar(character: Character, puppet_x: float) -> HealthBar:
-	var health_bar := HealthBar.new(character)
-	health_bar.size = HEALTH_BAR_SIZE
-	health_bar.position = Vector2(_get_health_bar_x(puppet_x), HEALTH_BAR_Y)
-	_health_bar_area.add_child(health_bar)
-	_health_bars[character] = health_bar
-	return health_bar
+# The nameplates that change flip one after another, left to right; a side with more characters than nameplates leaves the hindmost out.
+func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character], side: PuppetLayout.Side) -> void:
+	var count := mini(characters.size(), nameplates.size())
+	var flip_delay := 0.0
+	for index in nameplates.size():
+		var line_index := count - 1 - index if side == PuppetLayout.Side.LEFT else index - (nameplates.size() - count)
+		var character := characters[line_index] if line_index >= 0 and line_index < count else null
+		if nameplates[index].show_character(character, flip_delay):
+			flip_delay += Scenery.FLIP_STAGGER
 
 
-func _get_health_bar_x(puppet_x: float) -> float:
-	return puppet_x + _puppets.position.x - HEALTH_BAR_SIZE.x / 2.0
+# One after another, left to right.
+func _hide_nameplates(nameplates: Array[Nameplate]) -> void:
+	var flip_delay := 0.0
+	for nameplate in nameplates:
+		if nameplate.clear(flip_delay):
+			flip_delay += Scenery.FLIP_STAGGER
+
+
+func _get_nameplate(character: Character) -> Nameplate:
+	for nameplate in _hero_nameplates + _enemy_nameplates:
+		if nameplate.character == character:
+			return nameplate
+	return null
 
 
 func _add_damage_number(puppet: Puppet, damage: int) -> void:
@@ -282,7 +304,9 @@ func _add_damage_number(puppet: Puppet, damage: int) -> void:
 
 
 func _on_health_changed(character: Character, amount: int) -> void:
-	_health_bars[character].show_health()
+	var nameplate := _get_nameplate(character)
+	if nameplate != null:
+		nameplate.show_health()
 	if amount < 0:
 		var puppet := _fight_puppets[character]
 		puppet.shake()
@@ -291,13 +315,12 @@ func _on_health_changed(character: Character, amount: int) -> void:
 
 func _on_character_fell(character: Character) -> void:
 	var puppet := _fight_puppets[character]
-	var health_bar := _health_bars[character]
 	_fight_puppets.erase(character)
-	_health_bars.erase(character)
-	health_bar.fade_out()
+	var nameplate := _get_nameplate(character)
+	if nameplate != null:
+		nameplate.clear(0.0)
 	await puppet.sink()
 	puppet.queue_free()
-	health_bar.queue_free()
 
 
 func _get_puppet_x(stage_x: float) -> float:

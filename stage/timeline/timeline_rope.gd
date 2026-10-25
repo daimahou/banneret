@@ -101,6 +101,12 @@ func set_marks(actors: Array[Character], dropped: Action) -> void:
 	_show_marks()
 
 
+func clear_marks() -> void:
+	_highlighted_actors = []
+	_dropped_action = null
+	_show_marks()
+
+
 # The pending action whose medallion is under the point, in global space, or null.
 func get_action_at(global_point: Vector2) -> Action:
 	for key: Variant in _entry_nodes:

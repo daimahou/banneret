@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" path="res://stage/puppet/puppet.tscn" id="7_puppet"]
 [ext_resource type="Script" uid="uid://ccwx6ndh3mv71" path="res://stage/scenery/scenery.gd" id="8_scenery"]
 [ext_resource type="PackedScene" path="res://stage/timeline/timeline_rope.tscn" id="9_timeline_rope"]
-[ext_resource type="PackedScene" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
+[ext_resource type="PackedScene" uid="uid://cr21bicmgje5g" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
+[ext_resource type="PackedScene" uid="uid://dpsd2gy8ca3tr" path="res://stage/nameplate/nameplate.tscn" id="11_nameplate"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -88,19 +89,75 @@ mouse_filter = 2
 texture = ExtResource("5_front")
 expand_mode = 1
 
-[node name="HealthBars" type="Control" parent="." unique_id=948251180]
+[node name="Nameplates" type="Control" parent="." unique_id=948251180]
 z_index = 200
 anchors_preset = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
 mouse_filter = 2
 
+[node name="Heroes" type="Control" parent="Nameplates" unique_id=949860247]
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Nameplate1" parent="Nameplates/Heroes" unique_id=425991340 instance=ExtResource("11_nameplate")]
+visible = false
+layout_mode = 0
+offset_left = 60.0
+offset_top = 1473.0
+offset_right = 596.0
+offset_bottom = 1711.0
+
+[node name="Nameplate2" parent="Nameplates/Heroes" unique_id=1859215159 instance=ExtResource("11_nameplate")]
+visible = false
+layout_mode = 0
+offset_left = 655.0
+offset_top = 1473.0
+offset_right = 1191.0
+offset_bottom = 1711.0
+
+[node name="Nameplate3" parent="Nameplates/Heroes" unique_id=43908476 instance=ExtResource("11_nameplate")]
+visible = false
+layout_mode = 0
+offset_left = 1228.0
+offset_top = 1473.0
+offset_right = 1764.0
+offset_bottom = 1711.0
+
+[node name="Enemies" type="Control" parent="Nameplates" unique_id=1817176368]
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Nameplate1" parent="Nameplates/Enemies" unique_id=869545856 instance=ExtResource("11_nameplate")]
+visible = false
+layout_mode = 0
+offset_left = 2071.0
+offset_top = 1473.0
+offset_right = 2607.0
+offset_bottom = 1711.0
+
+[node name="Nameplate2" parent="Nameplates/Enemies" unique_id=1871507431 instance=ExtResource("11_nameplate")]
+visible = false
+layout_mode = 0
+offset_left = 2654.0
+offset_top = 1473.0
+offset_right = 3190.0
+offset_bottom = 1711.0
+
+[node name="Nameplate3" parent="Nameplates/Enemies" unique_id=1226335027 instance=ExtResource("11_nameplate")]
+visible = false
+layout_mode = 0
+offset_left = 3238.0
+offset_top = 1473.0
+offset_right = 3774.0
+offset_bottom = 1711.0
+
 [node name="SkillBar" parent="." unique_id=298821898 instance=ExtResource("10_skill_bar")]
 z_index = 200
 layout_mode = 0
-offset_left = 360.0
-offset_top = 1580.0
-offset_right = 1880.0
-offset_bottom = 1680.0
+offset_left = 73.0
+offset_top = 1773.0
+offset_right = 73.0
+offset_bottom = 1773.0
 
 [editable path="TimelineRope"]

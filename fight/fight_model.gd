@@ -7,6 +7,7 @@ signal health_changed(character: Character, amount: int)
 signal character_fell(character: Character)
 signal action_added(action: Action)
 signal action_removed(action: Action)
+signal changed
 
 enum Side { HERO, ENEMY }
 
@@ -28,6 +29,7 @@ func apply(delta: Delta) -> void:
 		tick_changed.emit(tick)
 	for change in delta.changes:
 		change.apply(self)
+	changed.emit()
 
 
 # Null when the timeline is empty.

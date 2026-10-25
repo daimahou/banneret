@@ -3,6 +3,7 @@ extends RefCounted
 
 var data: CharacterData
 var health: int
+# Beats left before each skill is ready again; they carry from one fight to the next.
 var skill_cooldowns: Dictionary[SkillData, int] = {}
 
 

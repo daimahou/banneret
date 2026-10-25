@@ -74,7 +74,7 @@ func test_a_reschedule_drops_the_pending_action_and_resolves_the_new_one_its_del
 	assert_int(rescheduled.resolve_tick).is_equal(5)
 
 
-func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat_crossed() -> void:
+func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat() -> void:
 	var fight_model := _create_fight_model()
 	_advance(fight_model, 5)
 	var choice := _create_choice(fight_model, fight_model.heroes[0], 2, 1, 2)
@@ -82,22 +82,34 @@ func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat_crossed() -> v
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
 	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
-	_advance(fight_model, 6)
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
 	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
-	_advance(fight_model, 1)
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
 	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_a_skill_chosen_on_a_beat_does_not_count_that_beat() -> void:
 	var fight_model := _create_fight_model()
-	_advance(fight_model, 8)
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
 	var choice := _create_choice(fight_model, fight_model.heroes[0], 2, 1, 1)
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	_advance(fight_model, 3)
 	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
-	_advance(fight_model, 1)
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+
+
+func test_a_cooldown_carries_over_to_the_next_fight() -> void:
+	var last_fight := _create_fight_model()
+	var choice := _create_choice(last_fight, last_fight.heroes[0], 2, 1, 2)
+	last_fight.apply(FightRules.get_timeline_delta(last_fight, choice))
+	last_fight.apply(FightRules.get_beat_delta(last_fight))
+
+	var fight_model := FightModel.new(last_fight.heroes, last_fight.enemies)
+
+	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
 	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
 
 
