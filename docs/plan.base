@@ -61,7 +61,7 @@ properties:
   formula.Open children:
     displayName: Open
   formula.Window:
-    displayName: Window
+    displayName: "[~]"
   formula.Duration:
     displayName: Took
 views:
@@ -78,12 +78,12 @@ views:
       - id
       - formula.Open children
       - file.name
+      - parent
       - deadline
       - formula.Window
       - started
       - finished
       - formula.Duration
-      - formula.Key
       - hours
       - total_hours
     sort:
@@ -94,9 +94,10 @@ views:
       formula.State: 54
       note.id: 101
       formula.Open children: 83
-      file.name: 399
+      file.name: 378
+      note.parent: 185
       note.deadline: 115
-      formula.Window: 98
+      formula.Window: 52
       note.started: 115
       note.finished: 118
   - type: table

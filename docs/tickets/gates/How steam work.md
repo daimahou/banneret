@@ -70,5 +70,17 @@ When there is a festival and a sale -> email. But valve knows to avoid spamming 
 - Gold tier - 30k+ - real steam (>250k USD)
 - Diamond tier - 150k+ (millions USD)
 
+## What about early access
+
+bottom line is: don't do it - its release on hard-mode.
+
+## Questions about the strategy 
+
+- launch the steam page early
+- trailer - how many ?
+	- Game announce
+	- Demo launch
+	- Date announce
+
 
 ![[Children.base#Open tickets]]

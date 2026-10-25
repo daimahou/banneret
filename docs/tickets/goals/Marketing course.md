@@ -1,7 +1,7 @@
 ---
 id: M1
 deadline:
-started:
+started: 2026-10-20
 finished:
 link: https://www.progamemarketing.com/courses/1787210/lectures/62483313
 ---
