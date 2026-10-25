@@ -91,7 +91,6 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_scenery.show_mission_map(mission_model, map_seed)
 
 
-# Between fights the heroes' nameplates show the party; a new party flips them.
 func show_party(party: Array[Character]) -> void:
 	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
 
@@ -263,7 +262,7 @@ func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side:
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
 
 
-# The bars that change flip one after another, left to right; a side with more characters than bars leaves the hindmost out.
+# The nameplates that change flip one after another, left to right; a side with more characters than nameplates leaves the hindmost out.
 func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character], side: PuppetLayout.Side) -> void:
 	var count := mini(characters.size(), nameplates.size())
 	var flip_delay := 0.0

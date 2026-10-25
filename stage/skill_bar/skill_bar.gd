@@ -1,6 +1,6 @@
 class_name SkillBar
 extends Control
-# Its slots, filled from the left with the selected hero's skills — the slots that change flip one after another, like the flats — and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
+# Its slots, filled from the left with the selected hero's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
 
 signal skill_pressed(skill: SkillData)
 # Null once the cursor leaves the skill.

@@ -54,7 +54,6 @@ func show_skill(shown_skill: SkillData, cooldown_beats: int, delay: float) -> bo
 	return true
 
 
-# Returns whether the slot flips, `delay` from now.
 func clear(delay: float) -> bool:
 	return show_skill(null, 0, delay)
 

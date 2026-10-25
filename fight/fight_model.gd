@@ -7,7 +7,6 @@ signal health_changed(character: Character, amount: int)
 signal character_fell(character: Character)
 signal action_added(action: Action)
 signal action_removed(action: Action)
-# After a delta, once every change in it is applied.
 signal changed
 
 enum Side { HERO, ENEMY }
