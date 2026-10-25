@@ -1,16 +1,20 @@
 class_name SkillCard
 extends TextureButton
 # A skill on the skill bar: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
+# Armed, its ink turns gold; a card that can be clicked takes the hover ink under the cursor.
 
 const PLACEHOLDER_ICON := preload("res://art/ui/skill_placeholder_icon.png")
 const COOLDOWN_MODULATE := Color(1.0, 1.0, 1.0, 0.5)
 const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
 # Polygon points on a full turn of the wipe.
 const WIPE_STEPS := 64
+const ARMED_INK_COLOR := Color("b8860b")
 
 var skill: SkillData
 
 var _wipe_fraction := 0.0
+var _is_armed := false
+var _is_mouse_over := false
 
 @onready var _icon: TextureRect = $Icon
 @onready var _name: Label = $Name
@@ -18,7 +22,8 @@ var _wipe_fraction := 0.0
 @onready var _delay: Label = $Delay
 @onready var _wipe: Control = $Wipe
 @onready var _cooldown_label: Label = $Wipe/CooldownLabel
-@onready var _armed_ink := Ink.create_material(Ink.Highlight.HOVERED)
+@onready var _armed_ink := Ink.create_color_material(ARMED_INK_COLOR)
+@onready var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 
 
 func _ready() -> void:
@@ -30,6 +35,8 @@ func _ready() -> void:
 	_description.text = "\n".join(lines)
 	_delay.text = str(skill.delay)
 	_wipe.draw.connect(_draw_wipe)
+	mouse_entered.connect(_set_mouse_over.bind(true))
+	mouse_exited.connect(_set_mouse_over.bind(false))
 
 
 func show_cooldown(beats: int) -> void:
@@ -40,8 +47,24 @@ func show_cooldown(beats: int) -> void:
 	_wipe.queue_redraw()
 
 
+# Also catches up with `disabled`, which the bar sets before it.
 func set_armed(is_armed: bool) -> void:
-	material = _armed_ink if is_armed else null
+	_is_armed = is_armed
+	_show_ink()
+
+
+func _set_mouse_over(is_mouse_over: bool) -> void:
+	_is_mouse_over = is_mouse_over
+	_show_ink()
+
+
+func _show_ink() -> void:
+	if _is_armed:
+		material = _armed_ink
+	elif _is_mouse_over and not disabled:
+		material = _hover_ink
+	else:
+		material = null
 
 
 # A sector from twelve o'clock, clockwise, wide enough to reach the corners; the wipe clips it to the icon.
