@@ -3,11 +3,9 @@ extends GdUnitTestSuite
 
 func test_an_action_resolves_its_skills_delay_after_it_was_chosen() -> void:
 	var fight_model := _create_fight_model()
-	var first := _create_choice(fight_model, fight_model.heroes[0], 2)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, first))
+	var first := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 2))
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, first))
-	var second := _create_choice(fight_model, fight_model.heroes[0], 3)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, second))
+	_schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 3))
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, fight_model.get_next_action()))
 
@@ -16,70 +14,73 @@ func test_an_action_resolves_its_skills_delay_after_it_was_chosen() -> void:
 
 func test_on_a_shared_tick_the_action_chosen_last_resolves_first() -> void:
 	var fight_model := _create_fight_model()
-	var first := _create_choice(fight_model, fight_model.heroes[0], 4)
-	var last := _create_choice(fight_model, fight_model.heroes[1], 4)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, first))
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, last))
+	var first := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 4))
+	var last := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[1], 4))
 
 	assert_array(fight_model.timeline).contains_exactly([last, first])
 
 
 func test_a_hit_takes_its_damage_off_the_target() -> void:
 	var fight_model := _create_fight_model()
-	var choice := _create_choice(fight_model, fight_model.heroes[0], 4, 3)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+	var action := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 4, 3))
 
-	fight_model.apply(FightRules.get_resolve_delta(fight_model, choice))
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, action))
 
 	assert_int(fight_model.enemies[0].health).is_equal(7)
 
 
-func test_a_fallen_character_loses_its_pending_action() -> void:
+func test_a_resolved_action_leaves_the_timeline_resolved() -> void:
 	var fight_model := _create_fight_model()
-	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
-	var pending := _create_choice(fight_model, fight_model.enemies[0], 4)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, blow))
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, pending))
+	var action := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 2))
+	var resolved: Array[Action] = []
+	var cancelled: Array[Action] = []
+	fight_model.action_resolved.connect(resolved.append)
+	fight_model.action_cancelled.connect(cancelled.append)
+
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, action))
+
+	assert_array(resolved).contains_exactly([action])
+	assert_array(cancelled).is_empty()
+	assert_array(fight_model.timeline).is_empty()
+
+
+func test_a_fallen_character_s_pending_actions_are_cancelled() -> void:
+	var fight_model := _create_fight_model()
+	var blow := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 2, 10))
+	var first := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 4))
+	var second := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 6))
+	var resolved: Array[Action] = []
+	var cancelled: Array[Action] = []
+	fight_model.action_resolved.connect(resolved.append)
+	fight_model.action_cancelled.connect(cancelled.append)
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
 
 	assert_bool(fight_model.enemies[0].is_fallen()).is_true()
-	assert_array(fight_model.timeline).not_contains([pending])
-
-
-func test_a_fallen_character_loses_all_its_pending_actions() -> void:
-	var fight_model := _create_fight_model()
-	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
-	var first := _create_choice(fight_model, fight_model.enemies[0], 4)
-	var second := _create_choice(fight_model, fight_model.enemies[0], 6)
-	for choice in [blow, first, second]:
-		fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
-
-	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
-
+	assert_array(resolved).contains_exactly([blow])
+	assert_array(cancelled).contains_exactly_in_any_order([first, second])
 	assert_array(fight_model.timeline).is_empty()
 
 
 func test_an_action_aimed_at_a_fallen_character_is_cancelled() -> void:
 	var fight_model := _create_fight_model()
-	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
-	var aimed := _create_choice(fight_model, fight_model.heroes[1], 4)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, blow))
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, aimed))
+	var blow := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 2, 10))
+	var aimed := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[1], 4))
+	var cancelled: Array[Action] = []
+	fight_model.action_cancelled.connect(cancelled.append)
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
 
+	assert_array(cancelled).contains_exactly([aimed])
 	assert_array(fight_model.timeline).not_contains([aimed])
 
 
 func test_a_second_action_leaves_the_first_pending_and_each_resolves_its_own_delay_on() -> void:
 	var fight_model := _create_fight_model()
 	_advance(fight_model, 2)
-	var first := _create_choice(fight_model, fight_model.heroes[0], 6)
-	var second := _create_choice(fight_model, fight_model.heroes[0], 3)
 
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, first))
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, second))
+	var first := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 6))
+	var second := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 3))
 
 	assert_array(fight_model.timeline).contains_exactly([second, first])
 	assert_int(second.resolve_tick).is_equal(5)
@@ -212,9 +213,8 @@ func test_a_cooldown_carries_over_to_the_next_fight() -> void:
 func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
 	var fight_model := _create_fight_model()
 	var enemy := fight_model.enemies[0]
-	var choice := _create_choice(fight_model, enemy, 2, 1, 1)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
-	fight_model.apply(FightRules.get_resolve_delta(fight_model, choice))
+	var action := _schedule(fight_model, _create_choice(fight_model, enemy, 2, 1, 1))
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, action))
 	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
 	fight_model.enemies[1].data.skills = []
 
@@ -263,6 +263,14 @@ func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int,
 	choice.skill.effects = [damage]
 	choice.target = FightRules.get_targets(fight_model, actor, choice.skill)[0]
 	return choice
+
+
+# Puts the choice on the timeline, and returns the action the fight model holds for it.
+func _schedule(fight_model: FightModel, choice: Action) -> Action:
+	var added: Array[Action] = []
+	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+	return added[0]
 
 
 func _advance(fight_model: FightModel, ticks: int) -> void:

@@ -24,14 +24,18 @@ func _ready() -> void:
 	_stop_button.pressed.connect(stop_pressed.emit)
 
 
-# Skills beyond the last slot are not shown.
-func show_skills(skills: Array[SkillData], usable: Array[SkillData], cooldown_beats: Dictionary[SkillData, int]) -> void:
+# The character's skills, each with its cooldown in the fight and in the preview; null empties the bar. Skills beyond the last slot are not shown.
+func show_skills(shown: Character, previewed: Character, usable: Array[SkillData]) -> void:
+	var skills: Array[SkillData] = []
+	if shown != null:
+		skills = shown.data.skills
 	var flip_delay := 0.0
 	for index in _slots.size():
 		var slot := _slots[index]
 		var skill: SkillData = skills[index] if index < skills.size() else null
-		var beats: int = cooldown_beats.get(skill, 0) if skill != null else 0
-		if slot.show_skill(skill, beats, flip_delay):
+		var beats := 0 if skill == null else FightRules.get_cooldown_beats(shown, skill)
+		var previewed_beats := 0 if skill == null else FightRules.get_cooldown_beats(previewed, skill)
+		if slot.show_skill(skill, beats, previewed_beats, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 		slot.disabled = skill not in usable
 		# An empty slot greys with the bar, not with its own disabled.

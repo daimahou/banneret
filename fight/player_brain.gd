@@ -11,6 +11,8 @@ var aimed_target: Character
 var hovered_skill: SkillData
 var hovered_character: Character
 var hovered_action: Action
+# The shown skill as it would hang on the timeline, built afresh each time the choices show; null for none.
+var ghost_action: Action
 
 var _stage: Stage
 var _input: PlayerInput
@@ -71,7 +73,8 @@ func is_waiting() -> bool:
 func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
-		fight_model.action_removed.connect(_on_action_removed)
+		fight_model.action_resolved.connect(_on_action_removed)
+		fight_model.action_cancelled.connect(_on_action_removed)
 		fight_model.character_fell.connect(_on_character_fell)
 		fight_model.changed.connect(_show_choices)
 	var free_heroes := fight_model.get_standing(side).filter(is_hero_ready.bind(fight_model))
@@ -243,8 +246,19 @@ func get_inspected_character() -> Character:
 	return hero
 
 
-# The action the hovered skill, else the armed one, would hang on the timeline, or null. A hovered skill of anyone but the hero hangs nothing.
-func get_ghost_action() -> Action:
+# What the preview plays out during a stop: a hovered medallion's action, else the ghost of a usable skill; null for nothing.
+func get_previewed_action() -> Action:
+	if not _is_waiting:
+		return null
+	if hovered_action != null:
+		return hovered_action
+	if ghost_action != null and ghost_action.skill in FightRules.get_usable_skills(_fight_model, hero):
+		return ghost_action
+	return null
+
+
+# The hovered skill, else the armed one, as it would hang on the timeline, or null. A hovered skill of anyone but the hero hangs nothing.
+func _create_ghost_action() -> Action:
 	if not _is_waiting or hero == null:
 		return null
 	var shown := hovered_skill if hovered_skill in hero.data.skills else armed_skill
@@ -253,8 +267,18 @@ func get_ghost_action() -> Action:
 	var ghost := Action.new()
 	ghost.actor = hero
 	ghost.skill = shown
+	ghost.target = _get_ghost_target(shown)
 	ghost.resolve_tick = _fight_model.tick + shown.delay
 	return ghost
+
+
+# Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach leaves it none.
+func _get_ghost_target(shown: SkillData) -> Character:
+	if shown != armed_skill:
+		return null
+	if hovered_character == null:
+		return aimed_target
+	return hovered_character if is_target(hovered_character) else null
 
 
 func _on_stop_button_pressed() -> void:
@@ -277,19 +301,19 @@ func _on_character_fell(character: Character) -> void:
 func _show_choices() -> void:
 	if _stage == null:
 		return
+	ghost_action = _create_ghost_action()
+	_show_preview()
 	_stage.show_choices(self)
 	var skill_bar := _stage.skill_bar
 	var inspected := get_inspected_character()
-	var skills: Array[SkillData] = []
-	var cooldown_beats: Dictionary[SkillData, int] = {}
-	if inspected != null:
-		skills = inspected.data.skills
-		for skill in skills:
-			cooldown_beats[skill] = FightRules.get_cooldown_beats(inspected, skill)
+	# Before the brain first sees the fight, there is no preview to read.
+	var previewed := inspected
+	if inspected != null and _fight_model != null:
+		previewed = _fight_model.preview.get_character(inspected.id)
 	var usable_skills: Array[SkillData] = []
 	if _is_waiting and inspected == hero:
 		usable_skills = FightRules.get_usable_skills(_fight_model, hero)
-	skill_bar.show_skills(skills, usable_skills, cooldown_beats)
+	skill_bar.show_skills(inspected, previewed, usable_skills)
 	if hovered_action != null:
 		skill_bar.set_armed_skill(hovered_action.skill)
 	else:
@@ -298,6 +322,17 @@ func _show_choices() -> void:
 		skill_bar.show_pass_button()
 	else:
 		skill_bar.show_stop_button(_is_stop_requested)
+
+
+# Only during a stop: while the fight runs, the fight controller plays the preview.
+func _show_preview() -> void:
+	if not _is_waiting:
+		return
+	var previewed := get_previewed_action()
+	if previewed == null:
+		_fight_model.preview.sync(_fight_model)
+	else:
+		Simulation.run(_fight_model, previewed)
 
 
 func _disarm() -> void:
@@ -310,5 +345,7 @@ func _decide(action: Action) -> void:
 	_is_waiting = false
 	hovered_skill = null
 	_disarm()
+	if _stage != null:
+		_fight_model.preview.sync(_fight_model)
 	_show_choices()
 	_decided.emit(action)

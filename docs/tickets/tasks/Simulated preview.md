@@ -15,7 +15,7 @@ parent: "[[Warrior kit]]"
 
 ## Implementation decisions
 
-- Ids: `FightModel` gives characters theirs at fight start, actions theirs from a counter as they are added; `sync` copies the counter, so a ghost gets the id its real action would.
+- Ids: a character takes its own as it is created, unique across the run; an action takes the fight model's next as it is added. `sync` copies the counter, so a ghost gets the id its real action would.
 - A `Change` holds ids and looks them up in the model it applies to: one delta applies to either state.
 - `RemoveAction` splits into `ResolveAction` and `CancelAction`; `action_removed` into `action_resolved` and `action_cancelled`. Both leave the timeline: it holds pending actions only, `timeline[0]` next.
 - `FightModel.history`: the deltas it applied, in order; `sync` clears it. An action's fates are the changes in the preview's history naming it: moved, then resolved or cancelled.

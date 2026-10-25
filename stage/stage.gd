@@ -95,7 +95,7 @@ func show_party(party: Array[Character]) -> void:
 	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
 
 
-# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model: the rope, the nameplates, the falls.
+# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model and its preview: the rope, the nameplates, the falls.
 func show_encounter(fight_model: FightModel) -> void:
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
@@ -108,8 +108,8 @@ func show_encounter(fight_model: FightModel) -> void:
 	_show_nameplates(_hero_nameplates, fight_model.heroes, PuppetLayout.Side.LEFT)
 	_show_nameplates(_enemy_nameplates, fight_model.enemies, PuppetLayout.Side.RIGHT)
 	fight_model.health_changed.connect(_on_health_changed)
-	fight_model.ap_changed.connect(_on_ap_changed)
 	fight_model.character_fell.connect(_on_character_fell)
+	fight_model.preview.changed.connect(_on_preview_changed.bind(fight_model.preview))
 	_timeline_rope.show_fight(fight_model)
 	await tween.finished
 	_view = View.FIGHT
@@ -133,11 +133,12 @@ func show_choices(brain: PlayerBrain) -> void:
 		highlighted.append(brain.hero)
 	if brain.hovered_character != null:
 		highlighted.append(brain.hovered_character)
-	var ghost_action := brain.get_ghost_action()
+	var ghost_action := brain.ghost_action
 	if ghost_action != null:
 		_timeline_rope.show_ghost(ghost_action)
 	else:
 		_timeline_rope.hide_ghost()
+	_timeline_rope.set_shown_action(brain.get_previewed_action())
 	_timeline_rope.set_marks(highlighted)
 
 
@@ -147,6 +148,7 @@ func hide_choices() -> void:
 		puppet.set_sprite_material(null)
 		puppet.set_pressed(false)
 	_timeline_rope.hide_ghost()
+	_timeline_rope.set_shown_action(null)
 	_timeline_rope.clear_marks()
 
 
@@ -311,19 +313,19 @@ func _add_damage_number(puppet: Puppet, damage: int) -> void:
 
 
 func _on_health_changed(character: Character, amount: int) -> void:
-	var nameplate := _get_nameplate(character)
-	if nameplate != null:
-		nameplate.show_health()
 	if amount < 0:
 		var puppet := _fight_puppets[character]
 		puppet.shake()
 		_add_damage_number(puppet, -amount)
 
 
-func _on_ap_changed(character: Character) -> void:
-	var nameplate := _get_nameplate(character)
-	if nameplate != null:
-		nameplate.show_ap()
+# The preview syncs after every change to the fight, so this follows both.
+func _on_preview_changed(preview: FightModel) -> void:
+	for nameplate in _hero_nameplates + _enemy_nameplates:
+		# Null for a character of another fight, still showing as the party.
+		var previewed := null if nameplate.character == null else preview.get_character(nameplate.character.id)
+		if previewed != null:
+			nameplate.show_preview(previewed)
 
 
 func _on_character_fell(character: Character) -> void:
