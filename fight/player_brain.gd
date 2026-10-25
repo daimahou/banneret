@@ -11,14 +11,14 @@ var aimed_target: Character
 var hovered_skill: SkillData
 var hovered_character: Character
 var hovered_action: Action
-# The shown skill as it would hang on the timeline, built afresh each time the choices show; null for none.
-var ghost_action: Action
 
 var _stage: Stage
 var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
 var _is_stopped := false
+# The shown skill as the preview plays it out, built afresh each time the choices show; null for none.
+var _ghost_action: Action
 
 # A requested stop lasts until a pass.
 var _is_stop_requested := false
@@ -252,8 +252,8 @@ func get_previewed_action() -> Action:
 		return null
 	if hovered_action != null:
 		return hovered_action
-	if ghost_action != null and ghost_action.skill in FightRules.get_usable_skills(_fight_model, hero):
-		return ghost_action
+	if _ghost_action != null and _ghost_action.skill in FightRules.get_usable_skills(_fight_model, hero):
+		return _ghost_action
 	return null
 
 
@@ -303,19 +303,21 @@ func _on_character_fell(character: Character) -> void:
 func _show_choices() -> void:
 	if _stage == null:
 		return
-	ghost_action = _create_ghost_action()
+	_ghost_action = _create_ghost_action()
 	_show_preview()
 	_stage.show_choices(self)
 	var skill_bar := _stage.skill_bar
 	var inspected := get_inspected_character()
-	# Before the brain first sees the fight, there is no preview to read.
-	var previewed := inspected
-	if inspected != null and _fight_model != null:
-		previewed = _stage.preview_model.get_character(inspected.id)
+	var skills: Array[SkillData] = []
+	if inspected != null:
+		skills = inspected.data.skills
+	skill_bar.show_skills(skills)
+	for index in skills.size():
+		skill_bar.set_cooldown(index, FightRules.get_cooldown_beats(inspected, skills[index]))
 	var usable_skills: Array[SkillData] = []
 	if _is_waiting and inspected == hero:
 		usable_skills = FightRules.get_usable_skills(_fight_model, hero)
-	skill_bar.show_skills(inspected, previewed, usable_skills)
+	skill_bar.set_usable(usable_skills)
 	if hovered_action != null:
 		skill_bar.set_armed_skill(hovered_action.skill)
 	else:

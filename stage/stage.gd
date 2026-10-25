@@ -58,6 +58,8 @@ var preview_model: FightModel
 
 # Null before the first encounter.
 var _fight_model: FightModel
+# Null outside a fight.
+var _preview_presenter: PreviewPresenter
 
 @onready var _scenery: Scenery = $Scenery
 # Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
@@ -102,7 +104,7 @@ func show_party(party: Array[Character]) -> void:
 	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
 
 
-# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model and its preview: the rope, the nameplates, the falls.
+# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model, the rope, the nameplates and the falls, and its preview presenter writes the preview over them.
 func show_encounter(fight_model: FightModel) -> void:
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
@@ -119,10 +121,12 @@ func show_encounter(fight_model: FightModel) -> void:
 	_fight_model = fight_model
 	preview_model = FightModel.new([], [])
 	preview_model.sync(fight_model)
-	preview_model.changed.connect(_on_preview_changed)
 	# Connected before any brain sees the fight, so the preview is level by the time they read it.
 	fight_model.changed.connect(_on_fight_changed)
-	_timeline_rope.show_fight(fight_model, preview_model)
+	var nameplates: Array[Nameplate] = []
+	nameplates.assign(_hero_nameplates + _enemy_nameplates)
+	_preview_presenter = PreviewPresenter.new(fight_model, preview_model, nameplates, skill_bar, _timeline_rope)
+	_show_fight()
 	await tween.finished
 	_view = View.FIGHT
 
@@ -145,12 +149,8 @@ func show_choices(brain: PlayerBrain) -> void:
 		highlighted.append(brain.hero)
 	if brain.hovered_character != null:
 		highlighted.append(brain.hovered_character)
-	var ghost_action := brain.ghost_action
-	if ghost_action != null:
-		_timeline_rope.show_ghost(ghost_action)
-	else:
-		_timeline_rope.hide_ghost()
-	_timeline_rope.set_shown_action(brain.get_previewed_action())
+	if _preview_presenter != null:
+		_preview_presenter.show_choice(brain.get_inspected_character(), brain.get_previewed_action())
 	_timeline_rope.set_marks(highlighted)
 
 
@@ -159,8 +159,8 @@ func hide_choices() -> void:
 		puppet.set_stance(Puppet.Stance.SWAY)
 		puppet.set_sprite_material(null)
 		puppet.set_pressed(false)
-	_timeline_rope.hide_ghost()
-	_timeline_rope.set_shown_action(null)
+	if _preview_presenter != null:
+		_preview_presenter.show_choice(null, null)
 	_timeline_rope.clear_marks()
 
 
@@ -257,6 +257,8 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
 	_fight_puppets.clear()
+	_preview_presenter.dispose()
+	_preview_presenter = null
 	_timeline_rope.clear()
 	await _scenery.flip_to_mission_map(mission_model, map_seed)
 	_coach.position.x = _get_puppet_x(OFFSTAGE_LEFT_X)
@@ -292,6 +294,8 @@ func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character]
 		var character := characters[line_index] if line_index >= 0 and line_index < count else null
 		if nameplates[index].show_character(character, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
+		if character != null:
+			_show_readouts(nameplates[index])
 
 
 # One after another, left to right.
@@ -333,15 +337,23 @@ func _on_health_changed(character: Character, amount: int) -> void:
 
 func _on_fight_changed() -> void:
 	preview_model.sync(_fight_model)
+	_show_fight()
 
 
-# The preview syncs after every change to the fight, so this follows both.
-func _on_preview_changed() -> void:
+func _show_fight() -> void:
 	for nameplate in _hero_nameplates + _enemy_nameplates:
-		# Null for a character of another fight, still showing as the party.
-		var previewed := null if nameplate.character == null else preview_model.get_character(nameplate.character.id)
-		if previewed != null:
-			nameplate.show_preview(previewed, preview_model.get_lowest_ap(previewed.id))
+		if nameplate.character != null:
+			_show_readouts(nameplate)
+	_timeline_rope.show_entries(TimelineEntry.create_entries(_fight_model.tick, _fight_model.timeline))
+
+
+func _show_readouts(nameplate: Nameplate) -> void:
+	var character := nameplate.character
+	nameplate.show_health(character.health, character.data.max_health)
+	var pips: Array[Nameplate.Pip] = []
+	for index in character.data.max_ap:
+		pips.append(Nameplate.Pip.HELD if index < character.ap else Nameplate.Pip.EMPTY)
+	nameplate.show_pips(pips)
 
 
 func _on_character_fell(character: Character) -> void:

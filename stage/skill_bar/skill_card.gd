@@ -1,7 +1,7 @@
 class_name SkillCard
 extends TextureButton
 # One slot of the skill bar, empty or showing a skill as a card: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
-# The dimming follows the fight; the wipe and its number follow the preview, the number pulsing when the preview changes it.
+# Shown in a style, the number pulses, and a cooldown run out still shows its 0.
 # Armed, its ink turns gold; greyed, grey; a card that can be clicked takes the hover ink under the cursor.
 # A new skill flips the slot like a flat: it swaps its content while edge-on.
 
@@ -18,6 +18,10 @@ const GREYED_INK_COLOR := Color("454545ff")
 # Null while the slot is empty.
 var skill: SkillData
 
+# The skill the card shows, which lags `skill` until the flip turns it edge-on.
+var _shown_skill: SkillData
+var _cooldown_beats := 0
+var _cooldown_style := PreviewPulse.Style.NONE
 var _wipe_fraction := 0.0
 var _flip_tween: Tween
 var _is_armed := false
@@ -44,26 +48,36 @@ func _ready() -> void:
 
 
 # Null empties the slot. Returns whether the slot flips, `delay` from now.
-func show_skill(shown_skill: SkillData, cooldown_beats: int, previewed_beats: int, delay: float) -> bool:
+func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	if shown_skill == skill:
-		_show_cooldown(shown_skill, cooldown_beats, previewed_beats)
 		return false
 	skill = shown_skill
+	_cooldown_beats = 0
+	_cooldown_style = PreviewPulse.Style.NONE
 	if _flip_tween != null:
 		_flip_tween.kill()
 	pivot_offset = size / 2.0
 	_flip_tween = create_tween().set_trans(Scenery.FLIP_TRANSITION)
 	_flip_tween.tween_property(self, "scale:x", 0.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN).set_delay(delay)
-	_flip_tween.tween_callback(_show_content.bind(shown_skill, cooldown_beats, previewed_beats))
+	_flip_tween.tween_callback(_show_content.bind(shown_skill))
 	_flip_tween.tween_property(self, "scale:x", 1.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT)
 	return true
 
 
 func clear(delay: float) -> bool:
-	return show_skill(null, 0, 0, delay)
+	return show_skill(null, delay)
 
 
-func _show_content(shown_skill: SkillData, cooldown_beats: int, previewed_beats: int) -> void:
+# The beats left before the skill is ready again.
+func show_cooldown(beats: int, style := PreviewPulse.Style.NONE) -> void:
+	_cooldown_beats = beats
+	_cooldown_style = style
+	if _shown_skill == skill:
+		_show_cooldown()
+
+
+func _show_content(shown_skill: SkillData) -> void:
+	_shown_skill = shown_skill
 	texture_normal = EMPTY_TEXTURE if shown_skill == null else CARD_TEXTURE
 	_content.visible = shown_skill != null
 	if shown_skill != null:
@@ -74,16 +88,15 @@ func _show_content(shown_skill: SkillData, cooldown_beats: int, previewed_beats:
 			lines.append(effect.get_description())
 		_description.text = "\n".join(lines)
 		_delay.text = str(shown_skill.delay)
-	_show_cooldown(shown_skill, cooldown_beats, previewed_beats)
+	_show_cooldown()
 
 
-# A cooldown the preview ends still shows its 0.
-func _show_cooldown(shown_skill: SkillData, cooldown_beats: int, previewed_beats: int) -> void:
-	modulate = COOLDOWN_MODULATE if cooldown_beats > 0 else Color.WHITE
-	_wipe.visible = previewed_beats > 0 or previewed_beats != cooldown_beats
-	_cooldown_label.text = str(previewed_beats)
-	_cooldown_pulse.show_gain(cooldown_beats - previewed_beats)
-	_wipe_fraction = previewed_beats / float(shown_skill.cooldown) if previewed_beats > 0 else 0.0
+func _show_cooldown() -> void:
+	modulate = COOLDOWN_MODULATE if _cooldown_beats > 0 else Color.WHITE
+	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
+	_cooldown_label.text = str(_cooldown_beats)
+	_cooldown_pulse.show_style(_cooldown_style)
+	_wipe_fraction = _cooldown_beats / float(_shown_skill.cooldown) if _cooldown_beats > 0 else 0.0
 	_wipe.queue_redraw()
 
 

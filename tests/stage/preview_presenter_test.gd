@@ -1,0 +1,136 @@
+extends GdUnitTestSuite
+
+
+func test_health_the_preview_takes_shows_worse() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var enemy := fight_model.enemies[0]
+	var preview_model := _run(fight_model, _create_choice(hero, enemy, 2, 3))
+
+	assert_int(PreviewPresenter.get_health_style(preview_model, enemy)).is_equal(PreviewPulse.Style.WORSE)
+	assert_int(PreviewPresenter.get_health_style(preview_model, hero)).is_equal(PreviewPulse.Style.NONE)
+
+
+func test_a_pip_spent_by_landing_shows_lost() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var preview_model := _run(fight_model, _create_choice(hero, fight_model.enemies[0], 2, 3))
+
+	var held := Nameplate.Pip.HELD
+	var states := PreviewPresenter.get_pip_states(preview_model, hero)
+
+	assert_array(states).contains_exactly([held, held, held, held, Nameplate.Pip.LOST])
+
+
+func test_a_pip_spent_and_got_back_on_the_way_shows_gained() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	hero.ap = 3
+	var preview_model := _run(fight_model, _create_choice(hero, fight_model.enemies[0], 6, 3))
+
+	var held := Nameplate.Pip.HELD
+	var empty := Nameplate.Pip.EMPTY
+	var states := PreviewPresenter.get_pip_states(preview_model, hero)
+
+	assert_array(states).contains_exactly([held, held, Nameplate.Pip.GAINED, empty, empty])
+
+
+func test_a_cooldown_the_preview_starts_shows_worse() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var choice := _create_choice(hero, fight_model.enemies[0], 2, 3)
+	choice.skill.cooldown = 2
+	var preview_model := _run(fight_model, choice)
+
+	var style := PreviewPresenter.get_cooldown_style(preview_model, hero, choice.skill)
+
+	assert_int(style).is_equal(PreviewPulse.Style.WORSE)
+
+
+func test_a_cooldown_a_beat_on_the_way_shortens_shows_better() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var resting := SkillData.new()
+	hero.skill_cooldowns[resting] = 1
+	var preview_model := _run(fight_model, _create_choice(hero, fight_model.enemies[0], 6, 3))
+
+	var style := PreviewPresenter.get_cooldown_style(preview_model, hero, resting)
+
+	assert_int(style).is_equal(PreviewPulse.Style.BETTER)
+
+
+func test_a_shown_choice_hangs_as_a_ghost_where_it_would_resolve() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var enemy := fight_model.enemies[0]
+	var pending := _schedule(fight_model, _create_choice(enemy, hero, 2, 1))
+	var choice := _create_choice(hero, enemy, 2, 3)
+	var preview_model := _run(fight_model, choice)
+
+	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, choice)
+
+	assert_array(_describe(entries, {choice: "choice", pending: "pending"})).contains_exactly(
+		["knot", "knot", "choice GHOST", "pending NORMAL", "knot", "knot"])
+
+
+func test_the_preview_fades_what_it_resolves_and_crosses_what_it_cancels_but_the_shown_action() -> void:
+	var fight_model := _create_fight_model()
+	var blow := _schedule(fight_model, _create_choice(fight_model.heroes[0], fight_model.enemies[0], 2, 10))
+	var doomed := _schedule(fight_model, _create_choice(fight_model.enemies[0], fight_model.heroes[1], 3, 1))
+	var shown := _schedule(fight_model, _create_choice(fight_model.heroes[1], fight_model.enemies[1], 4, 1))
+	var preview_model := _run(fight_model, shown)
+
+	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, shown)
+
+	assert_array(_describe(entries, {blow: "blow", doomed: "doomed", shown: "shown"})).contains_exactly(
+		["knot", "knot", "blow FADED", "knot", "doomed CROSSED", "knot", "shown NORMAL"])
+
+
+func _describe(entries: Array[TimelineEntry], names: Dictionary[Action, String]) -> Array[String]:
+	var described: Array[String] = []
+	for entry in entries:
+		if entry.is_knot():
+			described.append("knot")
+		else:
+			described.append("%s %s" % [names[entry.action], TimelineEntry.Style.find_key(entry.style)])
+	return described
+
+
+func _create_fight_model() -> FightModel:
+	var heroes: Array[Character] = [_create_character(), _create_character()]
+	var enemies: Array[Character] = [_create_character(), _create_character()]
+	return FightModel.new(heroes, enemies)
+
+
+func _create_character() -> Character:
+	var character_data := CharacterData.new()
+	character_data.max_health = 10
+	character_data.max_ap = CharacterData.MAX_AP
+	return Character.new(character_data)
+
+
+func _create_choice(actor: Character, target: Character, skill_delay: int, damage_amount: int) -> Action:
+	var choice := Action.new()
+	choice.actor = actor
+	choice.target = target
+	choice.skill = SkillData.new()
+	choice.skill.delay = skill_delay
+	var damage := DamageEffect.new()
+	damage.amount = damage_amount
+	choice.skill.effects = [damage]
+	return choice
+
+
+# Returns the action the fight model holds for the choice.
+func _schedule(fight_model: FightModel, choice: Action) -> Action:
+	var added: Array[Action] = []
+	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+	return added[0]
+
+
+# The preview of the fight once `shown` lands.
+func _run(fight_model: FightModel, shown: Action) -> FightModel:
+	var preview_model := FightModel.new([], [])
+	Simulation.run(preview_model, fight_model, shown)
+	return preview_model
