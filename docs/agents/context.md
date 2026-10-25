@@ -108,9 +108,8 @@ _Avoid_: preview, shadow
 A pause in the fight while the heroes take orders.
 _Avoid_: pause, freeze
 
-**Reschedule**:
-A busy hero's pending action replaced by a new one.
-_Avoid_: cancel, retarget
+**AP**:
+The pips a character spends to schedule a skill, one back each beat, held up to a cap.
 
 **Brain**:
 What chooses the actions of one side: the player or chance.
