@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dpsd2gy8ca3tr"]
 
-[ext_resource type="Script" path="res://stage/health_bar/health_bar.gd" id="1_health_bar"]
+[ext_resource type="Script" uid="uid://8g3yor62y0ud" path="res://stage/health_bar/health_bar.gd" id="1_health_bar"]
 [ext_resource type="Texture2D" uid="uid://covwnfx252hkr" path="res://art/ui/frame.png" id="2_frame"]
 [ext_resource type="Texture2D" uid="uid://dfgxwq511fk75" path="res://art/ui/ap_pip.png" id="3_ap_pip"]
 
-[node name="HealthBar" type="Control"]
+[node name="HealthBar" type="Control" unique_id=431521380]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 587.0
@@ -12,7 +12,7 @@ offset_bottom = 275.0
 mouse_filter = 2
 script = ExtResource("1_health_bar")
 
-[node name="Portrait" type="TextureRect" parent="."]
+[node name="Portrait" type="TextureRect" parent="." unique_id=1122060711]
 layout_mode = 0
 offset_left = 19.0
 offset_top = 22.0
@@ -21,14 +21,14 @@ offset_bottom = 198.0
 mouse_filter = 2
 stretch_mode = 3
 
-[node name="Frame" type="TextureRect" parent="."]
+[node name="Frame" type="TextureRect" parent="." unique_id=1332581500]
 layout_mode = 0
 offset_right = 587.0
 offset_bottom = 275.0
 mouse_filter = 2
 texture = ExtResource("2_frame")
 
-[node name="ApPip" type="TextureRect" parent="."]
+[node name="ApPip" type="TextureRect" parent="." unique_id=1335242235]
 layout_mode = 0
 offset_left = 290.0
 offset_top = 188.0
