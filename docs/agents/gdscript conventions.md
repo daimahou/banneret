@@ -47,6 +47,18 @@ const SLOT_ENTITY := 1
 const SLOT_WALL := 2
 ```
 
+## Line length
+
+**A line of code fits on the screen.** The screen is about 120 columns, counting a tab as 4. A line past that is split; a line within it stays whole. There is no cap to wrap at, and no line is broken for being merely long.
+
+Break before an `and` or `or`, end the line with `\`, and indent the continuation two levels, so it cannot read as the block below:
+
+```gdscript
+if not _is_waiting or get_inspected_character() != hero \
+		or skill not in FightRules.get_usable_skills(_fight_model, hero):
+	return
+```
+
 ## Packed formats
 
 **The decode function is the format.** Where a resource holds packed bytes, the script that reads them is the only statement of what a record holds and in what order — the importer that writes them follows it, and a change to one is a change to the other.

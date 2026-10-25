@@ -123,7 +123,8 @@ func cycle_hero(step: int) -> void:
 
 # Aims the first target.
 func arm_skill(skill: SkillData) -> void:
-	if not _is_waiting or get_inspected_character() != hero or skill not in FightRules.get_usable_skills(_fight_model, hero):
+	if not _is_waiting or get_inspected_character() != hero \
+			or skill not in FightRules.get_usable_skills(_fight_model, hero):
 		return
 	armed_skill = skill
 	var targets := get_targets()
