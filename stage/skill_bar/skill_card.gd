@@ -54,6 +54,11 @@ func show_skill(shown_skill: SkillData, cooldown_beats: int, delay: float) -> bo
 	return true
 
 
+# Returns whether the slot flips, `delay` from now.
+func clear(delay: float) -> bool:
+	return show_skill(null, 0, delay)
+
+
 func _show_content(shown_skill: SkillData, cooldown_beats: int) -> void:
 	texture_normal = EMPTY_TEXTURE if shown_skill == null else CARD_TEXTURE
 	_content.visible = shown_skill != null

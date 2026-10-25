@@ -144,7 +144,7 @@ func hide_choices() -> void:
 		puppet.set_sprite_material(null)
 		puppet.set_pressed(false)
 	_timeline_rope.hide_ghost()
-	_timeline_rope.set_marks([], null)
+	_timeline_rope.clear_marks()
 
 
 func bob_puppet(character: Character) -> void:

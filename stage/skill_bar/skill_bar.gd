@@ -41,10 +41,14 @@ func set_armed_skill(armed_skill: SkillData) -> void:
 		slot.set_armed(slot.skill != null and slot.skill == armed_skill)
 
 
-# Every slot empty, and no Stop or Pass.
+# Every slot empty, one after another like the flats, and no Stop or Pass.
 func clear() -> void:
-	show_skills([], false, {})
-	set_armed_skill(null)
+	var flip_delay := 0.0
+	for slot in _slots:
+		if slot.clear(flip_delay):
+			flip_delay += Scenery.FLIP_STAGGER
+		slot.disabled = true
+		slot.set_armed(false)
 	_stop_button.hide()
 
 
