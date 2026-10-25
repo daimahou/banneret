@@ -115,7 +115,7 @@ func show_encounter(fight_model: FightModel) -> void:
 	_view = View.FIGHT
 
 
-# Stopped, a free hero hops and the selected hero stands raised; otherwise every puppet sways.
+# Stopped, a ready hero hops and the selected hero stands raised; otherwise every puppet sways.
 func show_choices(brain: PlayerBrain) -> void:
 	var is_waiting := brain.is_waiting()
 	for character in _fight_puppets:
@@ -123,7 +123,7 @@ func show_choices(brain: PlayerBrain) -> void:
 		var stance := Puppet.Stance.SWAY
 		if is_waiting and character == brain.hero:
 			stance = Puppet.Stance.RAISED
-		elif is_waiting and brain.is_free(character):
+		elif is_waiting and brain.is_ready(character):
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
 		puppet.set_sprite_material(_get_ink(brain, character))

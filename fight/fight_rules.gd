@@ -15,7 +15,7 @@ static func get_usable_skills(fight_model: FightModel, character: Character) -> 
 	return skills
 
 
-static func is_free(fight_model: FightModel, character: Character) -> bool:
+static func is_ready(fight_model: FightModel, character: Character) -> bool:
 	return not get_usable_skills(fight_model, character).is_empty()
 
 
