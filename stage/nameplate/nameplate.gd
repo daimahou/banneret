@@ -15,8 +15,8 @@ const FULL_PIP_TEXTURE := preload("res://art/ui/ap_pip_full.png")
 # Null while the nameplate is unused.
 var character: Character
 
-# The character the nameplate shows, which lags `character` until the flip turns it edge-on; the readouts wait with it.
-var _shown_character: Character
+# The readouts wait while true, so they never show on the last character's face.
+var _is_awaiting_swap := false
 var _health := 0
 var _max_health := 1
 var _health_style := PreviewPulse.Style.NONE
@@ -48,6 +48,7 @@ func show_character(shown_character: Character, delay: float) -> bool:
 	if shown_character == character:
 		return false
 	character = shown_character
+	_is_awaiting_swap = true
 	if _flip_tween != null:
 		_flip_tween.kill()
 	pivot_offset = size / 2.0
@@ -66,14 +67,14 @@ func show_health(health: int, max_health: int, style := PreviewPulse.Style.NONE)
 	_health = health
 	_max_health = max_health
 	_health_style = style
-	if _shown_character == character:
+	if not _is_awaiting_swap:
 		_show_health()
 
 
 # One state for each AP the character can hold.
 func show_pips(states: Array[Pip]) -> void:
 	_pip_states = states
-	if _shown_character == character:
+	if not _is_awaiting_swap:
 		_show_pips()
 
 
@@ -114,7 +115,7 @@ func _show_pips() -> void:
 
 # The last character's yellow goes.
 func _show_content(shown_character: Character) -> void:
-	_shown_character = shown_character
+	_is_awaiting_swap = false
 	visible = shown_character != null
 	if shown_character == null:
 		return

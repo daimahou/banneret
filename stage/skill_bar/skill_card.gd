@@ -18,8 +18,8 @@ const GREYED_INK_COLOR := Color("454545ff")
 # Null while the slot is empty.
 var skill: SkillData
 
-# The skill the card shows, which lags `skill` until the flip turns it edge-on.
-var _shown_skill: SkillData
+# The cooldown waits while true, so it never shows on the last skill's face.
+var _is_awaiting_swap := false
 var _cooldown_beats := 0
 var _cooldown_style := PreviewPulse.Style.NONE
 var _wipe_fraction := 0.0
@@ -52,6 +52,7 @@ func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	if shown_skill == skill:
 		return false
 	skill = shown_skill
+	_is_awaiting_swap = true
 	_cooldown_beats = 0
 	_cooldown_style = PreviewPulse.Style.NONE
 	if _flip_tween != null:
@@ -72,12 +73,12 @@ func clear(delay: float) -> bool:
 func show_cooldown(beats: int, style := PreviewPulse.Style.NONE) -> void:
 	_cooldown_beats = beats
 	_cooldown_style = style
-	if _shown_skill == skill:
+	if not _is_awaiting_swap:
 		_show_cooldown()
 
 
 func _show_content(shown_skill: SkillData) -> void:
-	_shown_skill = shown_skill
+	_is_awaiting_swap = false
 	texture_normal = EMPTY_TEXTURE if shown_skill == null else CARD_TEXTURE
 	_content.visible = shown_skill != null
 	if shown_skill != null:
@@ -99,7 +100,7 @@ func _show_cooldown() -> void:
 	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
 	_cooldown_label.text = str(_cooldown_beats)
 	_cooldown_pulse.show_style(_cooldown_style)
-	_wipe_fraction = _cooldown_beats / float(_shown_skill.cooldown) if _cooldown_beats > 0 else 0.0
+	_wipe_fraction = _cooldown_beats / float(skill.cooldown) if _cooldown_beats > 0 else 0.0
 	_wipe.queue_redraw()
 
 
