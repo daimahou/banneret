@@ -6,7 +6,7 @@ requires:
 started: 2026-10-24
 finished:
 hours: 1
-total_hours: 1.6
+total_hours: 2.1
 parent: "[[Warrior kit]]"
 ---
 # Done when

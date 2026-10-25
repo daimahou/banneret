@@ -5,7 +5,7 @@ requires:
   - "[[Cooldown rules]]"
 started:
 finished:
-hours:
+hours: 0.5
 parent: "[[Beat and cooldowns]]"
 ---
 # Done when
