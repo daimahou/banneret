@@ -31,7 +31,7 @@ var _is_mouse_over := false
 @onready var _delay: Label = $Content/Delay
 @onready var _wipe: Control = $Content/Wipe
 @onready var _cooldown_label: Label = $Content/Wipe/CooldownLabel
-@onready var _cooldown_mark := PreviewMark.new(_cooldown_label)
+@onready var _cooldown_pulse := PreviewPulse.new(_cooldown_label)
 @onready var _armed_ink := Ink.create_color_material(ARMED_INK_COLOR)
 @onready var _greyed_ink := Ink.create_color_material(GREYED_INK_COLOR)
 @onready var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
@@ -82,7 +82,7 @@ func _show_cooldown(shown_skill: SkillData, cooldown_beats: int, previewed_beats
 	modulate = COOLDOWN_MODULATE if cooldown_beats > 0 else Color.WHITE
 	_wipe.visible = previewed_beats > 0 or previewed_beats != cooldown_beats
 	_cooldown_label.text = str(previewed_beats)
-	_cooldown_mark.show_gain(cooldown_beats - previewed_beats)
+	_cooldown_pulse.show_gain(cooldown_beats - previewed_beats)
 	_wipe_fraction = previewed_beats / float(shown_skill.cooldown) if previewed_beats > 0 else 0.0
 	_wipe.queue_redraw()
 

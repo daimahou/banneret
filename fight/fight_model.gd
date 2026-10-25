@@ -92,7 +92,7 @@ func get_action(action_id: int) -> Action:
 	return null
 
 
-# Whether an action of this id resolved, or was cancelled, in the history.
+# Whether the history resolves the action of this id; on a preview, before the shown action lands.
 func has_resolved(action_id: int) -> bool:
 	return history.any(func(delta: Delta) -> bool: return delta.is_resolving_action(action_id))
 

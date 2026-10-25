@@ -31,7 +31,7 @@ func test_a_play_out_leaves_the_fight_untouched() -> void:
 	assert_array(fight_model.timeline).contains_exactly([shown])
 
 
-func test_its_history_holds_the_cancels_on_the_way() -> void:
+func test_a_play_out_s_history_holds_the_cancels_on_the_way() -> void:
 	var fight_model := _create_fight_model()
 	var blow := _schedule(fight_model, fight_model.heroes[0], fight_model.enemies[0], 2, 10)
 	var doomed := _schedule(fight_model, fight_model.enemies[0], fight_model.heroes[1], 4, 1)

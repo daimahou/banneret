@@ -1,4 +1,4 @@
-class_name PreviewMark
+class_name PreviewPulse
 extends RefCounted
 # A difference the preview makes to one readout: it pulses, red when bad for the character, green when good.
 

@@ -40,7 +40,8 @@ class AddAction:
 		action.skill = skill
 		action.target = fight_model.get_character(target_id)
 		action.resolve_tick = resolve_tick
-		var index := fight_model.timeline.find_custom(func(other: Action) -> bool: return other.resolve_tick >= resolve_tick)
+		var is_due_with_or_after := func(other: Action) -> bool: return other.resolve_tick >= resolve_tick
+		var index := fight_model.timeline.find_custom(is_due_with_or_after)
 		fight_model.timeline.insert(fight_model.timeline.size() if index == -1 else index, action)
 		fight_model.action_added.emit(action)
 

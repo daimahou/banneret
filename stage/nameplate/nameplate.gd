@@ -16,7 +16,7 @@ var character: Character
 var _drain_tween: Tween
 var _flip_tween: Tween
 var _pips: Array[TextureRect] = []
-var _pip_marks: Array[PreviewMark] = []
+var _pip_pulses: Array[PreviewPulse] = []
 
 @onready var _portrait: TextureRect = $Portrait
 @onready var _name: Label = $Name
@@ -25,13 +25,13 @@ var _pip_marks: Array[PreviewMark] = []
 @onready var _fill: Control = $Empty/Fill
 # Grows both ways past the bar's height, so its line stays centred on it.
 @onready var _health_label: Label = $Empty/HealthLabel
-@onready var _health_mark := PreviewMark.new(_health_label)
+@onready var _health_pulse := PreviewPulse.new(_health_label)
 
 
 func _ready() -> void:
 	_pips.assign($Pips.get_children())
 	for pip in _pips:
-		_pip_marks.append(PreviewMark.new(pip))
+		_pip_pulses.append(PreviewPulse.new(pip))
 
 
 # Null hides the nameplate. Returns whether the nameplate flips, `delay` from now.
@@ -75,7 +75,7 @@ func _show_ap(shown_character: Character, previewed: Character) -> void:
 		var is_held_previewed := index < previewed.ap
 		_pips[index].visible = index < shown_character.data.max_ap
 		_pips[index].texture = FULL_PIP_TEXTURE if is_held or is_held_previewed else EMPTY_PIP_TEXTURE
-		_pip_marks[index].show_gain(int(is_held_previewed) - int(is_held))
+		_pip_pulses[index].show_gain(int(is_held_previewed) - int(is_held))
 
 
 # Drained, the yellow goes down to the fight's health over time, rather than at once.
@@ -85,7 +85,7 @@ func _show_health(shown_character: Character, previewed: Character, is_drained: 
 	var share := _get_health_share(shown_character)
 	_fill.anchor_right = _get_health_share(previewed)
 	_health_label.text = "%d/%d" % [previewed.health, previewed.data.max_health]
-	_health_mark.show_gain(previewed.health - shown_character.health)
+	_health_pulse.show_gain(previewed.health - shown_character.health)
 	if not is_drained or share >= _damage.anchor_right:
 		_damage.anchor_right = share
 		return

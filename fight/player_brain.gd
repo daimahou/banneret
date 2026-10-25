@@ -258,10 +258,12 @@ func get_previewed_action() -> Action:
 
 
 # The hovered skill, else the armed one, as it would hang on the timeline, or null. A hovered skill of anyone but the hero hangs nothing.
+# Characters share skill resources, so the hovered skill is the hero's only while the bar shows the hero's.
 func _create_ghost_action() -> Action:
 	if not _is_waiting or hero == null:
 		return null
-	var shown := hovered_skill if hovered_skill in hero.data.skills else armed_skill
+	var is_hero_skill_hovered := hovered_skill != null and get_inspected_character() == hero
+	var shown := hovered_skill if is_hero_skill_hovered else armed_skill
 	if shown == null:
 		return null
 	var ghost := Action.new()

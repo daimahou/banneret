@@ -24,8 +24,8 @@ parent: "[[Warrior kit]]"
 - `Simulation.run(fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
 - During play: the preview syncs after every real `apply`; it applies a resolve as the lunge starts, the real state at impact.
 - Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target.
-- A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing.
-- Nameplate: yellow from the real health, red from the preview's; the hold-and-drain goes. Label: the preview's `health/max`, pulsing softly when it differs.
+- A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing. An unusable skill hangs its ghost and previews nothing.
+- Nameplate: yellow from the real health, red from the preview's; the hold goes, the yellow drains to the red at impact. Label: the preview's `health/max`, pulsing softly when it differs.
 - A pip that differs pulses. The inspected character's cards show the preview's cooldown, the number pulsing where it differs.
 - A difference bad for the character is red, a good one green.
 - Rope: the ghost as now; a cancelled action takes the two-stroke cross from before `71aea8f`; a resolved one fades to ghost alpha; the shown action never fades.

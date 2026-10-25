@@ -58,7 +58,6 @@ func get_health(character: Character) -> int:
 	return health
 
 
-# Resolving or cancelling it: either takes it off the timeline.
 func is_removing_action(action: Action) -> bool:
 	return is_resolving_action(action.id) or is_cancelling_action(action.id)
 
