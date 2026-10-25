@@ -96,55 +96,55 @@ offset_right = 3840.0
 offset_bottom = 2160.0
 mouse_filter = 2
 
-[node name="Heroes" type="Control" parent="HealthBars"]
+[node name="Heroes" type="Control" parent="HealthBars" unique_id=949860247]
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="HealthBar1" parent="HealthBars/Heroes" instance=ExtResource("11_health_bar")]
+[node name="HealthBar1" parent="HealthBars/Heroes" unique_id=425991340 instance=ExtResource("11_health_bar")]
 layout_mode = 0
-offset_left = 74.0
-offset_top = 1465.0
-offset_right = 661.0
-offset_bottom = 1740.0
+offset_left = 60.0
+offset_top = 1432.0
+offset_right = 596.0
+offset_bottom = 1670.0
 
-[node name="HealthBar2" parent="HealthBars/Heroes" instance=ExtResource("11_health_bar")]
+[node name="HealthBar2" parent="HealthBars/Heroes" unique_id=1859215159 instance=ExtResource("11_health_bar")]
 layout_mode = 0
-offset_left = 681.0
-offset_top = 1465.0
-offset_right = 1268.0
-offset_bottom = 1740.0
+offset_left = 695.0
+offset_top = 1432.0
+offset_right = 1231.0
+offset_bottom = 1670.0
 
-[node name="HealthBar3" parent="HealthBars/Heroes" instance=ExtResource("11_health_bar")]
+[node name="HealthBar3" parent="HealthBars/Heroes" unique_id=43908476 instance=ExtResource("11_health_bar")]
 layout_mode = 0
-offset_left = 1288.0
-offset_top = 1465.0
-offset_right = 1875.0
-offset_bottom = 1740.0
+offset_left = 1314.0
+offset_top = 1432.0
+offset_right = 1850.0
+offset_bottom = 1670.0
 
-[node name="Enemies" type="Control" parent="HealthBars"]
+[node name="Enemies" type="Control" parent="HealthBars" unique_id=1817176368]
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="HealthBar1" parent="HealthBars/Enemies" instance=ExtResource("11_health_bar")]
+[node name="HealthBar1" parent="HealthBars/Enemies" unique_id=869545856 instance=ExtResource("11_health_bar")]
 layout_mode = 0
-offset_left = 1965.0
-offset_top = 1465.0
-offset_right = 2552.0
-offset_bottom = 1740.0
+offset_left = 1936.0
+offset_top = 1434.0
+offset_right = 2472.0
+offset_bottom = 1672.0
 
-[node name="HealthBar2" parent="HealthBars/Enemies" instance=ExtResource("11_health_bar")]
+[node name="HealthBar2" parent="HealthBars/Enemies" unique_id=1871507431 instance=ExtResource("11_health_bar")]
 layout_mode = 0
-offset_left = 2572.0
-offset_top = 1465.0
-offset_right = 3159.0
-offset_bottom = 1740.0
+offset_left = 2553.0
+offset_top = 1434.0
+offset_right = 3089.0
+offset_bottom = 1672.0
 
-[node name="HealthBar3" parent="HealthBars/Enemies" instance=ExtResource("11_health_bar")]
+[node name="HealthBar3" parent="HealthBars/Enemies" unique_id=1226335027 instance=ExtResource("11_health_bar")]
 layout_mode = 0
-offset_left = 3179.0
-offset_top = 1465.0
-offset_right = 3766.0
-offset_bottom = 1740.0
+offset_left = 3176.0
+offset_top = 1434.0
+offset_right = 3712.0
+offset_bottom = 1672.0
 
 [node name="SkillBar" parent="." unique_id=298821898 instance=ExtResource("10_skill_bar")]
 z_index = 200

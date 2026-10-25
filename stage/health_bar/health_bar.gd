@@ -8,12 +8,12 @@ const DAMAGE_HOLD_DURATION := 0.4
 const DAMAGE_DRAIN_DURATION := 0.3
 
 # Inside the frame art's top bar.
-const FILL_RECT := Rect2(226.0, 76.0, 333.0, 40.0)
+const FILL_RECT := Rect2(196.0, 65.0, 316.0, 35.0)
 const FILL_COLOR := Color("a83a2a")
 const DAMAGE_COLOR := Color("e8c547")
 const EMPTY_COLOR := Color("5c534a")
 const TEXT_COLOR := Color.WHITE
-const FONT_SIZE := 36
+const FONT_SIZE := 32
 
 # Null while the frame is unused. Set at once, though a flip draws it only once edge-on.
 var character: Character

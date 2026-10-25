@@ -32,10 +32,10 @@ layout_mode = 2
 [node name="StopButton" type="Button" parent="." unique_id=236132220]
 custom_minimum_size = Vector2(220, 100)
 layout_mode = 0
-offset_left = 1737.0
-offset_top = -221.0
-offset_right = 1957.0
-offset_bottom = -121.0
+offset_left = 1710.0
+offset_top = -272.0
+offset_right = 1930.0
+offset_bottom = -172.0
 visible = false
 focus_mode = 0
 toggle_mode = true
