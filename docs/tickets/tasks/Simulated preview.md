@@ -19,10 +19,10 @@ parent: "[[Warrior kit]]"
 - A `Change` holds ids and looks them up in the model it applies to: one delta applies to either state.
 - `RemoveAction` splits into `ResolveAction` and `CancelAction`; `action_removed` into `action_resolved` and `action_cancelled`. Both leave the timeline: it holds pending actions only, `timeline[0]` next.
 - `FightModel.history`: the deltas it applied, in order; `sync` clears it. An action's fates are the changes in the preview's history naming it: moved, then resolved or cancelled.
-- The preview: a `FightModel` the stage builds for each encounter; no stage, no preview. `sync` deep-copies the tick, the characters, the timeline and the id counter; data resources are shared, never copied. It emits `changed`.
+- The preview: `Stage.preview_model`, a `FightModel` the stage builds for each encounter; no stage, no preview. `sync` deep-copies the tick, the characters, the timeline and the id counter; data resources are shared, never copied. It emits `changed`.
 - `FightRules.is_beat_next`, shared with `FightController`.
 - On a shared tick, an action chosen on top of its actor's own queues after them: two orders to one character play in the order given. `FightModel.get_timeline_index` places both the action and the rope's ghost.
-- `Simulation.run(preview, fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
+- `Simulation.run(preview_model, fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
 - During play: the preview syncs on the fight's `changed`, after every real `apply`; it applies a resolve as the lunge starts, the real state at impact.
 - Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target.
 - A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing. An unusable skill hangs its ghost and previews nothing.

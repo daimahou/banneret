@@ -22,7 +22,7 @@ const MOVE_DURATION := 0.3
 const LIFT := 24.0
 
 var _fight_model: FightModel
-var _preview: FightModel
+var _preview_model: FightModel
 # The action the preview plays out until it lands, or null.
 var _shown_action: Action
 var _entry_nodes: Dictionary[Variant, Node2D] = {}
@@ -80,14 +80,14 @@ static func _get_entries(fight_model: FightModel, ghost_action: Action) -> Array
 	return entries
 
 
-func show_fight(fight_model: FightModel, fight_preview: FightModel) -> void:
+func show_fight(fight_model: FightModel, preview_model: FightModel) -> void:
 	_fight_model = fight_model
 	_fight_model.tick_changed.connect(_on_fight_changed)
 	_fight_model.action_added.connect(_on_fight_changed)
 	_fight_model.action_resolved.connect(_on_fight_changed)
 	_fight_model.action_cancelled.connect(_on_fight_changed)
-	_preview = fight_preview
-	_preview.changed.connect(_queue_refresh)
+	_preview_model = preview_model
+	_preview_model.changed.connect(_queue_refresh)
 	_queue_refresh()
 
 
@@ -129,9 +129,9 @@ func clear() -> void:
 	_ghost_action = null
 	_shown_action = null
 	_highlighted_actors = []
-	if _preview != null:
-		_preview.changed.disconnect(_queue_refresh)
-		_preview = null
+	if _preview_model != null:
+		_preview_model.changed.disconnect(_queue_refresh)
+		_preview_model = null
 	if _fight_model != null:
 		_fight_model.tick_changed.disconnect(_on_fight_changed)
 		_fight_model.action_added.disconnect(_on_fight_changed)
@@ -225,7 +225,7 @@ func _refresh() -> void:
 			tween.tween_property(node, "modulate:a", _get_alpha(entry), MOVE_DURATION)
 			tween.tween_property(node, "rotation" if entry.is_knot() else "knot_rotation", _get_rope_angle(x), MOVE_DURATION)
 		if not entry.is_knot():
-			(node as TimelineMedallion).set_cancelled(_preview.has_cancelled(entry.action.id))
+			(node as TimelineMedallion).set_cancelled(_preview_model.has_cancelled(entry.action.id))
 		placed[key] = node
 		x += spacing / 2.0
 	for key: Variant in _entry_nodes:
@@ -281,8 +281,10 @@ func _add_entry_node(entry: Entry, x: float) -> Node2D:
 
 
 func _get_alpha(entry: Entry) -> float:
-	var is_resolved := not entry.is_knot() and entry.action != _shown_action and _preview.has_resolved(entry.action.id)
-	return GHOST_ALPHA if entry.is_ghost or is_resolved else 1.0
+	if entry.is_ghost:
+		return GHOST_ALPHA
+	var is_resolved := not entry.is_knot() and _preview_model.has_resolved(entry.action.id)
+	return GHOST_ALPHA if is_resolved and entry.action != _shown_action else 1.0
 
 
 func _remove_entry_node(node: Node2D) -> void:

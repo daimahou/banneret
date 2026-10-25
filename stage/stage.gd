@@ -54,7 +54,7 @@ var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
 # The fight as it will stand once an action lands, played out on copies of the fight's characters and actions. Built
 # for each encounter; it syncs after every delta applied to the fight. Null before the first encounter.
-var preview: FightModel
+var preview_model: FightModel
 
 # Null before the first encounter.
 var _fight_model: FightModel
@@ -117,12 +117,12 @@ func show_encounter(fight_model: FightModel) -> void:
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
 	_fight_model = fight_model
-	preview = FightModel.new([], [])
-	preview.sync(fight_model)
-	preview.changed.connect(_on_preview_changed)
+	preview_model = FightModel.new([], [])
+	preview_model.sync(fight_model)
+	preview_model.changed.connect(_on_preview_changed)
 	# Connected before any brain sees the fight, so the preview is level by the time they read it.
 	fight_model.changed.connect(_on_fight_changed)
-	_timeline_rope.show_fight(fight_model, preview)
+	_timeline_rope.show_fight(fight_model, preview_model)
 	await tween.finished
 	_view = View.FIGHT
 
@@ -332,16 +332,16 @@ func _on_health_changed(character: Character, amount: int) -> void:
 
 
 func _on_fight_changed() -> void:
-	preview.sync(_fight_model)
+	preview_model.sync(_fight_model)
 
 
 # The preview syncs after every change to the fight, so this follows both.
 func _on_preview_changed() -> void:
 	for nameplate in _hero_nameplates + _enemy_nameplates:
 		# Null for a character of another fight, still showing as the party.
-		var previewed := null if nameplate.character == null else preview.get_character(nameplate.character.id)
+		var previewed := null if nameplate.character == null else preview_model.get_character(nameplate.character.id)
 		if previewed != null:
-			nameplate.show_preview(previewed, preview.get_lowest_ap(previewed.id))
+			nameplate.show_preview(previewed, preview_model.get_lowest_ap(previewed.id))
 
 
 func _on_character_fell(character: Character) -> void:

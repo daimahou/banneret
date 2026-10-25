@@ -311,7 +311,7 @@ func _show_choices() -> void:
 	# Before the brain first sees the fight, there is no preview to read.
 	var previewed := inspected
 	if inspected != null and _fight_model != null:
-		previewed = _stage.preview.get_character(inspected.id)
+		previewed = _stage.preview_model.get_character(inspected.id)
 	var usable_skills: Array[SkillData] = []
 	if _is_waiting and inspected == hero:
 		usable_skills = FightRules.get_usable_skills(_fight_model, hero)
@@ -332,9 +332,9 @@ func _show_preview() -> void:
 		return
 	var previewed := get_previewed_action()
 	if previewed == null:
-		_stage.preview.sync(_fight_model)
+		_stage.preview_model.sync(_fight_model)
 	else:
-		Simulation.run(_stage.preview, _fight_model, previewed)
+		Simulation.run(_stage.preview_model, _fight_model, previewed)
 
 
 func _disarm() -> void:
@@ -348,6 +348,6 @@ func _decide(action: Action) -> void:
 	hovered_skill = null
 	_disarm()
 	if _stage != null:
-		_stage.preview.sync(_fight_model)
+		_stage.preview_model.sync(_fight_model)
 	_show_choices()
 	_decided.emit(action)

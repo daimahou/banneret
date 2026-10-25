@@ -3,29 +3,29 @@ extends GdUnitTestSuite
 
 func test_a_play_out_stops_once_the_action_lands() -> void:
 	var fight_model := _create_fight_model()
-	var preview := FightModel.new([], [])
+	var preview_model := FightModel.new([], [])
 	var hero := fight_model.heroes[0]
 	var enemy := fight_model.enemies[0]
 	var shown := _schedule(fight_model, hero, enemy, 6, 3)
 	var earlier := _schedule(fight_model, enemy, hero, 2, 1)
 	var later := _schedule(fight_model, enemy, hero, 9, 1)
 
-	Simulation.run(preview, fight_model, shown)
+	Simulation.run(preview_model, fight_model, shown)
 
-	assert_int(preview.tick).is_equal(6)
-	assert_int(preview.get_character(enemy.id).health).is_equal(7)
-	assert_int(preview.get_character(hero.id).health).is_equal(9)
-	assert_bool(preview.has_resolved(earlier.id)).is_true()
-	assert_bool(preview.has_resolved(shown.id)).is_true()
-	assert_object(preview.get_action(later.id)).is_not_null()
+	assert_int(preview_model.tick).is_equal(6)
+	assert_int(preview_model.get_character(enemy.id).health).is_equal(7)
+	assert_int(preview_model.get_character(hero.id).health).is_equal(9)
+	assert_bool(preview_model.has_resolved(earlier.id)).is_true()
+	assert_bool(preview_model.has_resolved(shown.id)).is_true()
+	assert_object(preview_model.get_action(later.id)).is_not_null()
 
 
 func test_a_play_out_leaves_the_fight_untouched() -> void:
 	var fight_model := _create_fight_model()
-	var preview := FightModel.new([], [])
+	var preview_model := FightModel.new([], [])
 	var shown := _schedule(fight_model, fight_model.heroes[0], fight_model.enemies[0], 6, 3)
 
-	Simulation.run(preview, fight_model, shown)
+	Simulation.run(preview_model, fight_model, shown)
 
 	assert_int(fight_model.tick).is_equal(0)
 	assert_int(fight_model.enemies[0].health).is_equal(10)
@@ -34,42 +34,42 @@ func test_a_play_out_leaves_the_fight_untouched() -> void:
 
 func test_a_play_out_s_history_holds_the_cancels_on_the_way() -> void:
 	var fight_model := _create_fight_model()
-	var preview := FightModel.new([], [])
+	var preview_model := FightModel.new([], [])
 	var blow := _schedule(fight_model, fight_model.heroes[0], fight_model.enemies[0], 2, 10)
 	var doomed := _schedule(fight_model, fight_model.enemies[0], fight_model.heroes[1], 4, 1)
 	var shown := _schedule(fight_model, fight_model.heroes[1], fight_model.enemies[1], 6, 1)
 
-	Simulation.run(preview, fight_model, shown)
+	Simulation.run(preview_model, fight_model, shown)
 
-	assert_bool(preview.has_resolved(blow.id)).is_true()
-	assert_bool(preview.has_cancelled(doomed.id)).is_true()
-	assert_bool(preview.has_resolved(shown.id)).is_true()
+	assert_bool(preview_model.has_resolved(blow.id)).is_true()
+	assert_bool(preview_model.has_cancelled(doomed.id)).is_true()
+	assert_bool(preview_model.has_resolved(shown.id)).is_true()
 
 
 func test_a_play_out_stops_when_the_action_is_cancelled() -> void:
 	var fight_model := _create_fight_model()
-	var preview := FightModel.new([], [])
+	var preview_model := FightModel.new([], [])
 	var blow := _schedule(fight_model, fight_model.heroes[0], fight_model.enemies[0], 2, 10)
 	var shown := _schedule(fight_model, fight_model.heroes[1], fight_model.enemies[0], 6, 1)
 	var later := _schedule(fight_model, fight_model.enemies[1], fight_model.heroes[1], 9, 1)
 
-	Simulation.run(preview, fight_model, shown)
+	Simulation.run(preview_model, fight_model, shown)
 
-	assert_bool(preview.has_resolved(blow.id)).is_true()
-	assert_bool(preview.has_cancelled(shown.id)).is_true()
-	assert_int(preview.tick).is_equal(2)
-	assert_object(preview.get_action(later.id)).is_not_null()
+	assert_bool(preview_model.has_resolved(blow.id)).is_true()
+	assert_bool(preview_model.has_cancelled(shown.id)).is_true()
+	assert_int(preview_model.tick).is_equal(2)
+	assert_object(preview_model.get_action(later.id)).is_not_null()
 
 
 func test_a_choice_plays_out_under_the_id_it_will_take() -> void:
 	var fight_model := _create_fight_model()
-	var preview := FightModel.new([], [])
+	var preview_model := FightModel.new([], [])
 	var choice := _create_choice(fight_model.heroes[0], fight_model.enemies[0], 2, 3)
 
-	Simulation.run(preview, fight_model, choice)
+	Simulation.run(preview_model, fight_model, choice)
 
-	assert_bool(preview.has_resolved(choice.id)).is_true()
-	assert_int(preview.get_character(fight_model.enemies[0].id).health).is_equal(7)
+	assert_bool(preview_model.has_resolved(choice.id)).is_true()
+	assert_int(preview_model.get_character(fight_model.enemies[0].id).health).is_equal(7)
 	assert_array(fight_model.timeline).is_empty()
 	var added := _schedule(fight_model, fight_model.heroes[0], fight_model.enemies[0], 2, 3)
 	assert_int(added.id).is_equal(choice.id)
@@ -77,15 +77,15 @@ func test_a_choice_plays_out_under_the_id_it_will_take() -> void:
 
 func test_a_choice_without_a_target_is_only_chosen() -> void:
 	var fight_model := _create_fight_model()
-	var preview := FightModel.new([], [])
+	var preview_model := FightModel.new([], [])
 	var hero := fight_model.heroes[0]
 	var choice := _create_choice(hero, null, 2, 3)
 
-	Simulation.run(preview, fight_model, choice)
+	Simulation.run(preview_model, fight_model, choice)
 
-	assert_int(preview.tick).is_equal(0)
-	assert_int(preview.get_character(hero.id).ap).is_equal(hero.ap - 1)
-	assert_object(preview.get_action(choice.id)).is_not_null()
+	assert_int(preview_model.tick).is_equal(0)
+	assert_int(preview_model.get_character(hero.id).ap).is_equal(hero.ap - 1)
+	assert_object(preview_model.get_action(choice.id)).is_not_null()
 
 
 func _create_fight_model() -> FightModel:
