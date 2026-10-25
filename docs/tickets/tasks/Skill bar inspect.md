@@ -4,8 +4,8 @@ id: 1.2-1.2.3
 requires:
   - "[[Skill cards]]"
 started: 2026-10-25
-finished:
-hours:
+finished: 2026-10-25
+hours: 1.6
 parent: "[[Beat and cooldowns]]"
 ---
 # Done when
