@@ -64,6 +64,8 @@ properties:
     displayName: "[~]"
   formula.Duration:
     displayName: Took
+  formula.Hours:
+    displayName: Total
 views:
   - type: table
     name: Plan
@@ -84,22 +86,23 @@ views:
       - started
       - finished
       - formula.Duration
-      - hours
-      - total_hours
+      - formula.Hours
     sort:
       - property: id
         direction: ASC
     summaries: {}
     columnSize:
       formula.State: 54
-      note.id: 101
-      formula.Open children: 83
-      file.name: 378
-      note.parent: 185
+      note.id: 81
+      formula.Open children: 70
+      file.name: 367
+      note.parent: 182
       note.deadline: 115
       formula.Window: 52
       note.started: 115
       note.finished: 118
+      formula.Duration: 73
+      formula.Hours: 71
   - type: table
     name: Open gates
     filters:
@@ -148,9 +151,8 @@ views:
       - started
       - finished
       - formula.Duration
-      - formula.Key
       - hours
-      - total_hours
+      - formula.Hours
     sort:
       - property: id
         direction: ASC
@@ -160,9 +162,10 @@ views:
       formula.State: 54
       note.id: 101
       formula.Open children: 83
-      file.name: 399
+      file.name: 361
       note.deadline: 115
-      formula.Window: 98
+      formula.Window: 53
       note.started: 115
       note.finished: 118
-      note.total_hours: 71
+      formula.Duration: 63
+      formula.Hours: 71

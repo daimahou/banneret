@@ -3,6 +3,7 @@ filters:
     - file.folder.contains("tickets")
     - parent == this.file.asLink()
 formulas:
+  Hours: if(total_hours.isEmpty(), hours, total_hours)
   Band: |-
     if(severity == "major", "0 · major",
     if(!started.isEmpty() && finished.isEmpty(), "1 · in flight",
@@ -27,6 +28,8 @@ properties:
     displayName: Project
   formula.Mark:
     displayName: ·
+  formula.Hours:
+    displayName: Total
   note.finished:
     displayName: Landed
   note.id:
@@ -105,7 +108,7 @@ views:
       - id
       - file.name
       - finished
-      - hours
+      - formula.Hours
     sort:
       - property: id
         direction: ASC
@@ -126,17 +129,19 @@ views:
       - file.name
       - started
       - deadline
+      - formula.Hours
     sort:
       - property: id
-        direction: ASC
-      - property: file.name
         direction: ASC
       - property: formula.Band
         direction: ASC
     columnSize:
       formula.Mark: 44
       note.id: 108
-      file.name: 351
+      file.name: 241
+      note.started: 108
+      note.deadline: 106
+      formula.Hours: 77
   - type: table
     name: Closed tickets
     filters:
@@ -149,13 +154,15 @@ views:
       - id
       - file.name
       - finished
-      - hours
+      - formula.Hours
     sort:
       - property: id
         direction: ASC
-      - property: finished
-        direction: DESC
+      - property: formula.Hours
+        direction: ASC
     summaries:
-      hours: Sum
+      formula.Hours: Sum
     columnSize:
-      file.name: 295
+      file.name: 387
+      note.finished: 120
+      formula.Hours: 107

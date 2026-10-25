@@ -28,6 +28,7 @@ formulas:
   Blocked by: |-
     if(requires.isEmpty(), "",
     requires.filter(value.asFile().properties.finished.isEmpty()))
+  Hours: if(total_hours.isEmpty(), hours, total_hours)
   Active Children: file.backlinks.filter(value.asFile().properties.parent == file && value.asFile().properties.finished.isEmpty())
 properties:
   file.name:
@@ -38,8 +39,6 @@ properties:
     displayName: Landed
   note.hours:
     displayName: Hours
-  note.total_hours:
-    displayName: Total
   note.triage:
     displayName: Triage
   note.severity:
@@ -52,6 +51,8 @@ properties:
     displayName: Project
   formula.Kind:
     displayName: Kind
+  formula.Hours:
+    displayName: Total
   formula.Bug:
     displayName: ·
   formula.Band:
@@ -144,7 +145,7 @@ views:
       - formula.Kind
       - triage
       - finished
-      - hours
+      - formula.Hours
       - commit
       - parent
     sort:
