@@ -27,8 +27,15 @@ func _init(stage: Stage) -> void:
 
 func _ready() -> void:
 	_stage.skill_bar.skill_pressed.connect(skill_pressed.emit)
-	_stage.skill_bar.skill_hovered.connect(skill_hovered.emit)
+	_stage.skill_bar.skill_hovered.connect(_on_skill_hovered)
 	_stage.skill_bar.stop_pressed.connect(stop_button_pressed.emit)
+
+
+# The skill cards take the mouse motion, so a cursor flicked from a puppet straight onto the bar would leave it hovered.
+func _on_skill_hovered(skill: SkillData) -> void:
+	character_hovered.emit(null)
+	action_hovered.emit(null)
+	skill_hovered.emit(skill)
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -126,7 +126,7 @@ func show_choices(brain: PlayerBrain) -> void:
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
 		puppet.set_sprite_material(_get_ink(brain, character))
-		puppet.set_pressed(character == brain.hovered_character and brain.is_target(character))
+		puppet.set_pressed(_is_hovered(brain, character) and brain.is_target(character))
 	var highlighted: Array[Character] = []
 	if is_waiting:
 		highlighted.append(brain.hero)
@@ -208,15 +208,21 @@ func hide_offers() -> void:
 	await _offer_presenter.hide_offers()
 
 
-# A target keeps its red under the cursor: it is pressed down instead. Any other pickable puppet under the cursor, or a hovered medallion's actor, takes the hover ink.
+# A target keeps its red when hovered: it is pressed down instead. Any other hovered puppet takes the hover ink.
 func _get_ink(brain: PlayerBrain, character: Character) -> ShaderMaterial:
 	if brain.is_target(character):
 		return _aimed_ink if character == brain.aimed_target else _target_ink
-	var is_hovered := character == brain.hovered_character and brain.is_pickable(character)
-	var hovered_action := brain.hovered_action
-	if is_hovered or (hovered_action != null and character == hovered_action.actor):
+	if _is_hovered(brain, character):
 		return _hover_ink
 	return null
+
+
+# Under the cursor and pickable, or the actor of a hovered medallion.
+func _is_hovered(brain: PlayerBrain, character: Character) -> bool:
+	var hovered_action := brain.hovered_action
+	if hovered_action != null and character == hovered_action.actor:
+		return true
+	return character == brain.hovered_character and brain.is_pickable(character)
 
 
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:

@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.2-1.2.3
 requires:
   - "[[Skill cards]]"
-started:
+started: 2026-10-25
 finished:
 hours:
 parent: "[[Beat and cooldowns]]"
