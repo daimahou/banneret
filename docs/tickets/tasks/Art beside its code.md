@@ -12,7 +12,7 @@ parent: "[[Warrior kit]]"
 
 - Every image lives in the folder of the code that uses it; `art/` is gone.
 - Art a resource owns sits beside it: puppets and portraits beside their `hero/` and `enemy/` `.tres`, skill icons beside their skill.
-- The character frame (`HealthBar`, `art/ui/frame.png`) is named for what it is — it will hold more than health: class, scene, folder and a term in [[context]].
+- `HealthBar` is renamed `Nameplate` — class, scene, folder (`stage/nameplate/`) and its art — and **Nameplate** enters [[context]]: a character's portrait, name and readouts below the stage.
 - The rule is written down: a line in `gdscript conventions.md`, or an ADR.
 
 ## Implementation decisions
@@ -23,7 +23,6 @@ parent: "[[Warrior kit]]"
 
 ## Open questions
 
-- The frame's name.
 - Convention line or ADR.
 
 ## Out of scope
