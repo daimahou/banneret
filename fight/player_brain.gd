@@ -74,8 +74,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 		fight_model.action_removed.connect(_on_action_removed)
 		fight_model.character_fell.connect(_on_character_fell)
 		fight_model.changed.connect(_show_choices)
-	var is_ready_hero := func(character: Character) -> bool: return FightRules.is_ready(fight_model, character)
-	var free_heroes := fight_model.get_standing(side).filter(is_ready_hero)
+	var free_heroes := fight_model.get_standing(side).filter(is_hero_ready.bind(fight_model))
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
 		return null
@@ -88,6 +87,10 @@ func get_next_action(fight_model: FightModel) -> Action:
 	_is_waiting = true
 	_show_choices()
 	return await _decided
+
+
+func is_hero_ready(character: Character, fight_model: FightModel) -> bool:
+	return FightRules.is_ready(fight_model, character)
 
 
 # Shows the choices even when nothing changes: the stop button toggles itself when pressed.

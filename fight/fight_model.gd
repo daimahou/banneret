@@ -3,11 +3,11 @@ extends RefCounted
 # The fight's state. It does nothing but apply a delta, and signal what changed.
 
 signal tick_changed(tick: int)
-signal health_changed(character: Character, amount: int)
-signal character_fell(character: Character)
-signal ap_changed(character: Character)
-signal action_added(action: Action)
-signal action_removed(action: Action)
+@warning_ignore("unused_signal") signal health_changed(character: Character, amount: int)
+@warning_ignore("unused_signal") signal character_fell(character: Character)
+@warning_ignore("unused_signal") signal ap_changed(character: Character)
+@warning_ignore("unused_signal") signal action_added(action: Action)
+@warning_ignore("unused_signal") signal action_removed(action: Action)
 signal changed
 
 enum Side { HERO, ENEMY }

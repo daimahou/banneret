@@ -4,8 +4,8 @@ id: 1.2-1.3
 requires:
   - "[[Beat and cooldowns]]"
 started: 2026-10-25
-finished:
-hours: 1.8
+finished: 2026-10-25
+hours: 3.6
 parent: "[[Warrior kit]]"
 ---
 # Done when
