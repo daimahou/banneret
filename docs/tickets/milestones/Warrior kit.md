@@ -5,7 +5,7 @@ deadline:
 started: 2026-10-24
 finished:
 hours: 0.7
-total_hours: 4.8
+total_hours: 7.7
 parent: "[[First loop]]"
 ---
 
