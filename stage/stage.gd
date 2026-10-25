@@ -23,6 +23,9 @@ const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
 const BLOW_PAUSE := 0.25
 
+# The fight holds on each beat this long, in seconds, so what the beat changed shows.
+const BEAT_HOLD_DURATION := 0.4
+
 # A damage number floats this far up off its target's head as it fades, in design units and seconds.
 const DAMAGE_RISE := 140.0
 const DAMAGE_DURATION := 0.9
@@ -178,6 +181,11 @@ func show_action(action: Action, on_impact: Callable) -> void:
 	await back.finished
 	actor_puppet.z_index = 0
 	await get_tree().create_timer(BLOW_PAUSE).timeout
+
+
+# Returns once the hold on the beat is over.
+func show_beat() -> void:
+	await get_tree().create_timer(BEAT_HOLD_DURATION).timeout
 
 
 # Shows the model after the coach travelled to `map_node`, and returns once the coach is there.

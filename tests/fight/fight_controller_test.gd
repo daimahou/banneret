@@ -55,6 +55,20 @@ func test_a_hero_brain_that_requests_a_stop_is_asked_with_an_action_due() -> voi
 	assert_bool(hero_brain.is_asked_with_action_due).is_true()
 
 
+func test_the_fight_lands_on_every_beat_it_crosses() -> void:
+	for fight_seed in SEEDS:
+		var heroes: Array[Character] = [_create_character(10, 6), _create_character(10, 6)]
+		var enemies: Array[Character] = [_create_character(15, 6)]
+		var fight_controller := FightController.new(FightModel.new(heroes, enemies), RandomBrain.new(FightModel.Side.ENEMY, fight_seed + 1), _create_random_heroes(fight_seed))
+		var ticks: Array[int] = []
+		fight_controller.fight_model.tick_changed.connect(ticks.append)
+
+		await fight_controller.play()
+
+		for beat_tick in range(FightRules.BEAT_TICKS, fight_controller.fight_model.tick + 1, FightRules.BEAT_TICKS):
+			assert_array(ticks).contains([beat_tick])
+
+
 # Each resolved action as its actor, target and tick, by index among the fight's characters.
 func _record_fight(fight_seed: int) -> Array[Vector3i]:
 	var fight_controller := _create_fight_controller(fight_seed)
@@ -87,9 +101,9 @@ func _create_enemies() -> Array[Character]:
 	return [_create_character(15), _create_character(15)]
 
 
-func _create_character(health: int) -> Character:
+func _create_character(health: int, skill_delay := 4) -> Character:
 	var skill := SkillData.new()
-	skill.delay = 4
+	skill.delay = skill_delay
 	var damage := DamageEffect.new()
 	damage.amount = 3
 	skill.effects = [damage]
