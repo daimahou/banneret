@@ -4,9 +4,10 @@ id: 1.2-1.8
 requires:
   - "[[AP pips]]"
 started: 2026-10-25
-finished:
-hours: 0.8
+finished: 2026-10-25
+hours: 2
 parent: "[[Warrior kit]]"
+deadline:
 ---
 # Done when
 
