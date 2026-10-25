@@ -15,9 +15,9 @@ var _flip_tween: Tween
 
 @onready var _portrait: TextureRect = $Portrait
 @onready var _name: Label = $Name
-@onready var _empty: Control = $Empty
-@onready var _damage: Control = $Damage
-@onready var _fill: Control = $Fill
+# Both span the empty bar; their right anchor is the share of health they show.
+@onready var _damage: Control = $Empty/Damage
+@onready var _fill: Control = $Empty/Fill
 @onready var _health_label: Label = $HealthLabel
 
 
@@ -52,11 +52,11 @@ func _show_content(shown_character: Character) -> void:
 func _show_health(shown_character: Character, is_drained: bool) -> void:
 	if _drain_tween != null:
 		_drain_tween.kill()
-	var width := _empty.size.x * clampf(shown_character.health / float(shown_character.data.max_health), 0.0, 1.0)
-	_fill.size.x = width
+	var share := clampf(shown_character.health / float(shown_character.data.max_health), 0.0, 1.0)
+	_fill.anchor_right = share
 	_health_label.text = "%d/%d" % [shown_character.health, shown_character.data.max_health]
-	if not is_drained or width >= _damage.size.x:
-		_damage.size.x = width
+	if not is_drained or share >= _damage.anchor_right:
+		_damage.anchor_right = share
 		return
 	_drain_tween = create_tween()
-	_drain_tween.tween_property(_damage, "size:x", width, DAMAGE_DRAIN_DURATION).set_delay(DAMAGE_HOLD_DURATION)
+	_drain_tween.tween_property(_damage, "anchor_right", share, DAMAGE_DRAIN_DURATION).set_delay(DAMAGE_HOLD_DURATION)
