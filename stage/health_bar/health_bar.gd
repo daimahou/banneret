@@ -18,7 +18,8 @@ var _flip_tween: Tween
 # Both span the empty bar; their right anchor is the share of health they show.
 @onready var _damage: Control = $Empty/Damage
 @onready var _fill: Control = $Empty/Fill
-@onready var _health_label: Label = $HealthLabel
+# Grows both ways past the bar's height, so its line stays centred on it.
+@onready var _health_label: Label = $Empty/HealthLabel
 
 
 # Null hides the frame. Returns whether the frame flips, `delay` from now.
