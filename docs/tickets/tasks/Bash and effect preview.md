@@ -3,6 +3,7 @@ triage: ready-for-agent
 id: 1.2-1.4
 requires:
   - "[[Simulated preview]]"
+  - "[[Fight presenter]]"
 started:
 finished:
 hours: 0.3
