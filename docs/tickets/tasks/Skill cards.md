@@ -5,7 +5,7 @@ requires:
   - "[[Cooldown rules]]"
 started: 2026-10-24
 finished:
-hours:
+hours: 1.8
 parent: "[[Beat and cooldowns]]"
 ---
 # Done when
