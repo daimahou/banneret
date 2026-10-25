@@ -3,10 +3,12 @@ class_name FightRules
 
 
 const BEAT_TICKS := 4
+
+# Every skill costs the same.
+const AP_COST := 1
 const AP_PER_BEAT := 1
 
 
-# None without AP: every skill costs 1.
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
 	var skills: Array[SkillData] = []
 	if not has_ap(character):
@@ -18,10 +20,11 @@ static func get_usable_skills(fight_model: FightModel, character: Character) -> 
 
 
 static func has_ap(character: Character) -> bool:
-	return character.ap > 0
+	return character.ap >= AP_COST
 
 
-static func can_act(fight_model: FightModel, character: Character) -> bool:
+# With AP and a skill to spend it on.
+static func is_free(fight_model: FightModel, character: Character) -> bool:
 	return not get_usable_skills(fight_model, character).is_empty()
 
 
@@ -46,7 +49,7 @@ static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta
 	action.resolve_tick = fight_model.tick + action.skill.delay
 	var delta := Delta.new()
 	delta.add_action(action)
-	delta.add_ap(action.actor, -1)
+	delta.add_ap(action.actor, -AP_COST)
 	if action.skill.cooldown > 0:
 		delta.add_cooldown(action.actor, action.skill, action.skill.cooldown)
 	return delta

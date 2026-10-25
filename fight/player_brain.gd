@@ -1,6 +1,6 @@
 class_name PlayerBrain
 extends Brain
-# The heroes played by the player. The fight stops for a free hero, one with AP to spend, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
+# The heroes played by the player. The fight stops for a free hero, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
 # Given a stage, it shows its choices there and takes the player's input through its own PlayerInput, until disposed. Nothing is pickable while the fight runs.
 
 signal _decided(action: Action)
@@ -74,7 +74,8 @@ func get_next_action(fight_model: FightModel) -> Action:
 		fight_model.action_removed.connect(_on_action_removed)
 		fight_model.character_fell.connect(_on_character_fell)
 		fight_model.changed.connect(_show_choices)
-	var free_heroes := fight_model.get_standing(side).filter(_can_act)
+	var is_free_hero := func(character: Character) -> bool: return FightRules.is_free(fight_model, character)
+	var free_heroes := fight_model.get_standing(side).filter(is_free_hero)
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
 		return null
@@ -227,7 +228,7 @@ func is_pickable(character: Character) -> bool:
 
 
 func is_free(character: Character) -> bool:
-	return _is_waiting and _fight_model.get_side(character) == side and _can_act(character)
+	return _is_waiting and _fight_model.get_side(character) == side and FightRules.is_free(_fight_model, character)
 
 
 # Whose skills the bar shows: a hovered medallion's actor, else a hovered character while no skill is armed, else the selected hero.
@@ -292,10 +293,6 @@ func _show_choices() -> void:
 		skill_bar.show_pass_button()
 	else:
 		skill_bar.show_stop_button(_is_stop_requested)
-
-
-func _can_act(character: Character) -> bool:
-	return FightRules.can_act(_fight_model, character)
 
 
 func _disarm() -> void:

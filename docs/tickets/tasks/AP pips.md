@@ -23,8 +23,8 @@ parent: "[[Warrior kit]]"
 - `FightRules.AP_PER_BEAT` (1) comes back on the beat delta, with the cooldowns, on both sides, capped at `max_ap`.
 - At 0 AP `get_usable_skills` is empty: the cards take the unusable grey ink, nothing more.
 - Choosing spends 1 AP and removes nothing. A character can have several pending actions, so a removal names its action, not its actor. The dropped action and its crossed-out medallion go.
-- The fight stops for any standing hero holding AP, pending actions or not. Pass lets one step through, as now.
-- During a stop the selected hero stays selected until their AP is spent or none of their skills is usable; then the next hero with AP. The stop lasts until a Pass or until no standing hero holds AP.
+- The fight stops for any free hero, pending actions or not: standing, holding AP and a usable skill. Pass lets one step through, as now.
+- During a stop the selected hero stays selected while free; then the first free hero. The stop lasts until a Pass or until no hero is free.
 - `RandomBrain` chooses for any character with AP and a usable skill, pending or not: an enemy spends all its AP.
 - A cancelled action (actor or target fallen) refunds nothing.
 - Nameplate: five pip slots along the frame from the existing `ApPip`, at the frame's hook spacing. A character shows `max_ap` empty rings (`art/ui/ap_pip.png`) and a filled pip on each one held: `art/ui/ap_pip_full.png`, a placeholder the human replaces. Enemies the same.

@@ -188,7 +188,7 @@ func test_an_enemy_spends_all_its_ap() -> void:
 	var fight_model := _create_fight_model()
 	var enemy := _create_character(10, 2)
 	fight_model.enemies = [enemy]
-	_create_choice(fight_model, enemy, 2)
+	enemy.data.skills.append(SkillData.new())
 	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
 	var actors: Array[Character] = []
 	var choice := await brain.get_next_action(fight_model)
