@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://dpsd2gy8ca3tr"]
 
-[ext_resource type="Script" uid="uid://8g3yor62y0ud" path="res://stage/health_bar/health_bar.gd" id="1_health_bar"]
+[ext_resource type="Script" uid="uid://8g3yor62y0ud" path="res://stage/nameplate/nameplate.gd" id="1_nameplate"]
 [ext_resource type="Texture2D" uid="uid://covwnfx252hkr" path="res://art/ui/frame.png" id="2_frame"]
 [ext_resource type="Texture2D" uid="uid://dfgxwq511fk75" path="res://art/ui/ap_pip.png" id="3_ap_pip"]
 
-[node name="HealthBar" type="Control" unique_id=431521380]
+[node name="Nameplate" type="Control" unique_id=431521380]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 536.0
 offset_bottom = 238.0
 mouse_filter = 2
-script = ExtResource("1_health_bar")
+script = ExtResource("1_nameplate")
 
 [node name="Empty" type="ColorRect" parent="." unique_id=985043691]
 layout_mode = 0

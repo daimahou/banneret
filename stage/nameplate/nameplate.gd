@@ -1,13 +1,13 @@
-class_name HealthBar
+class_name Nameplate
 extends Control
-# A character's frame, in the row below the stage front: the portrait, the name, a health fill and `health/max`, and an AP pip that is only art for now.
-# A new character flips the frame like a flat: it swaps while edge-on, and hides without one.
+# In the row below the stage front: a character's portrait and name, a health fill and `health/max`, and an AP pip that is only art for now.
+# A new character flips the nameplate like a flat: it swaps while edge-on, and hides without one.
 
 # Health just lost shows as damage, holds, then drains; in seconds.
 const DAMAGE_HOLD_DURATION := 0.4
 const DAMAGE_DRAIN_DURATION := 0.3
 
-# Null while the frame is unused.
+# Null while the nameplate is unused.
 var character: Character
 
 var _drain_tween: Tween
@@ -22,7 +22,7 @@ var _flip_tween: Tween
 @onready var _health_label: Label = $Empty/HealthLabel
 
 
-# Null hides the frame. Returns whether the frame flips, `delay` from now.
+# Null hides the nameplate. Returns whether the nameplate flips, `delay` from now.
 func show_character(shown_character: Character, delay: float) -> bool:
 	if shown_character == character:
 		return false

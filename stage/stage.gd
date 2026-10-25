@@ -43,8 +43,8 @@ var _coach_tween: Tween
 var _view := View.MISSION_MAP
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 # Left to right, each side's filled from its own edge so that its front stands nearest the middle.
-var _hero_health_bars: Array[HealthBar] = []
-var _enemy_health_bars: Array[HealthBar] = []
+var _hero_nameplates: Array[Nameplate] = []
+var _enemy_nameplates: Array[Nameplate] = []
 var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
@@ -60,8 +60,8 @@ var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
 
 func _ready() -> void:
-	_hero_health_bars.assign($HealthBars/Heroes.get_children())
-	_enemy_health_bars.assign($HealthBars/Enemies.get_children())
+	_hero_nameplates.assign($Nameplates/Heroes.get_children())
+	_enemy_nameplates.assign($Nameplates/Enemies.get_children())
 	_coach.position.y = _puppets.size.y
 	_scenery.map_node_pressed.connect(map_node_pressed.emit)
 	_offer_presenter.offer_pressed.connect(offer_pressed.emit)
@@ -88,12 +88,12 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_scenery.show_mission_map(mission_model, map_seed)
 
 
-# Between fights the heroes' health bars show the party; a new party flips them.
+# Between fights the heroes' nameplates show the party; a new party flips them.
 func show_party(party: Array[Character]) -> void:
-	_show_health_bars(_hero_health_bars, party, PuppetLayout.Side.LEFT)
+	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
 
 
-# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model: the rope, the health bars, the falls.
+# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model: the rope, the nameplates, the falls.
 func show_encounter(fight_model: FightModel) -> void:
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
@@ -103,8 +103,8 @@ func show_encounter(fight_model: FightModel) -> void:
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	_add_puppets(tween, fight_model.heroes, area, PuppetLayout.Side.LEFT, _get_puppet_x(OFFSTAGE_LEFT_X))
 	_add_puppets(tween, fight_model.enemies, area, PuppetLayout.Side.RIGHT, _get_puppet_x(OFFSTAGE_RIGHT_X))
-	_show_health_bars(_hero_health_bars, fight_model.heroes, PuppetLayout.Side.LEFT)
-	_show_health_bars(_enemy_health_bars, fight_model.enemies, PuppetLayout.Side.RIGHT)
+	_show_nameplates(_hero_nameplates, fight_model.heroes, PuppetLayout.Side.LEFT)
+	_show_nameplates(_enemy_nameplates, fight_model.enemies, PuppetLayout.Side.RIGHT)
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
 	_timeline_rope.show_fight(fight_model)
@@ -224,7 +224,7 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 		var puppet := _fight_puppets[character]
 		var delay := randf() * MARCH_STAGGER
 		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION).set_delay(delay)
-	_show_health_bars(_enemy_health_bars, [], PuppetLayout.Side.RIGHT)
+	_show_nameplates(_enemy_nameplates, [], PuppetLayout.Side.RIGHT)
 	await tween.finished
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
@@ -256,20 +256,20 @@ func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side:
 
 
 # The bars that change flip one after another, left to right; a side with more characters than bars leaves the hindmost out.
-func _show_health_bars(health_bars: Array[HealthBar], characters: Array[Character], side: PuppetLayout.Side) -> void:
-	var count := mini(characters.size(), health_bars.size())
+func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character], side: PuppetLayout.Side) -> void:
+	var count := mini(characters.size(), nameplates.size())
 	var flip_delay := 0.0
-	for index in health_bars.size():
-		var line_index := count - 1 - index if side == PuppetLayout.Side.LEFT else index - (health_bars.size() - count)
+	for index in nameplates.size():
+		var line_index := count - 1 - index if side == PuppetLayout.Side.LEFT else index - (nameplates.size() - count)
 		var character := characters[line_index] if line_index >= 0 and line_index < count else null
-		if health_bars[index].show_character(character, flip_delay):
+		if nameplates[index].show_character(character, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 
 
-func _get_health_bar(character: Character) -> HealthBar:
-	for health_bar in _hero_health_bars + _enemy_health_bars:
-		if health_bar.character == character:
-			return health_bar
+func _get_nameplate(character: Character) -> Nameplate:
+	for nameplate in _hero_nameplates + _enemy_nameplates:
+		if nameplate.character == character:
+			return nameplate
 	return null
 
 
@@ -289,9 +289,9 @@ func _add_damage_number(puppet: Puppet, damage: int) -> void:
 
 
 func _on_health_changed(character: Character, amount: int) -> void:
-	var health_bar := _get_health_bar(character)
-	if health_bar != null:
-		health_bar.show_health()
+	var nameplate := _get_nameplate(character)
+	if nameplate != null:
+		nameplate.show_health()
 	if amount < 0:
 		var puppet := _fight_puppets[character]
 		puppet.shake()
@@ -301,9 +301,9 @@ func _on_health_changed(character: Character, amount: int) -> void:
 func _on_character_fell(character: Character) -> void:
 	var puppet := _fight_puppets[character]
 	_fight_puppets.erase(character)
-	var health_bar := _get_health_bar(character)
-	if health_bar != null:
-		health_bar.show_character(null, 0.0)
+	var nameplate := _get_nameplate(character)
+	if nameplate != null:
+		nameplate.show_character(null, 0.0)
 	await puppet.sink()
 	puppet.queue_free()
 
