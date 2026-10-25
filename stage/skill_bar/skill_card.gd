@@ -1,8 +1,10 @@
 class_name SkillCard
 extends TextureButton
-# A skill on the skill bar: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
+# One slot of the skill bar, empty or showing a skill as a card: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
 # Armed, its ink turns gold; a card that can be clicked takes the hover ink under the cursor.
 
+const CARD_TEXTURE := preload("res://art/ui/skill_slot.png")
+const EMPTY_TEXTURE := preload("res://art/ui/skill_slot_empty.png")
 const PLACEHOLDER_ICON := preload("res://art/ui/skill_placeholder_icon.png")
 const COOLDOWN_MODULATE := Color(1.0, 1.0, 1.0, 0.5)
 const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
@@ -10,23 +12,39 @@ const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
 const WIPE_STEPS := 64
 const ARMED_INK_COLOR := Color("b8860b")
 
+# Null while the slot is empty.
 var skill: SkillData
 
 var _wipe_fraction := 0.0
 var _is_armed := false
 var _is_mouse_over := false
 
-@onready var _icon: TextureRect = $Icon
-@onready var _name: Label = $Name
-@onready var _description: RichTextLabel = $Description
-@onready var _delay: Label = $Delay
-@onready var _wipe: Control = $Wipe
-@onready var _cooldown_label: Label = $Wipe/CooldownLabel
+@onready var _content: Control = $Content
+@onready var _icon: TextureRect = $Content/Icon
+@onready var _name: Label = $Content/Name
+@onready var _description: RichTextLabel = $Content/Description
+@onready var _delay: Label = $Content/Delay
+@onready var _wipe: Control = $Content/Wipe
+@onready var _cooldown_label: Label = $Content/Wipe/CooldownLabel
 @onready var _armed_ink := Ink.create_color_material(ARMED_INK_COLOR)
 @onready var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 
 
 func _ready() -> void:
+	_wipe.draw.connect(_draw_wipe)
+	mouse_entered.connect(_set_mouse_over.bind(true))
+	mouse_exited.connect(_set_mouse_over.bind(false))
+
+
+# Null empties the slot.
+func show_skill(shown_skill: SkillData) -> void:
+	if shown_skill == skill:
+		return
+	skill = shown_skill
+	texture_normal = EMPTY_TEXTURE if skill == null else CARD_TEXTURE
+	_content.visible = skill != null
+	if skill == null:
+		return
 	_icon.texture = skill.icon if skill.icon != null else PLACEHOLDER_ICON
 	_name.text = skill.name
 	var lines := PackedStringArray()
@@ -34,9 +52,6 @@ func _ready() -> void:
 		lines.append(effect.get_description())
 	_description.text = "\n".join(lines)
 	_delay.text = str(skill.delay)
-	_wipe.draw.connect(_draw_wipe)
-	mouse_entered.connect(_set_mouse_over.bind(true))
-	mouse_exited.connect(_set_mouse_over.bind(false))
 
 
 func show_cooldown(beats: int) -> void:

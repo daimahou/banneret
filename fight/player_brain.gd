@@ -55,7 +55,7 @@ func dispose() -> void:
 		_input = null
 	if _stage != null:
 		_stage.hide_choices()
-		_stage.skill_bar.hide()
+		_stage.skill_bar.clear()
 		_stage = null
 
 

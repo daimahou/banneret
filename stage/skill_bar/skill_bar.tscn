@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cr21bicmgje5g"]
 
 [ext_resource type="Script" uid="uid://cuwqbdkp3awdj" path="res://stage/skill_bar/skill_bar.gd" id="1_controls"]
+[ext_resource type="PackedScene" uid="uid://cxmjiq23lnqjq" path="res://stage/skill_bar/skill_card.tscn" id="2_card"]
 
 [node name="SkillBar" type="Control" unique_id=1621530]
 layout_mode = 3
@@ -13,6 +14,21 @@ layout_mode = 0
 mouse_filter = 2
 theme_override_constants/separation = 22
 
+[node name="SkillCard1" parent="Slots" instance=ExtResource("2_card")]
+layout_mode = 2
+
+[node name="SkillCard2" parent="Slots" instance=ExtResource("2_card")]
+layout_mode = 2
+
+[node name="SkillCard3" parent="Slots" instance=ExtResource("2_card")]
+layout_mode = 2
+
+[node name="SkillCard4" parent="Slots" instance=ExtResource("2_card")]
+layout_mode = 2
+
+[node name="SkillCard5" parent="Slots" instance=ExtResource("2_card")]
+layout_mode = 2
+
 [node name="StopButton" type="Button" parent="." unique_id=236132220]
 custom_minimum_size = Vector2(220, 100)
 layout_mode = 0
@@ -20,6 +36,7 @@ offset_left = 1737.0
 offset_top = -221.0
 offset_right = 1957.0
 offset_bottom = -121.0
+visible = false
 focus_mode = 0
 toggle_mode = true
 text = "Stop"
