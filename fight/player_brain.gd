@@ -1,6 +1,6 @@
 class_name PlayerBrain
 extends Brain
-# The heroes played by the player. The fight stops for a ready hero, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
+# The heroes played by the player. The fight stops for a free hero, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
 # Given a stage, it shows its choices there and takes the player's input through its own PlayerInput, until disposed. Nothing is pickable while the fight runs.
 
 signal _decided(action: Action)
@@ -67,7 +67,7 @@ func is_waiting() -> bool:
 	return _is_waiting
 
 
-# Returns null at once while the fight runs on. Stopped, it keeps the selected hero while ready, else selects the first ready hero, else the first hero, and waits.
+# Returns null at once while the fight runs on. Stopped, it keeps the selected hero while free, else selects the first free hero, else the first hero, and waits.
 func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
@@ -75,13 +75,13 @@ func get_next_action(fight_model: FightModel) -> Action:
 		fight_model.character_fell.connect(_on_character_fell)
 		fight_model.changed.connect(_show_choices)
 	var is_ready_hero := func(character: Character) -> bool: return FightRules.is_ready(fight_model, character)
-	var ready_heroes := fight_model.get_standing(side).filter(is_ready_hero)
-	if ready_heroes.is_empty() and not _is_stop_requested:
+	var free_heroes := fight_model.get_standing(side).filter(is_ready_hero)
+	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
 		return null
-	if not ready_heroes.is_empty():
-		if hero not in ready_heroes:
-			hero = ready_heroes[0]
+	if not free_heroes.is_empty():
+		if hero not in free_heroes:
+			hero = free_heroes[0]
 	elif not _is_stopped or hero.is_fallen():
 		hero = fight_model.get_standing(side)[0]
 	_is_stopped = true
@@ -97,7 +97,7 @@ func request_stop() -> void:
 	_show_choices()
 
 
-# The next action resolves; a ready hero stops the fight again after it.
+# The next action resolves; a free hero stops the fight again after it.
 func pass_stop() -> void:
 	if not _is_waiting:
 		_show_choices()

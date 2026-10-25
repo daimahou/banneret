@@ -1,6 +1,6 @@
 class_name FightController
 extends RefCounted
-# Plays a fight one delta at a time: a ready enemy chooses first; the heroes choose once nothing is due this tick, or when their brain requests a stop; otherwise the fight moves on to the next beat, if it comes first, or the next action resolves.
+# Plays a fight one delta at a time: a free enemy chooses first; the heroes choose once nothing is due this tick, or when their brain requests a stop; otherwise the fight moves on to the next beat, if it comes first, or the next action resolves.
 # Choices apply at once; a beat waits for the stage, if any, to hold on it, and a resolve for it to land its blow.
 
 signal action_resolved(action: Action)

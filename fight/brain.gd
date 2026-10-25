@@ -1,6 +1,6 @@
 class_name Brain
 extends RefCounted
-# Decides the actions of one side. Awaited, it gives an action for one of the side's ready characters, or null to pass.
+# Decides the actions of one side. Awaited, it gives an action for one of the side's free characters, or null to pass.
 
 var side := FightModel.Side.HERO
 
