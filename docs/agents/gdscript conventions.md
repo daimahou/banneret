@@ -60,7 +60,8 @@ if not _is_waiting or get_inspected_character() != hero or skill not in FightRul
 becomes
 
 ```gdscript
-if not _is_bar_enabled() or skill not in FightRules.get_usable_skills(_fight_model, hero):
+var usable_skills := FightRules.get_usable_skills(_fight_model, hero)
+if not _is_waiting or get_inspected_character() != hero or skill not in usable_skills:
 ```
 
 **Never continue a line with `\`.** It breaks the line without naming anything.
