@@ -19,12 +19,9 @@ var enemies: Array[Character] = []
 var timeline: Array[Action] = []
 
 
-# Health carries over from the last fight; cooldowns, counted in this fight's beats, do not.
 func _init(fight_heroes: Array[Character], fight_enemies: Array[Character]) -> void:
 	heroes = fight_heroes
 	enemies = fight_enemies
-	for character in heroes + enemies:
-		character.skill_cooldowns.clear()
 
 
 func apply(delta: Delta) -> void:
