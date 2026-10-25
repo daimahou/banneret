@@ -110,6 +110,16 @@ func has_cancelled(action_id: int) -> bool:
 	return history.any(func(delta: Delta) -> bool: return delta.is_cancelling_action(action_id))
 
 
+# The character's lowest AP over the history; on a preview, since its last sync.
+func get_lowest_ap(character_id: int) -> int:
+	var ap := get_character(character_id).ap
+	var lowest := ap
+	for index in range(history.size() - 1, -1, -1):
+		ap -= history[index].get_ap_gain(character_id)
+		lowest = mini(lowest, ap)
+	return lowest
+
+
 func get_side(character: Character) -> FightModel.Side:
 	return FightModel.Side.HERO if character in heroes else FightModel.Side.ENEMY
 

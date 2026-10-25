@@ -27,7 +27,7 @@ parent: "[[Warrior kit]]"
 - Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target.
 - A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing. An unusable skill hangs its ghost and previews nothing.
 - Nameplate: yellow from the real health, red from the preview's; the hold goes, the yellow drains to the red at impact. Label: the preview's `health/max`, pulsing softly when it differs.
-- A pip that differs pulses. The inspected character's cards show the preview's cooldown, the number pulsing where it differs.
+- A pip lost by landing pulses red; one held at landing but not all the way there (gained, or spent and got back) pulses green; one held all the way stays as it is. The inspected character's cards show the preview's cooldown, the number pulsing where it differs.
 - A difference bad for the character is red, a good one green.
 - Rope: the ghost as now; a cancelled action takes the two-stroke cross from before `71aea8f`; a resolved one fades to ghost alpha; the shown action never fades.
 - A fall shows only `0/max` and its crossed actions.

@@ -58,6 +58,15 @@ func get_health(character: Character) -> int:
 	return health
 
 
+# Spent AP counts below zero.
+func get_ap_gain(character_id: int) -> int:
+	var gain := 0
+	for change in changes:
+		if change is Change.Ap and (change as Change.Ap).character_id == character_id:
+			gain += (change as Change.Ap).amount
+	return gain
+
+
 func is_removing_action(action: Action) -> bool:
 	return is_resolving_action(action.id) or is_cancelling_action(action.id)
 

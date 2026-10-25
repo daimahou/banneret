@@ -325,7 +325,7 @@ func _on_preview_changed(preview: FightModel) -> void:
 		# Null for a character of another fight, still showing as the party.
 		var previewed := null if nameplate.character == null else preview.get_character(nameplate.character.id)
 		if previewed != null:
-			nameplate.show_preview(previewed)
+			nameplate.show_preview(previewed, preview.get_lowest_ap(previewed.id))
 
 
 func _on_character_fell(character: Character) -> void:

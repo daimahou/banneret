@@ -62,6 +62,20 @@ func test_the_preview_follows_every_delta_applied_to_the_fight() -> void:
 	assert_array(preview.timeline).is_empty()
 
 
+func test_the_preview_s_lowest_ap_counts_from_its_last_sync() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	hero.ap = 3
+	var preview := fight_model.preview
+	fight_model.apply(_create_ap_delta(hero, -2))
+
+	preview.apply(_create_ap_delta(hero, -1))
+	preview.apply(_create_ap_delta(hero, 3))
+
+	assert_int(preview.get_lowest_ap(hero.id)).is_equal(0)
+	assert_int(preview.get_character(hero.id).ap).is_equal(3)
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character()]
 	var enemies: Array[Character] = [_create_character()]
@@ -88,3 +102,9 @@ func _schedule(fight_model: FightModel, actor: Character, target: Character) -> 
 	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 	return added[0]
+
+
+func _create_ap_delta(character: Character, amount: int) -> Delta:
+	var delta := Delta.new()
+	delta.add_ap(character, amount)
+	return delta
