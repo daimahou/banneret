@@ -3,10 +3,11 @@ extends RefCounted
 # The fight's state. It does nothing but apply a delta, and signal what changed.
 
 signal tick_changed(tick: int)
-signal health_changed(character: Character, amount: int)
-signal character_fell(character: Character)
-signal action_added(action: Action)
-signal action_removed(action: Action)
+@warning_ignore("unused_signal") signal health_changed(character: Character, amount: int)
+@warning_ignore("unused_signal") signal character_fell(character: Character)
+@warning_ignore("unused_signal") signal ap_changed(character: Character)
+@warning_ignore("unused_signal") signal action_added(action: Action)
+@warning_ignore("unused_signal") signal action_removed(action: Action)
 signal changed
 
 enum Side { HERO, ENEMY }
@@ -35,13 +36,6 @@ func apply(delta: Delta) -> void:
 # Null when the timeline is empty.
 func get_next_action() -> Action:
 	return null if timeline.is_empty() else timeline[0]
-
-
-func get_action(actor: Character) -> Action:
-	for action in timeline:
-		if action.actor == actor:
-			return action
-	return null
 
 
 func get_side(character: Character) -> FightModel.Side:

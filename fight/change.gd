@@ -43,12 +43,22 @@ class Cooldown:
 		character.skill_cooldowns[skill] = beats
 
 
+class Ap:
+	extends Change
+
+	var character: Character
+	var amount: int
+
+	func apply(fight_model: FightModel) -> void:
+		character.ap += amount
+		fight_model.ap_changed.emit(character)
+
+
 class RemoveAction:
 	extends Change
 
-	var actor: Character
+	var action: Action
 
 	func apply(fight_model: FightModel) -> void:
-		var action := fight_model.get_action(actor)
 		fight_model.timeline.erase(action)
 		fight_model.action_removed.emit(action)

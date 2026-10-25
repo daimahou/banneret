@@ -26,7 +26,6 @@ var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _is_refresh_queued := false
 var _ghost_action: Action
 var _highlighted_actors: Array[Character] = []
-var _dropped_action: Action
 
 @onready var _rope: Line2D = $Rope
 @onready var _ties: Node2D = $Ties
@@ -94,16 +93,14 @@ func hide_ghost() -> void:
 	_queue_refresh()
 
 
-# The medallions of these actors hang highlighted; the dropped action's is crossed out.
-func set_marks(actors: Array[Character], dropped: Action) -> void:
+# The medallions of these actors hang highlighted.
+func set_marks(actors: Array[Character]) -> void:
 	_highlighted_actors = actors
-	_dropped_action = dropped
 	_show_marks()
 
 
 func clear_marks() -> void:
 	_highlighted_actors = []
-	_dropped_action = null
 	_show_marks()
 
 
@@ -118,7 +115,6 @@ func get_action_at(global_point: Vector2) -> Action:
 func clear() -> void:
 	_ghost_action = null
 	_highlighted_actors = []
-	_dropped_action = null
 	if _fight_model != null:
 		_fight_model.tick_changed.disconnect(_on_fight_changed)
 		_fight_model.action_added.disconnect(_on_fight_changed)
@@ -224,7 +220,6 @@ func _show_marks() -> void:
 		if key is Action:
 			var medallion: TimelineMedallion = _entry_nodes[key]
 			medallion.set_highlighted((key as Action).actor in _highlighted_actors)
-			medallion.set_dropped(key == _dropped_action)
 
 
 # Where the ties hang, in the entries' space, left to right.

@@ -1,5 +1,8 @@
 # Banneret — assistant rules
 
+> [!important] Golden rule: code explains itself
+> Names and structure carry every meaning. A comment holds only what code cannot show: a game rule, a reason, a gotcha, what null means. A comment that explains what the code does is never written: rename or restructure instead. Check every comment before committing.
+
 - `docs/` (this folder) = Obsidian vault: design docs, tickets, plans. Godot project = `../`.
 - **Brevity.** Docs are short, bullet-first, to the point. No filler, no restating. The user must be able to read and edit them quickly.
 - **Writing notes:** follow [[progressive-disclosure]] (body vs. frontier vs. fog).
@@ -33,8 +36,6 @@ A grill is always on a ticket that already exists. Read the ticket, its mileston
 ## Code
 
 **Read `docs/agents/gdscript conventions.md` before writing a script** - project code conventions.
-
-**No comment by default.** A comment earns its place only by saying what the name can't: a rule, a reason, what null means. One that restates its declaration — `# The hero whose skills the buttons show.` over `_shown_hero` — is never written. Check every comment before committing.
 
 **Art is authored at its final size.** Never scale it in a scene or in code: no `scale`, no stretch to fit. Size layout to the art, not the art to the layout.
 

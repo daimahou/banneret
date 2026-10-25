@@ -108,6 +108,7 @@ func show_encounter(fight_model: FightModel) -> void:
 	_show_nameplates(_hero_nameplates, fight_model.heroes, PuppetLayout.Side.LEFT)
 	_show_nameplates(_enemy_nameplates, fight_model.enemies, PuppetLayout.Side.RIGHT)
 	fight_model.health_changed.connect(_on_health_changed)
+	fight_model.ap_changed.connect(_on_ap_changed)
 	fight_model.character_fell.connect(_on_character_fell)
 	_timeline_rope.show_fight(fight_model)
 	await tween.finished
@@ -122,7 +123,7 @@ func show_choices(brain: PlayerBrain) -> void:
 		var stance := Puppet.Stance.SWAY
 		if is_waiting and character == brain.hero:
 			stance = Puppet.Stance.RAISED
-		elif is_waiting and brain.is_free(character):
+		elif is_waiting and brain.is_ready(character):
 			stance = Puppet.Stance.HOP
 		puppet.set_stance(stance)
 		puppet.set_sprite_material(_get_ink(brain, character))
@@ -137,7 +138,7 @@ func show_choices(brain: PlayerBrain) -> void:
 		_timeline_rope.show_ghost(ghost_action)
 	else:
 		_timeline_rope.hide_ghost()
-	_timeline_rope.set_marks(highlighted, brain.get_dropped_action())
+	_timeline_rope.set_marks(highlighted)
 
 
 func hide_choices() -> void:
@@ -317,6 +318,12 @@ func _on_health_changed(character: Character, amount: int) -> void:
 		var puppet := _fight_puppets[character]
 		puppet.shake()
 		_add_damage_number(puppet, -amount)
+
+
+func _on_ap_changed(character: Character) -> void:
+	var nameplate := _get_nameplate(character)
+	if nameplate != null:
+		nameplate.show_ap()
 
 
 func _on_character_fell(character: Character) -> void:
