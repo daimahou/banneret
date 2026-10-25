@@ -270,7 +270,7 @@ func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character]
 func _hide_nameplates(nameplates: Array[Nameplate]) -> void:
 	var flip_delay := 0.0
 	for nameplate in nameplates:
-		if nameplate.hide_character(flip_delay):
+		if nameplate.clear(flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 
 
@@ -311,7 +311,7 @@ func _on_character_fell(character: Character) -> void:
 	_fight_puppets.erase(character)
 	var nameplate := _get_nameplate(character)
 	if nameplate != null:
-		nameplate.hide_character(0.0)
+		nameplate.clear(0.0)
 	await puppet.sink()
 	puppet.queue_free()
 
