@@ -6,7 +6,7 @@ deadline:
 started: 2026-10-24
 finished:
 hours: 0.1
-total_hours: 8.2
+total_hours: 8.5
 parent: "[[Vertical slice]]"
 ---
 

@@ -1,21 +1,34 @@
 ---
-triage: needs-info
+triage: ready-for-agent
 id: 1.2-1.4
 requires:
-  - "[[AP pips]]"
+  - "[[Simulated preview]]"
 started:
 finished:
-hours:
+hours: 0.3
 parent: "[[Warrior kit]]"
 ---
 # Done when
 
-- [[Bash]] deals its damage and pushes the target's pending action back, staged.
-- Arming a skill previews its whole effect, not only where it lands: the damage on the target's health bar, the pushed-back action on the rope.
+- [[Bash]] deals its damage and [[Stagger|staggers]] the target: all its pending actions move 2 ticks later, landing after the actions already on that tick, in their order. Staged: at impact the medallions slide to their new spots.
+- A move in a preview hangs as a moved ghost where the action would land, with a curved arrow from the real medallion to it that clears the other medallions. A move from the skill pulses; one from the simulation stays still, as hatch and pulse on health.
+
+## Implementation decisions
+
+- `StaggerEffect.ticks`, 2 on `bash.tres`. The card reads `Stagger 2`, the number in its own colour. No tooltip.
+- A change moving one action: its resolve tick, re-sorted after the actions already there; `FightModel.action_moved`, which the rope follows. Moving the target's actions in timeline order keeps their order.
+- An action the delta already removes is not moved: a lethal Bash moves nothing.
+- Moved ghost: the actor's portrait in a dotted medallion at ghost alpha, `art/timeline/medallion_moved.png`, a placeholder the human replaces. The real medallion stays put until the move happens.
+- Arrow drawn in code, one per move: an arc above the rope, higher the longer it runs, so arcs nest; below the medallions if there is no room above.
+
+## Testing decisions
+
+- `tests/fight/fight_rules_test.gd`: Stagger moves every pending action of the target, after those already on that tick, in their order; a lethal Bash moves nothing; a target with nothing pending only takes damage.
+- The look is judged by playing.
 
 ## Out of scope
 
-- Stability and anything else that resists the push.
+- Stability and anything else that resists the stagger.
 
 ![[Children.base#Open tickets]]
 

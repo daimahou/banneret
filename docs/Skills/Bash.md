@@ -1,7 +1,7 @@
 ---
 class: "[[Warrior]]"
 status: planned
-summary: "4 damage; [[Stagger]]: pushes the target's pending action back 2 ticks."
+summary: "4 damage; [[Stagger]]: pushes the target's pending actions back 2 ticks."
 spheres:
   - STR
 DMG: 4

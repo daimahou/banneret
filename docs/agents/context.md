@@ -101,8 +101,15 @@ An action as shown on the timeline: a token hanging on the rope with its actor's
 _Avoid_: token, icon, card
 
 **Ghost**:
-A medallion for an action not yet chosen, hanging where it would resolve.
-_Avoid_: preview, shadow
+A faded medallion where an action would hang: one not yet chosen, or one a preview would move.
+_Avoid_: shadow
+
+**Preview**:
+What a skill would do, shown on stage before it is chosen: its ghost, its AP cost and each of its effects.
+
+**Simulation**:
+The fight played out on a copy, with no brains, until a given action lands.
+_Avoid_: forecast, projection
 
 **Stop**:
 A pause in the fight while the heroes take orders.
@@ -118,3 +125,7 @@ _Avoid_: AI, controller
 **Effect**:
 One thing a skill does when it resolves, e.g. damage.
 _Avoid_: outcome, result
+
+**Stagger**:
+A pushback of all the target's pending actions, a set number of ticks later on the timeline.
+_Avoid_: delay, push, knockback
