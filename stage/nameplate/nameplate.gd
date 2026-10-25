@@ -37,6 +37,11 @@ func show_character(shown_character: Character, delay: float) -> bool:
 	return true
 
 
+# Returns whether the nameplate flips, `delay` from now.
+func hide_character(delay: float) -> bool:
+	return show_character(null, delay)
+
+
 func show_health() -> void:
 	_show_health(character, true)
 

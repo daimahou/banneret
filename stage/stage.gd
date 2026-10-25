@@ -224,7 +224,7 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 		var puppet := _fight_puppets[character]
 		var delay := randf() * MARCH_STAGGER
 		tween.tween_property(puppet, "position:x", puppet.position.x + march, PUPPET_SLIDE_DURATION).set_delay(delay)
-	_show_nameplates(_enemy_nameplates, [], PuppetLayout.Side.RIGHT)
+	_hide_nameplates(_enemy_nameplates)
 	await tween.finished
 	for puppet in _fight_puppets.values():
 		puppet.queue_free()
@@ -266,6 +266,14 @@ func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character]
 			flip_delay += Scenery.FLIP_STAGGER
 
 
+# One after another, left to right.
+func _hide_nameplates(nameplates: Array[Nameplate]) -> void:
+	var flip_delay := 0.0
+	for nameplate in nameplates:
+		if nameplate.hide_character(flip_delay):
+			flip_delay += Scenery.FLIP_STAGGER
+
+
 func _get_nameplate(character: Character) -> Nameplate:
 	for nameplate in _hero_nameplates + _enemy_nameplates:
 		if nameplate.character == character:
@@ -303,7 +311,7 @@ func _on_character_fell(character: Character) -> void:
 	_fight_puppets.erase(character)
 	var nameplate := _get_nameplate(character)
 	if nameplate != null:
-		nameplate.show_character(null, 0.0)
+		nameplate.hide_character(0.0)
 	await puppet.sink()
 	puppet.queue_free()
 
