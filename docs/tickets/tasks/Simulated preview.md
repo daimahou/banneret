@@ -1,25 +1,49 @@
 ---
-triage: needs-info
+triage: ready-for-agent
 id: 1.2-1.8
 requires:
   - "[[AP pips]]"
 started: 2026-10-25
 finished:
-hours:
+hours: 0.8
 parent: "[[Warrior kit]]"
 ---
 # Done when
 
-- Arming or hovering a skill previews it: the fight played out, no brains, until the skill lands; what the simulation does before it shows apart from what the skill itself does.
-- Hovering a medallion previews the fight played out until that action lands.
+- During a stop, arming or hovering a skill, or hovering a medallion, previews it: the fight played out, no brains, until that action lands; nameplates, cards and rope show the difference.
+- During play the preview runs ahead of each blow: it takes the resolve as the lunge starts, the real state catches up at impact.
 
-## Settled in the Bash grill
+## Implementation decisions
 
-- Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target. No target: ghost and AP only.
-- The real play-out with its cumulated consequences: every resolve and beat, on a copy of the state, through the same code as `FightController`. It returns a simulation delta and a skill delta.
-- Health: the simulation's damage hatched, the skill's pulsing; the label shows the new number, coloured by direction, pulsing softly. AP spent, AP refilled and cooldowns show too.
-- Every action that would be cancelled is crossed out, the skill's own ghost included. The two-stroke cross comes back from before `71aea8f`.
-- No simulation tests: it runs the code the fight tests already cover.
+- Ids: `FightModel` gives characters theirs at fight start, actions theirs from a counter as they are added; `sync` copies the counter, so a ghost gets the id its real action would.
+- A `Change` holds ids and looks them up in the model it applies to: one delta applies to either state.
+- `RemoveAction` splits into `ResolveAction` and `CancelAction`; `action_removed` into `action_resolved` and `action_cancelled`. Both leave the timeline: it holds pending actions only, `timeline[0]` next.
+- `FightModel.history`: the deltas it applied, in order; `sync` clears it. An action's fates are the changes in the preview's history naming it: moved, then resolved or cancelled.
+- `FightModel.preview`: a twin built once per fight. `sync` deep-copies the tick, the characters, the timeline and the id counter; data resources are shared, never copied. It emits `changed`.
+- `FightRules.is_beat_next`, shared with `FightController`.
+- `Simulation.run(fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
+- During play: the preview syncs after every real `apply`; it applies a resolve as the lunge starts, the real state at impact.
+- Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target.
+- A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing.
+- Nameplate: yellow from the real health, red from the preview's; the hold-and-drain goes. Label: the preview's `health/max`, pulsing softly when it differs.
+- A pip that differs pulses. The inspected character's cards show the preview's cooldown, the number pulsing where it differs.
+- A difference bad for the character is red, a good one green.
+- Rope: the ghost as now; a cancelled action takes the two-stroke cross from before `71aea8f`; a resolved one fades to ghost alpha; the shown action never fades.
+- A fall shows only `0/max` and its crossed actions.
+
+## Testing decisions
+
+- `tests/fight/fight_model_test.gd`: a delta applied to the preview leaves the real state untouched; `sync` brings them level.
+- `tests/fight/fight_rules_test.gd`: a fall cancels, a resolve resolves.
+- `tests/fight/simulation_test.gd`: a play-out stops once the action lands; its history holds the cancels and resolves on the way.
+- The look is judged by playing.
+
+## Out of scope
+
+- Telling the skill's part from the simulation's.
+- Health gains: nothing heals yet.
+- Save and replay from the history.
+- A mark on a falling puppet.
 
 ![[Children.base#Open tickets]]
 
