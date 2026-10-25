@@ -4,7 +4,7 @@ extends HBoxContainer
 signal map_node_pressed(map_node: MapNode)
 
 # A flat's flip, and the time from one flat starting to the next: below the duration, flips overlap.
-const FLIP_DURATION := 0.4
+const FLIP_DURATION := 0.2
 const FLIP_STAGGER := 0.1
 const FLIP_TRANSITION := Tween.TRANS_SINE
 

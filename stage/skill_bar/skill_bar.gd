@@ -1,6 +1,6 @@
 class_name SkillBar
 extends Control
-# Its slots, filled from the left with the selected hero's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
+# Its slots, filled from the left with one character's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
 
 signal skill_pressed(skill: SkillData)
 # Null once the cursor leaves the skill.
@@ -34,6 +34,8 @@ func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Di
 		if slot.show_skill(skill, beats, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 		slot.disabled = skill == null or not are_enabled or beats > 0
+		# An empty slot greys with the bar, not with its own disabled.
+		slot.set_greyed(not are_enabled or beats > 0)
 
 
 func set_armed_skill(armed_skill: SkillData) -> void:
@@ -48,6 +50,7 @@ func clear() -> void:
 		if slot.clear(flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 		slot.disabled = true
+		slot.set_greyed(false)
 		slot.set_armed(false)
 	_stop_button.hide()
 

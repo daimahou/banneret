@@ -47,6 +47,25 @@ const SLOT_ENTITY := 1
 const SLOT_WALL := 2
 ```
 
+## Line length
+
+**A line of code fits on the screen.** The screen is about 120 columns, counting a tab as 4. A line within it stays whole: there is no cap to wrap at.
+
+**A line too long is shortened by naming part of it**: a local variable, or a function when the part is a rule of its own. One that also repeats elsewhere is a function.
+
+```gdscript
+if not _is_waiting or get_inspected_character() != hero or skill not in FightRules.get_usable_skills(_fight_model, hero):
+```
+
+becomes
+
+```gdscript
+var usable_skills := FightRules.get_usable_skills(_fight_model, hero)
+if not _is_waiting or get_inspected_character() != hero or skill not in usable_skills:
+```
+
+**Never continue a line with `\`.** It breaks the line without naming anything.
+
 ## Packed formats
 
 **The decode function is the format.** Where a resource holds packed bytes, the script that reads them is the only statement of what a record holds and in what order — the importer that writes them follows it, and a change to one is a change to the other.

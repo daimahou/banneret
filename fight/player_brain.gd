@@ -72,6 +72,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
 		fight_model.action_removed.connect(_on_action_removed)
+		fight_model.character_fell.connect(_on_character_fell)
 		fight_model.changed.connect(_show_choices)
 	var free_heroes := fight_model.get_standing(side).filter(_has_no_action)
 	if free_heroes.is_empty() and not _is_stop_requested:
@@ -122,7 +123,10 @@ func cycle_hero(step: int) -> void:
 
 # Aims the first target.
 func arm_skill(skill: SkillData) -> void:
-	if not _is_waiting or skill not in FightRules.get_usable_skills(_fight_model, hero):
+	if not _is_waiting:
+		return
+	var usable_skills := FightRules.get_usable_skills(_fight_model, hero)
+	if get_inspected_character() != hero or skill not in usable_skills:
 		return
 	armed_skill = skill
 	var targets := get_targets()
@@ -139,7 +143,7 @@ func disarm() -> void:
 
 # Unarmed, arms the skill; armed, aims the target, and confirms it if this digit aimed it already.
 func press_number(index: int) -> void:
-	if not _is_waiting:
+	if not _is_waiting or get_inspected_character() != hero:
 		return
 	if armed_skill == null:
 		var skills := hero.data.skills
@@ -226,6 +230,15 @@ func is_free(character: Character) -> bool:
 	return _is_waiting and _fight_model.get_side(character) == side and _has_no_action(character)
 
 
+# Whose skills the bar shows: a hovered medallion's actor, else a hovered character while no skill is armed, else the selected hero.
+func get_inspected_character() -> Character:
+	if hovered_action != null:
+		return hovered_action.actor
+	if hovered_character != null and armed_skill == null:
+		return hovered_character
+	return hero
+
+
 func get_pending_action() -> Action:
 	return _fight_model.get_action(hero) if _is_waiting and hero != null else null
 
@@ -235,11 +248,11 @@ func get_dropped_action() -> Action:
 	return get_pending_action() if armed_skill != null else null
 
 
-# The action the hovered skill, else the armed one, would hang on the timeline, or null.
+# The action the hovered skill, else the armed one, would hang on the timeline, or null. A hovered skill of anyone but the hero hangs nothing.
 func get_ghost_action() -> Action:
 	if not _is_waiting or hero == null:
 		return null
-	var shown := hovered_skill if hovered_skill != null else armed_skill
+	var shown := hovered_skill if hovered_skill in hero.data.skills else armed_skill
 	if shown == null:
 		return null
 	var ghost := Action.new()
@@ -261,19 +274,28 @@ func _on_action_removed(action: Action) -> void:
 		hover_action(null)
 
 
+func _on_character_fell(character: Character) -> void:
+	if character == hovered_character:
+		hover_character(null)
+
+
 func _show_choices() -> void:
 	if _stage == null:
 		return
 	_stage.show_choices(self)
 	var skill_bar := _stage.skill_bar
+	var inspected := get_inspected_character()
 	var skills: Array[SkillData] = []
 	var cooldown_beats: Dictionary[SkillData, int] = {}
-	if hero != null:
-		skills = hero.data.skills
+	if inspected != null:
+		skills = inspected.data.skills
 		for skill in skills:
-			cooldown_beats[skill] = FightRules.get_cooldown_beats(hero, skill)
-	skill_bar.show_skills(skills, _is_waiting, cooldown_beats)
-	skill_bar.set_armed_skill(armed_skill)
+			cooldown_beats[skill] = FightRules.get_cooldown_beats(inspected, skill)
+	skill_bar.show_skills(skills, _is_waiting and inspected == hero, cooldown_beats)
+	if hovered_action != null:
+		skill_bar.set_armed_skill(hovered_action.skill)
+	else:
+		skill_bar.set_armed_skill(armed_skill if inspected == hero else null)
 	if _is_waiting:
 		skill_bar.show_pass_button()
 	else:
