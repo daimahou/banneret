@@ -49,15 +49,21 @@ const SLOT_WALL := 2
 
 ## Line length
 
-**A line of code fits on the screen.** The screen is about 120 columns, counting a tab as 4. A line past that is split; a line within it stays whole. There is no cap to wrap at, and no line is broken for being merely long.
+**A line of code fits on the screen.** The screen is about 120 columns, counting a tab as 4. A line within it stays whole: there is no cap to wrap at.
 
-Break before an `and` or `or`, end the line with `\`, and indent the continuation two levels, so it cannot read as the block below:
+**A line too long is shortened by naming part of it**: a local variable, or a function when the part is a rule of its own. One that also repeats elsewhere is a function.
 
 ```gdscript
-if not _is_waiting or get_inspected_character() != hero \
-		or skill not in FightRules.get_usable_skills(_fight_model, hero):
-	return
+if not _is_waiting or get_inspected_character() != hero or skill not in FightRules.get_usable_skills(_fight_model, hero):
 ```
+
+becomes
+
+```gdscript
+if not _is_bar_enabled() or skill not in FightRules.get_usable_skills(_fight_model, hero):
+```
+
+**Never continue a line with `\`.** It breaks the line without naming anything.
 
 ## Packed formats
 

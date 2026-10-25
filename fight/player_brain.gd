@@ -123,8 +123,7 @@ func cycle_hero(step: int) -> void:
 
 # Aims the first target.
 func arm_skill(skill: SkillData) -> void:
-	if not _is_waiting or get_inspected_character() != hero \
-			or skill not in FightRules.get_usable_skills(_fight_model, hero):
+	if not _is_bar_enabled() or skill not in FightRules.get_usable_skills(_fight_model, hero):
 		return
 	armed_skill = skill
 	var targets := get_targets()
@@ -141,7 +140,7 @@ func disarm() -> void:
 
 # Unarmed, arms the skill; armed, aims the target, and confirms it if this digit aimed it already.
 func press_number(index: int) -> void:
-	if not _is_waiting or get_inspected_character() != hero:
+	if not _is_bar_enabled():
 		return
 	if armed_skill == null:
 		var skills := hero.data.skills
@@ -289,7 +288,7 @@ func _show_choices() -> void:
 		skills = inspected.data.skills
 		for skill in skills:
 			cooldown_beats[skill] = FightRules.get_cooldown_beats(inspected, skill)
-	skill_bar.show_skills(skills, _is_waiting and inspected == hero, cooldown_beats)
+	skill_bar.show_skills(skills, _is_bar_enabled(), cooldown_beats)
 	if hovered_action != null:
 		skill_bar.set_armed_skill(hovered_action.skill)
 	else:
@@ -298,6 +297,11 @@ func _show_choices() -> void:
 		skill_bar.show_pass_button()
 	else:
 		skill_bar.show_stop_button(_is_stop_requested)
+
+
+# The bar takes clicks and digits only while the fight waits and it shows the selected hero.
+func _is_bar_enabled() -> bool:
+	return _is_waiting and get_inspected_character() == hero
 
 
 func _has_no_action(character: Character) -> bool:
