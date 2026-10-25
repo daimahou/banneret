@@ -46,7 +46,7 @@ static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta
 	return delta
 
 
-# On to the next beat: on either side, AP comes back up to its cap and every cooldown is a beat shorter.
+# On to the next beat: on either side, each character gets AP_PER_BEAT back, never past its cap, and every cooldown is a beat shorter.
 static func get_beat_delta(fight_model: FightModel) -> Delta:
 	var delta := Delta.new()
 	delta.ticks = get_beat_at_or_after(fight_model.tick + 1) - fight_model.tick

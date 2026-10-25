@@ -109,6 +109,18 @@ func test_a_beat_gives_back_ap() -> void:
 	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains([choice.skill])
 
 
+func test_a_beat_gives_back_one_ap_not_up_to_the_cap() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 3)
+	fight_model.heroes[0] = hero
+	for spent in 3:
+		fight_model.apply(FightRules.get_timeline_delta(fight_model, _create_choice(fight_model, hero, 2)))
+
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
+
+	assert_int(hero.ap).is_equal(FightRules.AP_PER_BEAT)
+
+
 func test_ap_is_held_up_to_its_cap() -> void:
 	var fight_model := _create_fight_model()
 	var hero := _create_character(10, 2)
