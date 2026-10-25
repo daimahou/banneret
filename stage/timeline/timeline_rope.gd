@@ -59,7 +59,7 @@ class Entry:
 		return tick if is_knot() else action
 
 
-# The rope from left to right. An action due now comes before any knot; on a shared tick, the timeline's order, after the ghost: chosen last, it would resolve first.
+# The rope from left to right. An action due now comes before any knot; on a shared tick, the timeline's order, the ghost where it would go.
 static func _get_entries(fight_model: FightModel, ghost_action: Action) -> Array[Entry]:
 	var last_tick := fight_model.tick
 	for action in fight_model.timeline:
@@ -67,15 +67,16 @@ static func _get_entries(fight_model: FightModel, ghost_action: Action) -> Array
 	if ghost_action != null:
 		last_tick = maxi(last_tick, ghost_action.resolve_tick)
 	last_tick = FightRules.get_beat_at_or_after(last_tick)
+	var actions: Array[Action] = fight_model.timeline.duplicate()
+	if ghost_action != null:
+		actions.insert(fight_model.get_timeline_index(ghost_action.actor.id, ghost_action.resolve_tick), ghost_action)
 	var entries: Array[Entry] = []
 	for tick in range(fight_model.tick, last_tick + 1):
 		if tick > fight_model.tick:
 			entries.append(Entry.new(tick, null))
-		if ghost_action != null and ghost_action.resolve_tick == tick:
-			entries.append(Entry.new(tick, ghost_action, true))
-		for action in fight_model.timeline:
+		for action in actions:
 			if action.resolve_tick == tick:
-				entries.append(Entry.new(tick, action))
+				entries.append(Entry.new(tick, action, action == ghost_action))
 	return entries
 
 

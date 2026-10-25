@@ -21,6 +21,7 @@ parent: "[[Warrior kit]]"
 - `FightModel.history`: the deltas it applied, in order; `sync` clears it. An action's fates are the changes in the preview's history naming it: moved, then resolved or cancelled.
 - `FightModel.preview`: a twin built once per fight. `sync` deep-copies the tick, the characters, the timeline and the id counter; data resources are shared, never copied. It emits `changed`.
 - `FightRules.is_beat_next`, shared with `FightController`.
+- On a shared tick, an action chosen on top of its actor's own queues after them: two orders to one character play in the order given. `FightModel.get_timeline_index` places both the action and the rope's ghost.
 - `Simulation.run(fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
 - During play: the preview syncs after every real `apply`; it applies a resolve as the lunge starts, the real state at impact.
 - Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target.

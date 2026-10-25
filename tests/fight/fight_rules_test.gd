@@ -20,6 +20,26 @@ func test_on_a_shared_tick_the_action_chosen_last_resolves_first() -> void:
 	assert_array(fight_model.timeline).contains_exactly([last, first])
 
 
+func test_on_a_shared_tick_an_action_chosen_on_its_actor_s_own_queues_after_it() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var enemy_first := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 4))
+	var hero_first := _schedule(fight_model, _create_choice(fight_model, hero, 4))
+	var hero_second := _schedule(fight_model, _create_choice(fight_model, hero, 4))
+
+	assert_array(fight_model.timeline).contains_exactly([hero_first, hero_second, enemy_first])
+
+
+func test_on_a_shared_tick_an_action_chosen_on_another_s_goes_on_top() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var hero_first := _schedule(fight_model, _create_choice(fight_model, hero, 4))
+	var enemy_first := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 4))
+	var hero_second := _schedule(fight_model, _create_choice(fight_model, hero, 4))
+
+	assert_array(fight_model.timeline).contains_exactly([hero_second, enemy_first, hero_first])
+
+
 func test_a_hit_takes_its_damage_off_the_target() -> void:
 	var fight_model := _create_fight_model()
 	var action := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[0], 4, 3))

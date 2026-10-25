@@ -13,7 +13,7 @@ How an encounter plays: the party against its enemies, until one side falls.
 
 - A chosen skill **queues** on the timeline at its resolve tick.
 - The earliest resolves first.
-- Ties are broken in LIFO
+- Ties are broken in LIFO, to counter what is there; but an action chosen on top of its actor's own queues after them, in the order chosen.
 
 > [!frontier] When does a hero or enemy choose — only once it has nothing queued?
 > Idea: while its pending actions are fewer than its AP — [[AP economy]].

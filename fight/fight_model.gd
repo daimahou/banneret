@@ -76,6 +76,15 @@ func get_next_action() -> Action:
 	return null if timeline.is_empty() else timeline[0]
 
 
+# Where a new action of this actor goes. On a shared tick the action chosen last resolves first, to counter what is
+# there; but on top of its actor's own, it queues after them, in the order they were chosen.
+func get_timeline_index(actor_id: int, resolve_tick: int) -> int:
+	var resolves_after_it := func(action: Action) -> bool:
+		return action.resolve_tick > resolve_tick or action.resolve_tick == resolve_tick and action.actor.id != actor_id
+	var index := timeline.find_custom(resolves_after_it)
+	return timeline.size() if index == -1 else index
+
+
 # Null for an id not in this fight, -1 included.
 func get_character(character_id: int) -> Character:
 	for character in heroes + enemies:
