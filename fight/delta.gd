@@ -27,9 +27,16 @@ func add_cooldown(character: Character, skill: SkillData, beats: int) -> void:
 	changes.append(change)
 
 
-func remove_action(removed_actor: Character) -> void:
+func add_ap(character: Character, ap_amount: int) -> void:
+	var change := Change.Ap.new()
+	change.character = character
+	change.amount = ap_amount
+	changes.append(change)
+
+
+func remove_action(removed: Action) -> void:
 	var change := Change.RemoveAction.new()
-	change.actor = removed_actor
+	change.action = removed
 	changes.append(change)
 
 
@@ -42,5 +49,5 @@ func get_health(character: Character) -> int:
 	return health
 
 
-func is_removing_action(actor: Character) -> bool:
-	return changes.any(func(change: Change) -> bool: return change is Change.RemoveAction and (change as Change.RemoveAction).actor == actor)
+func is_removing_action(action: Action) -> bool:
+	return changes.any(func(change: Change) -> bool: return change is Change.RemoveAction and (change as Change.RemoveAction).action == action)

@@ -5,6 +5,7 @@ extends RefCounted
 signal tick_changed(tick: int)
 signal health_changed(character: Character, amount: int)
 signal character_fell(character: Character)
+signal ap_changed(character: Character)
 signal action_added(action: Action)
 signal action_removed(action: Action)
 signal changed
@@ -35,13 +36,6 @@ func apply(delta: Delta) -> void:
 # Null when the timeline is empty.
 func get_next_action() -> Action:
 	return null if timeline.is_empty() else timeline[0]
-
-
-func get_action(actor: Character) -> Action:
-	for action in timeline:
-		if action.actor == actor:
-			return action
-	return null
 
 
 func get_side(character: Character) -> FightModel.Side:

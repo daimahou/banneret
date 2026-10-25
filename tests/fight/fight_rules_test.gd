@@ -47,7 +47,20 @@ func test_a_fallen_character_loses_its_pending_action() -> void:
 	assert_array(fight_model.timeline).not_contains([pending])
 
 
-func test_an_action_aimed_at_a_fallen_character_is_cancelled_and_its_actor_freed() -> void:
+func test_a_fallen_character_loses_all_its_pending_actions() -> void:
+	var fight_model := _create_fight_model()
+	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
+	var first := _create_choice(fight_model, fight_model.enemies[0], 4)
+	var second := _create_choice(fight_model, fight_model.enemies[0], 6)
+	for choice in [blow, first, second]:
+		fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
+
+	assert_array(fight_model.timeline).is_empty()
+
+
+func test_an_action_aimed_at_a_fallen_character_is_cancelled() -> void:
 	var fight_model := _create_fight_model()
 	var blow := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
 	var aimed := _create_choice(fight_model, fight_model.heroes[1], 4)
@@ -56,22 +69,68 @@ func test_an_action_aimed_at_a_fallen_character_is_cancelled_and_its_actor_freed
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
 
-	assert_object(fight_model.get_action(fight_model.heroes[1])).is_null()
+	assert_array(fight_model.timeline).not_contains([aimed])
 
 
-func test_a_reschedule_drops_the_pending_action_and_resolves_the_new_one_its_delay_on_from_now() -> void:
+func test_a_second_action_leaves_the_first_pending_and_each_resolves_its_own_delay_on() -> void:
 	var fight_model := _create_fight_model()
-	var blow := _create_choice(fight_model, fight_model.enemies[0], 2)
-	var pending := _create_choice(fight_model, fight_model.heroes[0], 6)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, blow))
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, pending))
-	fight_model.apply(FightRules.get_resolve_delta(fight_model, blow))
-	var rescheduled := _create_choice(fight_model, fight_model.heroes[0], 3)
+	_advance(fight_model, 2)
+	var first := _create_choice(fight_model, fight_model.heroes[0], 6)
+	var second := _create_choice(fight_model, fight_model.heroes[0], 3)
 
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, rescheduled))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, first))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, second))
 
-	assert_array(fight_model.timeline).contains_exactly([rescheduled])
-	assert_int(rescheduled.resolve_tick).is_equal(5)
+	assert_array(fight_model.timeline).contains_exactly([second, first])
+	assert_int(second.resolve_tick).is_equal(5)
+	assert_int(first.resolve_tick).is_equal(8)
+
+
+func test_a_character_without_ap_has_no_usable_skill() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 1)
+	fight_model.heroes[0] = hero
+	var choice := _create_choice(fight_model, hero, 2)
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+
+	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+
+
+func test_a_beat_gives_back_ap() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 1)
+	fight_model.heroes[0] = hero
+	var choice := _create_choice(fight_model, hero, 2)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
+
+	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains([choice.skill])
+
+
+func test_ap_is_held_up_to_its_cap() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 2)
+	fight_model.heroes[0] = hero
+	var choice := _create_choice(fight_model, hero, 2)
+	fight_model.apply(FightRules.get_beat_delta(fight_model))
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, _create_choice(fight_model, hero, 2)))
+
+	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+
+
+func test_ap_carries_over_to_the_next_fight() -> void:
+	var last_fight := _create_fight_model()
+	var hero := _create_character(10, 1)
+	last_fight.heroes[0] = hero
+	last_fight.apply(FightRules.get_timeline_delta(last_fight, _create_choice(last_fight, hero, 2)))
+
+	var fight_model := FightModel.new(last_fight.heroes, last_fight.enemies)
+
+	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
 
 
 func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat() -> void:
@@ -113,16 +172,6 @@ func test_a_cooldown_carries_over_to_the_next_fight() -> void:
 	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
 
 
-func test_a_rescheduled_skill_stays_on_cooldown() -> void:
-	var fight_model := _create_fight_model()
-	var dropped := _create_choice(fight_model, fight_model.heroes[0], 6, 1, 2)
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, dropped))
-
-	fight_model.apply(FightRules.get_timeline_delta(fight_model, _create_choice(fight_model, fight_model.heroes[0], 2)))
-
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([dropped.skill])
-
-
 func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
 	var fight_model := _create_fight_model()
 	var enemy := fight_model.enemies[0]
@@ -135,15 +184,33 @@ func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
 	assert_object(await brain.get_next_action(fight_model)).is_null()
 
 
+func test_an_enemy_spends_all_its_ap() -> void:
+	var fight_model := _create_fight_model()
+	var enemy := _create_character(10, 2)
+	fight_model.enemies = [enemy]
+	_create_choice(fight_model, enemy, 2)
+	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
+	var actors: Array[Character] = []
+	var choice := await brain.get_next_action(fight_model)
+	while choice != null:
+		actors.append(choice.actor)
+		fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+		choice = await brain.get_next_action(fight_model)
+
+	assert_array(actors).contains_exactly([enemy, enemy])
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character(10), _create_character(10)]
 	var enemies: Array[Character] = [_create_character(10), _create_character(10)]
 	return FightModel.new(heroes, enemies)
 
 
-func _create_character(health: int) -> Character:
+# Unless a test is about AP, a character holds as much as it can.
+func _create_character(health: int, max_ap := CharacterData.MAX_AP) -> Character:
 	var character_data := CharacterData.new()
 	character_data.max_health = health
+	character_data.max_ap = max_ap
 	return Character.new(character_data)
 
 

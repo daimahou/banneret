@@ -15,6 +15,7 @@ region = Rect2(155, 45, 70, 70)
 script = ExtResource("1_character_data")
 name = "Warrior"
 max_health = 30
+max_ap = 2
 puppet = ExtResource("2_puppet")
 portrait = SubResource("AtlasTexture_portrait")
 skills = Array[ExtResource("3_skill_data")]([ExtResource("4_strike"), ExtResource("5_bash"), ExtResource("6_overpower")])

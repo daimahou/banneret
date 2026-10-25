@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.2-1.3
 requires:
   - "[[Beat and cooldowns]]"
-started:
+started: 2026-10-25
 finished:
 hours: 1.8
 parent: "[[Warrior kit]]"

@@ -1,6 +1,6 @@
 class_name RandomBrain
 extends Brain
-# Picks a random usable skill for the first free character, then a random target for it, from a seeded generator, so a fight it plays can be played again.
+# Picks a random usable skill for the first character that can act, then a random target for it, from a seeded generator, so a fight it plays can be played again. Asked again, it goes on until the side's AP is spent.
 
 var _rng := RandomNumberGenerator.new()
 
@@ -12,8 +12,6 @@ func _init(brain_side: FightModel.Side, brain_seed: int) -> void:
 
 func get_next_action(fight_model: FightModel) -> Action:
 	for character in fight_model.get_standing(side):
-		if fight_model.get_action(character) != null:
-			continue
 		var skills := FightRules.get_usable_skills(fight_model, character)
 		if skills.is_empty():
 			continue
