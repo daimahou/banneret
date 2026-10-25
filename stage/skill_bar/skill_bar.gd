@@ -29,11 +29,11 @@ func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Di
 	var flip_delay := 0.0
 	for index in _slots.size():
 		var slot := _slots[index]
-		if slot.show_skill(skills[index] if index < skills.size() else null, flip_delay):
+		var skill: SkillData = skills[index] if index < skills.size() else null
+		var beats: int = cooldown_beats.get(skill, 0) if skill != null else 0
+		if slot.show_skill(skill, beats, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
-		var beats: int = cooldown_beats.get(slot.skill, 0)
-		slot.disabled = slot.skill == null or not are_enabled or beats > 0
-		slot.show_cooldown(beats)
+		slot.disabled = skill == null or not are_enabled or beats > 0
 
 
 func set_armed_skill(armed_skill: SkillData) -> void:

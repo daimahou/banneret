@@ -13,11 +13,9 @@ const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
 const WIPE_STEPS := 64
 const ARMED_INK_COLOR := Color("b8860b")
 
-# Null while the slot is empty. Set at once, though a flip draws it only once edge-on.
+# Null while the slot is empty.
 var skill: SkillData
 
-var _drawn_skill: SkillData
-var _beats := 0
 var _wipe_fraction := 0.0
 var _flip_tween: Tween
 var _is_armed := false
@@ -41,8 +39,9 @@ func _ready() -> void:
 
 
 # Null empties the slot. Returns whether the slot flips, `delay` from now.
-func show_skill(shown_skill: SkillData, delay: float) -> bool:
+func show_skill(shown_skill: SkillData, cooldown_beats: int, delay: float) -> bool:
 	if shown_skill == skill:
+		_show_cooldown(shown_skill, cooldown_beats)
 		return false
 	skill = shown_skill
 	if _flip_tween != null:
@@ -50,38 +49,30 @@ func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	pivot_offset = size / 2.0
 	_flip_tween = create_tween().set_trans(Scenery.FLIP_TRANSITION)
 	_flip_tween.tween_property(self, "scale:x", 0.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN).set_delay(delay)
-	_flip_tween.tween_callback(_draw_skill)
+	_flip_tween.tween_callback(_show_content.bind(shown_skill, cooldown_beats))
 	_flip_tween.tween_property(self, "scale:x", 1.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT)
 	return true
 
 
-# Of the shown skill; the old one keeps its own until the flip swaps them.
-func show_cooldown(beats: int) -> void:
-	_beats = beats
-	if _drawn_skill == skill:
-		_draw_cooldown()
-
-
-func _draw_skill() -> void:
-	_drawn_skill = skill
-	texture_normal = EMPTY_TEXTURE if skill == null else CARD_TEXTURE
-	_content.visible = skill != null
-	if skill != null:
-		_icon.texture = skill.icon if skill.icon != null else PLACEHOLDER_ICON
-		_name.text = skill.name
+func _show_content(shown_skill: SkillData, cooldown_beats: int) -> void:
+	texture_normal = EMPTY_TEXTURE if shown_skill == null else CARD_TEXTURE
+	_content.visible = shown_skill != null
+	if shown_skill != null:
+		_icon.texture = shown_skill.icon if shown_skill.icon != null else PLACEHOLDER_ICON
+		_name.text = shown_skill.name
 		var lines := PackedStringArray()
-		for effect in skill.effects:
+		for effect in shown_skill.effects:
 			lines.append(effect.get_description())
 		_description.text = "\n".join(lines)
-		_delay.text = str(skill.delay)
-	_draw_cooldown()
+		_delay.text = str(shown_skill.delay)
+	_show_cooldown(shown_skill, cooldown_beats)
 
 
-func _draw_cooldown() -> void:
-	modulate = COOLDOWN_MODULATE if _beats > 0 else Color.WHITE
-	_wipe.visible = _beats > 0
-	_cooldown_label.text = str(_beats)
-	_wipe_fraction = _beats / float(skill.cooldown) if _beats > 0 else 0.0
+func _show_cooldown(shown_skill: SkillData, cooldown_beats: int) -> void:
+	modulate = COOLDOWN_MODULATE if cooldown_beats > 0 else Color.WHITE
+	_wipe.visible = cooldown_beats > 0
+	_cooldown_label.text = str(cooldown_beats)
+	_wipe_fraction = cooldown_beats / float(shown_skill.cooldown) if cooldown_beats > 0 else 0.0
 	_wipe.queue_redraw()
 
 
