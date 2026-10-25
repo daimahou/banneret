@@ -1,7 +1,7 @@
 class_name TimelineMedallion
 extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
-# Highlighted, its ring takes the hover ink.
+# Highlighted, its ring takes the hover ink; a cross over its face marks an action the preview cancels.
 
 @export var portrait: Texture2D:
 	set(value):
@@ -17,6 +17,7 @@ var knot_rotation := 0.0:
 @onready var _face: TextureRect = $Opening/Face
 @onready var _ring: Sprite2D = $Ring
 @onready var _knot: Sprite2D = $Knot
+@onready var _cross: Node2D = $Cross
 @onready var _highlight_material := Ink.create_material(Ink.Highlight.HOVERED)
 
 
@@ -32,3 +33,7 @@ func has_point(global_point: Vector2) -> bool:
 
 func set_highlighted(is_highlighted: bool) -> void:
 	_ring.material = _highlight_material if is_highlighted else null
+
+
+func set_cancelled(is_cancelled: bool) -> void:
+	_cross.visible = is_cancelled

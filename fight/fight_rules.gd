@@ -30,6 +30,12 @@ static func get_beat_at_or_after(tick: int) -> int:
 	return ceili(tick / float(BEAT_TICKS)) * BEAT_TICKS
 
 
+# Whether the next beat comes before the next action resolves; on a shared tick, the beat comes first.
+static func is_beat_next(fight_model: FightModel) -> bool:
+	var next_action := fight_model.get_next_action()
+	return next_action == null or get_beat_at_or_after(fight_model.tick + 1) <= next_action.resolve_tick
+
+
 # Every character the skill can be aimed at: the standing characters of the other side.
 static func get_targets(fight_model: FightModel, character: Character, _skill: SkillData) -> Array[Character]:
 	return fight_model.get_standing(FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO)
@@ -62,7 +68,7 @@ static func get_beat_delta(fight_model: FightModel) -> Delta:
 static func get_resolve_delta(fight_model: FightModel, action: Action) -> Delta:
 	var delta := Delta.new()
 	delta.ticks = action.resolve_tick - fight_model.tick
-	delta.remove_action(action)
+	delta.resolve_action(action)
 	for effect in action.skill.effects:
 		effect.add_changes(fight_model, delta, action)
 	return delta
@@ -82,4 +88,4 @@ static func _add_fall(fight_model: FightModel, delta: Delta, character: Characte
 		if delta.is_removing_action(action):
 			continue
 		if action.actor == character or action.target == character:
-			delta.remove_action(action)
+			delta.cancel_action(action)

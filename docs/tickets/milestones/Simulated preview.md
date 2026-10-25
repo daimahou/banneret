@@ -4,9 +4,10 @@ id: 1.2-1.8
 requires:
   - "[[AP pips]]"
 started: 2026-10-25
-finished:
-hours: 0.8
+finished: 2026-10-25
+hours: 2
 parent: "[[Warrior kit]]"
+deadline:
 ---
 # Done when
 
@@ -15,18 +16,19 @@ parent: "[[Warrior kit]]"
 
 ## Implementation decisions
 
-- Ids: `FightModel` gives characters theirs at fight start, actions theirs from a counter as they are added; `sync` copies the counter, so a ghost gets the id its real action would.
+- Ids: a character takes its own as it is created, unique across the run; an action takes the fight model's next as it is added. `sync` copies the counter, so a ghost gets the id its real action would.
 - A `Change` holds ids and looks them up in the model it applies to: one delta applies to either state.
 - `RemoveAction` splits into `ResolveAction` and `CancelAction`; `action_removed` into `action_resolved` and `action_cancelled`. Both leave the timeline: it holds pending actions only, `timeline[0]` next.
 - `FightModel.history`: the deltas it applied, in order; `sync` clears it. An action's fates are the changes in the preview's history naming it: moved, then resolved or cancelled.
-- `FightModel.preview`: a twin built once per fight. `sync` deep-copies the tick, the characters, the timeline and the id counter; data resources are shared, never copied. It emits `changed`.
+- The preview: `Stage.preview_model`, a `FightModel` the stage builds for each encounter; no stage, no preview. `sync` deep-copies the tick, the characters, the timeline and the id counter; data resources are shared, never copied. It emits `changed`.
 - `FightRules.is_beat_next`, shared with `FightController`.
-- `Simulation.run(fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
-- During play: the preview syncs after every real `apply`; it applies a resolve as the lunge starts, the real state at impact.
+- On a shared tick, an action chosen on top of its actor's own queues after them: two orders to one character play in the order given. `FightModel.get_timeline_index` places both the action and the rope's ghost.
+- `Simulation.run(preview_model, fight_model, action)`: syncs, adds the action if not pending, steps beats and resolves until it resolves, is cancelled, or the fight ends. No target: the choice only.
+- During play: the preview syncs on the fight's `changed`, after every real `apply`; it applies a resolve as the lunge starts, the real state at impact.
 - Shown skill: the hovered one, else the armed one. Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach = no target.
-- A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing.
-- Nameplate: yellow from the real health, red from the preview's; the hold-and-drain goes. Label: the preview's `health/max`, pulsing softly when it differs.
-- A pip that differs pulses. The inspected character's cards show the preview's cooldown, the number pulsing where it differs.
+- A hovered medallion wins over a skill, and plays the real timeline without the ghost. A hovered skill of anyone but the hero previews nothing. An unusable skill hangs its ghost and previews nothing.
+- Nameplate: yellow from the real health, red from the preview's; the hold goes, the yellow drains to the red at impact. Label: the preview's `health/max`, pulsing softly when it differs.
+- A pip lost by landing pulses red; one held at landing but not all the way there (gained, or spent and got back) pulses green; one held all the way stays as it is. The inspected character's cards show the preview's cooldown, the number pulsing where it differs.
 - A difference bad for the character is red, a good one green.
 - Rope: the ghost as now; a cancelled action takes the two-stroke cross from before `71aea8f`; a resolved one fades to ghost alpha; the shown action never fades.
 - A fall shows only `0/max` and its crossed actions.

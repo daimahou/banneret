@@ -52,6 +52,13 @@ var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
+# The fight as it will stand once an action lands, played out on copies of the fight's characters and actions. Built
+# for each encounter; it syncs after every delta applied to the fight. Null before the first encounter.
+var preview_model: FightModel
+
+# Null before the first encounter.
+var _fight_model: FightModel
+
 @onready var _scenery: Scenery = $Scenery
 # Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
 @onready var _puppets: Control = $Puppets
@@ -95,7 +102,7 @@ func show_party(party: Array[Character]) -> void:
 	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
 
 
-# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model: the rope, the nameplates, the falls.
+# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model and its preview: the rope, the nameplates, the falls.
 func show_encounter(fight_model: FightModel) -> void:
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
@@ -108,9 +115,14 @@ func show_encounter(fight_model: FightModel) -> void:
 	_show_nameplates(_hero_nameplates, fight_model.heroes, PuppetLayout.Side.LEFT)
 	_show_nameplates(_enemy_nameplates, fight_model.enemies, PuppetLayout.Side.RIGHT)
 	fight_model.health_changed.connect(_on_health_changed)
-	fight_model.ap_changed.connect(_on_ap_changed)
 	fight_model.character_fell.connect(_on_character_fell)
-	_timeline_rope.show_fight(fight_model)
+	_fight_model = fight_model
+	preview_model = FightModel.new([], [])
+	preview_model.sync(fight_model)
+	preview_model.changed.connect(_on_preview_changed)
+	# Connected before any brain sees the fight, so the preview is level by the time they read it.
+	fight_model.changed.connect(_on_fight_changed)
+	_timeline_rope.show_fight(fight_model, preview_model)
 	await tween.finished
 	_view = View.FIGHT
 
@@ -133,11 +145,12 @@ func show_choices(brain: PlayerBrain) -> void:
 		highlighted.append(brain.hero)
 	if brain.hovered_character != null:
 		highlighted.append(brain.hovered_character)
-	var ghost_action := brain.get_ghost_action()
+	var ghost_action := brain.ghost_action
 	if ghost_action != null:
 		_timeline_rope.show_ghost(ghost_action)
 	else:
 		_timeline_rope.hide_ghost()
+	_timeline_rope.set_shown_action(brain.get_previewed_action())
 	_timeline_rope.set_marks(highlighted)
 
 
@@ -147,6 +160,7 @@ func hide_choices() -> void:
 		puppet.set_sprite_material(null)
 		puppet.set_pressed(false)
 	_timeline_rope.hide_ghost()
+	_timeline_rope.set_shown_action(null)
 	_timeline_rope.clear_marks()
 
 
@@ -311,19 +325,23 @@ func _add_damage_number(puppet: Puppet, damage: int) -> void:
 
 
 func _on_health_changed(character: Character, amount: int) -> void:
-	var nameplate := _get_nameplate(character)
-	if nameplate != null:
-		nameplate.show_health()
 	if amount < 0:
 		var puppet := _fight_puppets[character]
 		puppet.shake()
 		_add_damage_number(puppet, -amount)
 
 
-func _on_ap_changed(character: Character) -> void:
-	var nameplate := _get_nameplate(character)
-	if nameplate != null:
-		nameplate.show_ap()
+func _on_fight_changed() -> void:
+	preview_model.sync(_fight_model)
+
+
+# The preview syncs after every change to the fight, so this follows both.
+func _on_preview_changed() -> void:
+	for nameplate in _hero_nameplates + _enemy_nameplates:
+		# Null for a character of another fight, still showing as the party.
+		var previewed := null if nameplate.character == null else preview_model.get_character(nameplate.character.id)
+		if previewed != null:
+			nameplate.show_preview(previewed, preview_model.get_lowest_ap(previewed.id))
 
 
 func _on_character_fell(character: Character) -> void:
