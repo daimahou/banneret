@@ -19,10 +19,10 @@ parent: "[[Warrior kit]]"
 
 - `CharacterData.max_ap`: 1 to 5, default 1; `warrior.tres` holds 2.
 - `Character.ap` starts at `max_ap` and carries from one fight to the next, like cooldowns.
-- No AP cost on `SkillData`: every skill costs 1. The card's pip stays inert art.
+- `SkillData.ap_cost`, default 1; every warrior skill costs 1. The card's pip stays inert art.
 - `FightRules.AP_PER_BEAT` (1) comes back on the beat delta, with the cooldowns, on both sides, capped at `max_ap`.
-- At 0 AP `get_usable_skills` is empty: the cards take the unusable grey ink, nothing more.
-- Choosing spends 1 AP and removes nothing. A character can have several pending actions, so a removal names its action, not its actor. The dropped action and its crossed-out medallion go.
+- `get_usable_skills` leaves out a skill costing more AP than held: its card takes the unusable grey ink, nothing more.
+- Choosing spends the skill's cost and removes nothing. A character can have several pending actions, so a removal names its action, not its actor. The dropped action and its crossed-out medallion go.
 - The fight stops for any free hero, pending actions or not: standing, holding AP and a usable skill. Pass lets one step through, as now.
 - During a stop the selected hero stays selected while free; then the first free hero. The stop lasts until a Pass or until no hero is free.
 - `RandomBrain` chooses for any character with AP and a usable skill, pending or not: an enemy spends all its AP.
@@ -31,7 +31,7 @@ parent: "[[Warrior kit]]"
 
 ## Testing decisions
 
-- `tests/fight/fight_rules_test.gd`: choosing spends 1 AP; a beat gives 1 back, capped; 0 AP leaves no usable skill; one actor's two actions both pend and resolve at their own ticks; a fallen actor loses all its pending actions.
+- `tests/fight/fight_rules_test.gd`: choosing spends the skill's cost; a beat gives 1 back, capped; a skill costing more than held is not usable; one actor's two actions both pend and resolve at their own ticks; a fallen actor loses all its pending actions.
 - Brains: an enemy with 2 AP schedules twice; the player's hero stays selected while holding AP, then the next hero with AP.
 - Pips are judged by playing.
 
@@ -39,7 +39,7 @@ parent: "[[Warrior kit]]"
 
 - Energy, colored AP.
 - Enemies past AP 1.
-- AP cost as data, skills that change AP, regen other than 1 per beat.
+- Skills that change AP, regen other than 1 per beat.
 - A preview of the pip a skill would spend.
 
 ![[Children.base#Open tickets]]

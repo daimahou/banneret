@@ -122,6 +122,31 @@ func test_ap_is_held_up_to_its_cap() -> void:
 	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
 
 
+func test_a_skill_costing_more_ap_than_held_is_not_usable() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 2)
+	fight_model.heroes[0] = hero
+	var cheap := _create_choice(fight_model, hero, 2)
+	var dear := _create_choice(fight_model, hero, 2)
+	dear.skill.ap_cost = 2
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, cheap))
+
+	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains_exactly([cheap.skill])
+
+
+func test_a_skill_spends_its_ap_cost() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 2)
+	fight_model.heroes[0] = hero
+	var dear := _create_choice(fight_model, hero, 2)
+	dear.skill.ap_cost = 2
+
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, dear))
+
+	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+
+
 func test_ap_carries_over_to_the_next_fight() -> void:
 	var last_fight := _create_fight_model()
 	var hero := _create_character(10, 1)

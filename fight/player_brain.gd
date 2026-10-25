@@ -283,8 +283,10 @@ func _show_choices() -> void:
 		skills = inspected.data.skills
 		for skill in skills:
 			cooldown_beats[skill] = FightRules.get_cooldown_beats(inspected, skill)
-	var is_usable := _is_waiting and inspected == hero and FightRules.has_ap(hero)
-	skill_bar.show_skills(skills, is_usable, cooldown_beats)
+	var usable_skills: Array[SkillData] = []
+	if _is_waiting and inspected == hero:
+		usable_skills = FightRules.get_usable_skills(_fight_model, hero)
+	skill_bar.show_skills(skills, usable_skills, cooldown_beats)
 	if hovered_action != null:
 		skill_bar.set_armed_skill(hovered_action.skill)
 	else:

@@ -24,8 +24,8 @@ func _ready() -> void:
 	_stop_button.pressed.connect(stop_pressed.emit)
 
 
-# Skills beyond the last slot are not shown.
-func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Dictionary[SkillData, int]) -> void:
+# Skills beyond the last slot are not shown. Without a usable skill, the whole bar greys.
+func show_skills(skills: Array[SkillData], usable: Array[SkillData], cooldown_beats: Dictionary[SkillData, int]) -> void:
 	var flip_delay := 0.0
 	for index in _slots.size():
 		var slot := _slots[index]
@@ -33,9 +33,9 @@ func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Di
 		var beats: int = cooldown_beats.get(skill, 0) if skill != null else 0
 		if slot.show_skill(skill, beats, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
-		slot.disabled = skill == null or not are_enabled or beats > 0
+		slot.disabled = skill not in usable
 		# An empty slot greys with the bar, not with its own disabled.
-		slot.set_greyed(not are_enabled or beats > 0)
+		slot.set_greyed(usable.is_empty() if skill == null else slot.disabled)
 
 
 func set_armed_skill(armed_skill: SkillData) -> void:
