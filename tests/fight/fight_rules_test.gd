@@ -243,7 +243,6 @@ func _create_fight_model() -> FightModel:
 	return FightModel.new(heroes, enemies)
 
 
-# Unless a test is about AP, a character holds as much as it can.
 func _create_character(health: int, max_ap := CharacterData.MAX_AP) -> Character:
 	var character_data := CharacterData.new()
 	character_data.max_health = health

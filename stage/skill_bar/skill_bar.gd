@@ -24,7 +24,7 @@ func _ready() -> void:
 	_stop_button.pressed.connect(stop_pressed.emit)
 
 
-# Skills beyond the last slot are not shown. Without a usable skill, the whole bar greys.
+# Skills beyond the last slot are not shown.
 func show_skills(skills: Array[SkillData], usable: Array[SkillData], cooldown_beats: Dictionary[SkillData, int]) -> void:
 	var flip_delay := 0.0
 	for index in _slots.size():

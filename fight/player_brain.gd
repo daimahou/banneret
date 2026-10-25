@@ -67,7 +67,7 @@ func is_waiting() -> bool:
 	return _is_waiting
 
 
-# Returns null at once while the fight runs on. Stopped, it keeps the selected hero while free, else selects the first free hero, else the first hero, and waits.
+# Returns null at once while the fight runs on. Stopped, it selects the first free hero, else the first hero, and waits.
 func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
