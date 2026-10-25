@@ -5,7 +5,7 @@ requires:
   - "[[Skill cards]]"
 started: 2026-10-25
 finished: 2026-10-25
-hours: 1.6
+hours: 0.7
 parent: "[[Beat and cooldowns]]"
 ---
 # Done when

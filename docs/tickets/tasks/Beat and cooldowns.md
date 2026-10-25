@@ -1,13 +1,13 @@
 ---
 triage: ready-for-agent
 id: 1.2-1.2
-requires:
-  - "[[Starting hero]]"
+parent: "[[Warrior kit]]"
 started: 2026-10-24
 finished: 2026-10-25
-hours: 1.1
-total_hours: 8
-parent: "[[Warrior kit]]"
+hours: 0.8
+total_hours: 6
+requires:
+  - "[[Starting hero]]"
 ---
 # Done when
 

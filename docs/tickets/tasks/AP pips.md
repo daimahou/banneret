@@ -5,7 +5,7 @@ requires:
   - "[[Beat and cooldowns]]"
 started: 2026-10-25
 finished: 2026-10-25
-hours: 3.6
+hours: 1.4
 parent: "[[Warrior kit]]"
 ---
 # Done when

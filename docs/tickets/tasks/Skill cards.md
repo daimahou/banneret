@@ -4,7 +4,7 @@ id: 1.2-1.2.2
 parent: "[[Beat and cooldowns]]"
 started: 2026-10-24
 finished: 2026-10-25
-hours: 4.7
+hours: 3.9
 extra_hours: 1.3
 requires:
   - "[[Cooldown rules]]"

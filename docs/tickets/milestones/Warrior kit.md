@@ -4,8 +4,8 @@ id: 1.2-1
 deadline:
 started: 2026-10-24
 finished:
-hours: 0.7
-total_hours: 13
+hours: 0.3
+total_hours: 8.1
 parent: "[[First loop]]"
 ---
 

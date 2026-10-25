@@ -4,7 +4,7 @@ id: 1.2-1.1
 requires:
 started: 2026-10-24
 finished: 2026-10-24
-hours: 0.5
+hours: 0.2
 parent: "[[Warrior kit]]"
 ---
 # Done when
