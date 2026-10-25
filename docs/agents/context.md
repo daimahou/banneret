@@ -105,7 +105,7 @@ A faded medallion where an action would hang: one not yet chosen, or one a previ
 _Avoid_: shadow
 
 **Preview**:
-What a skill would do, shown on stage before it is chosen: its ghost, its AP cost and each of its effects.
+The fight as it will stand once a given action lands, shown on stage beside the fight: its ghost, the AP spent and each effect.
 
 **Simulation**:
 The fight played out on a copy, with no brains, until a given action lands.
