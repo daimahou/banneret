@@ -72,7 +72,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
 		fight_model.action_removed.connect(_on_action_removed)
-		fight_model.tick_changed.connect(_on_tick_changed)
+		fight_model.changed.connect(_show_choices)
 	var free_heroes := fight_model.get_standing(side).filter(_has_no_action)
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
@@ -259,10 +259,6 @@ func _on_stop_button_pressed() -> void:
 func _on_action_removed(action: Action) -> void:
 	if action == hovered_action:
 		hover_action(null)
-
-
-func _on_tick_changed(_tick: int) -> void:
-	_show_choices()
 
 
 func _show_choices() -> void:
