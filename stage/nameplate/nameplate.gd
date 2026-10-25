@@ -1,6 +1,6 @@
 class_name Nameplate
 extends Control
-# In the row below the stage front: a character's portrait and name, a health fill and `health/max`, and an AP pip that is only art for now.
+# A character's portrait and name, a health fill and `health/max`, and an AP pip that is only art for now.
 # A new character flips the nameplate like a flat: it swaps while edge-on, and hides without one.
 
 # Health just lost shows as damage, holds, then drains; in seconds.
