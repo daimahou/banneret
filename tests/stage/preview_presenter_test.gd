@@ -69,8 +69,8 @@ func test_a_shown_choice_hangs_as_a_ghost_where_it_would_resolve() -> void:
 
 	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, choice)
 
-	assert_array(_describe(entries, {choice: "choice", pending: "pending"})).contains_exactly(
-		["knot", "knot", "choice GHOST", "pending NORMAL", "knot", "knot"])
+	var expected := ["knot", "knot", "choice ghost NORMAL", "pending NORMAL", "knot", "knot"]
+	assert_array(_describe(entries, {choice: "choice", pending: "pending"})).contains_exactly(expected)
 
 
 func test_the_preview_fades_what_it_resolves_and_crosses_what_it_cancels_but_the_shown_action() -> void:
@@ -82,8 +82,8 @@ func test_the_preview_fades_what_it_resolves_and_crosses_what_it_cancels_but_the
 
 	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, shown)
 
-	assert_array(_describe(entries, {blow: "blow", doomed: "doomed", shown: "shown"})).contains_exactly(
-		["knot", "knot", "blow FADED", "knot", "doomed CROSSED", "knot", "shown NORMAL"])
+	var expected := ["knot", "knot", "blow FADED", "knot", "doomed CROSSED", "knot", "shown NORMAL"]
+	assert_array(_describe(entries, {blow: "blow", doomed: "doomed", shown: "shown"})).contains_exactly(expected)
 
 
 func _describe(entries: Array[TimelineEntry], names: Dictionary[Action, String]) -> Array[String]:
@@ -92,7 +92,8 @@ func _describe(entries: Array[TimelineEntry], names: Dictionary[Action, String])
 		if entry.is_knot():
 			described.append("knot")
 		else:
-			described.append("%s %s" % [names[entry.action], TimelineEntry.Style.find_key(entry.style)])
+			var ghost := " ghost" if entry.is_ghost else ""
+			described.append("%s%s %s" % [names[entry.action], ghost, TimelineEntry.Style.find_key(entry.style)])
 	return described
 
 

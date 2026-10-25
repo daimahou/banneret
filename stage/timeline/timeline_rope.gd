@@ -18,19 +18,19 @@ const MOVE_DURATION := 0.3
 # A thing on the rope drops this far onto it as it comes, and lifts as far off it as it goes, in design units.
 const LIFT := 24.0
 
-var _entries: Array[TimelineEntry] = []
+var _shown_entries: Array[TimelineEntry] = []
 var _entry_nodes: Dictionary[String, Node2D] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _highlighted_actors: Array[Character] = []
 
 @onready var _rope: Line2D = $Rope
 @onready var _ties: Node2D = $Ties
-@onready var _entry_layer: Node2D = $Entries
+@onready var _entries: Node2D = $Entries
 
 
 # Left to right.
 func show_entries(entries: Array[TimelineEntry]) -> void:
-	_entries = entries
+	_shown_entries = entries
 	_refresh()
 
 
@@ -47,15 +47,15 @@ func clear_marks() -> void:
 
 # The action whose medallion is under the point, in global space, or null. A ghost is no action yet.
 func get_action_at(global_point: Vector2) -> Action:
-	for entry in _entries:
-		var is_pending := not entry.is_knot() and entry.style != TimelineEntry.Style.GHOST
+	for entry in _shown_entries:
+		var is_pending := not entry.is_knot() and not entry.is_ghost
 		if is_pending and (_entry_nodes[entry.get_key()] as TimelineMedallion).has_point(global_point):
 			return entry.action
 	return null
 
 
 func clear() -> void:
-	_entries = []
+	_shown_entries = []
 	_highlighted_actors = []
 	for tween in _entry_tweens.values():
 		tween.kill()
@@ -94,11 +94,11 @@ func _get_rope_start_x() -> float:
 
 
 func _convert_rope_to_entries_point(rope_point: Vector2) -> Vector2:
-	return _entry_layer.to_local(_rope.to_global(rope_point))
+	return _entries.to_local(_rope.to_global(rope_point))
 
 
 func _convert_entries_to_rope_x(x: float) -> float:
-	return _rope.to_local(_entry_layer.to_global(Vector2(x, 0.0))).x
+	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
 
 # The line segment of the rope above x, in the rope's own space, or -1 off it.
@@ -113,7 +113,7 @@ func _refresh() -> void:
 	var placed: Dictionary[String, Node2D] = {}
 	var tie_xs := _get_tie_xs()
 	var x := _get_rope_start_x()
-	for entry in _entries:
+	for entry in _shown_entries:
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
 		x = _get_left_x_past_ties(x, spacing, tie_xs)
 		x += spacing / 2.0
@@ -142,8 +142,8 @@ func _refresh() -> void:
 
 
 func _show_marks() -> void:
-	for entry in _entries:
-		if not entry.is_knot():
+	for entry in _shown_entries:
+		if not entry.is_knot() and not entry.is_ghost:
 			var medallion: TimelineMedallion = _entry_nodes[entry.get_key()]
 			medallion.set_highlighted(entry.action.actor in _highlighted_actors)
 
@@ -152,7 +152,7 @@ func _show_marks() -> void:
 func _get_tie_xs() -> Array[float]:
 	var tie_xs: Array[float] = []
 	for tie: Marker2D in _ties.get_children():
-		tie_xs.append(_entry_layer.to_local(tie.global_position).x)
+		tie_xs.append(_entries.to_local(tie.global_position).x)
 	tie_xs.sort()
 	return tie_xs
 
@@ -179,7 +179,7 @@ func _add_entry_node(entry: TimelineEntry, x: float) -> Node2D:
 	var rope_position := _get_rope_position(x)
 	node.position = rope_position - Vector2(0.0, LIFT)
 	node.modulate.a = 0.0
-	_entry_layer.add_child(node)
+	_entries.add_child(node)
 	var tween := _create_entry_tween(node)
 	tween.tween_property(node, "position:y", rope_position.y, MOVE_DURATION)
 	tween.tween_property(node, "modulate:a", _get_alpha(entry), MOVE_DURATION)
@@ -187,8 +187,7 @@ func _add_entry_node(entry: TimelineEntry, x: float) -> Node2D:
 
 
 static func _get_alpha(entry: TimelineEntry) -> float:
-	var is_faded := entry.style == TimelineEntry.Style.GHOST or entry.style == TimelineEntry.Style.FADED
-	return GHOST_ALPHA if is_faded else 1.0
+	return GHOST_ALPHA if entry.is_ghost or entry.style == TimelineEntry.Style.FADED else 1.0
 
 
 func _remove_entry_node(node: Node2D) -> void:

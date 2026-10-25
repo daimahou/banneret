@@ -17,13 +17,13 @@ parent: "[[Warrior kit]]"
 ## Implementation decisions
 
 - One channel per readout: the last call wins. Every UI change goes through the presenter, so the preview always writes after the real side. A widget applies each call at once.
-- Style: none, worse or better, the pulse as now. Rope entries also take ghost, faded or crossed.
-- Nameplate: `show_health(health, max, style)`. No style: the yellow drains to the fill. A style: the yellow holds where it stands and the label pulses. `show_pips(states)`, each pip held, empty, lost or gained. `show_character` stays as it is.
-- Skill bar: `show_skills(skills)` for the whole bar, so the flips stagger; per slot `set_cooldown(slot, beats, style)`; `set_usable(skills)`. The bar no longer reads characters. A card dims on the beats it shows: a cooldown the preview starts dims it.
+- Style: none, worse or better, the pulse as now. Rope entries take normal, faded or crossed, and a ghost flag: a ghost the preview cancels is crossed too.
+- Nameplate: `show_health(health, max, style)`. No style: the yellow drains to the fill. A style: the yellow holds where it stands and the label pulses. `show_pips(states)`, each pip held, empty, lost or gained. `show_character` stays as it is; the readouts wait for the flip to turn edge-on.
+- Skill bar: `show_skills(skills)` for the whole bar, so the flips stagger; per slot `set_cooldown(slot, beats, style)`; `set_usable(skills)`. The bar no longer reads characters. A card dims while the fight has beats left, read from the style: worse starts a cooldown, better ends one still running.
 - Rope: `show_entries(entries)`, each a tick, a key, a portrait and a style; knots included, beats marked. It keeps the layout, the tweens and the hit test, which returns the entry's action. It no longer connects to any model.
 - Real side: the brain drives the skill bar; the stage drives the nameplates and the rope on the fight's signals. The rope's real entries come from a static function: the knots up to the next beat, the timeline's order on a shared tick.
 - `PreviewPresenter`, `stage/preview_presenter.gd`: a `RefCounted` the stage builds in `show_encounter` and drops in the transition back to the mission. It follows both models, and `show_choices`, which hands it the inspected character and the shown action.
-- The rope shows the preview's actions, each styled against the fight: resolved in the preview fades, cancelled is crossed, one the fight lacks hangs as a ghost. The shown action never fades. The ghost is the shown action, when the fight lacks it; the stage hangs none of its own. A ghost the preview cancels is crossed, at full alpha.
+- The rope shows the preview's actions, each styled against the fight: resolved in the preview fades, cancelled is crossed, one the fight lacks hangs as a ghost. The shown action never fades. The ghost is the shown action, when the fight lacks it; the stage hangs none of its own. A hovered medallion is the shown action, so the armed skill's ghost comes down while it is hovered. A ghost is never hovered or highlighted.
 - The preview model stays `Stage.preview_model`, synced and played as now.
 - Damage numbers, falls, lunges and puppets follow the real fight only.
 - Lands before [[Bash and effect preview|Bash]]: its moved ghosts and arrows are a rope style the presenter sets.

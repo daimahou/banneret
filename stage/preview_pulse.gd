@@ -35,7 +35,6 @@ func show_style(style: Style) -> void:
 	_tween.tween_property(_item, "modulate:a", 1.0, PULSE_DURATION / 2.0)
 
 
-# Above zero better, below worse.
 static func get_style(gain: int) -> Style:
 	if gain > 0:
 		return Style.BETTER

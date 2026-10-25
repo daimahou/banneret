@@ -313,7 +313,7 @@ func _show_choices() -> void:
 		skills = inspected.data.skills
 	skill_bar.show_skills(skills)
 	for index in skills.size():
-		skill_bar.set_cooldown(index, FightRules.get_cooldown_beats(inspected, skills[index]))
+		skill_bar.show_cooldown(index, FightRules.get_cooldown_beats(inspected, skills[index]))
 	var usable_skills: Array[SkillData] = []
 	if _is_waiting and inspected == hero:
 		usable_skills = FightRules.get_usable_skills(_fight_model, hero)

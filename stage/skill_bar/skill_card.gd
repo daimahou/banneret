@@ -91,8 +91,11 @@ func _show_content(shown_skill: SkillData) -> void:
 	_show_cooldown()
 
 
+# Dims while the fight has beats left: a worse cooldown is one about to start, a better one ends one still running.
 func _show_cooldown() -> void:
-	modulate = COOLDOWN_MODULATE if _cooldown_beats > 0 else Color.WHITE
+	var is_shown_plain := _cooldown_style == PreviewPulse.Style.NONE
+	var is_dimmed := _cooldown_beats > 0 if is_shown_plain else _cooldown_style == PreviewPulse.Style.BETTER
+	modulate = COOLDOWN_MODULATE if is_dimmed else Color.WHITE
 	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
 	_cooldown_label.text = str(_cooldown_beats)
 	_cooldown_pulse.show_style(_cooldown_style)

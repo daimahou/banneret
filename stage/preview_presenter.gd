@@ -4,6 +4,7 @@ extends RefCounted
 # and the rope. The stage and the brain write the fight; this writes over them once a frame, after any change to either
 # model or to the choice. Without it, the stage shows the fight alone.
 
+# Null once disposed: a refresh still queued writes nothing.
 var _fight_model: FightModel
 var _preview_model: FightModel
 var _nameplates: Array[Nameplate] = []
@@ -16,18 +17,17 @@ var _shown_action: Action
 var _is_refresh_queued := false
 
 
-func _init(fight_model: FightModel, preview_model: FightModel, nameplates: Array[Nameplate], skill_bar: SkillBar, timeline_rope: TimelineRope) -> void:
-	_fight_model = fight_model
-	_preview_model = preview_model
+func _init(fight: FightModel, preview: FightModel, nameplates: Array[Nameplate], bar: SkillBar, rope: TimelineRope) -> void:
+	_fight_model = fight
+	_preview_model = preview
 	_nameplates = nameplates
-	_skill_bar = skill_bar
-	_timeline_rope = timeline_rope
+	_skill_bar = bar
+	_timeline_rope = rope
 	_fight_model.changed.connect(_queue_refresh)
 	_preview_model.changed.connect(_queue_refresh)
 	_queue_refresh()
 
 
-# Writes nothing more.
 func dispose() -> void:
 	_fight_model.changed.disconnect(_queue_refresh)
 	_preview_model.changed.disconnect(_queue_refresh)
@@ -70,20 +70,19 @@ static func get_cooldown_style(preview_model: FightModel, character: Character, 
 
 # The fight's rope, styled by the preview: an action the preview resolves fades, unless it is the shown one; one it
 # cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve.
-static func get_timeline_entries(fight_model: FightModel, preview_model: FightModel, shown_action: Action) -> Array[TimelineEntry]:
+static func get_timeline_entries(fight_model: FightModel, preview_model: FightModel, shown: Action) -> Array[TimelineEntry]:
 	var actions: Array[Action] = fight_model.timeline.duplicate()
-	var is_ghost_shown := shown_action != null and shown_action not in actions
+	var is_ghost_shown := shown != null and shown not in actions
 	if is_ghost_shown:
-		actions.insert(fight_model.get_timeline_index(shown_action.actor.id, shown_action.resolve_tick), shown_action)
+		actions.insert(fight_model.get_timeline_index(shown.actor.id, shown.resolve_tick), shown)
 	var entries := TimelineEntry.create_entries(fight_model.tick, actions)
 	for entry in entries:
 		if entry.is_knot():
 			continue
+		entry.is_ghost = is_ghost_shown and entry.action == shown
 		if preview_model.has_cancelled(entry.action.id):
 			entry.style = TimelineEntry.Style.CROSSED
-		elif is_ghost_shown and entry.action == shown_action:
-			entry.style = TimelineEntry.Style.GHOST
-		elif preview_model.has_resolved(entry.action.id) and entry.action != shown_action:
+		elif preview_model.has_resolved(entry.action.id) and entry.action != shown:
 			entry.style = TimelineEntry.Style.FADED
 	return entries
 
@@ -116,4 +115,4 @@ func _show_cooldowns() -> void:
 	var skills := _inspected.data.skills
 	for index in skills.size():
 		var beats := FightRules.get_cooldown_beats(previewed, skills[index])
-		_skill_bar.set_cooldown(index, beats, get_cooldown_style(_preview_model, _inspected, skills[index]))
+		_skill_bar.show_cooldown(index, beats, get_cooldown_style(_preview_model, _inspected, skills[index]))

@@ -34,7 +34,7 @@ func show_skills(skills: Array[SkillData]) -> void:
 
 
 # A slot beyond the last shows nothing.
-func set_cooldown(slot_index: int, beats: int, style := PreviewPulse.Style.NONE) -> void:
+func show_cooldown(slot_index: int, beats: int, style := PreviewPulse.Style.NONE) -> void:
 	if slot_index < _slots.size():
 		_slots[slot_index].show_cooldown(beats, style)
 

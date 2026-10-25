@@ -15,7 +15,14 @@ const FULL_PIP_TEXTURE := preload("res://art/ui/ap_pip_full.png")
 # Null while the nameplate is unused.
 var character: Character
 
+# The character the nameplate shows, which lags `character` until the flip turns it edge-on; the readouts wait with it.
+var _shown_character: Character
+var _health := 0
+var _max_health := 1
+var _health_style := PreviewPulse.Style.NONE
+var _pip_states: Array[Pip] = []
 var _drain_tween: Tween
+var _drain_share := 0.0
 var _flip_tween: Tween
 var _pips: Array[TextureRect] = []
 var _pip_pulses: Array[PreviewPulse] = []
@@ -55,29 +62,47 @@ func clear(delay: float) -> bool:
 	return show_character(null, delay)
 
 
-# Shown in a style, the yellow holds where it stands behind the fill; shown plain, it drains down to the fill, or
-# rises to it at once.
 func show_health(health: int, max_health: int, style := PreviewPulse.Style.NONE) -> void:
-	if _drain_tween != null:
-		_drain_tween.kill()
-	var share := clampf(health / float(max_health), 0.0, 1.0)
-	_fill.anchor_right = share
-	_health_label.text = "%d/%d" % [health, max_health]
-	_health_pulse.show_style(style)
-	if style != PreviewPulse.Style.NONE:
-		return
-	if share >= _damage.anchor_right:
-		_damage.anchor_right = share
-		return
-	_drain_tween = create_tween()
-	_drain_tween.tween_property(_damage, "anchor_right", share, DAMAGE_DRAIN_DURATION)
+	_health = health
+	_max_health = max_health
+	_health_style = style
+	if _shown_character == character:
+		_show_health()
 
 
 # One state for each AP the character can hold.
 func show_pips(states: Array[Pip]) -> void:
+	_pip_states = states
+	if _shown_character == character:
+		_show_pips()
+
+
+# Shown in a style, the yellow behind the fill holds, and any drain under way runs on; shown plain, it drains down to
+# the fill, or rises to it at once.
+func _show_health() -> void:
+	var share := clampf(_health / float(_max_health), 0.0, 1.0)
+	_fill.anchor_right = share
+	_health_label.text = "%d/%d" % [_health, _max_health]
+	_health_pulse.show_style(_health_style)
+	if _health_style != PreviewPulse.Style.NONE:
+		return
+	var is_draining := _drain_tween != null and _drain_tween.is_running()
+	if is_draining and share == _drain_share:
+		return
+	if is_draining:
+		_drain_tween.kill()
+	if share >= _damage.anchor_right:
+		_damage.anchor_right = share
+		return
+	_drain_share = share
+	_drain_tween = create_tween()
+	_drain_tween.tween_property(_damage, "anchor_right", share, DAMAGE_DRAIN_DURATION)
+
+
+func _show_pips() -> void:
 	for index in _pips.size():
-		var state := states[index] if index < states.size() else Pip.EMPTY
-		_pips[index].visible = index < states.size()
+		var state := _pip_states[index] if index < _pip_states.size() else Pip.EMPTY
+		_pips[index].visible = index < _pip_states.size()
 		_pips[index].texture = EMPTY_PIP_TEXTURE if state == Pip.EMPTY else FULL_PIP_TEXTURE
 		var style := PreviewPulse.Style.NONE
 		if state == Pip.LOST:
@@ -87,12 +112,16 @@ func show_pips(states: Array[Pip]) -> void:
 		_pip_pulses[index].show_style(style)
 
 
-# The readouts already show the new character; the last one's yellow goes.
+# The last character's yellow goes.
 func _show_content(shown_character: Character) -> void:
+	_shown_character = shown_character
 	visible = shown_character != null
-	if shown_character != null:
-		_portrait.texture = shown_character.data.portrait
-		_name.text = shown_character.data.name
+	if shown_character == null:
+		return
+	_portrait.texture = shown_character.data.portrait
+	_name.text = shown_character.data.name
 	if _drain_tween != null:
 		_drain_tween.kill()
-	_damage.anchor_right = _fill.anchor_right
+	_damage.anchor_right = 0.0
+	_show_health()
+	_show_pips()
