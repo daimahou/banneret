@@ -49,7 +49,7 @@ func play() -> void:
 			if _stage == null:
 				fight_model.apply(delta)
 			else:
-				fight_model.preview.sync(fight_model)
-				fight_model.preview.apply(delta)
+				_stage.preview.sync(fight_model)
+				_stage.preview.apply(delta)
 				await _stage.show_action(next_action, fight_model.apply.bind(delta))
 			action_resolved.emit(next_action)

@@ -22,18 +22,6 @@ var next_action_id := 0
 # The deltas applied, in order: since the fight started, or on a preview since its last sync.
 var history: Array[Delta] = []
 
-# The fight as it will stand once an action lands, played out on copies of this fight's characters and actions.
-# Built on first use; from then on it syncs after every delta applied here.
-var preview: FightModel:
-	get:
-		if _preview == null:
-			# `FightModel.new` here would hold this script to itself, and leak it at exit.
-			_preview = new([], [])
-			_preview.sync(self)
-		return _preview
-
-var _preview: FightModel
-
 
 func _init(fight_heroes: Array[Character], fight_enemies: Array[Character]) -> void:
 	heroes = fight_heroes
@@ -47,8 +35,6 @@ func apply(delta: Delta) -> void:
 	for change in delta.changes:
 		change.apply(self)
 	history.append(delta)
-	if _preview != null:
-		_preview.sync(self)
 	changed.emit()
 
 

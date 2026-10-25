@@ -80,13 +80,13 @@ static func _get_entries(fight_model: FightModel, ghost_action: Action) -> Array
 	return entries
 
 
-func show_fight(fight_model: FightModel) -> void:
+func show_fight(fight_model: FightModel, fight_preview: FightModel) -> void:
 	_fight_model = fight_model
 	_fight_model.tick_changed.connect(_on_fight_changed)
 	_fight_model.action_added.connect(_on_fight_changed)
 	_fight_model.action_resolved.connect(_on_fight_changed)
 	_fight_model.action_cancelled.connect(_on_fight_changed)
-	_preview = fight_model.preview
+	_preview = fight_preview
 	_preview.changed.connect(_queue_refresh)
 	_queue_refresh()
 

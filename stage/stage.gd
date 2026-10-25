@@ -52,6 +52,13 @@ var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
+# The fight as it will stand once an action lands, played out on copies of the fight's characters and actions. Built
+# for each encounter; it syncs after every delta applied to the fight. Null before the first encounter.
+var preview: FightModel
+
+# Null before the first encounter.
+var _fight_model: FightModel
+
 @onready var _scenery: Scenery = $Scenery
 # Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
 @onready var _puppets: Control = $Puppets
@@ -109,8 +116,13 @@ func show_encounter(fight_model: FightModel) -> void:
 	_show_nameplates(_enemy_nameplates, fight_model.enemies, PuppetLayout.Side.RIGHT)
 	fight_model.health_changed.connect(_on_health_changed)
 	fight_model.character_fell.connect(_on_character_fell)
-	fight_model.preview.changed.connect(_on_preview_changed.bind(fight_model.preview))
-	_timeline_rope.show_fight(fight_model)
+	_fight_model = fight_model
+	preview = FightModel.new([], [])
+	preview.sync(fight_model)
+	preview.changed.connect(_on_preview_changed)
+	# Connected before any brain sees the fight, so the preview is level by the time they read it.
+	fight_model.changed.connect(_on_fight_changed)
+	_timeline_rope.show_fight(fight_model, preview)
 	await tween.finished
 	_view = View.FIGHT
 
@@ -319,8 +331,12 @@ func _on_health_changed(character: Character, amount: int) -> void:
 		_add_damage_number(puppet, -amount)
 
 
+func _on_fight_changed() -> void:
+	preview.sync(_fight_model)
+
+
 # The preview syncs after every change to the fight, so this follows both.
-func _on_preview_changed(preview: FightModel) -> void:
+func _on_preview_changed() -> void:
 	for nameplate in _hero_nameplates + _enemy_nameplates:
 		# Null for a character of another fight, still showing as the party.
 		var previewed := null if nameplate.character == null else preview.get_character(nameplate.character.id)
