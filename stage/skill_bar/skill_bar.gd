@@ -1,6 +1,6 @@
 class_name SkillBar
 extends Control
-# Below the characters' frames: its slots, filled from the left with the selected hero's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
+# Below the characters' frames: its slots, filled from the left with the selected hero's skills — the slots that change flip one after another, like the flats — and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
 
 signal skill_pressed(skill: SkillData)
 # Null once the cursor leaves the skill.
@@ -26,9 +26,11 @@ func _ready() -> void:
 
 # Skills beyond the last slot are not shown.
 func show_skills(skills: Array[SkillData], are_enabled: bool, cooldown_beats: Dictionary[SkillData, int]) -> void:
+	var flip_delay := 0.0
 	for index in _slots.size():
 		var slot := _slots[index]
-		slot.show_skill(skills[index] if index < skills.size() else null)
+		if slot.show_skill(skills[index] if index < skills.size() else null, flip_delay):
+			flip_delay += Scenery.FLIP_STAGGER
 		var beats: int = cooldown_beats.get(slot.skill, 0)
 		slot.disabled = slot.skill == null or not are_enabled or beats > 0
 		slot.show_cooldown(beats)

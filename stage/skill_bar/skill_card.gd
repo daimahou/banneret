@@ -2,6 +2,7 @@ class_name SkillCard
 extends TextureButton
 # One slot of the skill bar, empty or showing a skill as a card: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
 # Armed, its ink turns gold; a card that can be clicked takes the hover ink under the cursor.
+# A new skill flips the slot like a flat: it swaps its content while edge-on.
 
 const CARD_TEXTURE := preload("res://art/ui/skill_slot.png")
 const EMPTY_TEXTURE := preload("res://art/ui/skill_slot_empty.png")
@@ -12,10 +13,13 @@ const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
 const WIPE_STEPS := 64
 const ARMED_INK_COLOR := Color("b8860b")
 
-# Null while the slot is empty.
+# Null while the slot is empty. Set at once, though a flip draws it only once edge-on.
 var skill: SkillData
 
+var _drawn_skill: SkillData
+var _beats := 0
 var _wipe_fraction := 0.0
+var _flip_tween: Tween
 var _is_armed := false
 var _is_mouse_over := false
 
@@ -36,29 +40,48 @@ func _ready() -> void:
 	mouse_exited.connect(_set_mouse_over.bind(false))
 
 
-# Null empties the slot.
-func show_skill(shown_skill: SkillData) -> void:
+# Null empties the slot. Returns whether the slot flips, `delay` from now.
+func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	if shown_skill == skill:
-		return
+		return false
 	skill = shown_skill
+	if _flip_tween != null:
+		_flip_tween.kill()
+	pivot_offset = size / 2.0
+	_flip_tween = create_tween().set_trans(Scenery.FLIP_TRANSITION)
+	_flip_tween.tween_property(self, "scale:x", 0.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN).set_delay(delay)
+	_flip_tween.tween_callback(_draw_skill)
+	_flip_tween.tween_property(self, "scale:x", 1.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT)
+	return true
+
+
+# Of the shown skill; the old one keeps its own until the flip swaps them.
+func show_cooldown(beats: int) -> void:
+	_beats = beats
+	if _drawn_skill == skill:
+		_draw_cooldown()
+
+
+func _draw_skill() -> void:
+	_drawn_skill = skill
 	texture_normal = EMPTY_TEXTURE if skill == null else CARD_TEXTURE
 	_content.visible = skill != null
-	if skill == null:
-		return
-	_icon.texture = skill.icon if skill.icon != null else PLACEHOLDER_ICON
-	_name.text = skill.name
-	var lines := PackedStringArray()
-	for effect in skill.effects:
-		lines.append(effect.get_description())
-	_description.text = "\n".join(lines)
-	_delay.text = str(skill.delay)
+	if skill != null:
+		_icon.texture = skill.icon if skill.icon != null else PLACEHOLDER_ICON
+		_name.text = skill.name
+		var lines := PackedStringArray()
+		for effect in skill.effects:
+			lines.append(effect.get_description())
+		_description.text = "\n".join(lines)
+		_delay.text = str(skill.delay)
+	_draw_cooldown()
 
 
-func show_cooldown(beats: int) -> void:
-	modulate = COOLDOWN_MODULATE if beats > 0 else Color.WHITE
-	_wipe.visible = beats > 0
-	_cooldown_label.text = str(beats)
-	_wipe_fraction = beats / float(skill.cooldown) if beats > 0 else 0.0
+func _draw_cooldown() -> void:
+	modulate = COOLDOWN_MODULATE if _beats > 0 else Color.WHITE
+	_wipe.visible = _beats > 0
+	_cooldown_label.text = str(_beats)
+	_wipe_fraction = _beats / float(skill.cooldown) if _beats > 0 else 0.0
 	_wipe.queue_redraw()
 
 
