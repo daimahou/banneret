@@ -42,9 +42,7 @@ func play() -> void:
 		if choice != null:
 			fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 		elif next_action == null or beat_tick <= next_action.resolve_tick:
-			var delta := Delta.new()
-			delta.ticks = beat_tick - fight_model.tick
-			fight_model.apply(delta)
+			fight_model.apply(FightRules.get_beat_delta(fight_model))
 			if _stage != null:
 				await _stage.show_beat()
 		else:

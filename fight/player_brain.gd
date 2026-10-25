@@ -271,7 +271,7 @@ func _show_choices() -> void:
 	if hero != null:
 		skills = hero.data.skills
 		for skill in skills:
-			cooldown_beats[skill] = FightRules.get_cooldown_beats(_fight_model, hero, skill)
+			cooldown_beats[skill] = FightRules.get_cooldown_beats(hero, skill)
 	skill_bar.show_skills(skills, _is_waiting, cooldown_beats)
 	skill_bar.set_armed_skill(armed_skill)
 	if _is_waiting:

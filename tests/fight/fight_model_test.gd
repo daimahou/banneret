@@ -10,9 +10,9 @@ func test_a_delta_signals_changed_once_every_change_in_it_is_applied() -> void:
 	var delta := Delta.new()
 	delta.ticks = 4
 	delta.add_cooldown(hero, skill, 3)
-	var seen_ready_beats: Array[int] = []
-	fight_model.changed.connect(func() -> void: seen_ready_beats.append(hero.skill_cooldowns.get(skill, 0)))
+	var seen_cooldowns: Array[int] = []
+	fight_model.changed.connect(func() -> void: seen_cooldowns.append(hero.skill_cooldowns.get(skill, 0)))
 
 	fight_model.apply(delta)
 
-	assert_array(seen_ready_beats).is_equal([3])
+	assert_array(seen_cooldowns).is_equal([3])

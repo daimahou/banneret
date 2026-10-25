@@ -8,17 +8,13 @@ const BEAT_TICKS := 4
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
 	var skills: Array[SkillData] = []
 	for skill in character.data.skills:
-		if get_cooldown_beats(fight_model, character, skill) == 0:
+		if get_cooldown_beats(character, skill) == 0:
 			skills.append(skill)
 	return skills
 
 
-static func get_cooldown_beats(fight_model: FightModel, character: Character, skill: SkillData) -> int:
-	return maxi(character.skill_cooldowns.get(skill, 0) - get_beat(fight_model.tick), 0)
-
-
-static func get_beat(tick: int) -> int:
-	return floori(tick / float(BEAT_TICKS))
+static func get_cooldown_beats(character: Character, skill: SkillData) -> int:
+	return character.skill_cooldowns.get(skill, 0)
 
 
 static func is_beat(tick: int) -> bool:
@@ -41,7 +37,19 @@ static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta
 		delta.remove_action(action.actor)
 	delta.add_action(action)
 	if action.skill.cooldown > 0:
-		delta.add_cooldown(action.actor, action.skill, get_beat(fight_model.tick) + action.skill.cooldown)
+		delta.add_cooldown(action.actor, action.skill, action.skill.cooldown)
+	return delta
+
+
+# On to the next beat: every cooldown, on either side, is a beat shorter.
+static func get_beat_delta(fight_model: FightModel) -> Delta:
+	var delta := Delta.new()
+	delta.ticks = get_beat_at_or_after(fight_model.tick + 1) - fight_model.tick
+	for character in fight_model.heroes + fight_model.enemies:
+		for skill in character.skill_cooldowns:
+			var beats := character.skill_cooldowns[skill]
+			if beats > 0:
+				delta.add_cooldown(character, skill, beats - 1)
 	return delta
 
 
