@@ -1,7 +1,7 @@
 class_name SkillCard
 extends TextureButton
 # One slot of the skill bar, empty or showing a skill as a card: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
-# Armed, its ink turns gold; a card that can't be clicked turns grey, and one that can takes the hover ink under the cursor.
+# Armed, its ink turns gold; greyed, grey; a card that can be clicked takes the hover ink under the cursor.
 # A new skill flips the slot like a flat: it swaps its content while edge-on.
 
 const CARD_TEXTURE := preload("res://art/ui/skill_slot.png")
@@ -12,7 +12,7 @@ const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
 # Polygon points on a full turn of the wipe.
 const WIPE_STEPS := 64
 const ARMED_INK_COLOR := Color("b8860b")
-const DISABLED_INK_COLOR := Color("7a7a7a")
+const GREYED_INK_COLOR := Color("454545ff")
 
 # Null while the slot is empty.
 var skill: SkillData
@@ -20,6 +20,7 @@ var skill: SkillData
 var _wipe_fraction := 0.0
 var _flip_tween: Tween
 var _is_armed := false
+var _is_greyed := false
 var _is_mouse_over := false
 
 @onready var _content: Control = $Content
@@ -30,7 +31,7 @@ var _is_mouse_over := false
 @onready var _wipe: Control = $Content/Wipe
 @onready var _cooldown_label: Label = $Content/Wipe/CooldownLabel
 @onready var _armed_ink := Ink.create_color_material(ARMED_INK_COLOR)
-@onready var _disabled_ink := Ink.create_color_material(DISABLED_INK_COLOR)
+@onready var _greyed_ink := Ink.create_color_material(GREYED_INK_COLOR)
 @onready var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 
 
@@ -88,6 +89,11 @@ func set_armed(is_armed: bool) -> void:
 	_show_ink()
 
 
+func set_greyed(is_greyed: bool) -> void:
+	_is_greyed = is_greyed
+	_show_ink()
+
+
 func _set_mouse_over(is_mouse_over: bool) -> void:
 	_is_mouse_over = is_mouse_over
 	_show_ink()
@@ -96,8 +102,8 @@ func _set_mouse_over(is_mouse_over: bool) -> void:
 func _show_ink() -> void:
 	if _is_armed:
 		material = _armed_ink
-	elif disabled and skill != null:
-		material = _disabled_ink
+	elif _is_greyed:
+		material = _greyed_ink
 	elif _is_mouse_over and not disabled:
 		material = _hover_ink
 	else:
