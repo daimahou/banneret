@@ -4,9 +4,9 @@ id: 1.2-1.2
 requires:
   - "[[Starting hero]]"
 started: 2026-10-24
-finished:
-hours: 1
-total_hours: 7.9
+finished: 2026-10-25
+hours: 1.1
+total_hours: 8
 parent: "[[Warrior kit]]"
 ---
 # Done when
