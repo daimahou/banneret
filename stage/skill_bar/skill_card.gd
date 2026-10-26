@@ -126,6 +126,9 @@ func _show_ink() -> void:
 func _draw_wipe() -> void:
 	if _wipe_fraction <= 0.0:
 		return
+	if _wipe_fraction >= 1.0:
+		_wipe.draw_rect(Rect2(Vector2.ZERO, _wipe.size), WIPE_COLOR)
+		return
 	var center := _wipe.size / 2.0
 	var radius := center.length()
 	var points := PackedVector2Array([center])
