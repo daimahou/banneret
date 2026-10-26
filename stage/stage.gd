@@ -341,7 +341,8 @@ func _on_fight_changed() -> void:
 
 func _show_fight() -> void:
 	_update_nameplates()
-	_timeline_rope.show_entries(TimelineEntry.create_entries(_fight_model.tick, _fight_model.timeline))
+	var medallions := TimelineEntry.create_medallions(_fight_model.timeline)
+	_timeline_rope.show_entries(TimelineEntry.create_entries(_fight_model.tick, medallions))
 
 
 func _update_nameplates() -> void:

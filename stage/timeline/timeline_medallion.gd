@@ -3,6 +3,9 @@ extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
 # Highlighted, its ring takes the hover ink; a cross over its face marks it cancelled.
 
+const RING_TEXTURE := preload("res://art/timeline/medallion.png")
+const MOVED_RING_TEXTURE := preload("res://art/timeline/medallion_moved.png")
+
 @export var portrait: Texture2D:
 	set(value):
 		portrait = value
@@ -31,9 +34,19 @@ func has_point(global_point: Vector2) -> bool:
 	return _ring.get_rect().has_point(_ring.to_local(global_point))
 
 
+# In its own space.
+func get_ring_bottom() -> Vector2:
+	var ring_rect := _ring.get_rect()
+	return _ring.position + Vector2(ring_rect.get_center().x, ring_rect.end.y)
+
+
 func set_highlighted(is_highlighted: bool) -> void:
 	_ring.material = _highlight_material if is_highlighted else null
 
 
 func set_cancelled(is_cancelled: bool) -> void:
 	_cross.visible = is_cancelled
+
+
+func set_moved(is_moved: bool) -> void:
+	_ring.texture = MOVED_RING_TEXTURE if is_moved else RING_TEXTURE

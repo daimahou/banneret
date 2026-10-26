@@ -78,6 +78,25 @@ class ResolveAction:
 		fight_model.action_resolved.emit(action)
 
 
+class MoveAction:
+	extends Change
+
+	var action_id: int
+	var resolve_tick: int
+
+	func apply(fight_model: FightModel) -> void:
+		var action := fight_model.get_action(action_id)
+		# Null when a fall in the same delta cancelled it: the move stays in the history, for a preview to show.
+		if action == null:
+			return
+		fight_model.timeline.erase(action)
+		action.resolve_tick = resolve_tick
+		var resolves_after_it := func(other: Action) -> bool: return other.resolve_tick > resolve_tick
+		var index := fight_model.timeline.find_custom(resolves_after_it)
+		fight_model.timeline.insert(fight_model.timeline.size() if index == -1 else index, action)
+		fight_model.action_moved.emit(action)
+
+
 class CancelAction:
 	extends Change
 

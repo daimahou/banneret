@@ -3,14 +3,19 @@
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
 [ext_resource type="Script" uid="uid://cgyd6knv35foa" path="res://skill/effect/effect.gd" id="2_effect"]
 [ext_resource type="Script" uid="uid://dvmvof2d7aipm" path="res://skill/effect/damage_effect.gd" id="3_damage_effect"]
+[ext_resource type="Script" uid="uid://6euoevb8n0lv" path="res://skill/effect/stagger_effect.gd" id="4_stagger_effect"]
 
 [sub_resource type="Resource" id="Resource_damage"]
 script = ExtResource("3_damage_effect")
 amount = 4
+
+[sub_resource type="Resource" id="Resource_stagger"]
+script = ExtResource("4_stagger_effect")
+ticks = 2
 
 [resource]
 script = ExtResource("1_skill_data")
 name = "Bash"
 delay = 2
 cooldown = 2
-effects = Array[ExtResource("2_effect")]([SubResource("Resource_damage")])
+effects = Array[ExtResource("2_effect")]([SubResource("Resource_damage"), SubResource("Resource_stagger")])

@@ -9,6 +9,7 @@ signal tick_changed(tick: int)
 @warning_ignore("unused_signal") signal action_added(action: Action)
 @warning_ignore("unused_signal") signal action_resolved(action: Action)
 @warning_ignore("unused_signal") signal action_cancelled(action: Action)
+@warning_ignore("unused_signal") signal action_moved(action: Action)
 signal changed
 
 enum Side { HERO, ENEMY }
@@ -94,6 +95,16 @@ func has_resolved(action_id: int) -> bool:
 
 func has_cancelled(action_id: int) -> bool:
 	return history.any(func(delta: Delta) -> bool: return delta.is_cancelling_action(action_id))
+
+
+# -1 if the action was never moved.
+func get_moved_tick(action_id: int) -> int:
+	var moved_tick := -1
+	for delta in history:
+		var delta_tick := delta.get_moved_tick(action_id)
+		if delta_tick != -1:
+			moved_tick = delta_tick
+	return moved_tick
 
 
 # The character's lowest AP over the history; on a preview, since its last sync.

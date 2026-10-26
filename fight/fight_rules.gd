@@ -82,6 +82,12 @@ static func add_damage(fight_model: FightModel, delta: Delta, character: Charact
 		_add_fall(fight_model, delta, character)
 
 
+static func add_stagger(fight_model: FightModel, delta: Delta, character: Character, ticks: int) -> void:
+	for action in fight_model.timeline:
+		if action.actor == character:
+			delta.move_action(action, action.resolve_tick + ticks)
+
+
 # A fallen character loses its pending actions, and every action aimed at it is cancelled; no AP comes back.
 static func _add_fall(fight_model: FightModel, delta: Delta, character: Character) -> void:
 	for action in fight_model.timeline:

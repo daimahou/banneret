@@ -95,6 +95,57 @@ func test_an_action_aimed_at_a_fallen_character_is_cancelled() -> void:
 	assert_array(fight_model.timeline).not_contains([aimed])
 
 
+func test_a_stagger_moves_the_target_s_pending_actions_after_those_already_on_their_tick_in_their_order() -> void:
+	var fight_model := _create_fight_model()
+	var bash := _create_choice(fight_model, fight_model.heroes[0], 2)
+	_add_stagger(bash, 2)
+	bash = _schedule(fight_model, bash)
+	var first := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 3))
+	var second := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 5))
+	var waiting := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[1], 5))
+	var moved: Array[Action] = []
+	fight_model.action_moved.connect(moved.append)
+
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, bash))
+
+	assert_array(moved).contains_exactly([first, second])
+	assert_array(fight_model.timeline).contains_exactly([waiting, first, second])
+	assert_int(first.resolve_tick).is_equal(5)
+	assert_int(second.resolve_tick).is_equal(7)
+
+
+func test_a_lethal_stagger_still_moves_the_actions_the_fall_cancels() -> void:
+	var fight_model := _create_fight_model()
+	var bash := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
+	_add_stagger(bash, 2)
+	bash = _schedule(fight_model, bash)
+	var doomed := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 3))
+	var cancelled: Array[Action] = []
+	fight_model.action_cancelled.connect(cancelled.append)
+
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, bash))
+
+	assert_array(cancelled).contains_exactly([doomed])
+	assert_int(fight_model.get_moved_tick(doomed.id)).is_equal(5)
+	assert_array(fight_model.timeline).is_empty()
+
+
+func test_a_stagger_on_a_target_with_nothing_pending_only_deals_its_damage() -> void:
+	var fight_model := _create_fight_model()
+	var bash := _create_choice(fight_model, fight_model.heroes[0], 2, 4)
+	_add_stagger(bash, 2)
+	bash = _schedule(fight_model, bash)
+	var other := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[1], 3))
+	var moved: Array[Action] = []
+	fight_model.action_moved.connect(moved.append)
+
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, bash))
+
+	assert_array(moved).is_empty()
+	assert_int(fight_model.enemies[0].health).is_equal(6)
+	assert_int(other.resolve_tick).is_equal(3)
+
+
 func test_a_second_action_leaves_the_first_pending_and_each_resolves_its_own_delay_on() -> void:
 	var fight_model := _create_fight_model()
 	_advance(fight_model, 2)
@@ -283,6 +334,12 @@ func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int,
 	choice.skill.effects = [damage]
 	choice.target = FightRules.get_targets(fight_model, actor, choice.skill)[0]
 	return choice
+
+
+func _add_stagger(choice: Action, ticks: int) -> void:
+	var stagger := StaggerEffect.new()
+	stagger.ticks = ticks
+	choice.skill.effects.append(stagger)
 
 
 # Puts the choice on the timeline, and returns the action the fight model holds for it.
