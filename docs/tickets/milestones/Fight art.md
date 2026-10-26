@@ -8,31 +8,22 @@ former_ids:
 deadline:
 started:
 finished:
-hours: 0.2
+hours: 0.3
+total_hours: 0.3
 parent: "[[First loop]]"
 ---
 
 ## Done when
 
-- Every image lives in the folder of the code that uses it; `art/` is gone. Art a resource owns sits beside it: puppets and portraits beside their `hero/` and `enemy/` `.tres`, skill icons beside their skill.
-- The rule is written down: a line in `gdscript conventions.md`, or an ADR.
-- The warrior's puppet and portrait, rough but readable, at final size.
-- The fight UI is drawn by hand, rough but readable, at final size.
-
-## Implementation decisions
-
-- Each `.png` moves with its `.import`, so its uid survives.
-- Git LFS tracks by extension, so `.gitattributes` stays as it is.
-- Art shared by several elements of the stage (background, front) goes to `stage/`.
-
-## Open questions
-
-- Convention line or ADR.
+- Every image lives beside the code that uses it, and the rule is written down.
+- The stage has a new layout and ratio; the fight, the mission map and the fight UI are drawn to it by hand, at final size.
+- The warrior is drawn idle and the brigand redrawn at the new scale.
+- The warrior's skills have icons, an attack pose, VFX and sounds.
+- All of it rough but readable.
 
 ## Out of scope
 
-- Redrawing any art but the warrior's and the fight UI's.
-- Animation beyond what the stage already does.
+- Animation beyond the stage's own and the attack pose.
 
 ## Tickets
 
