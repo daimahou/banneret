@@ -5,7 +5,7 @@ requires:
   - "[[Bash and effect preview]]"
 started: 2026-10-26
 finished:
-hours: 0.2
+hours: 0.6
 parent: "[[Warrior kit]]"
 ---
 # Done when

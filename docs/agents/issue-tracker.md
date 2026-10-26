@@ -59,8 +59,9 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 
 ## Closing
 
-- `finished` is the human's ack that the work is done: only the human sets it, never the agent.
-- It is set on the branch before the PR merges, so the squash commit carries it. Not set at merge time → ask the human to set it first.
+- `finished` is the human's ack that the work is done: the agent never sets it on its own judgment.
+- A clear ack from the human (e.g. "done, merge") lets the agent fill in `finished` with that day's date. Without one, ask.
+- It is set on the branch before the PR merges, so the squash commit carries it.
 - At merge the agent runs `python3 tools/ticket_time.py --write` and commits the `hours` with `finished`.
 
 ## Time
