@@ -2,7 +2,7 @@
 severity: minor
 triage: ready-for-agent
 started: 2026-10-26
-finished:
+finished: 2026-10-26
 hours:
 ---
 
