@@ -4,7 +4,7 @@ id: 1.2-1.5
 requires:
   - "[[Bash and effect preview]]"
 started: 2026-10-26
-finished:
+finished: 2026-10-26
 hours: 0.6
 parent: "[[Warrior kit]]"
 ---

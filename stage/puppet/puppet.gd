@@ -17,6 +17,15 @@ const SHAKE_DURATION := 0.3
 
 const SINK_DURATION := 0.7
 
+const WIND_UP_LEAN := 0.32
+const WIND_UP_LIFT := 56.0
+const SWING_LEAN := 0.34
+const REEL_LEAN := 0.28
+const REEL_DISTANCE := 80.0
+const REEL_OUT_DURATION := 0.12
+const REEL_DURATION := 0.8
+const FLASH_DURATION := 0.18
+
 enum Stance { SWAY, HOP, RAISED }
 
 @export var texture: Texture2D
@@ -30,6 +39,9 @@ var _raise_tween: Tween
 var _bob := 0.0
 var _bob_tween: Tween
 var _is_pressed := false
+var _lift := 0.0
+var _pose_tween: Tween
+var _sprite_material: ShaderMaterial
 
 @onready var _sprite: Sprite2D = $Sprite
 
@@ -45,7 +57,7 @@ func _process(delta: float) -> void:
 	if _stance == Stance.HOP:
 		_hop_time += delta
 		hop = HOP_HEIGHT * absf(sin(_hop_time * PI / HOP_PERIOD))
-	_sprite.position.y = _bob - _raise - hop
+	_sprite.position.y = _bob - _raise - hop - _lift
 
 
 func get_height() -> float:
@@ -68,7 +80,15 @@ func set_stance(new_stance: Stance) -> void:
 
 
 func set_sprite_material(sprite_material: ShaderMaterial) -> void:
+	_sprite_material = sprite_material
 	_sprite.material = sprite_material
+
+
+func flash(flash_material: ShaderMaterial) -> void:
+	_sprite.material = flash_material
+	var tween := create_tween().set_ignore_time_scale()
+	tween.tween_interval(FLASH_DURATION)
+	tween.tween_callback(func() -> void: _sprite.material = _sprite_material)
 
 
 func bob() -> void:
@@ -98,6 +118,41 @@ func shake() -> void:
 		tween.tween_property(_sprite, "position:x", SHAKE_DISTANCE, step)
 		tween.tween_property(_sprite, "position:x", -SHAKE_DISTANCE, step)
 	tween.tween_property(_sprite, "position:x", 0.0, step)
+
+
+func wind_up(facing: float, duration: float) -> void:
+	var tween := _create_pose_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_sprite, "rotation", -facing * WIND_UP_LEAN, duration)
+	tween.tween_property(self, "_lift", WIND_UP_LIFT, duration)
+
+
+func swing(facing: float, duration: float) -> void:
+	var tween := _create_pose_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.tween_property(_sprite, "rotation", facing * SWING_LEAN, duration)
+	tween.tween_property(self, "_lift", 0.0, duration)
+
+
+func straighten(duration: float) -> void:
+	var tween := _create_pose_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(_sprite, "rotation", 0.0, duration)
+	tween.tween_property(self, "_lift", 0.0, duration)
+
+
+func reel(facing: float) -> void:
+	_sprite.rotation = facing * REEL_LEAN
+	var tween := _create_pose_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_sprite, "rotation", 0.0, REEL_DURATION)
+	var knocked_x := position.x + facing * REEL_DISTANCE
+	var knock := create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	knock.tween_property(self, "position:x", knocked_x, REEL_OUT_DURATION)
+	knock.tween_property(self, "position:x", position.x, REEL_DURATION).set_trans(Tween.TRANS_SINE)
+
+
+func _create_pose_tween() -> Tween:
+	if _pose_tween != null:
+		_pose_tween.kill()
+	_pose_tween = create_tween().set_parallel()
+	return _pose_tween
 
 
 func sink() -> void:

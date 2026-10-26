@@ -20,11 +20,26 @@ const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
 const BLOW_PAUSE := 0.25
 
+const HEAVY_WIND_UP_DISTANCE := 120.0
+const HEAVY_WIND_UP_DURATION := 0.5
+const HEAVY_HOLD_DURATION := 0.18
+const HEAVY_LUNGE_GAP := 170.0
+const HEAVY_LUNGE_DURATION := 0.18
+const HEAVY_CONTACT_HOLD := 0.2
+const HEAVY_RETURN_DURATION := 0.6
+const HIT_STOP_DURATION := 0.16
+const HIT_STOP_TIME_SCALE := 0.05
+const SET_SHAKE_DISTANCE := 24.0
+const SET_SHAKE_DURATION := 0.6
+const IMPACT_HEIGHT_SHARE := 0.6
+
 const BEAT_HOLD_DURATION := 0.4
 
 const DAMAGE_RISE := 140.0
 const DAMAGE_DURATION := 0.9
 const DAMAGE_FONT_SIZE := 96
+const DAMAGE_FONT_GROWTH := 4
+const DAMAGE_FONT_MAX_SIZE := 200
 const DAMAGE_COLOR := Color("c0392b")
 
 const TARGET_INK_COLOR := Color("7a2a20")
@@ -43,6 +58,7 @@ var _enemy_nameplates: Array[Nameplate] = []
 var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
+var _hit_ink := Ink.create_color_material(DAMAGE_COLOR)
 
 # Null before the first encounter.
 var preview_model: FightModel
@@ -50,11 +66,12 @@ var _fight_model: FightModel
 # Null outside a fight.
 var _preview_presenter: PreviewPresenter
 
-@onready var _scenery: Scenery = $Scenery
-@onready var _puppets: Control = $Puppets
-@onready var _coach: Puppet = $Puppets/Coach
+@onready var _stage_set: StageSet = $StageSet
+@onready var _scenery: Scenery = $StageSet/Scenery
+@onready var _puppets: Control = $StageSet/Puppets
+@onready var _coach: Puppet = $StageSet/Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
-@onready var _timeline_rope: TimelineRope = $TimelineRope
+@onready var _timeline_rope: TimelineRope = $StageSet/TimelineRope
 @onready var skill_bar: SkillBar = $SkillBar
 @onready var _coach_start_x := _coach.position.x
 
@@ -164,16 +181,12 @@ func get_action_at(global_point: Vector2) -> Action:
 func show_action(action: Action, on_impact: Callable) -> void:
 	var actor_puppet := _fight_puppets[action.actor]
 	var target_puppet := _fight_puppets[action.target]
-	var home_x := actor_puppet.position.x
 	actor_puppet.z_index = 1
-	var lunge_x := target_puppet.position.x - signf(target_puppet.position.x - home_x) * LUNGE_GAP
-	var lunge := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-	lunge.tween_property(actor_puppet, "position:x", lunge_x, LUNGE_DURATION)
-	await lunge.finished
-	on_impact.call()
-	var back := create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	back.tween_property(actor_puppet, "position:x", home_x, RETURN_DURATION)
-	await back.finished
+	match action.skill.blow:
+		SkillData.Blow.QUICK:
+			await _play_quick_blow(actor_puppet, target_puppet, on_impact)
+		SkillData.Blow.HEAVY:
+			await _play_heavy_blow(actor_puppet, target_puppet, on_impact)
 	actor_puppet.z_index = 0
 	await get_tree().create_timer(BLOW_PAUSE).timeout
 
@@ -212,6 +225,59 @@ func _is_hovered(brain: PlayerBrain, character: Character) -> bool:
 	if hovered_action != null and character == hovered_action.actor:
 		return true
 	return character == brain.hovered_character and brain.is_pickable(character)
+
+
+func _play_quick_blow(actor_puppet: Puppet, target_puppet: Puppet, on_impact: Callable) -> void:
+	var home_x := actor_puppet.position.x
+	var lunge_x := target_puppet.position.x - signf(target_puppet.position.x - home_x) * LUNGE_GAP
+	var lunge := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	lunge.tween_property(actor_puppet, "position:x", lunge_x, LUNGE_DURATION)
+	await lunge.finished
+	on_impact.call()
+	var back := create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
+	back.tween_property(actor_puppet, "position:x", home_x, RETURN_DURATION)
+	await back.finished
+
+
+func _play_heavy_blow(actor_puppet: Puppet, target_puppet: Puppet, on_impact: Callable) -> void:
+	var home_x := actor_puppet.position.x
+	var facing := signf(target_puppet.position.x - home_x)
+	actor_puppet.wind_up(facing, HEAVY_WIND_UP_DURATION)
+	var wind_up := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	wind_up.tween_property(actor_puppet, "position:x", home_x - facing * HEAVY_WIND_UP_DISTANCE, HEAVY_WIND_UP_DURATION)
+	wind_up.tween_interval(HEAVY_HOLD_DURATION)
+	await wind_up.finished
+	actor_puppet.swing(facing, HEAVY_LUNGE_DURATION)
+	var lunge_x := target_puppet.position.x - facing * HEAVY_LUNGE_GAP
+	var lunge := create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	lunge.tween_property(actor_puppet, "position:x", lunge_x, HEAVY_LUNGE_DURATION)
+	await lunge.finished
+	on_impact.call()
+	_show_heavy_impact(target_puppet, facing)
+	await _play_hit_stop()
+	await get_tree().create_timer(HEAVY_CONTACT_HOLD).timeout
+	actor_puppet.straighten(HEAVY_RETURN_DURATION)
+	var back := create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
+	back.tween_property(actor_puppet, "position:x", home_x, HEAVY_RETURN_DURATION)
+	await back.finished
+
+
+func _show_heavy_impact(target_puppet: Puppet, facing: float) -> void:
+	target_puppet.flash(_hit_ink)
+	target_puppet.reel(facing)
+	var burst := ImpactBurst.new()
+	burst.z_index = 2
+	var contact_x := target_puppet.position.x - facing * HEAVY_LUNGE_GAP / 2.0
+	burst.position = Vector2(contact_x, target_puppet.position.y - target_puppet.get_height() * IMPACT_HEIGHT_SHARE)
+	_puppets.add_child(burst)
+	_stage_set.shake(SET_SHAKE_DISTANCE, SET_SHAKE_DURATION)
+
+
+func _play_hit_stop() -> void:
+	Engine.time_scale = HIT_STOP_TIME_SCALE
+	var timer := get_tree().create_timer(HIT_STOP_DURATION, true, false, true)
+	timer.timeout.connect(func() -> void: Engine.time_scale = 1.0)
+	await timer.timeout
 
 
 func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> void:
@@ -285,7 +351,8 @@ func _get_nameplate(character: Character) -> Nameplate:
 func _add_damage_number(puppet: Puppet, damage: int) -> void:
 	var label := Label.new()
 	label.text = str(damage)
-	label.add_theme_font_size_override("font_size", DAMAGE_FONT_SIZE)
+	var font_size := mini(DAMAGE_FONT_SIZE + damage * DAMAGE_FONT_GROWTH, DAMAGE_FONT_MAX_SIZE)
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", DAMAGE_COLOR)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_puppets.add_child(label)
