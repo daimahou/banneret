@@ -1,7 +1,7 @@
 class_name TimelineMedallion
 extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
-# Highlighted, its ring takes the hover ink; a cross over its face marks an action the preview cancels.
+# Highlighted, its ring takes the hover ink; a cross over its face marks it cancelled.
 
 @export var portrait: Texture2D:
 	set(value):

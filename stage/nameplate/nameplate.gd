@@ -1,10 +1,12 @@
 class_name Nameplate
 extends Control
-# A character's portrait and name, a health fill and `health/max`, and a pip for each AP it can hold, filled for each it holds.
-# Beside the fight it shows the preview: the red fill, the label and the pips held are the preview's, the yellow behind the red the fight's. A readout the preview changes pulses; a pip spent and got back on the way counts as changed.
+# A character's portrait and name, a health fill and `health/max`, and a pip for each AP it can hold. Each readout shows what it is told, in a style.
 # A new character flips the nameplate like a flat: it swaps while edge-on, and hides without one.
 
-# The yellow drains down to the red as the fight catches up with the preview, in seconds.
+# Held, lost and gained show full; lost and gained pulse.
+enum Pip { EMPTY, HELD, LOST, GAINED }
+
+# The yellow behind the fill drains down to it, in seconds.
 const DAMAGE_DRAIN_DURATION := 0.3
 
 const EMPTY_PIP_TEXTURE := preload("res://art/ui/ap_pip.png")
@@ -13,7 +15,14 @@ const FULL_PIP_TEXTURE := preload("res://art/ui/ap_pip_full.png")
 # Null while the nameplate is unused.
 var character: Character
 
+# The readouts wait while true, so they never show on the last character's face.
+var _is_awaiting_swap := false
+var _health := 0
+var _max_health := 1
+var _health_style := PreviewPulse.Style.NONE
+var _pip_states: Array[Pip] = []
 var _drain_tween: Tween
+var _drain_share := 0.0
 var _flip_tween: Tween
 var _pips: Array[TextureRect] = []
 var _pip_pulses: Array[PreviewPulse] = []
@@ -39,6 +48,7 @@ func show_character(shown_character: Character, delay: float) -> bool:
 	if shown_character == character:
 		return false
 	character = shown_character
+	_is_awaiting_swap = true
 	if _flip_tween != null:
 		_flip_tween.kill()
 	pivot_offset = size / 2.0
@@ -53,52 +63,66 @@ func clear(delay: float) -> bool:
 	return show_character(null, delay)
 
 
-# The character as the preview holds it, and the lowest its AP falls on the way there.
-func show_preview(previewed: Character, lowest_ap: int) -> void:
-	_show_health(character, previewed, true)
-	_show_ap(character, previewed, lowest_ap)
+func show_health(health: int, max_health: int, style := PreviewPulse.Style.NONE) -> void:
+	_health = health
+	_max_health = max_health
+	_health_style = style
+	if not _is_awaiting_swap:
+		_show_health()
 
 
-func _show_content(shown_character: Character) -> void:
-	visible = shown_character != null
-	if shown_character != null:
-		_portrait.texture = shown_character.data.portrait
-		_name.text = shown_character.data.name
-		_show_health(shown_character, shown_character, false)
-		_show_ap(shown_character, shown_character, shown_character.ap)
+# One state for each AP the character can hold.
+func show_pips(states: Array[Pip]) -> void:
+	_pip_states = states
+	if not _is_awaiting_swap:
+		_show_pips()
 
 
-# A pip held now or once the preview lands shows full. It pulses red when lost by then, and green when held by then
-# but not all the way: gained, or spent and got back.
-func _show_ap(shown_character: Character, previewed: Character, lowest_ap: int) -> void:
-	for index in _pips.size():
-		var is_held := index < shown_character.ap
-		var is_held_previewed := index < previewed.ap
-		var is_held_all_the_way := index < lowest_ap
-		_pips[index].visible = index < shown_character.data.max_ap
-		_pips[index].texture = FULL_PIP_TEXTURE if is_held or is_held_previewed else EMPTY_PIP_TEXTURE
-		var gain := 0
-		if is_held_previewed and not is_held_all_the_way:
-			gain = 1
-		elif is_held and not is_held_previewed:
-			gain = -1
-		_pip_pulses[index].show_gain(gain)
-
-
-# Drained, the yellow goes down to the fight's health over time, rather than at once.
-func _show_health(shown_character: Character, previewed: Character, is_drained: bool) -> void:
-	if _drain_tween != null:
+# Shown in a style, the yellow behind the fill holds, and any drain under way runs on; shown plain, it drains down to
+# the fill, or rises to it at once.
+func _show_health() -> void:
+	var share := clampf(_health / float(_max_health), 0.0, 1.0)
+	_fill.anchor_right = share
+	_health_label.text = "%d/%d" % [_health, _max_health]
+	_health_pulse.show_style(_health_style)
+	if _health_style != PreviewPulse.Style.NONE:
+		return
+	var is_draining := _drain_tween != null and _drain_tween.is_running()
+	if is_draining and share == _drain_share:
+		return
+	if is_draining:
 		_drain_tween.kill()
-	var share := _get_health_share(shown_character)
-	_fill.anchor_right = _get_health_share(previewed)
-	_health_label.text = "%d/%d" % [previewed.health, previewed.data.max_health]
-	_health_pulse.show_gain(previewed.health - shown_character.health)
-	if not is_drained or share >= _damage.anchor_right:
+	if share >= _damage.anchor_right:
 		_damage.anchor_right = share
 		return
+	_drain_share = share
 	_drain_tween = create_tween()
 	_drain_tween.tween_property(_damage, "anchor_right", share, DAMAGE_DRAIN_DURATION)
 
 
-static func _get_health_share(shown_character: Character) -> float:
-	return clampf(shown_character.health / float(shown_character.data.max_health), 0.0, 1.0)
+func _show_pips() -> void:
+	for index in _pips.size():
+		var state := _pip_states[index] if index < _pip_states.size() else Pip.EMPTY
+		_pips[index].visible = index < _pip_states.size()
+		_pips[index].texture = EMPTY_PIP_TEXTURE if state == Pip.EMPTY else FULL_PIP_TEXTURE
+		var style := PreviewPulse.Style.NONE
+		if state == Pip.LOST:
+			style = PreviewPulse.Style.WORSE
+		elif state == Pip.GAINED:
+			style = PreviewPulse.Style.BETTER
+		_pip_pulses[index].show_style(style)
+
+
+# The last character's yellow goes.
+func _show_content(shown_character: Character) -> void:
+	_is_awaiting_swap = false
+	visible = shown_character != null
+	if shown_character == null:
+		return
+	_portrait.texture = shown_character.data.portrait
+	_name.text = shown_character.data.name
+	if _drain_tween != null:
+		_drain_tween.kill()
+	_damage.anchor_right = 0.0
+	_show_health()
+	_show_pips()
