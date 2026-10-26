@@ -11,7 +11,7 @@ const TRAVEL_DURATION := 0.6
 const TRAVEL_TRANSITION := Tween.TRANS_SINE
 const TRAVEL_EASE := Tween.EASE_IN_OUT
 
-# A transition's slides, in seconds; they ease like travel.
+# A transition's slides, in seconds.
 const COACH_SLIDE_DURATION := 0.8
 const PUPPET_SLIDE_DURATION := 0.8
 # Each marcher sets off up to this late, at random; too late and the one behind would catch up.
@@ -73,7 +73,6 @@ func _ready() -> void:
 	_coach.position.y = _puppets.size.y
 	_scenery.map_node_pressed.connect(map_node_pressed.emit)
 	_offer_presenter.offer_pressed.connect(offer_pressed.emit)
-	# The scenery sizes the flats on its first sort, which is still pending here.
 	await _scenery.sort_children
 	laid_out.emit()
 
@@ -90,7 +89,6 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 		await _play_transition_to_mission(mission_model, map_seed)
 		return
 	_coach.position.x = _coach_start_x
-	# A travel cut short by the new mission left input disabled.
 	_scenery.set_input_enabled(true)
 	_scenery.show_mission_map(mission_model, map_seed)
 
@@ -115,7 +113,6 @@ func show_encounter(fight_model: FightModel) -> void:
 	_fight_model = fight_model
 	preview_model = FightModel.new([], [])
 	preview_model.sync(fight_model)
-	# Connected before any brain sees the fight, so the preview is level by the time they read it.
 	fight_model.changed.connect(_on_fight_changed)
 	var nameplates: Array[Nameplate] = []
 	nameplates.assign(_hero_nameplates + _enemy_nameplates)
@@ -210,7 +207,6 @@ func hide_offers() -> void:
 	await _offer_presenter.hide_offers()
 
 
-# A target keeps its red when hovered: it is pressed down instead.
 func _get_ink(brain: PlayerBrain, character: Character) -> ShaderMaterial:
 	if brain.is_target(character):
 		return _aimed_ink if character == brain.aimed_target else _target_ink
@@ -230,7 +226,6 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 	_view = View.TRANSITION
 	hide_choices()
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
-	# The side still standing marches on in its line, off to the right, until the hindmost is beyond the curtain.
 	var march := 0.0
 	for puppet in _fight_puppets.values():
 		march = maxf(march, _get_puppet_x(OFFSTAGE_RIGHT_X) - puppet.position.x)

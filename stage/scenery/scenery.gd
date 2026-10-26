@@ -58,7 +58,6 @@ func flip_to_battle() -> void:
 	await _flip_flats(func(flat: Flat) -> void: flat.show_battle(BATTLEGROUND, Rect2(origin + flat.position, flat.size)))
 
 
-# Map nodes are pickable only while input is enabled.
 func set_input_enabled(is_enabled: bool) -> void:
 	_is_input_enabled = is_enabled
 	update_highlights()
@@ -70,7 +69,6 @@ func get_column_center_x(column: int) -> float:
 	return position.x + flat.position.x + flat.size.x / 2.0
 
 
-# Away from the mission map, a flat may not show its column yet; the flip back updates once it is done.
 func update_highlights() -> void:
 	if not _is_mission_map_shown:
 		return
@@ -121,7 +119,6 @@ func _is_pickable(map_node: MapNode) -> bool:
 	return _is_input_enabled and _mission_model.get_map_node_visitation(map_node) == MissionModel.Visitation.OPEN
 
 
-# Hover follows the mouse even over a node that isn't pickable, so it shows as soon as that node opens.
 func _on_map_node_mouse_entered(map_node: MapNode) -> void:
 	_map_node_under_mouse = map_node
 	update_highlights()

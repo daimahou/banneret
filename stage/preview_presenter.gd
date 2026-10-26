@@ -6,7 +6,7 @@ const ARROW_GAP := 8.0
 # Per unit of length, so a longer arrow runs under a shorter one.
 const ARROW_SAG := 0.25
 
-# Null once disposed: a refresh still queued writes nothing.
+# Null once disposed.
 var _fight_model: FightModel
 var _preview_model: FightModel
 var _nameplates: Array[Nameplate] = []
@@ -48,7 +48,6 @@ static func get_health_style(preview_model: FightModel, character: Character) ->
 	return PreviewPulse.get_style(preview_model.get_character(character.id).health - character.health)
 
 
-# A pip shows held when held now and once the preview lands, lost when the preview spends it, and gained when the preview gains it, or spends it and gets it back.
 static func get_pip_states(preview_model: FightModel, character: Character) -> Array[Nameplate.Pip]:
 	var previewed := preview_model.get_character(character.id)
 	var lowest_ap := preview_model.get_lowest_ap(character.id)
@@ -114,7 +113,6 @@ func _refresh() -> void:
 	if _fight_model == null:
 		return
 	for nameplate in _nameplates:
-		# Null for a nameplate unused, or showing a character of another fight.
 		var previewed := null if nameplate.character == null else _preview_model.get_character(nameplate.character.id)
 		if previewed != null:
 			var style := get_health_style(_preview_model, nameplate.character)
@@ -151,7 +149,6 @@ static func _create_arrow(start: Vector2, end: Vector2, ring_bottoms: Array[Vect
 	var arrow := PreviewArrows.Arrow.new()
 	arrow.start = start + gap
 	arrow.end = end + gap
-	# A quadratic curve reaches only halfway to its control point.
 	var control_y := maxf(arrow.start.y, arrow.end.y) + 2.0 * ARROW_SAG * absf(arrow.end.x - arrow.start.x)
 	for ring_bottom in ring_bottoms:
 		var weight := inverse_lerp(arrow.start.x, arrow.end.x, ring_bottom.x)

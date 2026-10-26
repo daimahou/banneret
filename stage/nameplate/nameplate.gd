@@ -14,7 +14,6 @@ const FULL_PIP_TEXTURE := preload("res://art/ui/ap_pip_full.png")
 # Null while the nameplate is unused.
 var character: Character
 
-# The readouts wait while true, so they never show on the last character's face.
 var _is_awaiting_swap := false
 var _health := 0
 var _max_health := 1
@@ -77,7 +76,6 @@ func show_pips(states: Array[Pip]) -> void:
 		_show_pips()
 
 
-# A preview leaves the yellow where it is: only the fight drains it.
 func _show_health() -> void:
 	var share := clampf(_health / float(_max_health), 0.0, 1.0)
 	_fill.anchor_right = share
@@ -118,7 +116,6 @@ func _show_content(shown_character: Character) -> void:
 		return
 	_portrait.texture = shown_character.data.portrait
 	_name.text = shown_character.data.name
-	# The yellow was the last character's.
 	if _drain_tween != null:
 		_drain_tween.kill()
 	_damage.anchor_right = 0.0

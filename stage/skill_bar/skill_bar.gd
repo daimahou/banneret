@@ -40,7 +40,6 @@ func show_cooldown(slot_index: int, beats: int, style := PreviewPulse.Style.NONE
 func set_usable(usable: Array[SkillData]) -> void:
 	for slot in _slots:
 		slot.disabled = slot.skill not in usable
-		# An empty slot greys with the bar, not with its own disabled.
 		slot.set_greyed(usable.is_empty() if slot.skill == null else slot.disabled)
 
 

@@ -15,7 +15,6 @@ const GREYED_INK_COLOR := Color("454545ff")
 # Null while the slot is empty.
 var skill: SkillData
 
-# The cooldown waits while true, so it never shows on the last skill's face.
 var _is_awaiting_swap := false
 var _cooldown_beats := 0
 var _cooldown_style := PreviewPulse.Style.NONE
@@ -88,12 +87,10 @@ func _show_content(shown_skill: SkillData) -> void:
 	_show_cooldown()
 
 
-# Dims while the fight has beats left: a worse cooldown is one about to start, a better one ends one still running.
 func _show_cooldown() -> void:
 	var is_shown_plain := _cooldown_style == PreviewPulse.Style.NONE
 	var is_dimmed := _cooldown_beats > 0 if is_shown_plain else _cooldown_style == PreviewPulse.Style.BETTER
 	modulate = COOLDOWN_MODULATE if is_dimmed else Color.WHITE
-	# Shown in a style, a cooldown run out still shows its 0.
 	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
 	_cooldown_label.text = str(_cooldown_beats)
 	_cooldown_pulse.show_style(_cooldown_style)
@@ -101,7 +98,6 @@ func _show_cooldown() -> void:
 	_wipe.queue_redraw()
 
 
-# Also catches up with `disabled`, which the bar sets before it.
 func set_armed(is_armed: bool) -> void:
 	_is_armed = is_armed
 	_show_ink()
@@ -128,7 +124,6 @@ func _show_ink() -> void:
 		material = null
 
 
-# A sector from twelve o'clock, clockwise, wide enough to reach the corners; the wipe clips it to the icon.
 func _draw_wipe() -> void:
 	if _wipe_fraction <= 0.0:
 		return

@@ -18,7 +18,6 @@ func _init(marked: CanvasItem) -> void:
 	_item = marked
 
 
-# A pulse already going on in the same style keeps its rhythm.
 func show_style(style: Style) -> void:
 	if style == _style:
 		return

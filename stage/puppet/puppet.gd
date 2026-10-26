@@ -26,7 +26,6 @@ enum Stance { SWAY, HOP, RAISED }
 # Drawn with its stick foot on the origin, the point it sways about.
 @export var texture: Texture2D
 
-# A phase of its own, so puppets don't rock in step.
 var _sway_phase := randf() * TAU
 
 var _stance := Stance.SWAY
@@ -58,7 +57,6 @@ func get_height() -> float:
 	return texture.get_height()
 
 
-# The sprite's rectangle, not its pixels.
 func has_point(global_point: Vector2) -> bool:
 	return _sprite.get_rect().has_point(_sprite.to_local(global_point))
 

@@ -28,9 +28,7 @@ static func create(mission_map: MissionMap, map_seed: int, flat_size: Vector2, s
 		var road_dashes: Array[Flat.RoadDash] = []
 		layout._flat_road_dashes.append(road_dashes)
 
-	# A seed of their own, so they don't replay the generator's random sequence.
 	var road_seed := hash([map_seed, "roads"])
-	# Merging can move a dash, so it goes to the flat that contains it now; one left in a gap between flats is dropped.
 	for road_dash in RoadLayout.lay_out(mission_map, flat_rects, scenery_positions, road_seed):
 		for index in flat_count:
 			if flat_rects[index].has_point(road_dash.position):
@@ -52,10 +50,8 @@ func get_road_dashes(flat_index: int) -> Array[Flat.RoadDash]:
 	return _flat_road_dashes[flat_index]
 
 
-# The jitter towards a neighbouring row among `rows`, the column's, is capped, so neighbours stay MAP_NODE_MIN_SPACING apart.
 static func _get_map_node_position(map_node: MapNode, rows: Array[int], flat_size: Vector2) -> Vector2:
 	var row_spacing := (flat_size.y - MAP_NODE_MARGIN * 2.0) / MissionMapGenerator.ROW_COUNT
-	# Never negative: a flat too short for the spacing loses its jitter towards neighbours rather than pushing them apart.
 	var jitter_cap := maxf((row_spacing - MAP_NODE_MIN_SPACING) / 2.0, 0.0)
 	var jitter := map_node.jitter
 	if map_node.row - 1 in rows:

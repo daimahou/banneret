@@ -82,7 +82,7 @@ func clear() -> void:
 	_settled_positions.clear()
 
 
-# Where the rope passes at x, both in the entries' space. Past either end, level with that end.
+# Where the rope passes at x, both in the entries' space.
 func _get_rope_position(x: float) -> Vector2:
 	var rope_x := _convert_entries_to_rope_x(x)
 	var index := _get_rope_segment(rope_x)
@@ -105,7 +105,7 @@ func _get_rope_angle(x: float) -> float:
 	return (to - from).angle()
 
 
-# The rope's first point, in the entries' space: the first entry hangs from there.
+# The rope's first point, in the entries' space.
 func _get_rope_start_x() -> float:
 	return _convert_rope_to_entries_point(_rope.points[0]).x
 
@@ -139,10 +139,8 @@ func _refresh() -> void:
 		if node == null:
 			node = _add_entry_node(entry, x)
 		else:
-			# A ghost keeps its node as the hero or the skill changes.
 			if not entry.is_knot():
 				(node as TimelineMedallion).portrait = entry.portrait
-			# A move cuts any fade in short, so it finishes the fade too.
 			var tween := _create_entry_tween(node)
 			tween.tween_property(node, "position", _get_rope_position(x), MOVE_DURATION)
 			tween.tween_property(node, "modulate:a", _get_alpha(entry), MOVE_DURATION)

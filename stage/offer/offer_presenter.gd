@@ -43,7 +43,6 @@ func show_offers(offers: Array[Offer]) -> void:
 	_lay_out_posters()
 	if _posters.is_empty():
 		return
-	# The last poster drops last, so awaiting it awaits them all.
 	for index in _posters.size() - 1:
 		_posters[index].play_drop(index * stagger)
 	await _posters.back().play_drop((_posters.size() - 1) * stagger)
@@ -68,7 +67,6 @@ func clear() -> void:
 	_posters.clear()
 
 
-# Editor only: unrolled posters standing in for offers. Internal children, so they are never saved with the scene.
 func _update_preview() -> void:
 	if not Engine.is_editor_hint() or not is_node_ready():
 		return

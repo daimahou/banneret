@@ -4,7 +4,7 @@ extends RefCounted
 
 enum Style { NORMAL, FADED, CROSSED, MOVED }
 
-# What its node is known by from one show to the next. A choice's ghost takes the id its action will have, to become it once chosen.
+# What its node is known by from one show to the next.
 var id: String
 var tick := 0
 # Null for a knot.

@@ -28,7 +28,6 @@ func _ready() -> void:
 	_knot.rotation = knot_rotation
 
 
-# The ring's rectangle, not its pixels.
 func has_point(global_point: Vector2) -> bool:
 	return _ring.get_rect().has_point(_ring.to_local(global_point))
 
