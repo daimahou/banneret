@@ -13,4 +13,5 @@ script = ExtResource("1_skill_data")
 name = "Overpower"
 delay = 6
 cooldown = 3
+blow = 1
 effects = Array[ExtResource("2_effect")]([SubResource("Resource_damage")])

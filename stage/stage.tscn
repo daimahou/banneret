@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" path="res://stage/timeline/timeline_rope.tscn" id="9_timeline_rope"]
 [ext_resource type="PackedScene" uid="uid://cr21bicmgje5g" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
 [ext_resource type="PackedScene" uid="uid://dpsd2gy8ca3tr" path="res://stage/nameplate/nameplate.tscn" id="11_nameplate"]
+[ext_resource type="Script" path="res://stage/stage_set.gd" id="12_stage_set"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -22,7 +23,14 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_stage")
 
-[node name="Background" type="TextureRect" parent="." unique_id=437699063]
+[node name="StageSet" type="Control" parent="." unique_id=1268035417]
+anchors_preset = 0
+offset_right = 3840.0
+offset_bottom = 2160.0
+mouse_filter = 2
+script = ExtResource("12_stage_set")
+
+[node name="Background" type="TextureRect" parent="StageSet" unique_id=437699063]
 z_index = -2
 layout_mode = 0
 offset_right = 3840.0
@@ -31,7 +39,7 @@ mouse_filter = 2
 texture = ExtResource("3_background")
 expand_mode = 1
 
-[node name="Scenery" type="HBoxContainer" parent="." unique_id=433876565]
+[node name="Scenery" type="HBoxContainer" parent="StageSet" unique_id=433876565]
 z_index = -1
 layout_mode = 0
 offset_left = 975.0
@@ -42,25 +50,25 @@ mouse_filter = 2
 theme_override_constants/separation = 12
 script = ExtResource("8_scenery")
 
-[node name="Flat1" parent="Scenery" unique_id=861660209 instance=ExtResource("2_flat")]
+[node name="Flat1" parent="StageSet/Scenery" unique_id=861660209 instance=ExtResource("2_flat")]
 layout_mode = 2
 
-[node name="Flat2" parent="Scenery" unique_id=2070736905 instance=ExtResource("2_flat")]
+[node name="Flat2" parent="StageSet/Scenery" unique_id=2070736905 instance=ExtResource("2_flat")]
 layout_mode = 2
 
-[node name="Flat3" parent="Scenery" unique_id=810281272 instance=ExtResource("2_flat")]
+[node name="Flat3" parent="StageSet/Scenery" unique_id=810281272 instance=ExtResource("2_flat")]
 layout_mode = 2
 
-[node name="Flat4" parent="Scenery" unique_id=129521923 instance=ExtResource("2_flat")]
+[node name="Flat4" parent="StageSet/Scenery" unique_id=129521923 instance=ExtResource("2_flat")]
 layout_mode = 2
 
-[node name="TimelineRope" parent="." unique_id=721963837 instance=ExtResource("9_timeline_rope")]
+[node name="TimelineRope" parent="StageSet" unique_id=721963837 instance=ExtResource("9_timeline_rope")]
 position = Vector2(580, 302)
 
-[node name="Rope" parent="TimelineRope" index="0"]
+[node name="Rope" parent="StageSet/TimelineRope" index="0"]
 points = PackedVector2Array(456, -75, 617, -19, 825, 4, 1035, -25, 1200, -109, 1388, -29, 1590, 10, 1777, -42, 1897, -117, 2080, -35, 2296, 2, 2459, -43, 2591, -97)
 
-[node name="Puppets" type="Control" parent="." unique_id=1574302127]
+[node name="Puppets" type="Control" parent="StageSet" unique_id=1574302127]
 anchors_preset = 0
 offset_left = 977.0
 offset_top = 400.0
@@ -68,7 +76,7 @@ offset_right = 2886.0
 offset_bottom = 1260.0
 mouse_filter = 2
 
-[node name="Coach" parent="Puppets" unique_id=1574302126 instance=ExtResource("7_puppet")]
+[node name="Coach" parent="StageSet/Puppets" unique_id=1574302126 instance=ExtResource("7_puppet")]
 position = Vector2(-217, 860)
 texture = ExtResource("4_coach")
 
@@ -160,4 +168,4 @@ offset_top = 1773.0
 offset_right = 73.0
 offset_bottom = 1773.0
 
-[editable path="TimelineRope"]
+[editable path="StageSet/TimelineRope"]
