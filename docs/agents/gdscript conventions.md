@@ -32,19 +32,79 @@ This holds for every factory that is only an assignment list. `Action` ended up 
 
 **A name says the operation, never a metaphor for it.** `_seat(character)`, `_stand(character)` and `_deal_card()` read as flavour; the reader opens each to learn it adds a tile, a figure or a card. `_add_party_tile(character)`, `_add_figure(character)` and `_add_skill_card()` say so from the call site. The engine's vocabulary — `add_child`, `show`, `apply`, `create`, `register` — is the pool to draw from.
 
-**A name documents itself; a comment on every declaration is noise.** Name the variable or the function so the line reads on its own, and spend a comment only where the name cannot carry the whole of it.
+**A name documents itself; a comment on every declaration is noise.** See Comments.
 
-Group declarations into logical units instead — a blank line between units, and at most one comment per unit. `Map`'s constants are three units, not seven declarations:
+## Comments
+
+**A comment says why, never what.** The code tells the computer what to do; a comment tells a human why it is done that way. A comment saying what the code does is a name or a structure not yet written: rename or restructure, then delete it. No comment is better than a wrong or confusing one.
+
+**What qualifies**
+
+- **A game rule** the code applies: `# On a shared tick, the beat comes first.`
+- **A reason** the reader would otherwise undo: `# Stronger than a ghost's: it must read at a glance.`
+- **A gotcha**, what surprises or breaks if the line is taken at face value: `# A move cuts any fade in short, so it finishes the fade too.`
+- **A value's meaning** the type cannot carry: a unit, a space, an order, what null or -1 means. `# -1 if this delta does not move the action.` `# In the entries' space.`
+- **A class header**, the one place a *what* belongs: the class's role in the architecture, what drives it and what it drives. No implementation details, unless the reader needs them before reading the class. A class whose name and folder make its role plain has none.
+
+**What does not qualify**
+
+- Restating the name below it.
+- Narrating the lines below it, or when a coroutine returns.
+- A header walking through the implementation.
+- A sentence the reader must read twice.
+
+**No length cap**: a comment is judged by what it says and how it is written, not by its length.
 
 ```gdscript
-const WIDTH := 52
-const HEIGHT := 60
+# The medallions of these actors hang highlighted.
+func set_marks(actors: Array[Character]) -> void:
+```
 
-const ROW_SLOTS := 3
+restates a name that says too little; renamed, it needs nothing:
 
-const SLOT_FLOOR := 0
-const SLOT_ENTITY := 1
-const SLOT_WALL := 2
+```gdscript
+func highlight_actors(actors: Array[Character]) -> void:
+```
+
+```gdscript
+# Whether the next beat comes before the next action resolves; on a shared tick, the beat comes first.
+static func is_beat_next(fight_model: FightModel) -> bool:
+```
+
+keeps only the rule the name cannot carry:
+
+```gdscript
+# On a shared tick, the beat comes first.
+static func is_beat_next(fight_model: FightModel) -> bool:
+```
+
+```gdscript
+# Aims the first target.
+func arm_skill(skill: SkillData) -> void:
+```
+
+narrates the body, and is deleted. So is a header that walks the implementation:
+
+```gdscript
+# The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with its actor's portrait for each action, hung after the knot of the tick it resolves on.
+# The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
+```
+
+which keeps the role and the one gotcha:
+
+```gdscript
+# The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
+# The rope's shape is its line's points, traced by hand over the rope drawn on the background.
+```
+
+**One comment per unit of declarations.** Group them into logical units, a blank line between units, and the unit carries the comment. `Stage`'s blow is one unit, not four declarations:
+
+```gdscript
+# A blow: the actor's puppet lunges to this short of its target, then goes home; a pause before the next one. In design units and seconds.
+const LUNGE_GAP := 220.0
+const LUNGE_DURATION := 0.25
+const RETURN_DURATION := 0.35
+const BLOW_PAUSE := 0.25
 ```
 
 ## Line length
