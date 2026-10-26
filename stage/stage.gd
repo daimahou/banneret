@@ -294,8 +294,7 @@ func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character]
 		var character := characters[line_index] if line_index >= 0 and line_index < count else null
 		if nameplates[index].show_character(character, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
-		if character != null:
-			_show_readouts(nameplates[index])
+	_update_nameplates()
 
 
 # One after another, left to right.
@@ -341,19 +340,20 @@ func _on_fight_changed() -> void:
 
 
 func _show_fight() -> void:
-	for nameplate in _hero_nameplates + _enemy_nameplates:
-		if nameplate.character != null:
-			_show_readouts(nameplate)
+	_update_nameplates()
 	_timeline_rope.show_entries(TimelineEntry.create_entries(_fight_model.tick, _fight_model.timeline))
 
 
-func _show_readouts(nameplate: Nameplate) -> void:
-	var character := nameplate.character
-	nameplate.show_health(character.health, character.data.max_health)
-	var pips: Array[Nameplate.Pip] = []
-	for index in character.data.max_ap:
-		pips.append(Nameplate.Pip.HELD if index < character.ap else Nameplate.Pip.EMPTY)
-	nameplate.show_pips(pips)
+func _update_nameplates() -> void:
+	for nameplate in _hero_nameplates + _enemy_nameplates:
+		var character := nameplate.character
+		if character == null:
+			continue
+		nameplate.show_health(character.health, character.data.max_health)
+		var pips: Array[Nameplate.Pip] = []
+		for index in character.data.max_ap:
+			pips.append(Nameplate.Pip.HELD if index < character.ap else Nameplate.Pip.EMPTY)
+		nameplate.show_pips(pips)
 
 
 func _on_character_fell(character: Character) -> void:
