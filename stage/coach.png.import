@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dcaborbs15835"
-path="res://.godot/imported/coach.png-d41c0c0deaec26d49be8e60c76e392dc.ctex"
+path="res://.godot/imported/coach.png-342be2ba70d2eaf71098286417fbd975.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/stage/coach.png"
-dest_files=["res://.godot/imported/coach.png-d41c0c0deaec26d49be8e60c76e392dc.ctex"]
+source_file="res://stage/coach.png"
+dest_files=["res://.godot/imported/coach.png-342be2ba70d2eaf71098286417fbd975.ctex"]
 
 [params]
 

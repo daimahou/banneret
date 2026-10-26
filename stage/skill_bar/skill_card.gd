@@ -2,9 +2,9 @@ class_name SkillCard
 extends TextureButton
 # One slot of the skill bar: empty, or a skill shown as a card. It shows what the bar tells it.
 
-const CARD_TEXTURE := preload("res://art/ui/skill_slot.png")
-const EMPTY_TEXTURE := preload("res://art/ui/skill_slot_empty.png")
-const PLACEHOLDER_ICON := preload("res://art/ui/skill_placeholder_icon.png")
+const CARD_TEXTURE := preload("res://stage/skill_bar/skill_slot.png")
+const EMPTY_TEXTURE := preload("res://stage/skill_bar/skill_slot_empty.png")
+const PLACEHOLDER_ICON := preload("res://stage/skill_bar/skill_placeholder_icon.png")
 const COOLDOWN_MODULATE := Color(1.0, 1.0, 1.0, 0.5)
 const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
 const WIPE_STEPS := 64

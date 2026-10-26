@@ -7,7 +7,7 @@ const FLIP_DURATION := 0.2
 const FLIP_STAGGER := 0.1
 const FLIP_TRANSITION := Tween.TRANS_SINE
 
-const BATTLEGROUND: Texture2D = preload("res://art/stage/battleground.png")
+const BATTLEGROUND: Texture2D = preload("res://stage/scenery/battleground.png")
 
 const VISITATION_HIGHLIGHTS: Dictionary[MissionModel.Visitation, Ink.Highlight] = {
 	MissionModel.Visitation.CLOSED: Ink.Highlight.DIMMED,

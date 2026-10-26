@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b0tkwd3a3r2i7"
-path="res://.godot/imported/medallion.png-b9ca94ca92508da561566b9f6923610e.ctex"
+path="res://.godot/imported/medallion.png-44ad5397332c4cbeb00f46633ab44309.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/timeline/medallion.png"
-dest_files=["res://.godot/imported/medallion.png-b9ca94ca92508da561566b9f6923610e.ctex"]
+source_file="res://stage/timeline/medallion.png"
+dest_files=["res://.godot/imported/medallion.png-44ad5397332c4cbeb00f46633ab44309.ctex"]
 
 [params]
 

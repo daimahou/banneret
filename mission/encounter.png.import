@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dvteodka3w5np"
-path="res://.godot/imported/encounter.png-9fee78be0c32d6440174a1668b4f2d8c.ctex"
+path="res://.godot/imported/encounter.png-eff488e0c3aea951b133ed6aada82ca4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/map/encounter.png"
-dest_files=["res://.godot/imported/encounter.png-9fee78be0c32d6440174a1668b4f2d8c.ctex"]
+source_file="res://mission/encounter.png"
+dest_files=["res://.godot/imported/encounter.png-eff488e0c3aea951b133ed6aada82ca4.ctex"]
 
 [params]
 

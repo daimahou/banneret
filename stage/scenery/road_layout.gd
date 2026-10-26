@@ -2,9 +2,9 @@ class_name RoadLayout
 extends RefCounted
 
 const ROAD_DASH_TEXTURES: Array[Texture2D] = [
-	preload("res://art/map/road_dash_a.png"),
-	preload("res://art/map/road_dash_b.png"),
-	preload("res://art/map/road_dash_c.png"),
+	preload("res://stage/scenery/road_dash_a.png"),
+	preload("res://stage/scenery/road_dash_b.png"),
+	preload("res://stage/scenery/road_dash_c.png"),
 ]
 
 const ROAD_DASH_GAP := 16.0

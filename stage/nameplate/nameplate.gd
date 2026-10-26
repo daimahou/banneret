@@ -6,8 +6,8 @@ enum Pip { EMPTY, HELD, LOST, GAINED }
 
 const DAMAGE_DRAIN_DURATION := 0.3
 
-const EMPTY_PIP_TEXTURE := preload("res://art/ui/ap_pip.png")
-const FULL_PIP_TEXTURE := preload("res://art/ui/ap_pip_full.png")
+const EMPTY_PIP_TEXTURE := preload("res://stage/nameplate/ap_pip.png")
+const FULL_PIP_TEXTURE := preload("res://stage/nameplate/ap_pip_full.png")
 
 # Null while the nameplate is unused.
 var character: Character

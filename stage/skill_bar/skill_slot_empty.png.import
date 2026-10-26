@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjae4jqetpse3"
-path="res://.godot/imported/skill_slot_empty.png-67488c56a84de9b8703c4d80da884227.ctex"
+path="res://.godot/imported/skill_slot_empty.png-801717f46f812ed6da82ab38f644ea06.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/skill_slot_empty.png"
-dest_files=["res://.godot/imported/skill_slot_empty.png-67488c56a84de9b8703c4d80da884227.ctex"]
+source_file="res://stage/skill_bar/skill_slot_empty.png"
+dest_files=["res://.godot/imported/skill_slot_empty.png-801717f46f812ed6da82ab38f644ea06.ctex"]
 
 [params]
 

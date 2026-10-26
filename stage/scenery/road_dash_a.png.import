@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0q2lrv018r5o"
-path="res://.godot/imported/road_dash_a.png-276c9a33baaf3e94b0f1fe95f0b7ad1a.ctex"
+path="res://.godot/imported/road_dash_a.png-be20be5a001d7f6c0fcb14d480ba9636.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/map/road_dash_a.png"
-dest_files=["res://.godot/imported/road_dash_a.png-276c9a33baaf3e94b0f1fe95f0b7ad1a.ctex"]
+source_file="res://stage/scenery/road_dash_a.png"
+dest_files=["res://.godot/imported/road_dash_a.png-be20be5a001d7f6c0fcb14d480ba9636.ctex"]
 
 [params]
 

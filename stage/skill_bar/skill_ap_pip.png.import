@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dcysyklvfxxx1"
-path="res://.godot/imported/skill_ap_pip.png-60da5b5b007a9030500743630c892efa.ctex"
+path="res://.godot/imported/skill_ap_pip.png-e830414257e2601f32a877b448af137d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/skill_ap_pip.png"
-dest_files=["res://.godot/imported/skill_ap_pip.png-60da5b5b007a9030500743630c892efa.ctex"]
+source_file="res://stage/skill_bar/skill_ap_pip.png"
+dest_files=["res://.godot/imported/skill_ap_pip.png-e830414257e2601f32a877b448af137d.ctex"]
 
 [params]
 

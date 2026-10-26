@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dpl3o11m4qohn"
-path="res://.godot/imported/poster_top.png-3b8b9ea956ca456d26a8c6f2cbbeafce.ctex"
+path="res://.godot/imported/poster_top.png-03aa30689f7514989ab6ea184f2ce574.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/offer/poster_top.png"
-dest_files=["res://.godot/imported/poster_top.png-3b8b9ea956ca456d26a8c6f2cbbeafce.ctex"]
+source_file="res://stage/offer/poster_top.png"
+dest_files=["res://.godot/imported/poster_top.png-03aa30689f7514989ab6ea184f2ce574.ctex"]
 
 [params]
 
