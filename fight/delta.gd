@@ -43,10 +43,10 @@ func resolve_action(resolved: Action) -> void:
 	changes.append(change)
 
 
-func move_action(moved: Action, resolve_tick: int) -> void:
+func move_action(moved: Action, moved_tick: int) -> void:
 	var change := Change.MoveAction.new()
 	change.action_id = moved.id
-	change.resolve_tick = resolve_tick
+	change.resolve_tick = moved_tick
 	changes.append(change)
 
 

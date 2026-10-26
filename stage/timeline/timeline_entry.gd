@@ -35,17 +35,10 @@ static func create_entries(fight_tick: int, actions: Array[Action], moves: Dicti
 			entries.append(knot)
 		for hung in actions:
 			if hung.resolve_tick == entry_tick:
-				var medallion := TimelineEntry.new()
-				medallion.tick = entry_tick
-				medallion.action = hung
-				medallion.portrait = hung.actor.data.portrait
-				entries.append(medallion)
+				entries.append(_create_medallion(entry_tick, hung))
 		for moved in moves:
 			if moves[moved] == entry_tick:
-				var ghost := TimelineEntry.new()
-				ghost.tick = entry_tick
-				ghost.action = moved
-				ghost.portrait = moved.actor.data.portrait
+				var ghost := _create_medallion(entry_tick, moved)
 				ghost.is_ghost = true
 				ghost.is_moved = true
 				entries.append(ghost)
@@ -62,3 +55,11 @@ func get_key() -> String:
 	if is_knot():
 		return "knot %d" % tick
 	return "%s %d" % ["moved" if is_moved else "action", action.id]
+
+
+static func _create_medallion(entry_tick: int, hung: Action) -> TimelineEntry:
+	var medallion := TimelineEntry.new()
+	medallion.tick = entry_tick
+	medallion.action = hung
+	medallion.portrait = hung.actor.data.portrait
+	return medallion

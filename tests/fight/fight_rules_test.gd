@@ -101,7 +101,7 @@ func test_a_stagger_moves_the_target_s_pending_actions_after_those_already_on_th
 	_add_stagger(bash, 2)
 	bash = _schedule(fight_model, bash)
 	var first := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 3))
-	var second := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 4))
+	var second := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 5))
 	var waiting := _schedule(fight_model, _create_choice(fight_model, fight_model.heroes[1], 5))
 	var moved: Array[Action] = []
 	fight_model.action_moved.connect(moved.append)
@@ -111,7 +111,7 @@ func test_a_stagger_moves_the_target_s_pending_actions_after_those_already_on_th
 	assert_array(moved).contains_exactly([first, second])
 	assert_array(fight_model.timeline).contains_exactly([waiting, first, second])
 	assert_int(first.resolve_tick).is_equal(5)
-	assert_int(second.resolve_tick).is_equal(6)
+	assert_int(second.resolve_tick).is_equal(7)
 
 
 func test_a_lethal_stagger_moves_nothing() -> void:

@@ -97,8 +97,8 @@ func test_an_action_the_preview_moves_hangs_a_moved_ghost_where_it_would_land() 
 
 	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, bash)
 
-	var expected := ["knot", "knot", "bash NORMAL", "knot", "pending NORMAL", "knot", "knot", "pending moved ghost NORMAL"]
-	expected.append_array(["knot", "knot", "knot"])
+	var expected := ["knot", "knot", "bash NORMAL", "knot", "pending NORMAL", "knot", "knot"]
+	expected.append_array(["pending moved ghost NORMAL", "knot", "knot", "knot"])
 	assert_array(_describe(entries, {bash: "bash", pending: "pending"})).contains_exactly(expected)
 	var keys := entries.map(func(entry: TimelineEntry) -> String: return entry.get_key())
 	assert_array(keys).contains_exactly_in_any_order(_get_unique(keys))

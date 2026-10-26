@@ -14,13 +14,15 @@ const MEDALLION_SPACING := 148.0
 const TIE_CLEARANCE := 24.0
 
 const GHOST_ALPHA := 0.4
+# A moved ghost must read at a glance: it is where an action will be, not a choice still open.
+const MOVED_ALPHA := 0.75
 
 const ARROW_WIDTH := 6.0
 const ARROW_GAP := 8.0
 # How far an arrow sags below its lower end, per unit of the length it runs: a longer one runs under a shorter.
 const ARROW_SAG := 0.25
 const ARROW_POINTS := 24
-const ARROWHEAD_LENGTH := 24.0
+const ARROWHEAD_LENGTH := 28.0
 const ARROWHEAD_ANGLE := PI / 6.0
 
 const MOVE_DURATION := 0.3
@@ -218,6 +220,8 @@ func _add_entry_node(entry: TimelineEntry, x: float) -> Node2D:
 
 
 static func _get_alpha(entry: TimelineEntry) -> float:
+	if entry.is_moved:
+		return MOVED_ALPHA
 	return GHOST_ALPHA if entry.is_ghost or entry.style == TimelineEntry.Style.FADED else 1.0
 
 
@@ -244,20 +248,38 @@ func _draw_arrows() -> void:
 			_draw_arrow(source.get_ring_bottom() + gap, ghost.get_ring_bottom() + gap, ghost.modulate.a)
 
 
-# A curve sagging below both ends, with its head at `to`. A quadratic curve reaches only halfway to its control point,
-# so the control point sits twice the sag below.
+# Drawn as strokes that never overlap, so the alpha stays even.
 func _draw_arrow(from: Vector2, to: Vector2, alpha: float) -> void:
-	var control := (from + to) / 2.0
-	control.y = maxf(from.y, to.y) + 2.0 * ARROW_SAG * absf(to.x - from.x)
+	var control := Vector2((from.x + to.x) / 2.0, _get_arrow_control_y(from, to))
+	var direction := (to - control).normalized()
+	var head_depth := ARROWHEAD_LENGTH * cos(ARROWHEAD_ANGLE)
 	var points := PackedVector2Array()
 	for index in ARROW_POINTS + 1:
 		var weight := index / float(ARROW_POINTS)
-		points.append(from.lerp(control, weight).lerp(control.lerp(to, weight), weight))
+		var point := from.lerp(control, weight).lerp(control.lerp(to, weight), weight)
+		if point.distance_to(to) > head_depth:
+			points.append(point)
+	points.append(to - direction * head_depth)
 	var color := Color(StaggerEffect.STAGGER_COLOR, alpha)
 	_arrows.draw_polyline(points, color, ARROW_WIDTH, true)
-	var back := (control - to).normalized() * ARROWHEAD_LENGTH
-	_arrows.draw_line(to, to + back.rotated(ARROWHEAD_ANGLE), color, ARROW_WIDTH, true)
-	_arrows.draw_line(to, to + back.rotated(-ARROWHEAD_ANGLE), color, ARROW_WIDTH, true)
+	var wing := direction * ARROWHEAD_LENGTH
+	var head := PackedVector2Array([to, to - wing.rotated(ARROWHEAD_ANGLE), to - wing.rotated(-ARROWHEAD_ANGLE)])
+	_arrows.draw_colored_polygon(head, color)
+
+
+# The control point's height for an arrow that sags below both ends, the deeper the longer it runs, and passes under
+# every medallion between them. Its control point sits midway along, so the curve crosses a medallion's x at the
+# weight of that x between the ends; and it reaches only halfway to its control point.
+func _get_arrow_control_y(from: Vector2, to: Vector2) -> float:
+	var control_y := maxf(from.y, to.y) + 2.0 * ARROW_SAG * absf(to.x - from.x)
+	for node in _entry_nodes.values():
+		if node is TimelineMedallion:
+			var bottom := (node as TimelineMedallion).get_ring_bottom() + Vector2(0.0, ARROW_GAP)
+			var weight := inverse_lerp(from.x, to.x, bottom.x)
+			if weight > 0.0 and weight < 1.0:
+				var ends_y := (1.0 - weight) * (1.0 - weight) * from.y + weight * weight * to.y
+				control_y = maxf(control_y, (bottom.y - ends_y) / (2.0 * weight * (1.0 - weight)))
+	return control_y
 
 
 # Stops the tween already moving the node, if any.
