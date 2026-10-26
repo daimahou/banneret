@@ -14,7 +14,7 @@ func dispose() -> void:
 	pass
 
 
-# Null to pass. A coroutine, so the awaits on it are not redundant: this one passes after a frame.
+# Null to pass. A coroutine, so the awaits on it are not redundant.
 func get_next_action(_fight_model: FightModel) -> Action:
 	await (Engine.get_main_loop() as SceneTree).process_frame
 	return null

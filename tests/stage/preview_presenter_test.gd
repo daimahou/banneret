@@ -206,7 +206,7 @@ func _get_unique(values: Array) -> Array:
 	return unique
 
 
-# Returns the action the fight model holds for the choice.
+# Not the choice itself: the action the fight model holds for it.
 func _schedule(fight_model: FightModel, choice: Action) -> Action:
 	var added: Array[Action] = []
 	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)

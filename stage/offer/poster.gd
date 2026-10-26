@@ -42,7 +42,7 @@ func _gui_input(event: InputEvent) -> void:
 		pressed.emit()
 
 
-# Waits out `delay` above the screen, on the drop's first frame.
+# Through `delay` it holds the drop's first frame, above the screen, rather than showing where it hangs.
 func play_drop(delay: float) -> void:
 	_animation_player.play(&"drop")
 	_animation_player.seek(0.0, true)

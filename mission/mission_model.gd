@@ -38,7 +38,7 @@ func travel_to(map_node: MapNode) -> void:
 		_resolved_offer = null if drawn.is_empty() else drawn[0]
 
 
-# The offers awaiting the player's pick; empty once the event resolved.
+# Empty once the event resolved.
 func get_offers() -> Array[Offer]:
 	return _offers
 
@@ -51,7 +51,7 @@ func pick_offer(offer: Offer) -> void:
 	_offers.clear()
 
 
-# What the current map node's event resolved with; null while offers are pending or when the draw was empty.
+# Null while offers are pending, or when the draw was empty.
 func get_resolved_offer() -> Offer:
 	return _resolved_offer
 

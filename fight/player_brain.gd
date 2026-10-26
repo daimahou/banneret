@@ -1,7 +1,7 @@
 class_name PlayerBrain
 extends Brain
-# The heroes, played by the player: the fight stops for a free hero, or when the player requests it, and waits on the player's choice or pass.
-# Given a stage, it shows the choices there and takes the player's input from it.
+# The heroes' brain when the player plays them. It stops the fight for a free hero, or on the player's request, and waits for the player's choice or pass.
+# Given a stage, it shows the choices there and reads the player's input through a PlayerInput.
 
 signal _decided(action: Action)
 

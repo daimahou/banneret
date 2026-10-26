@@ -49,7 +49,7 @@ func flip_to_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 	update_highlights()
 
 
-# The battle illustration is centred on the scenery, each flat showing the part under it; a bigger one is cropped.
+# A battle illustration bigger than the scenery is cropped, centred.
 func flip_to_battle() -> void:
 	_is_mission_map_shown = false
 	var texture_size := BATTLEGROUND.get_size()

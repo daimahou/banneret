@@ -17,7 +17,7 @@ const PUPPET_SLIDE_DURATION := 0.8
 # Each marcher sets off up to this late, at random; too late and the one behind would catch up.
 const MARCH_STAGGER := 0.05
 
-# A blow: the actor's puppet lunges to this short of its target, then goes home; a pause before the next one. In design units and seconds.
+# A blow: the actor's puppet lunges until `LUNGE_GAP` from its target, then goes home; a pause before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
 const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35

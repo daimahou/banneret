@@ -100,7 +100,7 @@ which keeps the role and the one gotcha:
 **One comment per unit of declarations.** Group them into logical units, a blank line between units, and the unit carries the comment. `Stage`'s blow is one unit, not four declarations:
 
 ```gdscript
-# A blow: the actor's puppet lunges to this short of its target, then goes home; a pause before the next one. In design units and seconds.
+# A blow: the actor's puppet lunges until `LUNGE_GAP` from its target, then goes home; a pause before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
 const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
