@@ -114,21 +114,20 @@ func test_a_stagger_moves_the_target_s_pending_actions_after_those_already_on_th
 	assert_int(second.resolve_tick).is_equal(7)
 
 
-func test_a_lethal_stagger_moves_nothing() -> void:
+func test_a_lethal_stagger_still_moves_the_actions_the_fall_cancels() -> void:
 	var fight_model := _create_fight_model()
 	var bash := _create_choice(fight_model, fight_model.heroes[0], 2, 10)
 	_add_stagger(bash, 2)
 	bash = _schedule(fight_model, bash)
 	var doomed := _schedule(fight_model, _create_choice(fight_model, fight_model.enemies[0], 3))
-	var moved: Array[Action] = []
 	var cancelled: Array[Action] = []
-	fight_model.action_moved.connect(moved.append)
 	fight_model.action_cancelled.connect(cancelled.append)
 
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, bash))
 
-	assert_array(moved).is_empty()
 	assert_array(cancelled).contains_exactly([doomed])
+	assert_int(fight_model.get_moved_tick(doomed.id)).is_equal(5)
+	assert_array(fight_model.timeline).is_empty()
 
 
 func test_a_stagger_on_a_target_with_nothing_pending_only_deals_its_damage() -> void:

@@ -140,6 +140,22 @@ func test_an_action_the_preview_moves_then_cancels_hangs_a_crossed_moved_ghost()
 	assert_array(_describe(entries, {bash: "bash", pending: "pending", shown: "shown"})).contains_exactly(expected)
 
 
+func test_a_lethal_stagger_hangs_the_target_s_actions_moved_and_crossed() -> void:
+	var fight_model := _create_fight_model()
+	var enemy := fight_model.enemies[0]
+	var bash := _create_choice(fight_model.heroes[0], enemy, 2, 10)
+	_add_stagger(bash, 2)
+	bash = _schedule(fight_model, bash)
+	var doomed := _schedule(fight_model, _create_choice(enemy, fight_model.heroes[0], 3, 1))
+	var preview_model := _run(fight_model, bash)
+
+	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, bash)
+
+	var expected := ["knot", "knot", "bash NORMAL", "knot", "doomed CROSSED", "knot", "knot"]
+	expected.append_array(["doomed ghost CROSSED", "knot", "knot", "knot"])
+	assert_array(_describe(entries, {bash: "bash", doomed: "doomed"})).contains_exactly(expected)
+
+
 func _describe(entries: Array[TimelineEntry], names: Dictionary[Action, String]) -> Array[String]:
 	var described: Array[String] = []
 	for entry in entries:

@@ -84,7 +84,7 @@ static func add_damage(fight_model: FightModel, delta: Delta, character: Charact
 
 static func add_stagger(fight_model: FightModel, delta: Delta, character: Character, ticks: int) -> void:
 	for action in fight_model.timeline:
-		if action.actor == character and not delta.is_removing_action(action):
+		if action.actor == character:
 			delta.move_action(action, action.resolve_tick + ticks)
 
 
