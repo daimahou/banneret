@@ -4,8 +4,8 @@ id: 1.2-1.9
 requires:
   - "[[Simulated preview]]"
 started: 2026-10-25
-finished:
-hours: 0.9
+finished: 2026-10-26
+hours: 1.8
 parent: "[[Warrior kit]]"
 ---
 # Done when
