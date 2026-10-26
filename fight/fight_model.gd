@@ -20,7 +20,6 @@ var enemies: Array[Character] = []
 # The pending actions, in the order they resolve.
 var timeline: Array[Action] = []
 var next_action_id := 0
-# Since the fight started, or since the last sync.
 var history: Array[Delta] = []
 
 
@@ -39,7 +38,7 @@ func apply(delta: Delta) -> void:
 	changed.emit()
 
 
-# Becomes a copy of `fight_model`, with an empty history.
+# The history is not copied: a preview's history holds only what the preview plays out.
 func sync(fight_model: FightModel) -> void:
 	tick = fight_model.tick
 	next_action_id = fight_model.next_action_id
@@ -70,7 +69,7 @@ func get_timeline_index(actor_id: int, resolve_tick: int) -> int:
 	return timeline.size() if index == -1 else index
 
 
-# Null for an id not in this fight, -1 included.
+# An id of -1, which an action uses for no target, gives null.
 func get_character(character_id: int) -> Character:
 	for character in heroes + enemies:
 		if character.id == character_id:
@@ -78,7 +77,6 @@ func get_character(character_id: int) -> Character:
 	return null
 
 
-# Null unless it is pending.
 func get_action(action_id: int) -> Action:
 	for action in timeline:
 		if action.id == action_id:
@@ -94,7 +92,6 @@ func has_cancelled(action_id: int) -> bool:
 	return history.any(func(delta: Delta) -> bool: return delta.is_cancelling_action(action_id))
 
 
-# -1 if the action was never moved.
 func get_moved_tick(action_id: int) -> int:
 	var moved_tick := -1
 	for delta in history:
@@ -104,7 +101,6 @@ func get_moved_tick(action_id: int) -> int:
 	return moved_tick
 
 
-# Over the history.
 func get_lowest_ap(character_id: int) -> int:
 	var ap := get_character(character_id).ap
 	var lowest := ap

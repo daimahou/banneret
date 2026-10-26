@@ -74,7 +74,7 @@ static func get_resolve_delta(fight_model: FightModel, action: Action) -> Delta:
 
 
 static func add_damage(fight_model: FightModel, delta: Delta, character: Character, damage: int) -> void:
-	var health := delta.get_health(character)
+	var health := delta.get_resolved_health(character)
 	var dealt := mini(damage, health)
 	delta.add_health(character, -dealt)
 	if dealt == health:
@@ -87,7 +87,7 @@ static func add_stagger(fight_model: FightModel, delta: Delta, character: Charac
 			delta.move_action(action, action.resolve_tick + ticks)
 
 
-# The cancelled actions give no AP back.
+# A fallen character's cancelled actions give no AP back.
 static func _add_fall(fight_model: FightModel, delta: Delta, character: Character) -> void:
 	for action in fight_model.timeline:
 		if delta.is_removing_action(action):

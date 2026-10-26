@@ -56,8 +56,7 @@ func cancel_action(cancelled: Action) -> void:
 	changes.append(change)
 
 
-# Once this delta is applied.
-func get_health(character: Character) -> int:
+func get_resolved_health(character: Character) -> int:
 	var health := character.health
 	for change in changes:
 		if change is Change.Health and (change as Change.Health).character_id == character.id:
@@ -65,7 +64,6 @@ func get_health(character: Character) -> int:
 	return health
 
 
-# Spent AP counts below zero.
 func get_ap_gain(character_id: int) -> int:
 	var gain := 0
 	for change in changes:
@@ -85,7 +83,6 @@ func is_resolving_action(action_id: int) -> bool:
 	return false
 
 
-# -1 if this delta does not move the action.
 func get_moved_tick(action_id: int) -> int:
 	var moved_tick := -1
 	for change in changes:

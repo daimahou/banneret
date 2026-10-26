@@ -17,7 +17,6 @@ var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
 var _is_stopped := false
-# The shown skill as the preview plays it out; null for none.
 var _ghost_action: Action
 
 # A requested stop lasts until a pass.
@@ -213,7 +212,7 @@ func hover_action(action: Action) -> void:
 		_show_choices()
 
 
-# Left to right on stage: the enemies stand front first, the front towards the middle.
+# The armed skill's targets, left to right on stage: the enemies stand front first, the front towards the middle.
 func get_targets() -> Array[Character]:
 	if armed_skill == null:
 		return []
@@ -232,7 +231,6 @@ func is_ready(character: Character) -> bool:
 	return _is_waiting and _fight_model.get_side(character) == side and FightRules.is_ready(_fight_model, character)
 
 
-# Whose skills the bar shows.
 func get_inspected_character() -> Character:
 	if hovered_action != null:
 		return hovered_action.actor

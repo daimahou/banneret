@@ -1,6 +1,6 @@
 class_name Change
 extends RefCounted
-# One difference a delta makes to the fight; each kind is an inner class that applies itself.
+# One difference a delta makes to the fight.
 # A change names characters and actions by id, so the same delta applies to the fight or to its preview.
 
 
@@ -22,7 +22,6 @@ class Health:
 			fight_model.character_fell.emit(character)
 
 
-# Holds the action's fields, not the action: the fight model makes its own, with the next id.
 class AddAction:
 	extends Change
 

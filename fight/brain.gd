@@ -5,7 +5,6 @@ extends RefCounted
 var side := FightModel.Side.HERO
 
 
-# Whether the fight should ask this brain even with an action due, so it can stop the fight between two blows.
 func is_stop_requested() -> bool:
 	return false
 
