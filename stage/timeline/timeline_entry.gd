@@ -11,7 +11,6 @@ var is_beat := false
 var portrait: Texture2D
 # An action not chosen yet, hung faded where it would resolve.
 var is_ghost := false
-# A ghost where a preview would move a pending action.
 var is_moved := false
 var style := Style.NORMAL
 

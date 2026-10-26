@@ -32,7 +32,7 @@ var _shown_entries: Array[TimelineEntry] = []
 var _entry_nodes: Dictionary[String, Node2D] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _highlighted_actors: Array[Character] = []
-# By moved ghost. A ghost going keeps its arrow until it is freed.
+# A ghost going keeps its arrow until it is freed.
 var _arrow_sources: Dictionary[TimelineMedallion, TimelineMedallion] = {}
 
 @onready var _rope: Line2D = $Rope
@@ -45,7 +45,6 @@ func _ready() -> void:
 	_arrows.draw.connect(_draw_arrows)
 
 
-# The arrows follow their medallions as they move.
 func _process(_delta: float) -> void:
 	if not _arrow_sources.is_empty():
 		_arrows.queue_redraw()
