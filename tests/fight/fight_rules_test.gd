@@ -342,7 +342,7 @@ func _add_stagger(choice: Action, ticks: int) -> void:
 	choice.skill.effects.append(stagger)
 
 
-# Puts the choice on the timeline, and returns the action the fight model holds for it.
+# Returns the action the fight model holds for the choice.
 func _schedule(fight_model: FightModel, choice: Action) -> Action:
 	var added: Array[Action] = []
 	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)
