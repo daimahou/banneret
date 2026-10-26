@@ -1,6 +1,6 @@
 class_name RandomBrain
 extends Brain
-# Picks a random usable skill for the first free character, then a random target for it, from a seeded generator, so a fight it plays can be played again.
+# Plays a side at random, from a seeded generator, so a fight it plays can be played again.
 
 var _rng := RandomNumberGenerator.new()
 

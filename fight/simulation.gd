@@ -2,7 +2,6 @@ class_name Simulation
 # The fight played out on a preview of it, no brains, until a given action lands.
 
 
-# The action: a pending one, or a choice not yet made, which takes the id it would be given. A choice without a target is only chosen: it cannot resolve.
 static func run(preview_model: FightModel, fight_model: FightModel, action: Action) -> void:
 	preview_model.sync(fight_model)
 	if action not in fight_model.timeline:

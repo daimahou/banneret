@@ -3,12 +3,11 @@ extends RefCounted
 
 static var _next_id := 0
 
-# Unique across the run; a preview's copy shares it with its original.
 var id: int
 var data: CharacterData
 var health: int
 
-# Both carry from one fight to the next. Cooldowns are the beats left before each skill is ready again.
+# Both carry from one fight to the next.
 var ap: int
 var skill_cooldowns: Dictionary[SkillData, int] = {}
 

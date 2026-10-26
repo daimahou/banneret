@@ -1,7 +1,6 @@
 class_name Action
 extends RefCounted
 
-# Given by the fight model as it goes on the timeline; -1 before.
 var id := -1
 var actor: Character
 var skill: SkillData

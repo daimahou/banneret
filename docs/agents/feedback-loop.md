@@ -8,6 +8,16 @@
 
 A `SceneTree` script that calls `quit(0)` exits 0 and one that calls `quit(100)` exits 100 — checked against this project, headless, with `DisplayServer.get_name()` returning `headless`.
 
+## Before each commit
+
+**Every comment the commit adds is checked.** List them:
+
+```bash
+git diff --cached -- '*.gd' | grep -E '^\+\s*#'
+```
+
+Tag each one header, null or rule, as [[gdscript conventions#Comments]] defines them. One that fits no tag is deleted.
+
 ## The tests
 
 **gdUnit4 runs the suite**, from `addons/gdUnit4/`, over every `_test.gd` under `tests/`:

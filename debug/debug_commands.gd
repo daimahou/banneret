@@ -3,7 +3,6 @@ extends Node
 # The console's debug commands. They drive the game from outside, through what it exposes; nothing in the game knows of them. Gone from a release build.
 
 
-# While on, the heroes play themselves, in this fight and the next ones.
 var _is_auto_combat_on := false
 
 
@@ -45,7 +44,6 @@ func toggle_auto_combat() -> void:
 		await set_player_brain(run_controller.fight_controller, _get_stage(run_controller), not _is_auto_combat_on)
 
 
-# A waiting player brain, swapped out, hands on the random brain's choice as its own, or passes, so the fight plays on.
 func set_player_brain(fight_controller: FightController, stage: Stage, is_on: bool) -> void:
 	var player_brain := fight_controller.hero_brain as PlayerBrain
 	if is_on:
@@ -68,7 +66,6 @@ func set_player_brain(fight_controller: FightController, stage: Stage, is_on: bo
 	player_brain.pick(action.target)
 
 
-# The side falls between two steps of the fight, as if struck down: at once while the player chooses, which then passes; else as the blow playing lands.
 func knock_out(fight_controller: FightController, side: FightModel.Side) -> void:
 	var player_brain := fight_controller.hero_brain as PlayerBrain
 	if player_brain == null or not player_brain.is_waiting():

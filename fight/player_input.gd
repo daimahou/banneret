@@ -4,7 +4,6 @@ extends Node
 
 signal stop_pressed
 signal pass_pressed
-# Stop or Pass, by the button's own label.
 signal stop_button_pressed
 signal hero_cycled(step: int)
 signal number_pressed(index: int)
@@ -31,7 +30,6 @@ func _ready() -> void:
 	_stage.skill_bar.stop_pressed.connect(stop_button_pressed.emit)
 
 
-# The skill cards take the mouse motion, so a cursor flicked from a puppet straight onto the bar would leave it hovered.
 func _on_skill_hovered(skill: SkillData) -> void:
 	character_hovered.emit(null)
 	action_hovered.emit(null)

@@ -1,7 +1,7 @@
 # Banneret — assistant rules
 
 > [!important] Golden rule: code explains itself
-> Names and structure carry every meaning. A comment holds only what code cannot show: a game rule, a reason, a gotcha, what null means. A comment that explains what the code does is never written: rename or restructure instead. Check every comment before committing.
+> Names and structure carry every meaning. A comment holds only what code cannot show: a class's role, what null means, a game rule. A comment that explains what the code does, or why a line is there, is never written: rename or restructure instead. Check every comment before committing, against [[gdscript conventions#Comments]].
 
 - `docs/` (this folder) = Obsidian vault: design docs, tickets, plans. Godot project = `../`.
 - **Brevity.** Docs are short, bullet-first, to the point. No filler, no restating. The user must be able to read and edit them quickly.

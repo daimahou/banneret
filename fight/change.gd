@@ -1,6 +1,6 @@
 class_name Change
 extends RefCounted
-# One difference a delta makes to the fight; each kind is an inner class that applies itself.
+# One difference a delta makes to the fight.
 # A change names characters and actions by id, so the same delta applies to the fight or to its preview.
 
 
@@ -22,13 +22,11 @@ class Health:
 			fight_model.character_fell.emit(character)
 
 
-# The fight model holds its own action, with the next id.
 class AddAction:
 	extends Change
 
 	var actor_id: int
 	var skill: SkillData
-	# -1 for no target.
 	var target_id: int
 	var resolve_tick: int
 
@@ -86,7 +84,7 @@ class MoveAction:
 
 	func apply(fight_model: FightModel) -> void:
 		var action := fight_model.get_action(action_id)
-		# Null when a fall in the same delta cancelled it: the move stays in the history, for a preview to show.
+		# Null when a fall in the same delta cancelled it.
 		if action == null:
 			return
 		fight_model.timeline.erase(action)

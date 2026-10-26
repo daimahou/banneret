@@ -1,7 +1,6 @@
 class_name TimelineMedallion
 extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
-# Highlighted, its ring takes the hover ink; a cross over its face marks it cancelled.
 
 const RING_TEXTURE := preload("res://art/timeline/medallion.png")
 const MOVED_RING_TEXTURE := preload("res://art/timeline/medallion_moved.png")
@@ -29,12 +28,10 @@ func _ready() -> void:
 	_knot.rotation = knot_rotation
 
 
-# The ring's rectangle, not its pixels.
 func has_point(global_point: Vector2) -> bool:
 	return _ring.get_rect().has_point(_ring.to_local(global_point))
 
 
-# In its own space.
 func get_ring_bottom() -> Vector2:
 	var ring_rect := _ring.get_rect()
 	return _ring.position + Vector2(ring_rect.get_center().x, ring_rect.end.y)

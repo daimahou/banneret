@@ -9,7 +9,6 @@ const ENCOUNTER_ROW := 2
 
 const PATH_COUNT := 3
 
-# Seeded offsets the view draws with, in design units.
 const NODE_JITTER := 60.0
 const EDGE_WOBBLE := 80.0
 
@@ -104,7 +103,6 @@ static func _fill_events(mission_map: MissionMap, mission_index: int, map_seed: 
 		map_node.event_type = _pick_event_type(map_node, mission_index, rng)
 
 
-# The content rules, in order: the first that matches picks the event.
 static func _pick_event_type(map_node: MapNode, _mission_index: int, rng: RandomNumberGenerator) -> MapNode.EventType:
 	if map_node.column == ENCOUNTER_COLUMN:
 		return MapNode.EventType.ENCOUNTER

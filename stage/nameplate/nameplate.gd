@@ -1,12 +1,9 @@
 class_name Nameplate
 extends Control
-# A character's portrait and name, a health fill and `health/max`, and a pip for each AP it can hold. Each readout shows what it is told, in a style.
-# A new character flips the nameplate like a flat: it swaps while edge-on, and hides without one.
+# A character's portrait, name, health and AP. Each readout shows what it is told, in a style.
 
-# Held, lost and gained show full; lost and gained pulse.
 enum Pip { EMPTY, HELD, LOST, GAINED }
 
-# The yellow behind the fill drains down to it, in seconds.
 const DAMAGE_DRAIN_DURATION := 0.3
 
 const EMPTY_PIP_TEXTURE := preload("res://art/ui/ap_pip.png")
@@ -15,7 +12,6 @@ const FULL_PIP_TEXTURE := preload("res://art/ui/ap_pip_full.png")
 # Null while the nameplate is unused.
 var character: Character
 
-# The readouts wait while true, so they never show on the last character's face.
 var _is_awaiting_swap := false
 var _health := 0
 var _max_health := 1
@@ -29,10 +25,8 @@ var _pip_pulses: Array[PreviewPulse] = []
 
 @onready var _portrait: TextureRect = $Portrait
 @onready var _name: Label = $Name
-# Both span the empty bar; their right anchor is the share of health they show.
 @onready var _damage: Control = $Empty/Damage
 @onready var _fill: Control = $Empty/Fill
-# Grows both ways past the bar's height, so its line stays centred on it.
 @onready var _health_label: Label = $Empty/HealthLabel
 @onready var _health_pulse := PreviewPulse.new(_health_label)
 
@@ -43,7 +37,7 @@ func _ready() -> void:
 		_pip_pulses.append(PreviewPulse.new(pip))
 
 
-# Null hides the nameplate. Returns whether the nameplate flips, `delay` from now.
+# Null hides the nameplate.
 func show_character(shown_character: Character, delay: float) -> bool:
 	if shown_character == character:
 		return false
@@ -71,15 +65,12 @@ func show_health(health: int, max_health: int, style := PreviewPulse.Style.NONE)
 		_show_health()
 
 
-# One state for each AP the character can hold.
 func show_pips(states: Array[Pip]) -> void:
 	_pip_states = states
 	if not _is_awaiting_swap:
 		_show_pips()
 
 
-# Shown in a style, the yellow behind the fill holds, and any drain under way runs on; shown plain, it drains down to
-# the fill, or rises to it at once.
 func _show_health() -> void:
 	var share := clampf(_health / float(_max_health), 0.0, 1.0)
 	_fill.anchor_right = share
@@ -113,7 +104,6 @@ func _show_pips() -> void:
 		_pip_pulses[index].show_style(style)
 
 
-# The last character's yellow goes.
 func _show_content(shown_character: Character) -> void:
 	_is_awaiting_swap = false
 	visible = shown_character != null

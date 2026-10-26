@@ -3,7 +3,6 @@ extends HBoxContainer
 
 signal map_node_pressed(map_node: MapNode)
 
-# A flat's flip, and the time from one flat starting to the next: below the duration, flips overlap.
 const FLIP_DURATION := 0.2
 const FLIP_STAGGER := 0.1
 const FLIP_TRANSITION := Tween.TRANS_SINE
@@ -42,7 +41,6 @@ func show_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 	update_highlights()
 
 
-# Returns once the last flat has flipped.
 func flip_to_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 	_set_mission(mission_model, map_seed)
 	await _flip_flats(func(flat: Flat) -> void: flat.show_column(_mission_map_layout, _flats.find(flat)))
@@ -50,8 +48,6 @@ func flip_to_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 	update_highlights()
 
 
-# The battle illustration is centred on the scenery, each flat showing the part under it; a bigger one is cropped.
-# Returns once the last flat has flipped.
 func flip_to_battle() -> void:
 	_is_mission_map_shown = false
 	var texture_size := BATTLEGROUND.get_size()
@@ -61,19 +57,16 @@ func flip_to_battle() -> void:
 	await _flip_flats(func(flat: Flat) -> void: flat.show_battle(BATTLEGROUND, Rect2(origin + flat.position, flat.size)))
 
 
-# Map nodes are pickable only while input is enabled.
 func set_input_enabled(is_enabled: bool) -> void:
 	_is_input_enabled = is_enabled
 	update_highlights()
 
 
-# In the space the scenery is placed in.
 func get_column_center_x(column: int) -> float:
 	var flat := _flats[column]
 	return position.x + flat.position.x + flat.size.x / 2.0
 
 
-# Away from the mission map, a flat may not show its column yet; the flip back updates once it is done.
 func update_highlights() -> void:
 	if not _is_mission_map_shown:
 		return
@@ -106,7 +99,6 @@ func _set_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_mission_map_layout = MissionMapLayout.create(mission_model.mission_map, map_seed, _flats[0].size, get_theme_constant("separation"), _flats.size())
 
 
-# One flat after another, left to right, each starting a stagger after the last; each swaps its content while edge-on. Returns once the last flat has flipped.
 func _flip_flats(swap_content: Callable) -> void:
 	var tween := create_tween().set_parallel().set_trans(FLIP_TRANSITION)
 	for index in _flats.size():
@@ -124,7 +116,6 @@ func _is_pickable(map_node: MapNode) -> bool:
 	return _is_input_enabled and _mission_model.get_map_node_visitation(map_node) == MissionModel.Visitation.OPEN
 
 
-# Hover follows the mouse even over a node that isn't pickable, so it shows as soon as that node opens.
 func _on_map_node_mouse_entered(map_node: MapNode) -> void:
 	_map_node_under_mouse = map_node
 	update_highlights()

@@ -13,7 +13,6 @@ func get_column(column: int) -> Array[MapNode]:
 	return column_nodes
 
 
-# The map nodes the coach can travel to from `current`; null is off the map, before the first column.
 func get_next_map_nodes(current: MapNode) -> Array[MapNode]:
 	if current == null:
 		return get_column(0)

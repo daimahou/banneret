@@ -30,13 +30,12 @@ static func get_beat_at_or_after(tick: int) -> int:
 	return ceili(tick / float(BEAT_TICKS)) * BEAT_TICKS
 
 
-# Whether the next beat comes before the next action resolves; on a shared tick, the beat comes first.
+# On a shared tick, the beat comes first.
 static func is_beat_next(fight_model: FightModel) -> bool:
 	var next_action := fight_model.get_next_action()
 	return next_action == null or get_beat_at_or_after(fight_model.tick + 1) <= next_action.resolve_tick
 
 
-# Every character the skill can be aimed at: the standing characters of the other side.
 static func get_targets(fight_model: FightModel, character: Character, _skill: SkillData) -> Array[Character]:
 	return fight_model.get_standing(FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO)
 
@@ -75,7 +74,7 @@ static func get_resolve_delta(fight_model: FightModel, action: Action) -> Delta:
 
 
 static func add_damage(fight_model: FightModel, delta: Delta, character: Character, damage: int) -> void:
-	var health := delta.get_health(character)
+	var health := delta.get_resolved_health(character)
 	var dealt := mini(damage, health)
 	delta.add_health(character, -dealt)
 	if dealt == health:
@@ -88,7 +87,7 @@ static func add_stagger(fight_model: FightModel, delta: Delta, character: Charac
 			delta.move_action(action, action.resolve_tick + ticks)
 
 
-# A fallen character loses its pending actions, and every action aimed at it is cancelled; no AP comes back.
+# A fallen character's cancelled actions give no AP back.
 static func _add_fall(fight_model: FightModel, delta: Delta, character: Character) -> void:
 	for action in fight_model.timeline:
 		if delta.is_removing_action(action):

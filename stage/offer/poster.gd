@@ -4,14 +4,12 @@ extends Control
 
 signal pressed
 
-# 0 is rolled up under the top roll, 1 is open: the body scales on y and the bottom roll follows its lower edge.
 @export_range(0.0, 1.0) var openness := 1.0:
 	set(value):
 		openness = value
 		_update_openness()
 
 var offer: Offer
-# Set by the presenter: hover and clicks only count while the poster hangs still.
 var is_pickable := false:
 	set(value):
 		is_pickable = value
@@ -42,13 +40,11 @@ func _gui_input(event: InputEvent) -> void:
 		pressed.emit()
 
 
-# Waits `delay` on the drop's first frame, above the frame, then plays it; returns once the poster hangs unrolled.
 func play_drop(delay: float) -> void:
 	_animation_player.play(&"drop")
 	_animation_player.seek(0.0, true)
 	if delay > 0.0:
 		_animation_player.pause()
-		# A tween of the poster's own, so the wait ends with it if the poster is freed.
 		await create_tween().tween_interval(delay).finished
 		_animation_player.play()
 	await _animation_player.animation_finished

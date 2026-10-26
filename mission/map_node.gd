@@ -8,7 +8,6 @@ const EVENT_ICONS: Dictionary[EventType, Texture2D] = {
 	EventType.ENCOUNTER: preload("res://art/map/encounter.png"),
 }
 
-# What an event draws on arrival, and whether the player picks among the draw or it resolves with the first.
 const EVENT_BAGS: Dictionary[EventType, Registry] = {
 	EventType.PLACEHOLDER: preload("res://mission/event/placeholder_bag.tres"),
 	EventType.ENCOUNTER: preload("res://mission/event/encounter_bag.tres"),

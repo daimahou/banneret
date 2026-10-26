@@ -4,20 +4,16 @@ extends RefCounted
 
 enum Style { NORMAL, FADED, CROSSED, MOVED }
 
-# What its node is known by from one show to the next. A ghost shares its action's, to become it once chosen.
 var id: String
 var tick := 0
 # Null for a knot.
 var action: Action
 var is_beat := false
 var portrait: Texture2D
-# An action not chosen yet, hung faded where it would resolve.
 var is_ghost := false
 var style := Style.NORMAL
 
 
-# The rope from left to right: a knot for each tick after the fight's, up to the beat at or after the last medallion,
-# and each medallion after the knot of its tick. One due now comes before any knot; on a shared tick, the order given.
 static func create_entries(fight_tick: int, medallions: Array[TimelineEntry]) -> Array[TimelineEntry]:
 	var last_tick := fight_tick
 	for medallion in medallions:

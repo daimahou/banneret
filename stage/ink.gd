@@ -1,7 +1,6 @@
 class_name Ink
 extends RefCounted
 
-# Ordered weakest first: a road dash on several roads shows the strongest highlight among them.
 enum Highlight { DIMMED, NONE, TRAVELLED, HOVERED }
 
 # A highlight without a color keeps the ink's own.
@@ -14,7 +13,6 @@ const DIMMED_ALPHA := 0.35
 const RECOLOR_SHADER := preload("res://stage/ink_recolor.gdshader")
 
 
-# Null for a highlight that keeps the ink's own color.
 static func create_material(highlight: Ink.Highlight) -> ShaderMaterial:
 	if highlight not in COLORS:
 		return null

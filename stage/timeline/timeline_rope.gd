@@ -1,7 +1,6 @@
 class_name TimelineRope
 extends Node2D
-# The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with its actor's portrait for each action, hung after the knot of the tick it resolves on.
-# The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
+# The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
 
 const KNOT_SCENE := preload("res://stage/timeline/timeline_knot.tscn")
 const BEAT_KNOT_SCENE := preload("res://stage/timeline/timeline_beat_knot.tscn")
@@ -9,20 +8,16 @@ const MEDALLION_SCENE := preload("res://stage/timeline/timeline_medallion.tscn")
 
 const KNOT_SPACING := 72.0
 const MEDALLION_SPACING := 148.0
-# Nothing hangs this close to either side of a tie.
 const TIE_CLEARANCE := 24.0
 
 const GHOST_ALPHA := 0.4
-# Stronger than a ghost's: it must read at a glance.
 const MOVED_ALPHA := 0.75
 
 const MOVE_DURATION := 0.3
-# A thing on the rope drops this far onto it as it comes, and lifts as far off it as it goes, in design units.
 const LIFT := 24.0
 
 var _shown_entries: Array[TimelineEntry] = []
 var _entry_nodes: Dictionary[String, Node2D] = {}
-# In the entries' space.
 var _settled_positions: Dictionary[String, Vector2] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _highlighted_actors: Array[Character] = []
@@ -32,24 +27,21 @@ var _highlighted_actors: Array[Character] = []
 @onready var _entries: Node2D = $Entries
 
 
-# Left to right.
 func show_entries(entries: Array[TimelineEntry]) -> void:
 	_shown_entries = entries
 	_refresh()
 
 
-# The medallions of these actors hang highlighted.
-func set_marks(actors: Array[Character]) -> void:
+func highlight_actors(actors: Array[Character]) -> void:
 	_highlighted_actors = actors
-	_show_marks()
+	_show_highlights()
 
 
-func clear_marks() -> void:
+func clear_highlights() -> void:
 	_highlighted_actors = []
-	_show_marks()
+	_show_highlights()
 
 
-# The action whose medallion is under the point, in global space, or null. A ghost is no action yet.
 func get_action_at(global_point: Vector2) -> Action:
 	for entry in _shown_entries:
 		var is_pending := not entry.is_knot() and not entry.is_ghost
@@ -58,17 +50,16 @@ func get_action_at(global_point: Vector2) -> Action:
 	return null
 
 
-# Once settled, in global space.
-func get_ring_bottom(entry_id: String) -> Vector2:
+func get_settled_ring_bottom(entry_id: String) -> Vector2:
 	var medallion: TimelineMedallion = _entry_nodes[entry_id]
 	return _entries.to_global(_settled_positions[entry_id] + medallion.get_ring_bottom())
 
 
-func get_ring_bottoms() -> Array[Vector2]:
+func get_settled_ring_bottoms() -> Array[Vector2]:
 	var ring_bottoms: Array[Vector2] = []
 	for entry_id in _entry_nodes:
 		if _entry_nodes[entry_id] is TimelineMedallion:
-			ring_bottoms.append(get_ring_bottom(entry_id))
+			ring_bottoms.append(get_settled_ring_bottom(entry_id))
 	return ring_bottoms
 
 
@@ -84,7 +75,6 @@ func clear() -> void:
 	_settled_positions.clear()
 
 
-# Where the rope passes at x, both in the entries' space. Past either end, level with that end.
 func _get_rope_position(x: float) -> Vector2:
 	var rope_x := _convert_entries_to_rope_x(x)
 	var index := _get_rope_segment(rope_x)
@@ -97,7 +87,6 @@ func _get_rope_position(x: float) -> Vector2:
 	return _convert_rope_to_entries_point(from.lerp(to, weight))
 
 
-# The rope's angle at x, in the entries' space, for a knot tied in it.
 func _get_rope_angle(x: float) -> float:
 	var index := _get_rope_segment(_convert_entries_to_rope_x(x))
 	if index == -1:
@@ -107,7 +96,6 @@ func _get_rope_angle(x: float) -> float:
 	return (to - from).angle()
 
 
-# The rope's first point, in the entries' space: the first entry hangs from there.
 func _get_rope_start_x() -> float:
 	return _convert_rope_to_entries_point(_rope.points[0]).x
 
@@ -120,7 +108,6 @@ func _convert_entries_to_rope_x(x: float) -> float:
 	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
 
-# The line segment of the rope above x, in the rope's own space, or -1 off it.
 func _get_rope_segment(rope_x: float) -> int:
 	for index in _rope.points.size() - 1:
 		if rope_x >= _rope.points[index].x and rope_x <= _rope.points[index + 1].x:
@@ -141,10 +128,8 @@ func _refresh() -> void:
 		if node == null:
 			node = _add_entry_node(entry, x)
 		else:
-			# A ghost keeps its node as the hero or the skill changes.
 			if not entry.is_knot():
 				(node as TimelineMedallion).portrait = entry.portrait
-			# A move cuts any fade in short, so it finishes the fade too.
 			var tween := _create_entry_tween(node)
 			tween.tween_property(node, "position", _get_rope_position(x), MOVE_DURATION)
 			tween.tween_property(node, "modulate:a", _get_alpha(entry), MOVE_DURATION)
@@ -160,17 +145,16 @@ func _refresh() -> void:
 			_remove_entry_node(_entry_nodes[key])
 	_entry_nodes = placed
 	_settled_positions = settled
-	_show_marks()
+	_show_highlights()
 
 
-func _show_marks() -> void:
+func _show_highlights() -> void:
 	for entry in _shown_entries:
 		if not entry.is_knot() and not entry.is_ghost:
 			var medallion: TimelineMedallion = _entry_nodes[entry.id]
 			medallion.set_highlighted(entry.action.actor in _highlighted_actors)
 
 
-# Where the ties hang, in the entries' space, left to right.
 func _get_tie_xs() -> Array[float]:
 	var tie_xs: Array[float] = []
 	for tie: Marker2D in _ties.get_children():
@@ -179,7 +163,6 @@ func _get_tie_xs() -> Array[float]:
 	return tie_xs
 
 
-# The left edge for an entry `width` wide: `left_x`, or pushed right past any tie the entry would cover, `TIE_CLEARANCE` kept on both sides of the tie.
 func _get_left_x_past_ties(left_x: float, width: float, tie_xs: Array[float]) -> float:
 	var x := left_x
 	for tie_x in tie_xs:
@@ -226,7 +209,6 @@ func _free_entry_node(node: Node2D) -> void:
 	node.queue_free()
 
 
-# Stops the tween already moving the node, if any.
 func _create_entry_tween(node: Node2D) -> Tween:
 	if _entry_tweens.has(node):
 		_entry_tweens[node].kill()

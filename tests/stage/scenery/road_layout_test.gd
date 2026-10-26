@@ -27,8 +27,6 @@ func test_first_steps_out_of_different_nodes_stay_apart() -> void:
 	assert_int(RoadLayout.prune_road_dashes(laid).size()).is_equal(2)
 
 
-# Near a shared end node, dashes merge as soon as they are near; the merged dash must still count as part of the
-# road it absorbed, so that road's next dash is not pulled into it too.
 func test_merged_dash_keeps_the_roads_it_absorbed() -> void:
 	var end_node := MapNode.new()
 	var absorbed := _create_road(MapNode.new(), end_node)

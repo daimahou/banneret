@@ -23,7 +23,6 @@ func _ready() -> void:
 	modulate.a = 0.0
 
 
-# In global space; none fades the shown ones out.
 func show_arrows(arrows: Array[Arrow]) -> void:
 	if arrows.is_empty():
 		if not _arrows.is_empty():
@@ -45,7 +44,6 @@ func _draw() -> void:
 		_draw_arrow(to_local(arrow.start), to_local(arrow.control), to_local(arrow.end), color)
 
 
-# Drawn as strokes that never overlap, so the alpha stays even.
 func _draw_arrow(start: Vector2, control: Vector2, end: Vector2, color: Color) -> void:
 	var direction := (end - control).normalized()
 	var head_depth := HEAD_LENGTH * cos(HEAD_ANGLE)

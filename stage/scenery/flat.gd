@@ -16,7 +16,6 @@ var _road_dashes: Array[RoadDash] = []
 var _road_dash_highlights: Dictionary[RoadDash, Ink.Highlight] = {}
 var _map_node_buttons: Dictionary[MapNode, TextureButton] = {}
 var _ink_materials: Dictionary[Ink.Highlight, ShaderMaterial] = {}
-# Recolored dashes draw on a layer of their own, since a shader applies to a whole canvas item.
 var _recolored_layers: Dictionary[Ink.Highlight, Node2D] = {}
 
 @onready var _battle_illustration: TextureRect = $BattleIllustration
@@ -45,7 +44,6 @@ func show_column(mission_map_layout: MissionMapLayout, flat_index: int) -> void:
 	_redraw_road_dashes()
 
 
-# Shows `region` of the battle illustration in place of the column.
 func show_battle(battleground: Texture2D, region: Rect2) -> void:
 	clear()
 	var atlas_texture := AtlasTexture.new()
@@ -59,7 +57,6 @@ func clear() -> void:
 	for button: TextureButton in _map_node_buttons.values():
 		button.queue_free()
 	_map_node_buttons.clear()
-	# Reassigned, not cleared: the layout owns the array.
 	_road_dashes = []
 	_road_dash_highlights = {}
 	_battle_illustration.hide()
@@ -95,7 +92,6 @@ func _redraw_road_dashes() -> void:
 		layer.queue_redraw()
 
 
-# Disabled until the scenery highlights it, so a column shown mid-transition can't be picked.
 func _add_map_node_button(map_node: MapNode, map_node_position: Vector2) -> void:
 	var button := TextureButton.new()
 	button.disabled = true

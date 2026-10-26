@@ -1,11 +1,9 @@
 class_name Puppet
 extends Node2D
 
-# Sway, in radians and seconds.
 const SWAY_ANGLE := 0.03
 const SWAY_PERIOD := 2.4
 
-# A hop, a raise and a bob down under a press, in design units and seconds.
 const HOP_HEIGHT := 18.0
 const HOP_PERIOD := 0.45
 const RAISE_HEIGHT := 60.0
@@ -13,20 +11,16 @@ const RAISE_DURATION := 0.3
 const BOB_DEPTH := 18.0
 const BOB_DURATION := 0.08
 
-# A shake under a blow, in design units and seconds.
 const SHAKE_DISTANCE := 18.0
 const SHAKE_COUNT := 3
 const SHAKE_DURATION := 0.3
 
-# A fall sinks it out of sight below the stage front, in seconds.
 const SINK_DURATION := 0.7
 
 enum Stance { SWAY, HOP, RAISED }
 
-# Drawn with its stick foot on the origin, the point it sways about.
 @export var texture: Texture2D
 
-# A phase of its own, so puppets don't rock in step.
 var _sway_phase := randf() * TAU
 
 var _stance := Stance.SWAY
@@ -58,7 +52,6 @@ func get_height() -> float:
 	return texture.get_height()
 
 
-# The sprite's rectangle, not its pixels.
 func has_point(global_point: Vector2) -> bool:
 	return _sprite.get_rect().has_point(_sprite.to_local(global_point))
 
@@ -113,6 +106,5 @@ func sink() -> void:
 	await tween.finished
 
 
-# Only a swaying puppet rocks; the others stand upright.
 func _set_sway(cycle_angle: float) -> void:
 	rotation = SWAY_ANGLE * sin(cycle_angle + _sway_phase) if _stance == Stance.SWAY else 0.0

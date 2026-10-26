@@ -1,23 +1,18 @@
 class_name PreviewPresenter
 extends RefCounted
-# The preview, written on stage over the fight: each nameplate's health and pips, the inspected character's cooldowns,
-# and the rope. The stage and the brain write the fight; this writes over them once a frame, after any change to either
-# model or to the choice. Without it, the stage shows the fight alone.
+# Writes the preview over the fight on stage: the nameplates, the inspected character's cooldowns and the rope. The stage and the brain write the fight.
 
 const ARROW_GAP := 8.0
-# Per unit of length, so a longer arrow runs under a shorter one.
 const ARROW_SAG := 0.25
 
-# Null once disposed: a refresh still queued writes nothing.
+# Null once disposed.
 var _fight_model: FightModel
 var _preview_model: FightModel
 var _nameplates: Array[Nameplate] = []
 var _skill_bar: SkillBar
 var _timeline_rope: TimelineRope
 var _preview_arrows: PreviewArrows
-# Whose skills the bar shows, or null.
 var _inspected: Character
-# The action the preview plays out until it lands, or null.
 var _shown_action: Action
 var _is_refresh_queued := false
 
@@ -52,8 +47,6 @@ static func get_health_style(preview_model: FightModel, character: Character) ->
 	return PreviewPulse.get_style(preview_model.get_character(character.id).health - character.health)
 
 
-# A pip held now or once the preview lands shows held. It shows lost when spent by then, and gained when held by
-# then but not all the way: gained, or spent and got back.
 static func get_pip_states(preview_model: FightModel, character: Character) -> Array[Nameplate.Pip]:
 	var previewed := preview_model.get_character(character.id)
 	var lowest_ap := preview_model.get_lowest_ap(character.id)
@@ -69,15 +62,12 @@ static func get_pip_states(preview_model: FightModel, character: Character) -> A
 	return states
 
 
-# Fewer beats left is better.
 static func get_cooldown_style(preview_model: FightModel, character: Character, skill: SkillData) -> PreviewPulse.Style:
 	var previewed := preview_model.get_character(character.id)
 	var gain := FightRules.get_cooldown_beats(character, skill) - FightRules.get_cooldown_beats(previewed, skill)
 	return PreviewPulse.get_style(gain)
 
 
-# The fight's rope, styled by the preview: an action the preview resolves fades, unless it is the shown one; one it
-# cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve.
 static func get_timeline_entries(fight_model: FightModel, preview_model: FightModel, shown: Action) -> Array[TimelineEntry]:
 	var actions: Array[Action] = fight_model.timeline.duplicate()
 	var is_ghost_shown := shown != null and shown not in actions
@@ -122,7 +112,6 @@ func _refresh() -> void:
 	if _fight_model == null:
 		return
 	for nameplate in _nameplates:
-		# Null for a nameplate unused, or showing a character of another fight.
 		var previewed := null if nameplate.character == null else _preview_model.get_character(nameplate.character.id)
 		if previewed != null:
 			var style := get_health_style(_preview_model, nameplate.character)
@@ -144,12 +133,12 @@ func _show_cooldowns() -> void:
 
 
 func _get_arrows() -> Array[PreviewArrows.Arrow]:
-	var ring_bottoms := _timeline_rope.get_ring_bottoms()
+	var ring_bottoms := _timeline_rope.get_settled_ring_bottoms()
 	var arrows: Array[PreviewArrows.Arrow] = []
 	for action in _fight_model.timeline:
 		if _preview_model.get_moved_tick(action.id) != -1:
-			var start := _timeline_rope.get_ring_bottom(TimelineEntry.get_medallion_id(action))
-			var end := _timeline_rope.get_ring_bottom(_get_moved_ghost_id(action))
+			var start := _timeline_rope.get_settled_ring_bottom(TimelineEntry.get_medallion_id(action))
+			var end := _timeline_rope.get_settled_ring_bottom(_get_moved_ghost_id(action))
 			arrows.append(_create_arrow(start, end, ring_bottoms))
 	return arrows
 
@@ -159,7 +148,6 @@ static func _create_arrow(start: Vector2, end: Vector2, ring_bottoms: Array[Vect
 	var arrow := PreviewArrows.Arrow.new()
 	arrow.start = start + gap
 	arrow.end = end + gap
-	# A quadratic curve reaches only halfway to its control point.
 	var control_y := maxf(arrow.start.y, arrow.end.y) + 2.0 * ARROW_SAG * absf(arrow.end.x - arrow.start.x)
 	for ring_bottom in ring_bottoms:
 		var weight := inverse_lerp(arrow.start.x, arrow.end.x, ring_bottom.x)

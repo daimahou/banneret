@@ -1,16 +1,12 @@
 class_name SkillCard
 extends TextureButton
-# One slot of the skill bar, empty or showing a skill as a card: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
-# Shown in a style, the number pulses, and a cooldown run out still shows its 0.
-# Armed, its ink turns gold; greyed, grey; a card that can be clicked takes the hover ink under the cursor.
-# A new skill flips the slot like a flat: it swaps its content while edge-on.
+# One slot of the skill bar: empty, or a skill shown as a card. It shows what the bar tells it.
 
 const CARD_TEXTURE := preload("res://art/ui/skill_slot.png")
 const EMPTY_TEXTURE := preload("res://art/ui/skill_slot_empty.png")
 const PLACEHOLDER_ICON := preload("res://art/ui/skill_placeholder_icon.png")
 const COOLDOWN_MODULATE := Color(1.0, 1.0, 1.0, 0.5)
 const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
-# Polygon points on a full turn of the wipe.
 const WIPE_STEPS := 64
 const ARMED_INK_COLOR := Color("b8860b")
 const GREYED_INK_COLOR := Color("454545ff")
@@ -18,7 +14,6 @@ const GREYED_INK_COLOR := Color("454545ff")
 # Null while the slot is empty.
 var skill: SkillData
 
-# The cooldown waits while true, so it never shows on the last skill's face.
 var _is_awaiting_swap := false
 var _cooldown_beats := 0
 var _cooldown_style := PreviewPulse.Style.NONE
@@ -47,7 +42,7 @@ func _ready() -> void:
 	mouse_exited.connect(_set_mouse_over.bind(false))
 
 
-# Null empties the slot. Returns whether the slot flips, `delay` from now.
+# Null empties the slot.
 func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	if shown_skill == skill:
 		return false
@@ -69,7 +64,6 @@ func clear(delay: float) -> bool:
 	return show_skill(null, delay)
 
 
-# The beats left before the skill is ready again.
 func show_cooldown(beats: int, style := PreviewPulse.Style.NONE) -> void:
 	_cooldown_beats = beats
 	_cooldown_style = style
@@ -92,7 +86,6 @@ func _show_content(shown_skill: SkillData) -> void:
 	_show_cooldown()
 
 
-# Dims while the fight has beats left: a worse cooldown is one about to start, a better one ends one still running.
 func _show_cooldown() -> void:
 	var is_shown_plain := _cooldown_style == PreviewPulse.Style.NONE
 	var is_dimmed := _cooldown_beats > 0 if is_shown_plain else _cooldown_style == PreviewPulse.Style.BETTER
@@ -104,7 +97,6 @@ func _show_cooldown() -> void:
 	_wipe.queue_redraw()
 
 
-# Also catches up with `disabled`, which the bar sets before it.
 func set_armed(is_armed: bool) -> void:
 	_is_armed = is_armed
 	_show_ink()
@@ -131,7 +123,6 @@ func _show_ink() -> void:
 		material = null
 
 
-# A sector from twelve o'clock, clockwise, wide enough to reach the corners; the wipe clips it to the icon.
 func _draw_wipe() -> void:
 	if _wipe_fraction <= 0.0:
 		return

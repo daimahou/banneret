@@ -32,20 +32,71 @@ This holds for every factory that is only an assignment list. `Action` ended up 
 
 **A name says the operation, never a metaphor for it.** `_seat(character)`, `_stand(character)` and `_deal_card()` read as flavour; the reader opens each to learn it adds a tile, a figure or a card. `_add_party_tile(character)`, `_add_figure(character)` and `_add_skill_card()` say so from the call site. The engine's vocabulary — `add_child`, `show`, `apply`, `create`, `register` — is the pool to draw from.
 
-**A name documents itself; a comment on every declaration is noise.** Name the variable or the function so the line reads on its own, and spend a comment only where the name cannot carry the whole of it.
+**A name documents itself; a comment on every declaration is noise.** See Comments.
 
-Group declarations into logical units instead — a blank line between units, and at most one comment per unit. `Map`'s constants are three units, not seven declarations:
+## Comments
+
+**A comment holds only what the code cannot show.** Every line is there because it is needed, so a comment saying what a line does, or why it is there, is narration. Rename or restructure until the code reads on its own, then delete the comment. No comment is better than a wrong or confusing one.
+
+**What qualifies**
+
+- **A class header**, the one place a *what* belongs: the class's role in the architecture, what drives it and what it drives. No implementation details. A class whose name and folder make its role plain has none.
+- **What null, -1 or empty means**, where the declaration cannot show it: `# Null for a skill shown before its target is chosen.` over `var target: Character`. Likewise what a packed value's parts are: `# A cell is (column, row).`
+- **A game rule** the code applies without being able to say it is one: `# A fallen character's cancelled actions give no AP back.`
+
+**What does not qualify**
+
+- Restating the name below it, or what any reader already knows: `# What its node is known by from one show to the next.` over `var id: String`.
+- Units and spaces: seconds and design units are the project's, and a space the reader must know goes in the name.
+- Order, layout and tuning: `# The entries hang left to right, in the order given.`, `# A transition's slides, in seconds.`
+- Saying what the lines below do, or when a coroutine returns: `# Null unless it is pending.` over a loop that returns null when no pending action matches.
+- Saying why a line is there: `# The fight is still awaiting a waiting player brain, so swapping it out is not enough: the player brain plays the random brain's choice as its own, or passes.` The lines are there because they are needed; the reader reads them.
+- Saying who calls it or what it is for: `# For debugging, from the autoexec script.` over `start_fight`. The name says it: `start_debug_fight`.
+- A header walking through the implementation.
+- A sentence the reader must read twice.
+
+**Keep or delete; never compress.** A comment worth keeping is a whole sentence that reads at once. Cut down to a fragment, `# Over the history.` or `# Both in the entries' space.`, it says less and reads worse. There is no length cap: a comment is judged by what it says and how it is written.
+
+**A comment standing in for a name is replaced by the name.**
 
 ```gdscript
-const WIDTH := 52
-const HEIGHT := 60
-
-const ROW_SLOTS := 3
-
-const SLOT_FLOOR := 0
-const SLOT_ENTITY := 1
-const SLOT_WALL := 2
+# Once this delta is applied.
+func get_health(character: Character) -> int:
 ```
+
+becomes
+
+```gdscript
+func get_resolved_health(character: Character) -> int:
+```
+
+and
+
+```gdscript
+# The medallions of these actors hang highlighted.
+func set_marks(actors: Array[Character]) -> void:
+```
+
+becomes
+
+```gdscript
+func highlight_actors(actors: Array[Character]) -> void:
+```
+
+**A header says the role, not the steps.**
+
+```gdscript
+# The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with its actor's portrait for each action, hung after the knot of the tick it resolves on.
+# The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
+```
+
+keeps only the role:
+
+```gdscript
+# The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
+```
+
+**Declarations group into logical units**, a blank line between units, and no comment over them unless one qualifies.
 
 ## Line length
 
