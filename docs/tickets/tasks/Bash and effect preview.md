@@ -19,10 +19,12 @@ parent: "[[Warrior kit]]"
 - `StaggerEffect.ticks`, 2 on `bash.tres`. The card reads `Stagger 2`, the number in `STAGGER_COLOR` `2f5d8a`. No tooltip.
 - A change moving one action by id: its resolve tick, re-sorted after the actions already there. It emits `FightModel.action_moved`, as the other changes emit theirs; the rope follows `changed`, as now. The preview's history holds it as the action's move. Moving the target's actions in timeline order keeps their order.
 - An action the delta already cancels is not moved: a lethal Bash moves nothing.
-- The presenter hangs a moved ghost for each action the preview's history moves, at its last moved tick, keyed apart from the real medallion. The real medallion keeps its style (faded, crossed); the ghost is crossed too when the preview cancels the action. Several moves: one ghost, one arrow.
-- Moved ghost: the actor's portrait in its own ring at `MOVED_ALPHA` 0.75, stronger than ghost alpha so it reads at a glance, `art/timeline/medallion_moved.png`: a placeholder, `medallion.png` tinted toward `2f5d8a` at the same size, which the human replaces with a dotted ring. The real medallion stays put until the move happens.
+- Each `TimelineEntry` carries the `id` the rope matches its node by from one show to the next. The presenter builds the medallions; `create_entries` adds the knots.
+- The presenter hangs a moved ghost for each action the preview's history moves, at its last moved tick, with an id apart from the real medallion's: both show at once. Style `MOVED`, or `CROSSED` when the preview cancels the action. The real medallion keeps its style (faded, crossed). Several moves: one ghost, one arrow.
+- The rope draws `MOVED` as the actor's portrait in its own ring at `MOVED_ALPHA` 0.75, stronger than ghost alpha so it reads at a glance, `art/timeline/medallion_moved.png`: a placeholder, `medallion.png` tinted toward `2f5d8a` at the same size, which the human replaces with a dotted ring. The real medallion stays put until the move happens.
 - No pulse: the rope has none.
-- Arrow drawn in code, one per move: an arc below the medallions, from the real medallion's bottom to the ghost's, sagging deeper the longer it runs, so nested arcs nest; overlapping ones may cross. `2f5d8a`, 6 px, the moved ghost's alpha, a filled arrowhead at the ghost. It passes under every medallion between its ends. It fades out with its ghost.
+- Arrows are the presenter's: it computes them from where the rope says each ring settles (`get_ring_bottom`, `get_ring_bottoms`) and hands them to `PreviewArrows`, a widget that only draws. The rope knows nothing of arrows.
+- One arrow per move: an arc below the medallions, from the real medallion's bottom to the ghost's, sagging deeper the longer it runs, so nested arcs nest; overlapping ones may cross. It passes under every medallion between its ends. `2f5d8a`, 6 px, the moved ghost's alpha, a filled arrowhead at the ghost. It fades in at the settled spots, and out when the presenter shows none.
 - At impact the preview re-syncs: the ghost lifts and fades as any removed entry, while the real medallion slides into its slot.
 
 ## Testing decisions

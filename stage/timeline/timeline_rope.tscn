@@ -22,5 +22,3 @@ position = Vector2(1177, -114)
 position = Vector2(1897, -117)
 
 [node name="Entries" type="Node2D" parent="."]
-
-[node name="Arrows" type="Node2D" parent="."]

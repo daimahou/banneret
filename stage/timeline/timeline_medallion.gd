@@ -11,11 +11,6 @@ const MOVED_RING_TEXTURE := preload("res://art/timeline/medallion_moved.png")
 		portrait = value
 		if is_node_ready():
 			_face.texture = value
-var is_moved := false:
-	set(value):
-		is_moved = value
-		if is_node_ready():
-			_ring.texture = MOVED_RING_TEXTURE if value else RING_TEXTURE
 var knot_rotation := 0.0:
 	set(value):
 		knot_rotation = value
@@ -31,7 +26,6 @@ var knot_rotation := 0.0:
 
 func _ready() -> void:
 	_face.texture = portrait
-	_ring.texture = MOVED_RING_TEXTURE if is_moved else RING_TEXTURE
 	_knot.rotation = knot_rotation
 
 
@@ -40,10 +34,10 @@ func has_point(global_point: Vector2) -> bool:
 	return _ring.get_rect().has_point(_ring.to_local(global_point))
 
 
-# In its parent's space.
+# In its own space.
 func get_ring_bottom() -> Vector2:
 	var ring_rect := _ring.get_rect()
-	return position + _ring.position + Vector2(ring_rect.get_center().x, ring_rect.end.y)
+	return _ring.position + Vector2(ring_rect.get_center().x, ring_rect.end.y)
 
 
 func set_highlighted(is_highlighted: bool) -> void:
@@ -52,3 +46,7 @@ func set_highlighted(is_highlighted: bool) -> void:
 
 func set_cancelled(is_cancelled: bool) -> void:
 	_cross.visible = is_cancelled
+
+
+func set_moved(is_moved: bool) -> void:
+	_ring.texture = MOVED_RING_TEXTURE if is_moved else RING_TEXTURE

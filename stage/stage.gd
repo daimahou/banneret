@@ -67,6 +67,7 @@ var _preview_presenter: PreviewPresenter
 @onready var _coach: Puppet = $Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
 @onready var _timeline_rope: TimelineRope = $TimelineRope
+@onready var _preview_arrows: PreviewArrows = $PreviewArrows
 @onready var skill_bar: SkillBar = $SkillBar
 @onready var _coach_start_x := _coach.position.x
 
@@ -125,7 +126,7 @@ func show_encounter(fight_model: FightModel) -> void:
 	fight_model.changed.connect(_on_fight_changed)
 	var nameplates: Array[Nameplate] = []
 	nameplates.assign(_hero_nameplates + _enemy_nameplates)
-	_preview_presenter = PreviewPresenter.new(fight_model, preview_model, nameplates, skill_bar, _timeline_rope)
+	_preview_presenter = PreviewPresenter.new(fight_model, preview_model, nameplates, skill_bar, _timeline_rope, _preview_arrows)
 	_show_fight()
 	await tween.finished
 	_view = View.FIGHT
@@ -260,6 +261,7 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 	_preview_presenter.dispose()
 	_preview_presenter = null
 	_timeline_rope.clear()
+	_preview_arrows.clear()
 	await _scenery.flip_to_mission_map(mission_model, map_seed)
 	_coach.position.x = _get_puppet_x(OFFSTAGE_LEFT_X)
 	await _slide_coach(_coach_start_x)
@@ -341,7 +343,8 @@ func _on_fight_changed() -> void:
 
 func _show_fight() -> void:
 	_update_nameplates()
-	_timeline_rope.show_entries(TimelineEntry.create_entries(_fight_model.tick, _fight_model.timeline, {}))
+	var medallions := TimelineEntry.create_medallions(_fight_model.timeline)
+	_timeline_rope.show_entries(TimelineEntry.create_entries(_fight_model.tick, medallions))
 
 
 func _update_nameplates() -> void:

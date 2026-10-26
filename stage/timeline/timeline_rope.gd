@@ -16,38 +16,20 @@ const GHOST_ALPHA := 0.4
 # Stronger than a ghost's: it must read at a glance.
 const MOVED_ALPHA := 0.75
 
-const ARROW_WIDTH := 6.0
-const ARROW_GAP := 8.0
-# Per unit of length, so a longer arrow runs under a shorter one.
-const ARROW_SAG := 0.25
-const ARROW_POINTS := 24
-const ARROWHEAD_LENGTH := 28.0
-const ARROWHEAD_ANGLE := PI / 6.0
-
 const MOVE_DURATION := 0.3
 # A thing on the rope drops this far onto it as it comes, and lifts as far off it as it goes, in design units.
 const LIFT := 24.0
 
 var _shown_entries: Array[TimelineEntry] = []
 var _entry_nodes: Dictionary[String, Node2D] = {}
+# In the entries' space.
+var _settled_positions: Dictionary[String, Vector2] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _highlighted_actors: Array[Character] = []
-# A ghost going keeps its arrow until it is freed.
-var _arrow_sources: Dictionary[TimelineMedallion, TimelineMedallion] = {}
 
 @onready var _rope: Line2D = $Rope
 @onready var _ties: Node2D = $Ties
 @onready var _entries: Node2D = $Entries
-@onready var _arrows: Node2D = $Arrows
-
-
-func _ready() -> void:
-	_arrows.draw.connect(_draw_arrows)
-
-
-func _process(_delta: float) -> void:
-	if not _arrow_sources.is_empty():
-		_arrows.queue_redraw()
 
 
 # Left to right.
@@ -71,9 +53,23 @@ func clear_marks() -> void:
 func get_action_at(global_point: Vector2) -> Action:
 	for entry in _shown_entries:
 		var is_pending := not entry.is_knot() and not entry.is_ghost
-		if is_pending and (_entry_nodes[entry.get_key()] as TimelineMedallion).has_point(global_point):
+		if is_pending and (_entry_nodes[entry.id] as TimelineMedallion).has_point(global_point):
 			return entry.action
 	return null
+
+
+# Once settled, in global space.
+func get_ring_bottom(entry_id: String) -> Vector2:
+	var medallion: TimelineMedallion = _entry_nodes[entry_id]
+	return _entries.to_global(_settled_positions[entry_id] + medallion.get_ring_bottom())
+
+
+func get_ring_bottoms() -> Array[Vector2]:
+	var ring_bottoms: Array[Vector2] = []
+	for entry_id in _entry_nodes:
+		if _entry_nodes[entry_id] is TimelineMedallion:
+			ring_bottoms.append(get_ring_bottom(entry_id))
+	return ring_bottoms
 
 
 func clear() -> void:
@@ -85,8 +81,7 @@ func clear() -> void:
 	for node in _entry_nodes.values():
 		node.queue_free()
 	_entry_nodes.clear()
-	_arrow_sources.clear()
-	_arrows.queue_redraw()
+	_settled_positions.clear()
 
 
 # Where the rope passes at x, both in the entries' space. Past either end, level with that end.
@@ -135,15 +130,14 @@ func _get_rope_segment(rope_x: float) -> int:
 
 func _refresh() -> void:
 	var placed: Dictionary[String, Node2D] = {}
-	var medallions: Dictionary[Action, TimelineMedallion] = {}
+	var settled: Dictionary[String, Vector2] = {}
 	var tie_xs := _get_tie_xs()
 	var x := _get_rope_start_x()
 	for entry in _shown_entries:
 		var spacing := KNOT_SPACING if entry.is_knot() else MEDALLION_SPACING
 		x = _get_left_x_past_ties(x, spacing, tie_xs)
 		x += spacing / 2.0
-		var key := entry.get_key()
-		var node: Node2D = _entry_nodes.get(key)
+		var node: Node2D = _entry_nodes.get(entry.id)
 		if node == null:
 			node = _add_entry_node(entry, x)
 		else:
@@ -157,24 +151,22 @@ func _refresh() -> void:
 			tween.tween_property(node, "rotation" if entry.is_knot() else "knot_rotation", _get_rope_angle(x), MOVE_DURATION)
 		if not entry.is_knot():
 			(node as TimelineMedallion).set_cancelled(entry.style == TimelineEntry.Style.CROSSED)
-		# A moved ghost hangs on a later tick than its action's medallion, which is placed by then.
-		if entry.is_moved:
-			_arrow_sources[node as TimelineMedallion] = medallions[entry.action]
-		elif not entry.is_knot():
-			medallions[entry.action] = node as TimelineMedallion
-		placed[key] = node
+			(node as TimelineMedallion).set_moved(entry.style == TimelineEntry.Style.MOVED)
+		placed[entry.id] = node
+		settled[entry.id] = _get_rope_position(x)
 		x += spacing / 2.0
 	for key in _entry_nodes:
 		if not placed.has(key):
 			_remove_entry_node(_entry_nodes[key])
 	_entry_nodes = placed
+	_settled_positions = settled
 	_show_marks()
 
 
 func _show_marks() -> void:
 	for entry in _shown_entries:
 		if not entry.is_knot() and not entry.is_ghost:
-			var medallion: TimelineMedallion = _entry_nodes[entry.get_key()]
+			var medallion: TimelineMedallion = _entry_nodes[entry.id]
 			medallion.set_highlighted(entry.action.actor in _highlighted_actors)
 
 
@@ -204,7 +196,6 @@ func _add_entry_node(entry: TimelineEntry, x: float) -> Node2D:
 	else:
 		var medallion: TimelineMedallion = MEDALLION_SCENE.instantiate()
 		medallion.portrait = entry.portrait
-		medallion.is_moved = entry.is_moved
 		medallion.knot_rotation = _get_rope_angle(x)
 		node = medallion
 	var rope_position := _get_rope_position(x)
@@ -218,7 +209,7 @@ func _add_entry_node(entry: TimelineEntry, x: float) -> Node2D:
 
 
 static func _get_alpha(entry: TimelineEntry) -> float:
-	if entry.is_moved:
+	if entry.style == TimelineEntry.Style.MOVED:
 		return MOVED_ALPHA
 	return GHOST_ALPHA if entry.is_ghost or entry.style == TimelineEntry.Style.FADED else 1.0
 
@@ -232,50 +223,7 @@ func _remove_entry_node(node: Node2D) -> void:
 
 func _free_entry_node(node: Node2D) -> void:
 	_entry_tweens.erase(node)
-	if node is TimelineMedallion:
-		_arrow_sources.erase(node as TimelineMedallion)
-	_arrows.queue_redraw()
 	node.queue_free()
-
-
-func _draw_arrows() -> void:
-	for ghost in _arrow_sources:
-		var source := _arrow_sources[ghost]
-		if is_instance_valid(source):
-			var gap := Vector2(0.0, ARROW_GAP)
-			_draw_arrow(source.get_ring_bottom() + gap, ghost.get_ring_bottom() + gap, ghost.modulate.a)
-
-
-# Drawn as strokes that never overlap, so the alpha stays even.
-func _draw_arrow(from: Vector2, to: Vector2, alpha: float) -> void:
-	var control := Vector2((from.x + to.x) / 2.0, _get_arrow_control_y(from, to))
-	var direction := (to - control).normalized()
-	var head_depth := ARROWHEAD_LENGTH * cos(ARROWHEAD_ANGLE)
-	var points := PackedVector2Array()
-	for index in ARROW_POINTS + 1:
-		var weight := index / float(ARROW_POINTS)
-		var point := from.lerp(control, weight).lerp(control.lerp(to, weight), weight)
-		if point.distance_to(to) > head_depth:
-			points.append(point)
-	points.append(to - direction * head_depth)
-	var color := Color(StaggerEffect.STAGGER_COLOR, alpha)
-	_arrows.draw_polyline(points, color, ARROW_WIDTH, true)
-	var wing := direction * ARROWHEAD_LENGTH
-	var head := PackedVector2Array([to, to - wing.rotated(ARROWHEAD_ANGLE), to - wing.rotated(-ARROWHEAD_ANGLE)])
-	_arrows.draw_colored_polygon(head, color)
-
-
-# A quadratic curve reaches only halfway to its control point.
-func _get_arrow_control_y(from: Vector2, to: Vector2) -> float:
-	var control_y := maxf(from.y, to.y) + 2.0 * ARROW_SAG * absf(to.x - from.x)
-	for node in _entry_nodes.values():
-		if node is TimelineMedallion:
-			var bottom := (node as TimelineMedallion).get_ring_bottom() + Vector2(0.0, ARROW_GAP)
-			var weight := inverse_lerp(from.x, to.x, bottom.x)
-			if weight > 0.0 and weight < 1.0:
-				var ends_y := (1.0 - weight) * (1.0 - weight) * from.y + weight * weight * to.y
-				control_y = maxf(control_y, (bottom.y - ends_y) / (2.0 * weight * (1.0 - weight)))
-	return control_y
 
 
 # Stops the tween already moving the node, if any.

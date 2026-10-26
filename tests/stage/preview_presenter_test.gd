@@ -98,10 +98,10 @@ func test_an_action_the_preview_moves_hangs_a_moved_ghost_where_it_would_land() 
 	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, bash)
 
 	var expected := ["knot", "knot", "bash NORMAL", "knot", "pending NORMAL", "knot", "knot"]
-	expected.append_array(["pending moved ghost NORMAL", "knot", "knot", "knot"])
+	expected.append_array(["pending ghost MOVED", "knot", "knot", "knot"])
 	assert_array(_describe(entries, {bash: "bash", pending: "pending"})).contains_exactly(expected)
-	var keys := entries.map(func(entry: TimelineEntry) -> String: return entry.get_key())
-	assert_array(keys).contains_exactly_in_any_order(_get_unique(keys))
+	var ids := entries.map(func(entry: TimelineEntry) -> String: return entry.id)
+	assert_array(ids).contains_exactly_in_any_order(_get_unique(ids))
 
 
 func test_an_action_moved_twice_hangs_one_moved_ghost_where_it_last_lands() -> void:
@@ -119,7 +119,7 @@ func test_an_action_moved_twice_hangs_one_moved_ghost_where_it_last_lands() -> v
 	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, second)
 
 	var expected := ["knot", "knot", "first FADED", "knot", "second NORMAL", "knot", "pending NORMAL"]
-	expected.append_array(["knot", "knot", "knot", "knot", "pending moved ghost NORMAL"])
+	expected.append_array(["knot", "knot", "knot", "knot", "pending ghost MOVED"])
 	assert_array(_describe(entries, {first: "first", second: "second", pending: "pending"})).contains_exactly(expected)
 
 
@@ -136,7 +136,7 @@ func test_an_action_the_preview_moves_then_cancels_hangs_a_crossed_moved_ghost()
 	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, shown)
 
 	var expected := ["knot", "knot", "bash FADED", "knot", "pending CROSSED", "knot", "shown NORMAL", "knot"]
-	expected.append_array(["pending moved ghost CROSSED", "knot", "knot", "knot"])
+	expected.append_array(["pending ghost CROSSED", "knot", "knot", "knot"])
 	assert_array(_describe(entries, {bash: "bash", pending: "pending", shown: "shown"})).contains_exactly(expected)
 
 
@@ -146,7 +146,7 @@ func _describe(entries: Array[TimelineEntry], names: Dictionary[Action, String])
 		if entry.is_knot():
 			described.append("knot")
 		else:
-			var ghost := " moved ghost" if entry.is_moved else " ghost" if entry.is_ghost else ""
+			var ghost := " ghost" if entry.is_ghost else ""
 			described.append("%s%s %s" % [names[entry.action], ghost, TimelineEntry.Style.find_key(entry.style)])
 	return described
 
