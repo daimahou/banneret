@@ -18,11 +18,7 @@ var _fight_model: FightModel
 var _is_waiting := false
 var _is_stopped := false
 var _ghost_action: Action
-
-# A requested stop lasts until a pass.
 var _is_stop_requested := false
-
-# Only a target aimed by a digit is confirmed by the same digit again.
 var _digit_target: Character
 
 
@@ -93,14 +89,12 @@ func is_hero_ready(character: Character, fight_model: FightModel) -> bool:
 	return FightRules.is_ready(fight_model, character)
 
 
-# Shows the choices even when nothing changes: the stop button toggles itself when pressed.
 func request_stop() -> void:
 	if not _is_waiting:
 		_is_stop_requested = true
 	_show_choices()
 
 
-# The next action resolves; a free hero stops the fight again after it.
 func pass_stop() -> void:
 	if not _is_waiting:
 		_show_choices()
@@ -212,7 +206,6 @@ func hover_action(action: Action) -> void:
 		_show_choices()
 
 
-# The armed skill's targets, left to right on stage: the enemies stand front first, the front towards the middle.
 func get_targets() -> Array[Character]:
 	if armed_skill == null:
 		return []
@@ -249,7 +242,6 @@ func get_previewed_action() -> Action:
 	return null
 
 
-# Characters share skill resources, so the hovered skill is the hero's only while the bar shows the hero's.
 func _create_ghost_action() -> Action:
 	if not _is_waiting or hero == null:
 		return null
@@ -318,7 +310,6 @@ func _show_choices() -> void:
 		skill_bar.show_stop_button(_is_stop_requested)
 
 
-# Only during a stop: while the fight runs, the fight controller plays the preview.
 func _show_preview() -> void:
 	if not _is_waiting:
 		return

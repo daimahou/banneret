@@ -33,7 +33,6 @@ func play() -> void:
 		var is_nothing_due := next_action == null or next_action.resolve_tick > fight_model.tick
 		if choice == null and (is_nothing_due or hero_brain.is_stop_requested()):
 			choice = await hero_brain.get_next_action(fight_model)
-			# The fight can end while the heroes choose, from outside it.
 			if fight_model.is_over():
 				return
 		if choice != null:

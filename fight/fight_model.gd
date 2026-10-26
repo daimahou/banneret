@@ -69,7 +69,6 @@ func get_timeline_index(actor_id: int, resolve_tick: int) -> int:
 	return timeline.size() if index == -1 else index
 
 
-# An id of -1, which an action uses for no target, gives null.
 func get_character(character_id: int) -> Character:
 	for character in heroes + enemies:
 		if character.id == character_id:

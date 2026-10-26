@@ -13,7 +13,6 @@ class Outcome:
 
 
 func _initialize() -> void:
-	# The autoloads are ready a frame on; LimboConsole's greeting then prints before the summary, not after.
 	await process_frame
 	var options := {"fights": 1000, "seed": 1}
 	for argument in OS.get_cmdline_user_args():
@@ -21,7 +20,6 @@ func _initialize() -> void:
 		if parts.size() == 2 and options.has(parts[0]):
 			options[parts[0]] = int(parts[1])
 	var outcomes: Array[Outcome] = []
-	# Each fight is seeded from its number; a fight takes two seeds, one per brain.
 	for number in options["fights"]:
 		outcomes.append(await _play(options["seed"] + number * 2))
 	print(_get_summary(outcomes))
