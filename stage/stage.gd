@@ -11,22 +11,17 @@ const TRAVEL_DURATION := 0.6
 const TRAVEL_TRANSITION := Tween.TRANS_SINE
 const TRAVEL_EASE := Tween.EASE_IN_OUT
 
-# A transition's slides, in seconds.
 const COACH_SLIDE_DURATION := 0.8
 const PUPPET_SLIDE_DURATION := 0.8
-# Each marcher sets off up to this late, at random; too late and the one behind would catch up.
 const MARCH_STAGGER := 0.05
 
-# A blow: the actor's puppet lunges at its target, stopping `LUNGE_GAP` short of it, then goes home, and the stage pauses before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
 const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
 const BLOW_PAUSE := 0.25
 
-# The fight holds on each beat this long, in seconds, so what the beat changed shows.
 const BEAT_HOLD_DURATION := 0.4
 
-# A damage number floats this far up off its target's head as it fades, in design units and seconds.
 const DAMAGE_RISE := 140.0
 const DAMAGE_DURATION := 0.9
 const DAMAGE_FONT_SIZE := 96
@@ -35,7 +30,6 @@ const DAMAGE_COLOR := Color("c0392b")
 const TARGET_INK_COLOR := Color("7a2a20")
 const AIMED_INK_COLOR := Color("d8402c")
 
-# Beyond the curtains, in design units, in stage space.
 const OFFSTAGE_LEFT_X := -400.0
 const OFFSTAGE_RIGHT_X := 4240.0
 
@@ -44,7 +38,6 @@ const PUPPET_SCENE := preload("res://stage/puppet/puppet.tscn")
 var _coach_tween: Tween
 var _view := View.MISSION_MAP
 var _fight_puppets: Dictionary[Character, Puppet] = {}
-# Left to right, each side's filled from its own edge so that its front stands nearest the middle.
 var _hero_nameplates: Array[Nameplate] = []
 var _enemy_nameplates: Array[Nameplate] = []
 var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
@@ -58,7 +51,6 @@ var _fight_model: FightModel
 var _preview_presenter: PreviewPresenter
 
 @onready var _scenery: Scenery = $Scenery
-# Every puppet stands in this area, feet on its bottom edge; puppet positions are local to it.
 @onready var _puppets: Control = $Puppets
 @onready var _coach: Puppet = $Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter

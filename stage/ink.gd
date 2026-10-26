@@ -1,7 +1,6 @@
 class_name Ink
 extends RefCounted
 
-# Ordered weakest first.
 enum Highlight { DIMMED, NONE, TRAVELLED, HOVERED }
 
 # A highlight without a color keeps the ink's own.

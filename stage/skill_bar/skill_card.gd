@@ -7,7 +7,6 @@ const EMPTY_TEXTURE := preload("res://art/ui/skill_slot_empty.png")
 const PLACEHOLDER_ICON := preload("res://art/ui/skill_placeholder_icon.png")
 const COOLDOWN_MODULATE := Color(1.0, 1.0, 1.0, 0.5)
 const WIPE_COLOR := Color(0.0, 0.0, 0.0, 0.6)
-# Polygon points on a full turn of the wipe.
 const WIPE_STEPS := 64
 const ARMED_INK_COLOR := Color("b8860b")
 const GREYED_INK_COLOR := Color("454545ff")
@@ -43,7 +42,7 @@ func _ready() -> void:
 	mouse_exited.connect(_set_mouse_over.bind(false))
 
 
-# Null empties the slot. Returns whether the slot flips, `delay` from now.
+# Null empties the slot.
 func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	if shown_skill == skill:
 		return false

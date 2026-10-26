@@ -65,7 +65,6 @@ func show_pass_button() -> void:
 	_stop_button.set_pressed_no_signal(false)
 
 
-# Held, it shows a stop on its way.
 func show_stop_button(is_held: bool) -> void:
 	_stop_button.show()
 	_stop_button.text = "Stop"

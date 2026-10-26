@@ -10,7 +10,6 @@ const POSTER_SCENE := preload("res://stage/offer/poster.tscn")
 	set(value):
 		spacing = value
 		_lay_out_posters()
-# Seconds between one poster's drop and the next.
 @export var stagger := 0.12
 
 @export_group("Preview")
@@ -23,7 +22,6 @@ const POSTER_SCENE := preload("res://stage/offer/poster.tscn")
 		preview_count = value
 		_update_preview()
 
-# Editor previews and runtime posters alike, in display order.
 var _posters: Array[Poster] = []
 
 

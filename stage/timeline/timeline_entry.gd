@@ -4,19 +4,16 @@ extends RefCounted
 
 enum Style { NORMAL, FADED, CROSSED, MOVED }
 
-# What its node is known by from one show to the next.
 var id: String
 var tick := 0
 # Null for a knot.
 var action: Action
 var is_beat := false
 var portrait: Texture2D
-# Not on the fight's timeline: a choice not made yet, or an action where the preview moves it.
 var is_ghost := false
 var style := Style.NORMAL
 
 
-# Medallions on a shared tick hang in the order given.
 static func create_entries(fight_tick: int, medallions: Array[TimelineEntry]) -> Array[TimelineEntry]:
 	var last_tick := fight_tick
 	for medallion in medallions:

@@ -3,7 +3,6 @@ extends HBoxContainer
 
 signal map_node_pressed(map_node: MapNode)
 
-# A flat's flip, and the time from one flat starting to the next: below the duration, flips overlap.
 const FLIP_DURATION := 0.2
 const FLIP_STAGGER := 0.1
 const FLIP_TRANSITION := Tween.TRANS_SINE
@@ -63,7 +62,6 @@ func set_input_enabled(is_enabled: bool) -> void:
 	update_highlights()
 
 
-# In the space the scenery is placed in.
 func get_column_center_x(column: int) -> float:
 	var flat := _flats[column]
 	return position.x + flat.position.x + flat.size.x / 2.0
@@ -101,7 +99,6 @@ func _set_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_mission_map_layout = MissionMapLayout.create(mission_model.mission_map, map_seed, _flats[0].size, get_theme_constant("separation"), _flats.size())
 
 
-# `swap_content` runs on each flat while it is edge-on.
 func _flip_flats(swap_content: Callable) -> void:
 	var tween := create_tween().set_parallel().set_trans(FLIP_TRANSITION)
 	for index in _flats.size():

@@ -3,7 +3,6 @@ extends RefCounted
 # Writes the preview over the fight on stage: the nameplates, the inspected character's cooldowns and the rope. The stage and the brain write the fight.
 
 const ARROW_GAP := 8.0
-# Per unit of length, so a longer arrow runs under a shorter one.
 const ARROW_SAG := 0.25
 
 # Null once disposed.
@@ -134,12 +133,12 @@ func _show_cooldowns() -> void:
 
 
 func _get_arrows() -> Array[PreviewArrows.Arrow]:
-	var ring_bottoms := _timeline_rope.get_ring_bottoms()
+	var ring_bottoms := _timeline_rope.get_settled_ring_bottoms()
 	var arrows: Array[PreviewArrows.Arrow] = []
 	for action in _fight_model.timeline:
 		if _preview_model.get_moved_tick(action.id) != -1:
-			var start := _timeline_rope.get_ring_bottom(TimelineEntry.get_medallion_id(action))
-			var end := _timeline_rope.get_ring_bottom(_get_moved_ghost_id(action))
+			var start := _timeline_rope.get_settled_ring_bottom(TimelineEntry.get_medallion_id(action))
+			var end := _timeline_rope.get_settled_ring_bottom(_get_moved_ghost_id(action))
 			arrows.append(_create_arrow(start, end, ring_bottoms))
 	return arrows
 

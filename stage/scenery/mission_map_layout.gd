@@ -2,16 +2,13 @@ class_name MissionMapLayout
 extends RefCounted
 
 const MAP_NODE_MIN_SPACING := 190.0
-# Kept clear above the first row and below the last, in design units.
 const MAP_NODE_MARGIN := 90.0
 
-# Positions are in flat space.
 var _map_node_positions: Dictionary[MapNode, Vector2] = {}
 var _flat_map_nodes: Array[Array] = []
 var _flat_road_dashes: Array[Array] = []
 
 
-# The flats sit side by side from the scenery's origin, `separation` apart.
 static func create(mission_map: MissionMap, map_seed: int, flat_size: Vector2, separation: float, flat_count: int) -> MissionMapLayout:
 	var layout := MissionMapLayout.new()
 	var flat_rects: Array[Rect2] = []

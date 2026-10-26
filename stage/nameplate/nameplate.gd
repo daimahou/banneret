@@ -2,10 +2,8 @@ class_name Nameplate
 extends Control
 # A character's portrait, name, health and AP. Each readout shows what it is told, in a style.
 
-# Held, lost and gained show full; lost and gained pulse.
 enum Pip { EMPTY, HELD, LOST, GAINED }
 
-# The yellow behind the fill drains down to it, in seconds.
 const DAMAGE_DRAIN_DURATION := 0.3
 
 const EMPTY_PIP_TEXTURE := preload("res://art/ui/ap_pip.png")
@@ -27,10 +25,8 @@ var _pip_pulses: Array[PreviewPulse] = []
 
 @onready var _portrait: TextureRect = $Portrait
 @onready var _name: Label = $Name
-# Both span the empty bar; their right anchor is the share of health they show.
 @onready var _damage: Control = $Empty/Damage
 @onready var _fill: Control = $Empty/Fill
-# Grows both ways past the bar's height, so its line stays centred on it.
 @onready var _health_label: Label = $Empty/HealthLabel
 @onready var _health_pulse := PreviewPulse.new(_health_label)
 
@@ -41,7 +37,7 @@ func _ready() -> void:
 		_pip_pulses.append(PreviewPulse.new(pip))
 
 
-# Null hides the nameplate. Returns whether the nameplate flips, `delay` from now.
+# Null hides the nameplate.
 func show_character(shown_character: Character, delay: float) -> bool:
 	if shown_character == character:
 		return false
@@ -69,7 +65,6 @@ func show_health(health: int, max_health: int, style := PreviewPulse.Style.NONE)
 		_show_health()
 
 
-# One state for each AP the character can hold.
 func show_pips(states: Array[Pip]) -> void:
 	_pip_states = states
 	if not _is_awaiting_swap:

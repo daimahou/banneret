@@ -32,7 +32,6 @@ func has_point(global_point: Vector2) -> bool:
 	return _ring.get_rect().has_point(_ring.to_local(global_point))
 
 
-# In its own space.
 func get_ring_bottom() -> Vector2:
 	var ring_rect := _ring.get_rect()
 	return _ring.position + Vector2(ring_rect.get_center().x, ring_rect.end.y)

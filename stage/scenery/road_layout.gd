@@ -7,13 +7,11 @@ const ROAD_DASH_TEXTURES: Array[Texture2D] = [
 	preload("res://art/map/road_dash_c.png"),
 ]
 
-# Road dash layout, in design units and radians.
 const ROAD_DASH_GAP := 16.0
 const ROAD_DASH_TILT := 0.05
 const ROAD_END_GAP := 16.0
 const ROAD_SPAN_STEP := 4.0
 
-# Road dash merging, in design units.
 const ROAD_DASH_PRUNE_OVERLAP := 10.0
 const ROAD_DASH_SHARED_NODE_MERGE_GAP := 30.0
 const ROAD_SHARED_NODE_RADIUS := 250.0
@@ -25,19 +23,16 @@ class Road:
 	var start_node: MapNode
 	var end_node: MapNode
 
-# Where a laid dash sits on one road; `offset` is along the road's curve.
 class RoadPlace:
 	var road: Road
 	var offset: float
 	var is_first_step: bool
 
-# A road dash in stage space, with every road it sits on.
 class LaidRoadDash:
 	var road_dash: Flat.RoadDash
 	var places: Array[RoadPlace] = []
 	var footprint: RoadDashFootprint
 
-# The capsule a road dash covers, in stage space.
 class RoadDashFootprint:
 	var start: Vector2
 	var end: Vector2
@@ -48,7 +43,6 @@ var _map_node_positions: Dictionary[MapNode, Vector2] = {}
 var _rng := RandomNumberGenerator.new()
 
 
-# The mission map's road dashes in stage space, given each flat's rect and each map node's position in stage space.
 static func lay_out(mission_map: MissionMap, flat_rects: Array[Rect2], map_node_positions: Dictionary[MapNode, Vector2], road_seed: int) -> Array[Flat.RoadDash]:
 	var road_layout := RoadLayout.new()
 	road_layout._flat_rects = flat_rects
@@ -264,7 +258,6 @@ static func _merge_road_dash(target: LaidRoadDash, merged: LaidRoadDash) -> void
 	target.footprint = _create_footprint(target.road_dash)
 
 
-# Takes the dash in stage space.
 static func _create_footprint(road_dash: Flat.RoadDash) -> RoadDashFootprint:
 	var footprint := RoadDashFootprint.new()
 	footprint.radius = road_dash.texture.get_height() / 2.0
