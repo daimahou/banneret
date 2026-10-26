@@ -39,7 +39,6 @@ func test_neighbouring_map_nodes_keep_their_spacing_despite_jitter() -> void:
 	var lower := MissionMapFixture.add_map_node(mission_map, 0, 2)
 	upper.jitter = Vector2(0, 100)
 	lower.jitter = Vector2(0, -100)
-	# Tall enough that the rows leave room for jitter.
 	var layout := MissionMapLayout.create(mission_map, 1, Vector2(400, 1100), SEPARATION, FLAT_COUNT)
 	var spacing := layout.get_map_node_position(lower).y - layout.get_map_node_position(upper).y
 	assert_float(spacing).is_greater_equal(MissionMapLayout.MAP_NODE_MIN_SPACING)

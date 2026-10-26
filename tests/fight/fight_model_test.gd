@@ -77,7 +77,6 @@ func _create_character() -> Character:
 	return Character.new(character_data)
 
 
-# A 2-tick skill dealing 4, put on the timeline; returns the action the fight model holds for it.
 func _schedule(fight_model: FightModel, actor: Character, target: Character) -> Action:
 	var choice := Action.new()
 	choice.actor = actor

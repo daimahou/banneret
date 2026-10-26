@@ -8,7 +8,6 @@ var _lower_next: MapNode
 var _encounter: MapNode
 
 
-# Two first-column map nodes, each with its own road on, both leading to the encounter.
 func before_test() -> void:
 	_mission_map = MissionMap.new()
 	_upper = MissionMapFixture.add_map_node(_mission_map, 0, 0)
@@ -37,7 +36,6 @@ func test_travel_opens_the_next_map_nodes_and_closes_the_choice_passed_up() -> v
 	assert_int(mission_model.get_map_node_visitation(_encounter)).is_equal(MissionModel.Visitation.AHEAD)
 
 
-# A lead-in road, from off the map, has no start node.
 func test_roads_on_the_trail_are_travelled_and_those_passed_up_closed() -> void:
 	var mission_model := MissionModel.new(_mission_map, 1)
 	_travel_and_pick(mission_model, _upper)

@@ -113,7 +113,6 @@ func _create_choice(actor: Character, target: Character, skill_delay: int, damag
 	return choice
 
 
-# Not the choice itself: the action the fight model holds for it.
 func _schedule(fight_model: FightModel, actor: Character, target: Character, skill_delay: int, damage: int) -> Action:
 	var choice := _create_choice(actor, target, skill_delay, damage)
 	var added: Array[Action] = []

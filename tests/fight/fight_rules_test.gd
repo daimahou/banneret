@@ -321,7 +321,6 @@ func _create_character(health: int, max_ap := CharacterData.MAX_AP) -> Character
 	return Character.new(character_data)
 
 
-# A new skill, aimed at the first standing character of the other side.
 func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, damage_amount := 1, skill_cooldown := 0) -> Action:
 	var choice := Action.new()
 	choice.actor = actor
@@ -342,7 +341,6 @@ func _add_stagger(choice: Action, ticks: int) -> void:
 	choice.skill.effects.append(stagger)
 
 
-# Not the choice itself: the action the fight model holds for it.
 func _schedule(fight_model: FightModel, choice: Action) -> Action:
 	var added: Array[Action] = []
 	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)
