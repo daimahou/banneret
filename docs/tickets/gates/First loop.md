@@ -5,8 +5,8 @@ requires:
 deadline:
 started: 2026-10-24
 finished:
-hours: 0.1
-total_hours: 17
+hours: 0.4
+total_hours: 17.3
 parent: "[[Vertical slice]]"
 ---
 

@@ -7,6 +7,7 @@
 - Every minute counts once. Sessions overlapping on several tickets share the minute evenly; overhead gets only the minutes no ticket has.
 - The rest is overhead (setup, docs, tracker), written on the active goal, so every ticket's hours sum to the project's active time.
 - A ticket's `extra_hours`, time worked outside any session (art, playtesting), is added to its hours.
+- A ticket's `former_ids`, the ids it had before a move, bring it the time logged under them.
 - A ticket with children also gets `total_hours`: its own hours and all its descendants'.
 
 Run before every commit on main: the running session's main time since its last commit goes to the coming commit's ticket, or to the active goal. A gap over 15 minutes is a break. Hours are rounded to the tenth.
@@ -88,6 +89,7 @@ def get_tickets():
 		is_started = re.search(r"^started: *\S", front[1], re.M) is not None
 		is_finished = re.search(r"^finished: *\S", front[1], re.M) is not None
 		extra_hours = re.search(r"^extra_hours: *([\d.]+)", front[1], re.M)
+		former_ids = re.search(r"^former_ids:((?:\n +- .*)*)", front[1], re.M)
 		if ticket_id and ticket_id.group(1):
 			tickets[ticket_id.group(1)] = {
 				"path": path,
@@ -95,6 +97,7 @@ def get_tickets():
 				"parent": parent.group(1) if parent else None,
 				"is_active_goal": os.path.basename(os.path.dirname(path)) == "goals" and is_started and not is_finished,
 				"extra_hours": float(extra_hours.group(1)) if extra_hours else 0.0,
+				"former_ids": re.findall(r"- \"?([^\"\n]+)\"?", former_ids.group(1)) if former_ids else [],
 			}
 	return tickets
 
@@ -245,6 +248,9 @@ def main():
 	tickets = get_tickets()
 	goal_id = get_active_goal_id(tickets)
 	seconds = get_ticket_seconds(goal_id, coming_ticket_id)
+	for ticket_id, ticket in tickets.items():
+		for former_id in ticket["former_ids"]:
+			seconds[ticket_id] += seconds.pop(former_id, 0.0)
 	hours = {ticket_id: get_hours(value) for ticket_id, value in seconds.items() if ticket_id in tickets}
 	# Overhead takes up the rounding, so the hours sum to the project's active time.
 	hours[goal_id] = round(get_hours(sum(seconds.values())) - sum(value for ticket_id, value in hours.items() if ticket_id != goal_id), 1)

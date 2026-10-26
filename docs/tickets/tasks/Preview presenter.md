@@ -1,12 +1,13 @@
 ---
 triage: ready-for-agent
-id: 1.2-1.9
+id: 1.2-4.1
+former_ids:
+  - 1.2-1.9
 requires:
-  - "[[Simulated preview]]"
 started: 2026-10-25
 finished: 2026-10-26
 hours: 1.8
-parent: "[[Warrior kit]]"
+parent: "[[Simulated preview]]"
 ---
 # Done when
 

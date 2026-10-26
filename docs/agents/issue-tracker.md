@@ -30,6 +30,7 @@ Issues are Markdown notes in `tickets/`, one per node. No API: create = write th
 - `started` / `finished` — dates;
 - `hours` — active time in tenths of an hour, written by `tools/ticket_time.py` (see Time).
 - `total_hours` — on a ticket with children: its `hours` and all its descendants'. Written by the same script.
+- `former_ids` — the ids a ticket had before a move (a promotion, a re-parent), so the time logged under them stays its own. Every id change adds the old one.
 - `extra_hours` — time worked outside any session (art, playtesting), added to `hours` by the script. Written only from the human's answer (see Time).
 
 ## Key

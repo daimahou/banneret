@@ -1,12 +1,14 @@
 ---
 triage: ready-for-agent
-id: 1.2-1.8
+id: 1.2-4
+former_ids:
+  - 1.2-1.8
 requires:
-  - "[[AP pips]]"
 started: 2026-10-25
 finished: 2026-10-25
 hours: 2
-parent: "[[Warrior kit]]"
+total_hours: 3.8
+parent: "[[First loop]]"
 deadline:
 ---
 # Done when
