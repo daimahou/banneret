@@ -1,7 +1,6 @@
 class_name FightController
 extends RefCounted
-# Plays a fight one delta at a time: a free enemy chooses first; the heroes choose once nothing is due this tick, or when their brain requests a stop; otherwise the fight moves on to the next beat, if it comes first, or the next action resolves.
-# Choices apply at once; a beat waits for the stage, if any, to hold on it, and a resolve for it to land its blow. The preview runs ahead of the blow: it lands there as the lunge starts.
+# Plays a fight one delta at a time: it asks the brains for choices and the rules for deltas, and waits on the stage, if any, to show each beat and blow.
 
 signal action_resolved(action: Action)
 
@@ -27,7 +26,6 @@ func dispose() -> void:
 	_enemy_brain.dispose()
 
 
-# Returns once one side has fallen.
 func play() -> void:
 	while not fight_model.is_over():
 		var choice := await _enemy_brain.get_next_action(fight_model)
@@ -49,6 +47,7 @@ func play() -> void:
 			if _stage == null:
 				fight_model.apply(delta)
 			else:
+				# The preview lands the blow as the lunge starts, ahead of the fight.
 				_stage.preview_model.sync(fight_model)
 				_stage.preview_model.apply(delta)
 				await _stage.show_action(next_action, fight_model.apply.bind(delta))

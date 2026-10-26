@@ -1,6 +1,6 @@
 class_name Delta
 extends RefCounted
-# What one step does to the fight: the ticks it moves on, and its changes in order. It applies nothing; the fight model applies it.
+# What one step does to the fight: the rules build it, and the fight model applies it.
 
 var ticks := 0
 var changes: Array[Change] = []
@@ -56,7 +56,7 @@ func cancel_action(cancelled: Action) -> void:
 	changes.append(change)
 
 
-# The character's health once this delta is applied.
+# Once this delta is applied.
 func get_health(character: Character) -> int:
 	var health := character.health
 	for change in changes:

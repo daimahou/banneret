@@ -22,7 +22,7 @@ class Health:
 			fight_model.character_fell.emit(character)
 
 
-# The fight model holds its own action, with the next id.
+# Holds the action's fields, not the action: the fight model makes its own, with the next id.
 class AddAction:
 	extends Change
 

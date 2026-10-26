@@ -1,7 +1,7 @@
 class_name PlayerBrain
 extends Brain
-# The heroes played by the player. The fight stops for a free hero, or when the player requests it; then the brain waits for a hero, a skill and a target, or a pass.
-# Given a stage, it shows its choices there and takes the player's input through its own PlayerInput, until disposed. Nothing is pickable while the fight runs.
+# The heroes, played by the player: the fight stops for a free hero, or when the player requests it, and waits on the player's choice or pass.
+# Given a stage, it shows the choices there and takes the player's input from it.
 
 signal _decided(action: Action)
 
@@ -17,7 +17,7 @@ var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
 var _is_stopped := false
-# The shown skill as the preview plays it out, built afresh each time the choices show; null for none.
+# The shown skill as the preview plays it out; null for none.
 var _ghost_action: Action
 
 # A requested stop lasts until a pass.
@@ -50,7 +50,6 @@ func _init(stage: Stage = null) -> void:
 	_show_choices()
 
 
-# No more input, and the stage stops showing the choices.
 func dispose() -> void:
 	if _input != null:
 		_input.queue_free()
@@ -69,7 +68,6 @@ func is_waiting() -> bool:
 	return _is_waiting
 
 
-# Returns null at once while the fight runs on. Stopped, it selects the first free hero, else the first hero, and waits.
 func get_next_action(fight_model: FightModel) -> Action:
 	if fight_model != _fight_model:
 		_fight_model = fight_model
@@ -129,7 +127,6 @@ func cycle_hero(step: int) -> void:
 	select_hero(heroes[posmod(heroes.find(hero) + step, heroes.size())])
 
 
-# Aims the first target.
 func arm_skill(skill: SkillData) -> void:
 	if not _is_waiting:
 		return
@@ -149,7 +146,6 @@ func disarm() -> void:
 		_show_choices()
 
 
-# Unarmed, arms the skill; armed, aims the target, and confirms it if this digit aimed it already.
 func press_number(index: int) -> void:
 	if not _is_waiting or get_inspected_character() != hero:
 		return
@@ -191,7 +187,6 @@ func confirm() -> void:
 	_decide(action)
 
 
-# A click: a target confirmed, if the armed skill reaches it; else a hero selected.
 func pick(character: Character) -> void:
 	if is_target(character):
 		aimed_target = character
@@ -218,7 +213,7 @@ func hover_action(action: Action) -> void:
 		_show_choices()
 
 
-# The armed skill's targets, left to right on stage: the enemies stand front first, the front towards the middle.
+# Left to right on stage: the enemies stand front first, the front towards the middle.
 func get_targets() -> Array[Character]:
 	if armed_skill == null:
 		return []
@@ -237,7 +232,7 @@ func is_ready(character: Character) -> bool:
 	return _is_waiting and _fight_model.get_side(character) == side and FightRules.is_ready(_fight_model, character)
 
 
-# Whose skills the bar shows: a hovered medallion's actor, else a hovered character while no skill is armed, else the selected hero.
+# Whose skills the bar shows.
 func get_inspected_character() -> Character:
 	if hovered_action != null:
 		return hovered_action.actor
@@ -246,7 +241,6 @@ func get_inspected_character() -> Character:
 	return hero
 
 
-# What the preview plays out during a stop: a hovered medallion's action, else the ghost of a usable skill; null for nothing.
 func get_previewed_action() -> Action:
 	if not _is_waiting:
 		return null
@@ -257,7 +251,6 @@ func get_previewed_action() -> Action:
 	return null
 
 
-# The hovered skill, else the armed one, as it would hang on the timeline, or null. A hovered skill of anyone but the hero hangs nothing.
 # Characters share skill resources, so the hovered skill is the hero's only while the bar shows the hero's.
 func _create_ghost_action() -> Action:
 	if not _is_waiting or hero == null:
@@ -274,7 +267,6 @@ func _create_ghost_action() -> Action:
 	return ghost
 
 
-# Only the armed skill has a target: the hovered character if the skill reaches them, else the aimed one. A hovered character it cannot reach leaves it none.
 func _get_ghost_target(shown: SkillData) -> Character:
 	if shown != armed_skill:
 		return null

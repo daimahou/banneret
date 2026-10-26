@@ -1,6 +1,6 @@
 class_name Brain
 extends RefCounted
-# Decides the actions of one side. Awaited, it gives an action for one of the side's free characters, or null to pass.
+# Decides one side's actions: the fight controller awaits one from it whenever the side may choose.
 
 var side := FightModel.Side.HERO
 
@@ -14,7 +14,7 @@ func dispose() -> void:
 	pass
 
 
-# A coroutine, so the awaits on it are not redundant: this one passes after a frame.
+# Null to pass. A coroutine, so the awaits on it are not redundant: this one passes after a frame.
 func get_next_action(_fight_model: FightModel) -> Action:
 	await (Engine.get_main_loop() as SceneTree).process_frame
 	return null

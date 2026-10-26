@@ -1,6 +1,6 @@
 class_name FightModel
 extends RefCounted
-# The fight's state. It does nothing but apply a delta, and signal what changed.
+# The fight's state: it changes only by applying a delta, and signals what changed.
 
 signal tick_changed(tick: int)
 @warning_ignore("unused_signal") signal health_changed(character: Character, amount: int)
@@ -20,7 +20,7 @@ var enemies: Array[Character] = []
 # The pending actions, in the order they resolve.
 var timeline: Array[Action] = []
 var next_action_id := 0
-# The deltas applied, in order: since the fight started, or on a preview since its last sync.
+# Since the fight started, or since the last sync.
 var history: Array[Delta] = []
 
 
@@ -39,7 +39,7 @@ func apply(delta: Delta) -> void:
 	changed.emit()
 
 
-# Becomes a copy of `fight_model`, keeping nothing of its own but an empty history.
+# Becomes a copy of `fight_model`, with an empty history.
 func sync(fight_model: FightModel) -> void:
 	tick = fight_model.tick
 	next_action_id = fight_model.next_action_id
@@ -58,13 +58,11 @@ func sync(fight_model: FightModel) -> void:
 	changed.emit()
 
 
-# Null when the timeline is empty.
 func get_next_action() -> Action:
 	return null if timeline.is_empty() else timeline[0]
 
 
-# Where a new action of this actor goes. On a shared tick the action chosen last resolves first, to counter what is
-# there; but on top of its actor's own, it queues after them, in the order they were chosen.
+# On a shared tick, the action chosen last resolves first, to counter what is there; but an actor's own actions resolve in the order they were chosen.
 func get_timeline_index(actor_id: int, resolve_tick: int) -> int:
 	var resolves_after_it := func(action: Action) -> bool:
 		return action.resolve_tick > resolve_tick or action.resolve_tick == resolve_tick and action.actor.id != actor_id
@@ -80,7 +78,7 @@ func get_character(character_id: int) -> Character:
 	return null
 
 
-# The pending action of this id, or null.
+# Null unless it is pending.
 func get_action(action_id: int) -> Action:
 	for action in timeline:
 		if action.id == action_id:
@@ -88,7 +86,6 @@ func get_action(action_id: int) -> Action:
 	return null
 
 
-# Whether the history resolves the action of this id; on a preview, before the shown action lands.
 func has_resolved(action_id: int) -> bool:
 	return history.any(func(delta: Delta) -> bool: return delta.is_resolving_action(action_id))
 
@@ -107,7 +104,7 @@ func get_moved_tick(action_id: int) -> int:
 	return moved_tick
 
 
-# The character's lowest AP over the history; on a preview, since its last sync.
+# Over the history.
 func get_lowest_ap(character_id: int) -> int:
 	var ap := get_character(character_id).ap
 	var lowest := ap
