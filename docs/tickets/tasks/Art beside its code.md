@@ -3,8 +3,8 @@ triage: ready-for-agent
 id: 1.2-2.1
 requires:
 started: 2026-10-26
-finished:
-hours:
+finished: 2026-10-26
+hours: 0.1
 parent: "[[Fight art]]"
 ---
 # Done when
