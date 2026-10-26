@@ -13,9 +13,7 @@ var _nameplates: Array[Nameplate] = []
 var _skill_bar: SkillBar
 var _timeline_rope: TimelineRope
 var _preview_arrows: PreviewArrows
-# Whose skills the bar shows, or null.
 var _inspected: Character
-# The action the preview plays out until it lands, or null.
 var _shown_action: Action
 var _is_refresh_queued := false
 
@@ -50,8 +48,7 @@ static func get_health_style(preview_model: FightModel, character: Character) ->
 	return PreviewPulse.get_style(preview_model.get_character(character.id).health - character.health)
 
 
-# A pip held now or once the preview lands shows held. It shows lost when spent by then, and gained when held by
-# then but not all the way: gained, or spent and got back.
+# A pip shows held when held now and once the preview lands, lost when the preview spends it, and gained when the preview gains it, or spends it and gets it back.
 static func get_pip_states(preview_model: FightModel, character: Character) -> Array[Nameplate.Pip]:
 	var previewed := preview_model.get_character(character.id)
 	var lowest_ap := preview_model.get_lowest_ap(character.id)
@@ -67,7 +64,6 @@ static func get_pip_states(preview_model: FightModel, character: Character) -> A
 	return states
 
 
-# Fewer beats left is better.
 static func get_cooldown_style(preview_model: FightModel, character: Character, skill: SkillData) -> PreviewPulse.Style:
 	var previewed := preview_model.get_character(character.id)
 	var gain := FightRules.get_cooldown_beats(character, skill) - FightRules.get_cooldown_beats(previewed, skill)

@@ -77,8 +77,7 @@ func show_pips(states: Array[Pip]) -> void:
 		_show_pips()
 
 
-# Shown in a style, the yellow behind the fill holds, and any drain under way runs on; shown plain, it drains down to
-# the fill, or rises to it at once.
+# A preview leaves the yellow where it is: only the fight drains it.
 func _show_health() -> void:
 	var share := clampf(_health / float(_max_health), 0.0, 1.0)
 	_fill.anchor_right = share

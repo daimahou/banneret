@@ -25,13 +25,13 @@ class Road:
 	var start_node: MapNode
 	var end_node: MapNode
 
-# `offset` is along the road's curve.
+# Where a laid dash sits on one road; `offset` is along the road's curve.
 class RoadPlace:
 	var road: Road
 	var offset: float
 	var is_first_step: bool
 
-# In stage space.
+# A road dash in stage space, with every road it sits on.
 class LaidRoadDash:
 	var road_dash: Flat.RoadDash
 	var places: Array[RoadPlace] = []
@@ -48,7 +48,7 @@ var _map_node_positions: Dictionary[MapNode, Vector2] = {}
 var _rng := RandomNumberGenerator.new()
 
 
-# Everything in stage space.
+# The mission map's road dashes in stage space, given each flat's rect and each map node's position in stage space.
 static func lay_out(mission_map: MissionMap, flat_rects: Array[Rect2], map_node_positions: Dictionary[MapNode, Vector2], road_seed: int) -> Array[Flat.RoadDash]:
 	var road_layout := RoadLayout.new()
 	road_layout._flat_rects = flat_rects

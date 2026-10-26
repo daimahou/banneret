@@ -24,7 +24,6 @@ func _ready() -> void:
 	_stop_button.pressed.connect(stop_pressed.emit)
 
 
-# None empties the bar; skills beyond the last slot are not shown.
 func show_skills(skills: Array[SkillData]) -> void:
 	var flip_delay := 0.0
 	for index in _slots.size():
@@ -33,13 +32,11 @@ func show_skills(skills: Array[SkillData]) -> void:
 			flip_delay += Scenery.FLIP_STAGGER
 
 
-# A slot beyond the last shows nothing.
 func show_cooldown(slot_index: int, beats: int, style := PreviewPulse.Style.NONE) -> void:
 	if slot_index < _slots.size():
 		_slots[slot_index].show_cooldown(beats, style)
 
 
-# Every other skill greys.
 func set_usable(usable: Array[SkillData]) -> void:
 	for slot in _slots:
 		slot.disabled = slot.skill not in usable

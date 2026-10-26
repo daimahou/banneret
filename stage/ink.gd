@@ -14,7 +14,6 @@ const DIMMED_ALPHA := 0.35
 const RECOLOR_SHADER := preload("res://stage/ink_recolor.gdshader")
 
 
-# Null for a highlight that keeps the ink's own color.
 static func create_material(highlight: Ink.Highlight) -> ShaderMaterial:
 	if highlight not in COLORS:
 		return null

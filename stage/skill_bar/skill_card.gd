@@ -66,7 +66,6 @@ func clear(delay: float) -> bool:
 	return show_skill(null, delay)
 
 
-# The beats left before the skill is ready again.
 func show_cooldown(beats: int, style := PreviewPulse.Style.NONE) -> void:
 	_cooldown_beats = beats
 	_cooldown_style = style

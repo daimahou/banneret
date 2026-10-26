@@ -4,7 +4,7 @@ extends Control
 
 signal pressed
 
-# 0 is rolled up under the top roll, 1 is open: the body scales on y and the bottom roll follows its lower edge.
+# 0 is rolled up under the top roll, 1 is open.
 @export_range(0.0, 1.0) var openness := 1.0:
 	set(value):
 		openness = value

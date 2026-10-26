@@ -16,7 +16,7 @@ var is_ghost := false
 var style := Style.NORMAL
 
 
-# Medallions on a shared tick hang in the order given; one due now hangs before any knot.
+# Medallions on a shared tick hang in the order given.
 static func create_entries(fight_tick: int, medallions: Array[TimelineEntry]) -> Array[TimelineEntry]:
 	var last_tick := fight_tick
 	for medallion in medallions:

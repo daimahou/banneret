@@ -32,7 +32,7 @@ var _highlighted_actors: Array[Character] = []
 @onready var _entries: Node2D = $Entries
 
 
-# Left to right.
+# The entries hang left to right, in the order given.
 func show_entries(entries: Array[TimelineEntry]) -> void:
 	_shown_entries = entries
 	_refresh()
@@ -48,7 +48,6 @@ func clear_highlights() -> void:
 	_show_highlights()
 
 
-# Null off every medallion; a ghost picks nothing.
 func get_action_at(global_point: Vector2) -> Action:
 	for entry in _shown_entries:
 		var is_pending := not entry.is_knot() and not entry.is_ghost
@@ -57,7 +56,7 @@ func get_action_at(global_point: Vector2) -> Action:
 	return null
 
 
-# Once settled, in global space.
+# Where the medallion's ring bottom will be once it settles, in global space.
 func get_ring_bottom(entry_id: String) -> Vector2:
 	var medallion: TimelineMedallion = _entry_nodes[entry_id]
 	return _entries.to_global(_settled_positions[entry_id] + medallion.get_ring_bottom())
@@ -83,7 +82,7 @@ func clear() -> void:
 	_settled_positions.clear()
 
 
-# Both in the entries' space. Past either end, level with that end.
+# Where the rope passes at x, both in the entries' space. Past either end, level with that end.
 func _get_rope_position(x: float) -> Vector2:
 	var rope_x := _convert_entries_to_rope_x(x)
 	var index := _get_rope_segment(rope_x)
@@ -96,7 +95,7 @@ func _get_rope_position(x: float) -> Vector2:
 	return _convert_rope_to_entries_point(from.lerp(to, weight))
 
 
-# In the entries' space.
+# The rope's angle at x, in the entries' space, for a knot tied in it.
 func _get_rope_angle(x: float) -> float:
 	var index := _get_rope_segment(_convert_entries_to_rope_x(x))
 	if index == -1:
@@ -106,7 +105,7 @@ func _get_rope_angle(x: float) -> float:
 	return (to - from).angle()
 
 
-# In the entries' space.
+# The rope's first point, in the entries' space: the first entry hangs from there.
 func _get_rope_start_x() -> float:
 	return _convert_rope_to_entries_point(_rope.points[0]).x
 
@@ -119,7 +118,7 @@ func _convert_entries_to_rope_x(x: float) -> float:
 	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
 
-# In the rope's own space; -1 off the rope.
+# The line segment of the rope above x, in the rope's own space, or -1 off it.
 func _get_rope_segment(rope_x: float) -> int:
 	for index in _rope.points.size() - 1:
 		if rope_x >= _rope.points[index].x and rope_x <= _rope.points[index + 1].x:
@@ -169,7 +168,7 @@ func _show_highlights() -> void:
 			medallion.set_highlighted(entry.action.actor in _highlighted_actors)
 
 
-# In the entries' space, left to right.
+# Where the ties hang, in the entries' space, left to right.
 func _get_tie_xs() -> Array[float]:
 	var tie_xs: Array[float] = []
 	for tie: Marker2D in _ties.get_children():
@@ -224,7 +223,6 @@ func _free_entry_node(node: Node2D) -> void:
 	node.queue_free()
 
 
-# Stops the tween already moving the node, if any.
 func _create_entry_tween(node: Node2D) -> Tween:
 	if _entry_tweens.has(node):
 		_entry_tweens[node].kill()

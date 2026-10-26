@@ -23,7 +23,7 @@ func _ready() -> void:
 	modulate.a = 0.0
 
 
-# In global space; none fades the shown ones out.
+# The arrows' points are in global space.
 func show_arrows(arrows: Array[Arrow]) -> void:
 	if arrows.is_empty():
 		if not _arrows.is_empty():

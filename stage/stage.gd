@@ -17,7 +17,7 @@ const PUPPET_SLIDE_DURATION := 0.8
 # Each marcher sets off up to this late, at random; too late and the one behind would catch up.
 const MARCH_STAGGER := 0.05
 
-# A blow: the actor's puppet lunges until `LUNGE_GAP` from its target, then goes home; a pause before the next one. In design units and seconds.
+# A blow: the actor's puppet lunges at its target, stopping `LUNGE_GAP` short of it, then goes home, and the stage pauses before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
 const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
@@ -193,7 +193,6 @@ func show_beat() -> void:
 	await get_tree().create_timer(BEAT_HOLD_DURATION).timeout
 
 
-# The model has travelled already: this only shows it.
 func show_travel(map_node: MapNode) -> void:
 	_scenery.set_input_enabled(false)
 	_coach_tween = create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
@@ -206,7 +205,6 @@ func show_offers(offers: Array[Offer]) -> void:
 	await _offer_presenter.show_offers(offers)
 
 
-# The model has picked already: this only shows it.
 func hide_offers() -> void:
 	_scenery.update_highlights()
 	await _offer_presenter.hide_offers()
@@ -272,7 +270,6 @@ func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side:
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
 
 
-# A side with more characters than nameplates leaves the hindmost out.
 func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character], side: PuppetLayout.Side) -> void:
 	var count := mini(characters.size(), nameplates.size())
 	var flip_delay := 0.0
