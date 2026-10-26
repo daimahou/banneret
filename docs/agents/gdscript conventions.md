@@ -138,3 +138,9 @@ return floori(records.size() / float(RECORD_SIZE))
 ## Debug tooling
 
 **Debug tools live in `debug/`, outside the game.** Console commands, debug arguments and debug-only behaviour sit there, and drive the game through what it already exposes: signals, models, public methods. Nothing outside `debug/` registers a command or grows a method for debugging.
+
+## Art
+
+**An image lives beside the code that uses it.** A puppet and its portrait sit beside their character's `.tres` in `hero/` or `enemy/`, a skill icon beside its skill, a stage element's art beside its scene. Art several parts of the stage share goes to `stage/`. There is no `art/` folder.
+
+**An image moves with its `.import`**, so its uid survives and whatever loads it by uid still finds it.

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dpsd2gy8ca3tr"]
 
 [ext_resource type="Script" uid="uid://8g3yor62y0ud" path="res://stage/nameplate/nameplate.gd" id="1_nameplate"]
-[ext_resource type="Texture2D" uid="uid://covwnfx252hkr" path="res://art/ui/frame.png" id="2_frame"]
-[ext_resource type="Texture2D" uid="uid://dfgxwq511fk75" path="res://art/ui/ap_pip.png" id="3_ap_pip"]
+[ext_resource type="Texture2D" uid="uid://covwnfx252hkr" path="res://stage/nameplate/frame.png" id="2_frame"]
+[ext_resource type="Texture2D" uid="uid://dfgxwq511fk75" path="res://stage/nameplate/ap_pip.png" id="3_ap_pip"]
 
 [node name="Nameplate" type="Control" unique_id=431521380]
 layout_mode = 3

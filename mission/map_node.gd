@@ -4,8 +4,8 @@ extends RefCounted
 enum EventType { PLACEHOLDER, ENCOUNTER }
 
 const EVENT_ICONS: Dictionary[EventType, Texture2D] = {
-	EventType.PLACEHOLDER: preload("res://art/map/event_placeholder.png"),
-	EventType.ENCOUNTER: preload("res://art/map/encounter.png"),
+	EventType.PLACEHOLDER: preload("res://mission/event_placeholder.png"),
+	EventType.ENCOUNTER: preload("res://mission/encounter.png"),
 }
 
 const EVENT_BAGS: Dictionary[EventType, Registry] = {

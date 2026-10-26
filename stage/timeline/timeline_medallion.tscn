@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://nxpw4onqglrh"]
 
 [ext_resource type="Script" uid="uid://31ifvhs80yrv" path="res://stage/timeline/timeline_medallion.gd" id="1_medallion"]
-[ext_resource type="Texture2D" uid="uid://xk0xlnwxd4r2" path="res://art/timeline/knot.png" id="2_i0uw7"]
-[ext_resource type="Texture2D" uid="uid://b0tkwd3a3r2i7" path="res://art/timeline/medallion.png" id="2_ring"]
+[ext_resource type="Texture2D" uid="uid://xk0xlnwxd4r2" path="res://stage/timeline/knot.png" id="2_i0uw7"]
+[ext_resource type="Texture2D" uid="uid://b0tkwd3a3r2i7" path="res://stage/timeline/medallion.png" id="2_ring"]
 
 [sub_resource type="Gradient" id="Gradient_disc"]
 offsets = PackedFloat32Array(0.9709443, 1)

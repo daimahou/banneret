@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dcaborbs15835"
-path="res://.godot/imported/coach.png-d41c0c0deaec26d49be8e60c76e392dc.ctex"
+uid="uid://covwnfx252hkr"
+path="res://.godot/imported/frame.png-c5fb7d67c956bd597a17829d4ec730b7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/stage/coach.png"
-dest_files=["res://.godot/imported/coach.png-d41c0c0deaec26d49be8e60c76e392dc.ctex"]
+source_file="res://stage/nameplate/frame.png"
+dest_files=["res://.godot/imported/frame.png-c5fb7d67c956bd597a17829d4ec730b7.ctex"]
 
 [params]
 

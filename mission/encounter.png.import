@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dcysyklvfxxx1"
-path="res://.godot/imported/skill_ap_pip.png-60da5b5b007a9030500743630c892efa.ctex"
+uid="uid://dvteodka3w5np"
+path="res://.godot/imported/encounter.png-eff488e0c3aea951b133ed6aada82ca4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/skill_ap_pip.png"
-dest_files=["res://.godot/imported/skill_ap_pip.png-60da5b5b007a9030500743630c892efa.ctex"]
+source_file="res://mission/encounter.png"
+dest_files=["res://.godot/imported/encounter.png-eff488e0c3aea951b133ed6aada82ca4.ctex"]
 
 [params]
 

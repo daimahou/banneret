@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cunqwqkyongfv"
-path="res://.godot/imported/brigand.png-ad8bcd9071e949ed74b6002ed69f81ba.ctex"
+uid="uid://cmrg583ruosjo"
+path="res://.godot/imported/rogue.png-902e1e300dc71fb224a179222ca14df0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/puppet/brigand.png"
-dest_files=["res://.godot/imported/brigand.png-ad8bcd9071e949ed74b6002ed69f81ba.ctex"]
+source_file="res://hero/rogue.png"
+dest_files=["res://.godot/imported/rogue.png-902e1e300dc71fb224a179222ca14df0.ctex"]
 
 [params]
 

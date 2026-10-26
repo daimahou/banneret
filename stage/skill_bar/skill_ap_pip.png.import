@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6p6mko1e862w"
-path="res://.godot/imported/warrior.png-e555239887863212a9730a4b29aed809.ctex"
+uid="uid://dcysyklvfxxx1"
+path="res://.godot/imported/skill_ap_pip.png-e830414257e2601f32a877b448af137d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/puppet/warrior.png"
-dest_files=["res://.godot/imported/warrior.png-e555239887863212a9730a4b29aed809.ctex"]
+source_file="res://stage/skill_bar/skill_ap_pip.png"
+dest_files=["res://.godot/imported/skill_ap_pip.png-e830414257e2601f32a877b448af137d.ctex"]
 
 [params]
 

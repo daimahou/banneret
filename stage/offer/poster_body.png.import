@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmrg583ruosjo"
-path="res://.godot/imported/rogue.png-e06518ffdce4f1ab3b7da616855568a9.ctex"
+uid="uid://b2e1nba1vo0rr"
+path="res://.godot/imported/poster_body.png-d3295f16f99f2477dcbe7f78ea40200f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/puppet/rogue.png"
-dest_files=["res://.godot/imported/rogue.png-e06518ffdce4f1ab3b7da616855568a9.ctex"]
+source_file="res://stage/offer/poster_body.png"
+dest_files=["res://.godot/imported/poster_body.png-d3295f16f99f2477dcbe7f78ea40200f.ctex"]
 
 [params]
 

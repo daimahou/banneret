@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://dx54a6cq1dxva"]
 
 [ext_resource type="Script" uid="uid://cn4tlmf7ivxe3" path="res://character/character_data.gd" id="1_character_data"]
-[ext_resource type="Texture2D" uid="uid://b6p6mko1e862w" path="res://art/puppet/warrior.png" id="2_puppet"]
+[ext_resource type="Texture2D" uid="uid://b6p6mko1e862w" path="res://hero/warrior.png" id="2_puppet"]
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="3_skill_data"]
 [ext_resource type="Resource" uid="uid://3bpbae2bacqx" path="res://skill/strike.tres" id="4_strike"]
 [ext_resource type="Resource" uid="uid://mcqofounfgl1" path="res://skill/bash.tres" id="5_bash"]

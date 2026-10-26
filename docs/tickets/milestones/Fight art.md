@@ -9,7 +9,7 @@ deadline:
 started:
 finished:
 hours: 0.3
-total_hours: 0.3
+total_hours: 0.4
 parent: "[[First loop]]"
 ---
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djof2122mx7m"
-path="res://.godot/imported/road_dash_b.png-d578272d0a0d0b5ec0886fff87043c1f.ctex"
+uid="uid://dg46k1fylrr0o"
+path="res://.godot/imported/skill_placeholder_icon.png-7cf84ac89aa1515132f9c36dd8e849b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/map/road_dash_b.png"
-dest_files=["res://.godot/imported/road_dash_b.png-d578272d0a0d0b5ec0886fff87043c1f.ctex"]
+source_file="res://stage/skill_bar/skill_placeholder_icon.png"
+dest_files=["res://.godot/imported/skill_placeholder_icon.png-7cf84ac89aa1515132f9c36dd8e849b8.ctex"]
 
 [params]
 

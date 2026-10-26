@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1ouwu0cunan2"
-path="res://.godot/imported/poster_bottom.png-c0e71444faa28a6018e36462e019f752.ctex"
+uid="uid://djof2122mx7m"
+path="res://.godot/imported/road_dash_b.png-af2c827560665beabbb8f17625ef38b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/offer/poster_bottom.png"
-dest_files=["res://.godot/imported/poster_bottom.png-c0e71444faa28a6018e36462e019f752.ctex"]
+source_file="res://stage/scenery/road_dash_b.png"
+dest_files=["res://.godot/imported/road_dash_b.png-af2c827560665beabbb8f17625ef38b6.ctex"]
 
 [params]
 

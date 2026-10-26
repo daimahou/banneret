@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ktp6jkwu5jku"
-path="res://.godot/imported/medallion_moved.png-6dc4e909e35c2a755a01dbb0035ee573.ctex"
+uid="uid://cmfdd6dt1cvp"
+path="res://.godot/imported/ap_pip_full.png-86288da9a621026a38e054ade241f307.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/timeline/medallion_moved.png"
-dest_files=["res://.godot/imported/medallion_moved.png-6dc4e909e35c2a755a01dbb0035ee573.ctex"]
+source_file="res://stage/nameplate/ap_pip_full.png"
+dest_files=["res://.godot/imported/ap_pip_full.png-86288da9a621026a38e054ade241f307.ctex"]
 
 [params]
 

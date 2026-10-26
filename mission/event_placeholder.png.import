@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d4kxrfubhwefb"
-path="res://.godot/imported/road_dash_c.png-b412212937511f3dd02bda98e144cb0c.ctex"
+uid="uid://dlq8p7lmb7nj6"
+path="res://.godot/imported/event_placeholder.png-bd6b0cb4d7c4c6c9790457bddc77b1f5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/map/road_dash_c.png"
-dest_files=["res://.godot/imported/road_dash_c.png-b412212937511f3dd02bda98e144cb0c.ctex"]
+source_file="res://mission/event_placeholder.png"
+dest_files=["res://.godot/imported/event_placeholder.png-bd6b0cb4d7c4c6c9790457bddc77b1f5.ctex"]
 
 [params]
 

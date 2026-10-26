@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cq4p0st3rsc1n"]
 
 [ext_resource type="Script" uid="uid://btjslj070g27v" path="res://stage/offer/poster.gd" id="1_poster"]
-[ext_resource type="Texture2D" uid="uid://dpl3o11m4qohn" path="res://art/offer/poster_top.png" id="2_top"]
-[ext_resource type="Texture2D" uid="uid://b2e1nba1vo0rr" path="res://art/offer/poster_body.png" id="3_body"]
-[ext_resource type="Texture2D" uid="uid://c1ouwu0cunan2" path="res://art/offer/poster_bottom.png" id="4_bottom"]
+[ext_resource type="Texture2D" uid="uid://dpl3o11m4qohn" path="res://stage/offer/poster_top.png" id="2_top"]
+[ext_resource type="Texture2D" uid="uid://b2e1nba1vo0rr" path="res://stage/offer/poster_body.png" id="3_body"]
+[ext_resource type="Texture2D" uid="uid://c1ouwu0cunan2" path="res://stage/offer/poster_bottom.png" id="4_bottom"]
 
 [sub_resource type="Animation" id="Animation_reset"]
 length = 0.001

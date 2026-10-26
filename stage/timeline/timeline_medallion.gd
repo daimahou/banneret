@@ -2,8 +2,8 @@ class_name TimelineMedallion
 extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
 
-const RING_TEXTURE := preload("res://art/timeline/medallion.png")
-const MOVED_RING_TEXTURE := preload("res://art/timeline/medallion_moved.png")
+const RING_TEXTURE := preload("res://stage/timeline/medallion.png")
+const MOVED_RING_TEXTURE := preload("res://stage/timeline/medallion_moved.png")
 
 @export var portrait: Texture2D:
 	set(value):

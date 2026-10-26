@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xk0xlnwxd4r2"
-path="res://.godot/imported/knot.png-01ae6931a06cd3966293f4a8af58720b.ctex"
+uid="uid://c1ouwu0cunan2"
+path="res://.godot/imported/poster_bottom.png-0506f629502d9bf01a20a53a096d497a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/timeline/knot.png"
-dest_files=["res://.godot/imported/knot.png-01ae6931a06cd3966293f4a8af58720b.ctex"]
+source_file="res://stage/offer/poster_bottom.png"
+dest_files=["res://.godot/imported/poster_bottom.png-0506f629502d9bf01a20a53a096d497a.ctex"]
 
 [params]
 

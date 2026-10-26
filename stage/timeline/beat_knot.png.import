@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmfdd6dt1cvp"
-path="res://.godot/imported/ap_pip_full.png-19ec495ef8bc37c44de5598d22cfc201.ctex"
+uid="uid://dm3qsjmw56jas"
+path="res://.godot/imported/beat_knot.png-97b1980372bde3e4016394608bbde168.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/ap_pip_full.png"
-dest_files=["res://.godot/imported/ap_pip_full.png-19ec495ef8bc37c44de5598d22cfc201.ctex"]
+source_file="res://stage/timeline/beat_knot.png"
+dest_files=["res://.godot/imported/beat_knot.png-97b1980372bde3e4016394608bbde168.ctex"]
 
 [params]
 

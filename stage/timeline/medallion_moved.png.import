@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqmgg86glf0oj"
-path="res://.godot/imported/mage.png-11f00e31d9ed2e532b6721f2db2e188f.ctex"
+uid="uid://ktp6jkwu5jku"
+path="res://.godot/imported/medallion_moved.png-46942b1833289ef6b9c60ca8bdddb5fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/puppet/mage.png"
-dest_files=["res://.godot/imported/mage.png-11f00e31d9ed2e532b6721f2db2e188f.ctex"]
+source_file="res://stage/timeline/medallion_moved.png"
+dest_files=["res://.godot/imported/medallion_moved.png-46942b1833289ef6b9c60ca8bdddb5fa.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpl3o11m4qohn"
-path="res://.godot/imported/poster_top.png-3b8b9ea956ca456d26a8c6f2cbbeafce.ctex"
+uid="uid://b0tkwd3a3r2i7"
+path="res://.godot/imported/medallion.png-44ad5397332c4cbeb00f46633ab44309.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/offer/poster_top.png"
-dest_files=["res://.godot/imported/poster_top.png-3b8b9ea956ca456d26a8c6f2cbbeafce.ctex"]
+source_file="res://stage/timeline/medallion.png"
+dest_files=["res://.godot/imported/medallion.png-44ad5397332c4cbeb00f46633ab44309.ctex"]
 
 [params]
 

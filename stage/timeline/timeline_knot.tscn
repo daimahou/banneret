@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://art/timeline/knot.png" id="1_knot"]
+[ext_resource type="Texture2D" path="res://stage/timeline/knot.png" id="1_knot"]
 
 [node name="TimelineKnot" type="Sprite2D"]
 texture = ExtResource("1_knot")

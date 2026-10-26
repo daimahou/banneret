@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0tkwd3a3r2i7"
-path="res://.godot/imported/medallion.png-b9ca94ca92508da561566b9f6923610e.ctex"
+uid="uid://d0q2lrv018r5o"
+path="res://.godot/imported/road_dash_a.png-be20be5a001d7f6c0fcb14d480ba9636.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/timeline/medallion.png"
-dest_files=["res://.godot/imported/medallion.png-b9ca94ca92508da561566b9f6923610e.ctex"]
+source_file="res://stage/scenery/road_dash_a.png"
+dest_files=["res://.godot/imported/road_dash_a.png-be20be5a001d7f6c0fcb14d480ba9636.ctex"]
 
 [params]
 

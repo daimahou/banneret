@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1tg3hm222y7j"
-path="res://.godot/imported/skill_slot.png-c1abb50f5d560fee7e55d7625200ddc7.ctex"
+uid="uid://dpl3o11m4qohn"
+path="res://.godot/imported/poster_top.png-03aa30689f7514989ab6ea184f2ce574.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/skill_slot.png"
-dest_files=["res://.godot/imported/skill_slot.png-c1abb50f5d560fee7e55d7625200ddc7.ctex"]
+source_file="res://stage/offer/poster_top.png"
+dest_files=["res://.godot/imported/poster_top.png-03aa30689f7514989ab6ea184f2ce574.ctex"]
 
 [params]
 

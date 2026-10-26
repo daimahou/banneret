@@ -1,10 +1,10 @@
 ---
-triage: needs-info
+triage: ready-for-agent
 id: 1.2-2.1
 requires:
-started:
-finished:
-hours:
+started: 2026-10-26
+finished: 2026-10-26
+hours: 0.1
 parent: "[[Fight art]]"
 ---
 # Done when
@@ -18,10 +18,8 @@ parent: "[[Fight art]]"
 - Each `.png` moves with its `.import`, so its uid survives.
 - Git LFS tracks by extension, so `.gitattributes` stays as it is.
 - Art shared by several elements of the stage (background, front) goes to `stage/`.
-
-## Open questions
-
-- Convention line or ADR.
+- A convention line, not an ADR: keeping art beside its code is the usual Godot layout, so it surprises no one.
+- `knight.png` is used by nothing and is deleted.
 
 ## Out of scope
 

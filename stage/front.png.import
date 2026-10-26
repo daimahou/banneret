@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg46k1fylrr0o"
-path="res://.godot/imported/skill_placeholder_icon.png-8e49b8fd4ec3e4b2fbe4fdfc82291c33.ctex"
+uid="uid://dnf252pjqiy5u"
+path="res://.godot/imported/front.png-2abe9cb96db2e944e87f760e4515ef23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/skill_placeholder_icon.png"
-dest_files=["res://.godot/imported/skill_placeholder_icon.png-8e49b8fd4ec3e4b2fbe4fdfc82291c33.ctex"]
+source_file="res://stage/front.png"
+dest_files=["res://.godot/imported/front.png-2abe9cb96db2e944e87f760e4515ef23.ctex"]
 
 [params]
 

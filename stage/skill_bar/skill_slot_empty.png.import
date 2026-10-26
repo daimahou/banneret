@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://g33p8e6oa1i"
-path="res://.godot/imported/background.png-6277fb01b5500bb8852833ec324024c3.ctex"
+uid="uid://cjae4jqetpse3"
+path="res://.godot/imported/skill_slot_empty.png-801717f46f812ed6da82ab38f644ea06.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/stage/background.png"
-dest_files=["res://.godot/imported/background.png-6277fb01b5500bb8852833ec324024c3.ctex"]
+source_file="res://stage/skill_bar/skill_slot_empty.png"
+dest_files=["res://.godot/imported/skill_slot_empty.png-801717f46f812ed6da82ab38f644ea06.ctex"]
 
 [params]
 

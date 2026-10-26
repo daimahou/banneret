@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfgxwq511fk75"
-path="res://.godot/imported/ap_pip.png-fde9f03aa84b433e17bdc48c92442556.ctex"
+uid="uid://cunqwqkyongfv"
+path="res://.godot/imported/brigand.png-f75a7af604c118566fd9758a06f32de9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/ui/ap_pip.png"
-dest_files=["res://.godot/imported/ap_pip.png-fde9f03aa84b433e17bdc48c92442556.ctex"]
+source_file="res://enemy/brigand.png"
+dest_files=["res://.godot/imported/brigand.png-f75a7af604c118566fd9758a06f32de9.ctex"]
 
 [params]
 
