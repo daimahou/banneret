@@ -43,6 +43,13 @@ func resolve_action(resolved: Action) -> void:
 	changes.append(change)
 
 
+func move_action(moved: Action, resolve_tick: int) -> void:
+	var change := Change.MoveAction.new()
+	change.action_id = moved.id
+	change.resolve_tick = resolve_tick
+	changes.append(change)
+
+
 func cancel_action(cancelled: Action) -> void:
 	var change := Change.CancelAction.new()
 	change.action_id = cancelled.id
@@ -76,6 +83,15 @@ func is_resolving_action(action_id: int) -> bool:
 		if change is Change.ResolveAction and (change as Change.ResolveAction).action_id == action_id:
 			return true
 	return false
+
+
+# The tick this delta last moves the action of this id to, or -1.
+func get_moved_tick(action_id: int) -> int:
+	var moved_tick := -1
+	for change in changes:
+		if change is Change.MoveAction and (change as Change.MoveAction).action_id == action_id:
+			moved_tick = (change as Change.MoveAction).resolve_tick
+	return moved_tick
 
 
 func is_cancelling_action(action_id: int) -> bool:

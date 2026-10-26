@@ -86,13 +86,67 @@ func test_the_preview_fades_what_it_resolves_and_crosses_what_it_cancels_but_the
 	assert_array(_describe(entries, {blow: "blow", doomed: "doomed", shown: "shown"})).contains_exactly(expected)
 
 
+func test_an_action_the_preview_moves_hangs_a_moved_ghost_where_it_would_land() -> void:
+	var fight_model := _create_fight_model()
+	var enemy := fight_model.enemies[0]
+	var bash := _create_choice(fight_model.heroes[0], enemy, 2, 1)
+	_add_stagger(bash, 2)
+	bash = _schedule(fight_model, bash)
+	var pending := _schedule(fight_model, _create_choice(enemy, fight_model.heroes[0], 3, 1))
+	var preview_model := _run(fight_model, bash)
+
+	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, bash)
+
+	var expected := ["knot", "knot", "bash NORMAL", "knot", "pending NORMAL", "knot", "knot", "pending moved ghost NORMAL"]
+	expected.append_array(["knot", "knot", "knot"])
+	assert_array(_describe(entries, {bash: "bash", pending: "pending"})).contains_exactly(expected)
+	var keys := entries.map(func(entry: TimelineEntry) -> String: return entry.get_key())
+	assert_array(keys).contains_exactly_in_any_order(_get_unique(keys))
+
+
+func test_an_action_moved_twice_hangs_one_moved_ghost_where_it_last_lands() -> void:
+	var fight_model := _create_fight_model()
+	var enemy := fight_model.enemies[0]
+	var first := _create_choice(fight_model.heroes[0], enemy, 2, 1)
+	_add_stagger(first, 2)
+	first = _schedule(fight_model, first)
+	var second := _create_choice(fight_model.heroes[1], enemy, 3, 1)
+	_add_stagger(second, 2)
+	second = _schedule(fight_model, second)
+	var pending := _schedule(fight_model, _create_choice(enemy, fight_model.heroes[0], 4, 1))
+	var preview_model := _run(fight_model, second)
+
+	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, second)
+
+	var expected := ["knot", "knot", "first FADED", "knot", "second NORMAL", "knot", "pending NORMAL"]
+	expected.append_array(["knot", "knot", "knot", "knot", "pending moved ghost NORMAL"])
+	assert_array(_describe(entries, {first: "first", second: "second", pending: "pending"})).contains_exactly(expected)
+
+
+func test_an_action_the_preview_moves_then_cancels_hangs_a_crossed_moved_ghost() -> void:
+	var fight_model := _create_fight_model()
+	var enemy := fight_model.enemies[0]
+	var bash := _create_choice(fight_model.heroes[0], enemy, 2, 1)
+	_add_stagger(bash, 2)
+	bash = _schedule(fight_model, bash)
+	var pending := _schedule(fight_model, _create_choice(enemy, fight_model.heroes[0], 3, 1))
+	var shown := _schedule(fight_model, _create_choice(fight_model.heroes[1], enemy, 4, 10))
+	var preview_model := _run(fight_model, shown)
+
+	var entries := PreviewPresenter.get_timeline_entries(fight_model, preview_model, shown)
+
+	var expected := ["knot", "knot", "bash FADED", "knot", "pending CROSSED", "knot", "shown NORMAL", "knot"]
+	expected.append_array(["pending moved ghost CROSSED", "knot", "knot", "knot"])
+	assert_array(_describe(entries, {bash: "bash", pending: "pending", shown: "shown"})).contains_exactly(expected)
+
+
 func _describe(entries: Array[TimelineEntry], names: Dictionary[Action, String]) -> Array[String]:
 	var described: Array[String] = []
 	for entry in entries:
 		if entry.is_knot():
 			described.append("knot")
 		else:
-			var ghost := " ghost" if entry.is_ghost else ""
+			var ghost := " moved ghost" if entry.is_moved else " ghost" if entry.is_ghost else ""
 			described.append("%s%s %s" % [names[entry.action], ghost, TimelineEntry.Style.find_key(entry.style)])
 	return described
 
@@ -120,6 +174,20 @@ func _create_choice(actor: Character, target: Character, skill_delay: int, damag
 	damage.amount = damage_amount
 	choice.skill.effects = [damage]
 	return choice
+
+
+func _add_stagger(choice: Action, ticks: int) -> void:
+	var stagger := StaggerEffect.new()
+	stagger.ticks = ticks
+	choice.skill.effects.append(stagger)
+
+
+func _get_unique(values: Array) -> Array:
+	var unique := []
+	for value in values:
+		if value not in unique:
+			unique.append(value)
+	return unique
 
 
 # Returns the action the fight model holds for the choice.

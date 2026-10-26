@@ -69,17 +69,24 @@ static func get_cooldown_style(preview_model: FightModel, character: Character, 
 
 
 # The fight's rope, styled by the preview: an action the preview resolves fades, unless it is the shown one; one it
-# cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve.
+# cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve. An action
+# the preview moves keeps its medallion, and hangs a moved ghost, in the same style, where it last moves to.
 static func get_timeline_entries(fight_model: FightModel, preview_model: FightModel, shown: Action) -> Array[TimelineEntry]:
 	var actions: Array[Action] = fight_model.timeline.duplicate()
 	var is_ghost_shown := shown != null and shown not in actions
 	if is_ghost_shown:
 		actions.insert(fight_model.get_timeline_index(shown.actor.id, shown.resolve_tick), shown)
-	var entries := TimelineEntry.create_entries(fight_model.tick, actions)
+	var moves: Dictionary[Action, int] = {}
+	for action in fight_model.timeline:
+		var moved_tick := preview_model.get_moved_tick(action.id)
+		if moved_tick != -1:
+			moves[action] = moved_tick
+	var entries := TimelineEntry.create_entries(fight_model.tick, actions, moves)
 	for entry in entries:
 		if entry.is_knot():
 			continue
-		entry.is_ghost = is_ghost_shown and entry.action == shown
+		if is_ghost_shown and entry.action == shown:
+			entry.is_ghost = true
 		if preview_model.has_cancelled(entry.action.id):
 			entry.style = TimelineEntry.Style.CROSSED
 		elif preview_model.has_resolved(entry.action.id) and entry.action != shown:

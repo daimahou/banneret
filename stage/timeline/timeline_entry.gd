@@ -11,15 +11,20 @@ var is_beat := false
 var portrait: Texture2D
 # An action not chosen yet, hung faded where it would resolve.
 var is_ghost := false
+# A ghost of a pending action, where a preview would move it; its medallion stays where it is.
+var is_moved := false
 var style := Style.NORMAL
 
 
 # The rope from left to right: a knot for each tick after the fight's, up to the beat at or after the last action, and
-# each action after the knot of its tick. One due now comes before any knot; on a shared tick, the order given.
-static func create_entries(fight_tick: int, actions: Array[Action]) -> Array[TimelineEntry]:
+# each action after the knot of its tick. One due now comes before any knot; on a shared tick, the order given. A moved
+# ghost hangs on the tick `moves` gives its action, after the actions there.
+static func create_entries(fight_tick: int, actions: Array[Action], moves: Dictionary[Action, int]) -> Array[TimelineEntry]:
 	var last_tick := fight_tick
 	for hung in actions:
 		last_tick = maxi(last_tick, hung.resolve_tick)
+	for moved_tick in moves.values():
+		last_tick = maxi(last_tick, moved_tick)
 	last_tick = FightRules.get_beat_at_or_after(last_tick)
 	var entries: Array[TimelineEntry] = []
 	for entry_tick in range(fight_tick, last_tick + 1):
@@ -35,6 +40,15 @@ static func create_entries(fight_tick: int, actions: Array[Action]) -> Array[Tim
 				medallion.action = hung
 				medallion.portrait = hung.actor.data.portrait
 				entries.append(medallion)
+		for moved in moves:
+			if moves[moved] == entry_tick:
+				var ghost := TimelineEntry.new()
+				ghost.tick = entry_tick
+				ghost.action = moved
+				ghost.portrait = moved.actor.data.portrait
+				ghost.is_ghost = true
+				ghost.is_moved = true
+				entries.append(ghost)
 	return entries
 
 
@@ -43,6 +57,8 @@ func is_knot() -> bool:
 
 
 # What its node is known by from one show to the next: a knot by its tick, a medallion by its action's id, which a
-# ghost shares with the action it becomes once chosen.
+# ghost shares with the action it becomes once chosen. A moved ghost is known apart from its action's medallion.
 func get_key() -> String:
-	return "knot %d" % tick if is_knot() else "action %d" % action.id
+	if is_knot():
+		return "knot %d" % tick
+	return "%s %d" % ["moved" if is_moved else "action", action.id]
