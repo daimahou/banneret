@@ -38,7 +38,7 @@ func travel_to(map_node: MapNode) -> void:
 		_resolved_offer = null if drawn.is_empty() else drawn[0]
 
 
-# Empty once the event resolved.
+# The offers awaiting the player's pick; empty once the event resolved.
 func get_offers() -> Array[Offer]:
 	return _offers
 
@@ -51,7 +51,7 @@ func pick_offer(offer: Offer) -> void:
 	_offers.clear()
 
 
-# Null while offers are pending, or when the draw was empty.
+# What the current map node's event resolved with; null while offers are pending or when the draw was empty.
 func get_resolved_offer() -> Offer:
 	return _resolved_offer
 
@@ -97,7 +97,7 @@ func get_road_visitation(start_node: MapNode, end_node: MapNode) -> Visitation:
 	return Visitation.CLOSED
 
 
-# From where the coach is, pending offers or not.
+# Every map node the coach can still reach from where it is, pending offers or not.
 func _get_reachable_map_nodes() -> Dictionary[MapNode, bool]:
 	var reachable: Dictionary[MapNode, bool] = {}
 	var frontier := _get_next_map_nodes()
