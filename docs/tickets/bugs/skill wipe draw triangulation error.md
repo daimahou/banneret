@@ -1,7 +1,7 @@
 ---
-severity:
-triage: needs-triage
-started:
+severity: minor
+triage: ready-for-agent
+started: 2026-10-26
 finished:
 hours:
 ---
