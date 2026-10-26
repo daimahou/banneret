@@ -1,7 +1,6 @@
 class_name CharacterData
 extends Resource
 
-# As many pips as a nameplate holds.
 const MAX_AP := 5
 
 @export var name: String
