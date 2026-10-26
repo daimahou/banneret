@@ -3,15 +3,15 @@ requires:
 id: 1.2-1
 deadline:
 started: 2026-10-24
-finished:
+finished: 2026-10-26
 hours: 0.3
-total_hours: 13.1
+total_hours: 12.9
 parent: "[[First loop]]"
 ---
 
 ## Done when
 
-- The warrior fights alone with a coherent kit of a few skills, staged and drawn.
+- The warrior fights alone with a coherent kit of a few skills, staged.
 - He spars against the current brigand until the enemy exists.
 
 ## Tickets

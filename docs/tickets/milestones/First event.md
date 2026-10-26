@@ -1,6 +1,6 @@
 ---
 requires:
-  - "[[First enemy]]"
+  - "[[Warrior art]]"
 id: "1.2-3"
 deadline:
 started:

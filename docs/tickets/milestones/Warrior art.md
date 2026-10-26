@@ -1,18 +1,22 @@
 ---
-triage: needs-info
-id: 1.2-1.7
 requires:
-  - "[[Beat and cooldowns]]"
+  - "[[Warrior kit]]"
+id: 1.2-2
+former_ids:
+  - 1.2-1.6
+  - 1.2-1.7
+deadline:
 started:
 finished:
 hours: 0.2
-parent: "[[Warrior kit]]"
+parent: "[[First loop]]"
 ---
-# Done when
 
-- Every image lives in the folder of the code that uses it; `art/` is gone.
-- Art a resource owns sits beside it: puppets and portraits beside their `hero/` and `enemy/` `.tres`, skill icons beside their skill.
+## Done when
+
+- Every image lives in the folder of the code that uses it; `art/` is gone. Art a resource owns sits beside it: puppets and portraits beside their `hero/` and `enemy/` `.tres`, skill icons beside their skill.
 - The rule is written down: a line in `gdscript conventions.md`, or an ADR.
+- The warrior's puppet and portrait, rough but readable, at final size.
 
 ## Implementation decisions
 
@@ -26,7 +30,10 @@ parent: "[[Warrior kit]]"
 
 ## Out of scope
 
-- Redrawing any art.
+- Redrawing any art but the warrior's.
+- Animation beyond what the stage already does.
+
+## Tickets
 
 ![[Children.base#Open tickets]]
 
