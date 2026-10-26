@@ -97,7 +97,7 @@ func has_cancelled(action_id: int) -> bool:
 	return history.any(func(delta: Delta) -> bool: return delta.is_cancelling_action(action_id))
 
 
-# -1 if the action was never moved. On a preview, only moves since its last sync count.
+# -1 if the action was never moved.
 func get_moved_tick(action_id: int) -> int:
 	var moved_tick := -1
 	for delta in history:

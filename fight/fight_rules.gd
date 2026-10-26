@@ -82,8 +82,7 @@ static func add_damage(fight_model: FightModel, delta: Delta, character: Charact
 		_add_fall(fight_model, delta, character)
 
 
-# Each of the character's pending actions moves `ticks` later; one the delta already removes stays. Moved in timeline
-# order, they keep their order.
+# Moved in timeline order, the character's actions keep their order.
 static func add_stagger(fight_model: FightModel, delta: Delta, character: Character, ticks: int) -> void:
 	for action in fight_model.timeline:
 		if action.actor == character and not delta.is_removing_action(action):

@@ -33,7 +33,7 @@ var _shown_entries: Array[TimelineEntry] = []
 var _entry_nodes: Dictionary[String, Node2D] = {}
 var _entry_tweens: Dictionary[Node2D, Tween] = {}
 var _highlighted_actors: Array[Character] = []
-# Each moved ghost, and the medallion its arrow runs from; a ghost going keeps its arrow until it is freed.
+# By moved ghost. A ghost going keeps its arrow until it is freed.
 var _arrow_sources: Dictionary[TimelineMedallion, TimelineMedallion] = {}
 
 @onready var _rope: Line2D = $Rope
@@ -267,9 +267,8 @@ func _draw_arrow(from: Vector2, to: Vector2, alpha: float) -> void:
 	_arrows.draw_colored_polygon(head, color)
 
 
-# The control point's height for an arrow that sags below both ends, the deeper the longer it runs, and passes under
-# every medallion between them. Its control point sits midway along, so the curve crosses a medallion's x at the
-# weight of that x between the ends; and it reaches only halfway to its control point.
+# Low enough that the arrow sags deeper the longer it runs, and passes under every medallion between its ends. A
+# quadratic curve reaches only halfway to its control point.
 func _get_arrow_control_y(from: Vector2, to: Vector2) -> float:
 	var control_y := maxf(from.y, to.y) + 2.0 * ARROW_SAG * absf(to.x - from.x)
 	for node in _entry_nodes.values():
