@@ -13,7 +13,7 @@ var _resolved_offer: Offer
 var _rng := RandomNumberGenerator.new()
 
 
-# Offers draw from their own seed, derived from `map_seed`.
+# A seed of their own, so offers don't replay the generator's random sequence.
 func _init(model_mission_map: MissionMap, map_seed: int) -> void:
 	mission_map = model_mission_map
 	_rng.seed = hash([map_seed, "offers"])
@@ -97,7 +97,7 @@ func get_road_visitation(start_node: MapNode, end_node: MapNode) -> Visitation:
 	return Visitation.CLOSED
 
 
-# Every map node the coach can still reach from where it is, pending offers or not.
+# From where the coach is, pending offers or not.
 func _get_reachable_map_nodes() -> Dictionary[MapNode, bool]:
 	var reachable: Dictionary[MapNode, bool] = {}
 	var frontier := _get_next_map_nodes()
