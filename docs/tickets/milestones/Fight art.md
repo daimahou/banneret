@@ -17,6 +17,7 @@ parent: "[[First loop]]"
 - Every image lives in the folder of the code that uses it; `art/` is gone. Art a resource owns sits beside it: puppets and portraits beside their `hero/` and `enemy/` `.tres`, skill icons beside their skill.
 - The rule is written down: a line in `gdscript conventions.md`, or an ADR.
 - The warrior's puppet and portrait, rough but readable, at final size.
+- The fight UI is drawn by hand, rough but readable, at final size.
 
 ## Implementation decisions
 
@@ -30,7 +31,7 @@ parent: "[[First loop]]"
 
 ## Out of scope
 
-- Redrawing any art but the warrior's.
+- Redrawing any art but the warrior's and the fight UI's.
 - Animation beyond what the stage already does.
 
 ## Tickets

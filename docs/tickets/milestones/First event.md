@@ -1,6 +1,6 @@
 ---
 requires:
-  - "[[Warrior art]]"
+  - "[[Fight art]]"
 id: "1.2-3"
 deadline:
 started:
