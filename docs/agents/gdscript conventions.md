@@ -36,23 +36,20 @@ This holds for every factory that is only an assignment list. `Action` ended up 
 
 ## Comments
 
-**A comment says why, never what.** The code tells the computer what to do; a comment tells a human why it is done that way. A comment saying what the code does is a name or a structure not yet written: rename or restructure, then delete it. No comment is better than a wrong or confusing one.
-
-**The test: could the reader learn it from the declaration and the lines below?** Then it is narration, however short or true. A comment earns its place only with what is not there to read: a reason, a rule decided elsewhere, a surprise.
+**A comment holds only what the code cannot show.** Every line is there because it is needed, so a comment saying what a line does, or why it is there, is narration. Rename or restructure until the code reads on its own, then delete the comment. No comment is better than a wrong or confusing one.
 
 **What qualifies**
 
-- **A game rule** the code applies: `# On a shared tick, the beat comes first.`
-- **A reason** the reader would otherwise undo: `# Stronger than a ghost's: it must read at a glance.`
-- **A gotcha**, what surprises or breaks if the line is taken at face value: `# A move cuts any fade in short, so it finishes the fade too.`
-- **A value's meaning** the declaration cannot show: a unit, a space, an order, what null or -1 means. `# Null for a skill shown before its target is chosen.` over `var target: Character`.
-- **A class header**, the one place a *what* belongs: the class's role in the architecture, what drives it and what it drives. No implementation details, unless the reader needs them before reading the class. A class whose name and folder make its role plain has none.
+- **A class header**, the one place a *what* belongs: the class's role in the architecture, what drives it and what it drives. No implementation details. A class whose name and folder make its role plain has none.
+- **A value's meaning a declaration cannot show**: a unit, a space, an order, what null or -1 means. `# Null for a skill shown before its target is chosen.` over `var target: Character`. `# In design units and seconds.` over a group of constants.
+- **A game rule** the code applies without being able to say it is one: `# A fallen character's cancelled actions give no AP back.`
+- **What a tuned constant must hold to**: `# Stronger than a ghost's: it must read at a glance.` over `MOVED_ALPHA`.
 
 **What does not qualify**
 
 - Restating the name below it.
-- Narrating the lines below it, or when a coroutine returns: `# Null unless it is pending.` over a loop that returns null when no pending action matches.
-- Stating an exception without its reason: `# Becomes a copy of fight_model, with an empty history.` leaves the reader asking why. `# The history is not copied: a preview's history holds only what the preview plays out.` answers it.
+- Saying what the lines below do, or when a coroutine returns: `# Null unless it is pending.` over a loop that returns null when no pending action matches.
+- Saying why a line is there: `# The fight is still awaiting a waiting player brain, so swapping it out is not enough: the player brain plays the random brain's choice as its own, or passes.` The lines are there because they are needed; the reader reads them.
 - A header walking through the implementation.
 - A sentence the reader must read twice.
 
@@ -91,7 +88,7 @@ func highlight_actors(actors: Array[Character]) -> void:
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
 ```
 
-keeps the role and the one gotcha:
+keeps the role, and what only the art can tell:
 
 ```gdscript
 # The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
