@@ -38,69 +38,70 @@ This holds for every factory that is only an assignment list. `Action` ended up 
 
 **A comment says why, never what.** The code tells the computer what to do; a comment tells a human why it is done that way. A comment saying what the code does is a name or a structure not yet written: rename or restructure, then delete it. No comment is better than a wrong or confusing one.
 
+**The test: could the reader learn it from the declaration and the lines below?** Then it is narration, however short or true. A comment earns its place only with what is not there to read: a reason, a rule decided elsewhere, a surprise.
+
 **What qualifies**
 
 - **A game rule** the code applies: `# On a shared tick, the beat comes first.`
 - **A reason** the reader would otherwise undo: `# Stronger than a ghost's: it must read at a glance.`
 - **A gotcha**, what surprises or breaks if the line is taken at face value: `# A move cuts any fade in short, so it finishes the fade too.`
-- **A value's meaning** the type cannot carry: a unit, a space, an order, what null or -1 means. `# -1 if this delta does not move the action.` `# In the entries' space.`
+- **A value's meaning** the declaration cannot show: a unit, a space, an order, what null or -1 means. `# Null for a skill shown before its target is chosen.` over `var target: Character`.
 - **A class header**, the one place a *what* belongs: the class's role in the architecture, what drives it and what it drives. No implementation details, unless the reader needs them before reading the class. A class whose name and folder make its role plain has none.
 
 **What does not qualify**
 
 - Restating the name below it.
-- Narrating the lines below it, or when a coroutine returns.
+- Narrating the lines below it, or when a coroutine returns: `# Null unless it is pending.` over a loop that returns null when no pending action matches.
+- Stating an exception without its reason: `# Becomes a copy of fight_model, with an empty history.` leaves the reader asking why. `# The history is not copied: a preview's history holds only what the preview plays out.` answers it.
 - A header walking through the implementation.
 - A sentence the reader must read twice.
 
-**No length cap**: a comment is judged by what it says and how it is written, not by its length.
+**Keep or delete; never compress.** A comment worth keeping is a whole sentence that reads at once. Cut down to a fragment, `# Over the history.` or `# Both in the entries' space.`, it says less and reads worse. There is no length cap: a comment is judged by what it says and how it is written.
+
+**A comment standing in for a name is replaced by the name.**
+
+```gdscript
+# Once this delta is applied.
+func get_health(character: Character) -> int:
+```
+
+becomes
+
+```gdscript
+func get_resolved_health(character: Character) -> int:
+```
+
+and
 
 ```gdscript
 # The medallions of these actors hang highlighted.
 func set_marks(actors: Array[Character]) -> void:
 ```
 
-restates a name that says too little; renamed, it needs nothing:
+becomes
 
 ```gdscript
 func highlight_actors(actors: Array[Character]) -> void:
 ```
 
-```gdscript
-# Whether the next beat comes before the next action resolves; on a shared tick, the beat comes first.
-static func is_beat_next(fight_model: FightModel) -> bool:
-```
-
-keeps only the rule the name cannot carry:
-
-```gdscript
-# On a shared tick, the beat comes first.
-static func is_beat_next(fight_model: FightModel) -> bool:
-```
-
-```gdscript
-# Aims the first target.
-func arm_skill(skill: SkillData) -> void:
-```
-
-narrates the body, and is deleted. So is a header that walks the implementation:
+**A header says the role, not the steps.**
 
 ```gdscript
 # The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with its actor's portrait for each action, hung after the knot of the tick it resolves on.
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
 ```
 
-which keeps the role and the one gotcha:
+keeps the role and the one gotcha:
 
 ```gdscript
 # The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background.
 ```
 
-**One comment per unit of declarations.** Group them into logical units, a blank line between units, and the unit carries the comment. `Stage`'s blow is one unit, not four declarations:
+**One comment per unit of declarations.** Group them into logical units, a blank line between units, and the unit carries the comment:
 
 ```gdscript
-# A blow: the actor's puppet lunges until `LUNGE_GAP` from its target, then goes home; a pause before the next one. In design units and seconds.
+# A blow: the actor's puppet lunges at its target, stopping `LUNGE_GAP` short of it, then goes home, and the stage pauses before the next one. In design units and seconds.
 const LUNGE_GAP := 220.0
 const LUNGE_DURATION := 0.25
 const RETURN_DURATION := 0.35
