@@ -69,8 +69,7 @@ static func get_cooldown_style(preview_model: FightModel, character: Character, 
 
 
 # The fight's rope, styled by the preview: an action the preview resolves fades, unless it is the shown one; one it
-# cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve. An action
-# the preview moves keeps its medallion, and hangs a moved ghost, in the same style, where it last moves to.
+# cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve.
 static func get_timeline_entries(fight_model: FightModel, preview_model: FightModel, shown: Action) -> Array[TimelineEntry]:
 	var actions: Array[Action] = fight_model.timeline.duplicate()
 	var is_ghost_shown := shown != null and shown not in actions

@@ -78,7 +78,6 @@ class ResolveAction:
 		fight_model.action_resolved.emit(action)
 
 
-# The action resolves on its new tick after the actions already there.
 class MoveAction:
 	extends Change
 

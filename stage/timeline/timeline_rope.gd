@@ -2,7 +2,6 @@ class_name TimelineRope
 extends Node2D
 # The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with its actor's portrait for each action, hung after the knot of the tick it resolves on.
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
-# An arrow runs under the medallions from an action's medallion to its moved ghost, at the ghost's alpha.
 
 const KNOT_SCENE := preload("res://stage/timeline/timeline_knot.tscn")
 const BEAT_KNOT_SCENE := preload("res://stage/timeline/timeline_beat_knot.tscn")
@@ -14,12 +13,12 @@ const MEDALLION_SPACING := 148.0
 const TIE_CLEARANCE := 24.0
 
 const GHOST_ALPHA := 0.4
-# A moved ghost must read at a glance: it is where an action will be, not a choice still open.
+# Stronger than a ghost's: it must read at a glance.
 const MOVED_ALPHA := 0.75
 
 const ARROW_WIDTH := 6.0
 const ARROW_GAP := 8.0
-# How far an arrow sags below its lower end, per unit of the length it runs: a longer one runs under a shorter.
+# Per unit of length, so a longer arrow runs under a shorter one.
 const ARROW_SAG := 0.25
 const ARROW_POINTS := 24
 const ARROWHEAD_LENGTH := 28.0
@@ -267,8 +266,7 @@ func _draw_arrow(from: Vector2, to: Vector2, alpha: float) -> void:
 	_arrows.draw_colored_polygon(head, color)
 
 
-# Low enough that the arrow sags deeper the longer it runs, and passes under every medallion between its ends. A
-# quadratic curve reaches only halfway to its control point.
+# A quadratic curve reaches only halfway to its control point.
 func _get_arrow_control_y(from: Vector2, to: Vector2) -> float:
 	var control_y := maxf(from.y, to.y) + 2.0 * ARROW_SAG * absf(to.x - from.x)
 	for node in _entry_nodes.values():

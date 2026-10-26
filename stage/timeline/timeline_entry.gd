@@ -11,14 +11,13 @@ var is_beat := false
 var portrait: Texture2D
 # An action not chosen yet, hung faded where it would resolve.
 var is_ghost := false
-# A ghost of a pending action, where a preview would move it; its medallion stays where it is.
+# A ghost where a preview would move a pending action.
 var is_moved := false
 var style := Style.NORMAL
 
 
 # The rope from left to right: a knot for each tick after the fight's, up to the beat at or after the last action, and
-# each action after the knot of its tick. One due now comes before any knot; on a shared tick, the order given. A moved
-# ghost hangs on the tick `moves` gives its action, after the actions there.
+# each action after the knot of its tick. One due now comes before any knot; on a shared tick, the order given.
 static func create_entries(fight_tick: int, actions: Array[Action], moves: Dictionary[Action, int]) -> Array[TimelineEntry]:
 	var last_tick := fight_tick
 	for hung in actions:
@@ -50,7 +49,7 @@ func is_knot() -> bool:
 
 
 # What its node is known by from one show to the next: a knot by its tick, a medallion by its action's id, which a
-# ghost shares with the action it becomes once chosen. A moved ghost is known apart from its action's medallion.
+# ghost shares with the action it becomes once chosen.
 func get_key() -> String:
 	if is_knot():
 		return "knot %d" % tick
