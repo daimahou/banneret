@@ -9,7 +9,6 @@ const ENCOUNTER_ROW := 2
 
 const PATH_COUNT := 3
 
-# Seeded offsets the view draws with, in design units.
 const NODE_JITTER := 60.0
 const EDGE_WOBBLE := 80.0
 
