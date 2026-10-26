@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" path="res://stage/timeline/timeline_rope.tscn" id="9_timeline_rope"]
 [ext_resource type="PackedScene" uid="uid://cr21bicmgje5g" path="res://stage/skill_bar/skill_bar.tscn" id="10_skill_bar"]
 [ext_resource type="PackedScene" uid="uid://dpsd2gy8ca3tr" path="res://stage/nameplate/nameplate.tscn" id="11_nameplate"]
-[ext_resource type="Script" path="res://stage/preview_arrows.gd" id="12_preview_arrows"]
 
 [node name="Stage" type="Control" unique_id=1716428942]
 layout_mode = 3
@@ -60,9 +59,6 @@ position = Vector2(580, 302)
 
 [node name="Rope" parent="TimelineRope" index="0"]
 points = PackedVector2Array(456, -75, 617, -19, 825, 4, 1035, -25, 1200, -109, 1388, -29, 1590, 10, 1777, -42, 1897, -117, 2080, -35, 2296, 2, 2459, -43, 2591, -97)
-
-[node name="PreviewArrows" type="Node2D" parent="."]
-script = ExtResource("12_preview_arrows")
 
 [node name="Puppets" type="Control" parent="." unique_id=1574302127]
 anchors_preset = 0

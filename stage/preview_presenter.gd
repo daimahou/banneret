@@ -22,13 +22,14 @@ var _shown_action: Action
 var _is_refresh_queued := false
 
 
-func _init(fight: FightModel, preview: FightModel, nameplates: Array[Nameplate], bar: SkillBar, rope: TimelineRope, arrows: PreviewArrows) -> void:
+func _init(fight: FightModel, preview: FightModel, nameplates: Array[Nameplate], bar: SkillBar, rope: TimelineRope) -> void:
 	_fight_model = fight
 	_preview_model = preview
 	_nameplates = nameplates
 	_skill_bar = bar
 	_timeline_rope = rope
-	_preview_arrows = arrows
+	_preview_arrows = PreviewArrows.new()
+	_timeline_rope.add_sibling(_preview_arrows)
 	_fight_model.changed.connect(_queue_refresh)
 	_preview_model.changed.connect(_queue_refresh)
 	_queue_refresh()
@@ -37,6 +38,7 @@ func _init(fight: FightModel, preview: FightModel, nameplates: Array[Nameplate],
 func dispose() -> void:
 	_fight_model.changed.disconnect(_queue_refresh)
 	_preview_model.changed.disconnect(_queue_refresh)
+	_preview_arrows.queue_free()
 	_fight_model = null
 
 

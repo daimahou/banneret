@@ -23,7 +23,7 @@ parent: "[[Warrior kit]]"
 - The presenter hangs a moved ghost for each action the preview's history moves, at its last moved tick, with an id apart from the real medallion's: both show at once. Style `MOVED`, or `CROSSED` when the preview cancels the action. The real medallion keeps its style (faded, crossed). Several moves: one ghost, one arrow.
 - The rope draws `MOVED` as the actor's portrait in its own ring at `MOVED_ALPHA` 0.75, stronger than ghost alpha so it reads at a glance, `art/timeline/medallion_moved.png`: a placeholder, `medallion.png` tinted toward `2f5d8a` at the same size, which the human replaces with a dotted ring. The real medallion stays put until the move happens.
 - No pulse: the rope has none.
-- Arrows are the presenter's: it computes them from where the rope says each ring settles (`get_ring_bottom`, `get_ring_bottoms`) and hands them to `PreviewArrows`, a widget that only draws. The rope knows nothing of arrows.
+- Arrows are the presenter's: it computes them from where the rope says each ring settles (`get_ring_bottom`, `get_ring_bottoms`) and hands them to `PreviewArrows`, a widget that only draws; the presenter makes it beside the rope and frees it when disposed. The rope knows nothing of arrows.
 - One arrow per move: an arc below the medallions, from the real medallion's bottom to the ghost's, sagging deeper the longer it runs, so nested arcs nest; overlapping ones may cross. It passes under every medallion between its ends. `2f5d8a`, 6 px, the moved ghost's alpha, a filled arrowhead at the ghost. It fades in at the settled spots, and out when the presenter shows none.
 - At impact the preview re-syncs: the ghost lifts and fades as any removed entry, while the real medallion slides into its slot.
 

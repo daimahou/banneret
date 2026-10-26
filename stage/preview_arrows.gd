@@ -27,18 +27,15 @@ func _ready() -> void:
 func show_arrows(arrows: Array[Arrow]) -> void:
 	if arrows.is_empty():
 		if not _arrows.is_empty():
-			_create_fade(0.0).tween_callback(clear)
+			_create_fade(0.0).tween_callback(_clear)
 		return
 	_arrows = arrows
 	queue_redraw()
 	_create_fade(1.0)
 
 
-func clear() -> void:
-	if _fade != null:
-		_fade.kill()
+func _clear() -> void:
 	_arrows = []
-	modulate.a = 0.0
 	queue_redraw()
 
 
