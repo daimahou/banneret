@@ -16,7 +16,7 @@ A `SceneTree` script that calls `quit(0)` exits 0 and one that calls `quit(100)`
 git diff --cached -- '*.gd' | grep -E '^\+\s*#'
 ```
 
-Tag each one header, value, rule or tuning, as [[gdscript conventions#Comments]] defines them. One that fits no tag, or that says what the code does or why a line is there, is deleted.
+Tag each one header, null or rule, as [[gdscript conventions#Comments]] defines them. One that fits no tag is deleted.
 
 ## The tests
 

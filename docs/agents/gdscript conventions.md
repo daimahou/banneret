@@ -41,15 +41,17 @@ This holds for every factory that is only an assignment list. `Action` ended up 
 **What qualifies**
 
 - **A class header**, the one place a *what* belongs: the class's role in the architecture, what drives it and what it drives. No implementation details. A class whose name and folder make its role plain has none.
-- **A value's meaning a declaration cannot show**: a unit, a space, an order, what null or -1 means. `# Null for a skill shown before its target is chosen.` over `var target: Character`. `# In design units and seconds.` over a group of constants.
+- **What null, -1 or empty means**, where the declaration cannot show it: `# Null for a skill shown before its target is chosen.` over `var target: Character`. Likewise what a packed value's parts are: `# A cell is (column, row).`
 - **A game rule** the code applies without being able to say it is one: `# A fallen character's cancelled actions give no AP back.`
-- **What a tuned constant must hold to**: `# Stronger than a ghost's: it must read at a glance.` over `MOVED_ALPHA`.
 
 **What does not qualify**
 
-- Restating the name below it.
+- Restating the name below it, or what any reader already knows: `# What its node is known by from one show to the next.` over `var id: String`.
+- Units and spaces: seconds and design units are the project's, and a space the reader must know goes in the name.
+- Order, layout and tuning: `# The entries hang left to right, in the order given.`, `# A transition's slides, in seconds.`
 - Saying what the lines below do, or when a coroutine returns: `# Null unless it is pending.` over a loop that returns null when no pending action matches.
 - Saying why a line is there: `# The fight is still awaiting a waiting player brain, so swapping it out is not enough: the player brain plays the random brain's choice as its own, or passes.` The lines are there because they are needed; the reader reads them.
+- Saying who calls it or what it is for: `# For debugging, from the autoexec script.` over `start_fight`. The name says it: `start_debug_fight`.
 - A header walking through the implementation.
 - A sentence the reader must read twice.
 
@@ -88,22 +90,13 @@ func highlight_actors(actors: Array[Character]) -> void:
 # The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
 ```
 
-keeps the role, and what only the art can tell:
+keeps only the role:
 
 ```gdscript
 # The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
-# The rope's shape is its line's points, traced by hand over the rope drawn on the background.
 ```
 
-**One comment per unit of declarations.** Group them into logical units, a blank line between units, and the unit carries the comment:
-
-```gdscript
-# A blow: the actor's puppet lunges at its target, stopping `LUNGE_GAP` short of it, then goes home, and the stage pauses before the next one. In design units and seconds.
-const LUNGE_GAP := 220.0
-const LUNGE_DURATION := 0.25
-const RETURN_DURATION := 0.35
-const BLOW_PAUSE := 0.25
-```
+**Declarations group into logical units**, a blank line between units, and no comment over them unless one qualifies.
 
 ## Line length
 
