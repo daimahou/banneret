@@ -28,7 +28,6 @@ func _create_action(resolve_tick: int) -> Action:
 	return action
 
 
-# Each action by its index in `actions`.
 func _describe(entries: Array[TimelineEntry], actions: Array[Action]) -> Array[String]:
 	var described: Array[String] = []
 	for entry in entries:
