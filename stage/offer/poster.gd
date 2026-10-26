@@ -42,7 +42,7 @@ func _gui_input(event: InputEvent) -> void:
 		pressed.emit()
 
 
-# Waits `delay` on the drop's first frame, above the frame, then plays it; returns once the poster hangs unrolled.
+# Waits out `delay` above the screen, on the drop's first frame.
 func play_drop(delay: float) -> void:
 	_animation_player.play(&"drop")
 	_animation_player.seek(0.0, true)

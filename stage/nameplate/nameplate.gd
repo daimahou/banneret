@@ -1,7 +1,6 @@
 class_name Nameplate
 extends Control
-# A character's portrait and name, a health fill and `health/max`, and a pip for each AP it can hold. Each readout shows what it is told, in a style.
-# A new character flips the nameplate like a flat: it swaps while edge-on, and hides without one.
+# A character's portrait, name, health and AP. Each readout shows what it is told, in a style.
 
 # Held, lost and gained show full; lost and gained pulse.
 enum Pip { EMPTY, HELD, LOST, GAINED }
@@ -113,7 +112,6 @@ func _show_pips() -> void:
 		_pip_pulses[index].show_style(style)
 
 
-# The last character's yellow goes.
 func _show_content(shown_character: Character) -> void:
 	_is_awaiting_swap = false
 	visible = shown_character != null
@@ -121,6 +119,7 @@ func _show_content(shown_character: Character) -> void:
 		return
 	_portrait.texture = shown_character.data.portrait
 	_name.text = shown_character.data.name
+	# The yellow was the last character's.
 	if _drain_tween != null:
 		_drain_tween.kill()
 	_damage.anchor_right = 0.0

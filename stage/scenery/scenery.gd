@@ -42,7 +42,6 @@ func show_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 	update_highlights()
 
 
-# Returns once the last flat has flipped.
 func flip_to_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 	_set_mission(mission_model, map_seed)
 	await _flip_flats(func(flat: Flat) -> void: flat.show_column(_mission_map_layout, _flats.find(flat)))
@@ -51,7 +50,6 @@ func flip_to_mission_map(mission_model: MissionModel, map_seed: int) -> void:
 
 
 # The battle illustration is centred on the scenery, each flat showing the part under it; a bigger one is cropped.
-# Returns once the last flat has flipped.
 func flip_to_battle() -> void:
 	_is_mission_map_shown = false
 	var texture_size := BATTLEGROUND.get_size()
@@ -106,7 +104,7 @@ func _set_mission(mission_model: MissionModel, map_seed: int) -> void:
 	_mission_map_layout = MissionMapLayout.create(mission_model.mission_map, map_seed, _flats[0].size, get_theme_constant("separation"), _flats.size())
 
 
-# One flat after another, left to right, each starting a stagger after the last; each swaps its content while edge-on. Returns once the last flat has flipped.
+# `swap_content` runs on each flat while it is edge-on.
 func _flip_flats(swap_content: Callable) -> void:
 	var tween := create_tween().set_parallel().set_trans(FLIP_TRANSITION)
 	for index in _flats.size():

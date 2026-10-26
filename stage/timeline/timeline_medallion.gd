@@ -1,7 +1,6 @@
 class_name TimelineMedallion
 extends Node2D
 # An action on the timeline rope: its actor's portrait in a ring, hung from the rope by its loop.
-# Highlighted, its ring takes the hover ink; a cross over its face marks it cancelled.
 
 const RING_TEXTURE := preload("res://art/timeline/medallion.png")
 const MOVED_RING_TEXTURE := preload("res://art/timeline/medallion_moved.png")

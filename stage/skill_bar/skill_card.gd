@@ -1,9 +1,6 @@
 class_name SkillCard
 extends TextureButton
-# One slot of the skill bar, empty or showing a skill as a card: its icon, name, a line per effect and its delay. On cooldown it dims, and a clock-wipe over the icon shows the beats left.
-# Shown in a style, the number pulses, and a cooldown run out still shows its 0.
-# Armed, its ink turns gold; greyed, grey; a card that can be clicked takes the hover ink under the cursor.
-# A new skill flips the slot like a flat: it swaps its content while edge-on.
+# One slot of the skill bar: empty, or a skill shown as a card. It shows what the bar tells it.
 
 const CARD_TEXTURE := preload("res://art/ui/skill_slot.png")
 const EMPTY_TEXTURE := preload("res://art/ui/skill_slot_empty.png")
@@ -97,6 +94,7 @@ func _show_cooldown() -> void:
 	var is_shown_plain := _cooldown_style == PreviewPulse.Style.NONE
 	var is_dimmed := _cooldown_beats > 0 if is_shown_plain else _cooldown_style == PreviewPulse.Style.BETTER
 	modulate = COOLDOWN_MODULATE if is_dimmed else Color.WHITE
+	# Shown in a style, a cooldown run out still shows its 0.
 	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
 	_cooldown_label.text = str(_cooldown_beats)
 	_cooldown_pulse.show_style(_cooldown_style)

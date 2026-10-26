@@ -11,13 +11,12 @@ var tick := 0
 var action: Action
 var is_beat := false
 var portrait: Texture2D
-# An action not chosen yet, hung faded where it would resolve.
+# Not on the fight's timeline: a choice not made yet, or an action where the preview moves it.
 var is_ghost := false
 var style := Style.NORMAL
 
 
-# The rope from left to right: a knot for each tick after the fight's, up to the beat at or after the last medallion,
-# and each medallion after the knot of its tick. One due now comes before any knot; on a shared tick, the order given.
+# Medallions on a shared tick hang in the order given; one due now hangs before any knot.
 static func create_entries(fight_tick: int, medallions: Array[TimelineEntry]) -> Array[TimelineEntry]:
 	var last_tick := fight_tick
 	for medallion in medallions:

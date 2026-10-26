@@ -45,7 +45,6 @@ func show_column(mission_map_layout: MissionMapLayout, flat_index: int) -> void:
 	_redraw_road_dashes()
 
 
-# Shows `region` of the battle illustration in place of the column.
 func show_battle(battleground: Texture2D, region: Rect2) -> void:
 	clear()
 	var atlas_texture := AtlasTexture.new()

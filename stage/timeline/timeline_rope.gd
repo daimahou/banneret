@@ -1,7 +1,7 @@
 class_name TimelineRope
 extends Node2D
-# The timeline, strung across the top of the stage: a knot for each tick to come, and a medallion with its actor's portrait for each action, hung after the knot of the tick it resolves on.
-# The rope's shape is its line's points, traced by hand over the rope drawn on the background; each thing on it hangs where the line passes. It hangs the entries it is told, each in its style: a ghost or a faded one at ghost alpha, a crossed one under a cross.
+# The timeline, strung across the top of the stage. It hangs the entries it is told, each in its style.
+# The rope's shape is its line's points, traced by hand over the rope drawn on the background.
 
 const KNOT_SCENE := preload("res://stage/timeline/timeline_knot.tscn")
 const BEAT_KNOT_SCENE := preload("res://stage/timeline/timeline_beat_knot.tscn")
@@ -38,18 +38,17 @@ func show_entries(entries: Array[TimelineEntry]) -> void:
 	_refresh()
 
 
-# The medallions of these actors hang highlighted.
-func set_marks(actors: Array[Character]) -> void:
+func highlight_actors(actors: Array[Character]) -> void:
 	_highlighted_actors = actors
-	_show_marks()
+	_show_highlights()
 
 
-func clear_marks() -> void:
+func clear_highlights() -> void:
 	_highlighted_actors = []
-	_show_marks()
+	_show_highlights()
 
 
-# The action whose medallion is under the point, in global space, or null. A ghost is no action yet.
+# Null off every medallion; a ghost picks nothing.
 func get_action_at(global_point: Vector2) -> Action:
 	for entry in _shown_entries:
 		var is_pending := not entry.is_knot() and not entry.is_ghost
@@ -84,7 +83,7 @@ func clear() -> void:
 	_settled_positions.clear()
 
 
-# Where the rope passes at x, both in the entries' space. Past either end, level with that end.
+# Both in the entries' space. Past either end, level with that end.
 func _get_rope_position(x: float) -> Vector2:
 	var rope_x := _convert_entries_to_rope_x(x)
 	var index := _get_rope_segment(rope_x)
@@ -97,7 +96,7 @@ func _get_rope_position(x: float) -> Vector2:
 	return _convert_rope_to_entries_point(from.lerp(to, weight))
 
 
-# The rope's angle at x, in the entries' space, for a knot tied in it.
+# In the entries' space.
 func _get_rope_angle(x: float) -> float:
 	var index := _get_rope_segment(_convert_entries_to_rope_x(x))
 	if index == -1:
@@ -107,7 +106,7 @@ func _get_rope_angle(x: float) -> float:
 	return (to - from).angle()
 
 
-# The rope's first point, in the entries' space: the first entry hangs from there.
+# In the entries' space.
 func _get_rope_start_x() -> float:
 	return _convert_rope_to_entries_point(_rope.points[0]).x
 
@@ -120,7 +119,7 @@ func _convert_entries_to_rope_x(x: float) -> float:
 	return _rope.to_local(_entries.to_global(Vector2(x, 0.0))).x
 
 
-# The line segment of the rope above x, in the rope's own space, or -1 off it.
+# In the rope's own space; -1 off the rope.
 func _get_rope_segment(rope_x: float) -> int:
 	for index in _rope.points.size() - 1:
 		if rope_x >= _rope.points[index].x and rope_x <= _rope.points[index + 1].x:
@@ -160,17 +159,17 @@ func _refresh() -> void:
 			_remove_entry_node(_entry_nodes[key])
 	_entry_nodes = placed
 	_settled_positions = settled
-	_show_marks()
+	_show_highlights()
 
 
-func _show_marks() -> void:
+func _show_highlights() -> void:
 	for entry in _shown_entries:
 		if not entry.is_knot() and not entry.is_ghost:
 			var medallion: TimelineMedallion = _entry_nodes[entry.id]
 			medallion.set_highlighted(entry.action.actor in _highlighted_actors)
 
 
-# Where the ties hang, in the entries' space, left to right.
+# In the entries' space, left to right.
 func _get_tie_xs() -> Array[float]:
 	var tie_xs: Array[float] = []
 	for tie: Marker2D in _ties.get_children():
@@ -179,7 +178,6 @@ func _get_tie_xs() -> Array[float]:
 	return tie_xs
 
 
-# The left edge for an entry `width` wide: `left_x`, or pushed right past any tie the entry would cover, `TIE_CLEARANCE` kept on both sides of the tie.
 func _get_left_x_past_ties(left_x: float, width: float, tie_xs: Array[float]) -> float:
 	var x := left_x
 	for tie_x in tie_xs:

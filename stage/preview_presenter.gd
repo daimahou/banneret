@@ -1,8 +1,6 @@
 class_name PreviewPresenter
 extends RefCounted
-# The preview, written on stage over the fight: each nameplate's health and pips, the inspected character's cooldowns,
-# and the rope. The stage and the brain write the fight; this writes over them once a frame, after any change to either
-# model or to the choice. Without it, the stage shows the fight alone.
+# Writes the preview over the fight on stage: the nameplates, the inspected character's cooldowns and the rope. The stage and the brain write the fight.
 
 const ARROW_GAP := 8.0
 # Per unit of length, so a longer arrow runs under a shorter one.
@@ -76,8 +74,6 @@ static func get_cooldown_style(preview_model: FightModel, character: Character, 
 	return PreviewPulse.get_style(gain)
 
 
-# The fight's rope, styled by the preview: an action the preview resolves fades, unless it is the shown one; one it
-# cancels is crossed out. The shown action, when the fight lacks it, hangs as a ghost where it would resolve.
 static func get_timeline_entries(fight_model: FightModel, preview_model: FightModel, shown: Action) -> Array[TimelineEntry]:
 	var actions: Array[Action] = fight_model.timeline.duplicate()
 	var is_ghost_shown := shown != null and shown not in actions

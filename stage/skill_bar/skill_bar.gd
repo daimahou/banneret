@@ -1,6 +1,6 @@
 class_name SkillBar
 extends Control
-# Its slots, filled from the left with one character's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
+# One character's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
 
 signal skill_pressed(skill: SkillData)
 # Null once the cursor leaves the skill.
@@ -24,7 +24,7 @@ func _ready() -> void:
 	_stop_button.pressed.connect(stop_pressed.emit)
 
 
-# One character's skills, one per slot from the left; none empties the bar. Skills beyond the last slot are not shown.
+# None empties the bar; skills beyond the last slot are not shown.
 func show_skills(skills: Array[SkillData]) -> void:
 	var flip_delay := 0.0
 	for index in _slots.size():
@@ -52,7 +52,6 @@ func set_armed_skill(armed_skill: SkillData) -> void:
 		slot.set_armed(slot.skill != null and slot.skill == armed_skill)
 
 
-# Every slot empty, one after another like the flats, and no Stop or Pass.
 func clear() -> void:
 	var flip_delay := 0.0
 	for slot in _slots:

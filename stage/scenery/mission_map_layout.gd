@@ -12,7 +12,6 @@ var _flat_road_dashes: Array[Array] = []
 
 
 # The flats sit side by side from the scenery's origin, `separation` apart.
-# Roads draw from their own seed, derived from `map_seed`.
 static func create(mission_map: MissionMap, map_seed: int, flat_size: Vector2, separation: float, flat_count: int) -> MissionMapLayout:
 	var layout := MissionMapLayout.new()
 	var flat_rects: Array[Rect2] = []

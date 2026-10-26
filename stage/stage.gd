@@ -32,7 +32,6 @@ const DAMAGE_DURATION := 0.9
 const DAMAGE_FONT_SIZE := 96
 const DAMAGE_COLOR := Color("c0392b")
 
-# The armed skill's targets are inked red, the aimed one a brighter red.
 const TARGET_INK_COLOR := Color("7a2a20")
 const AIMED_INK_COLOR := Color("d8402c")
 
@@ -52,11 +51,8 @@ var _hover_ink := Ink.create_material(Ink.Highlight.HOVERED)
 var _target_ink := Ink.create_color_material(TARGET_INK_COLOR)
 var _aimed_ink := Ink.create_color_material(AIMED_INK_COLOR)
 
-# The fight as it will stand once an action lands, played out on copies of the fight's characters and actions. Built
-# for each encounter; it syncs after every delta applied to the fight. Null before the first encounter.
-var preview_model: FightModel
-
 # Null before the first encounter.
+var preview_model: FightModel
 var _fight_model: FightModel
 # Null outside a fight.
 var _preview_presenter: PreviewPresenter
@@ -86,7 +82,6 @@ func is_in_transition() -> bool:
 	return _view == View.TRANSITION
 
 
-# Over the fight, plays the transition back and returns once it is done.
 func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	if _coach_tween != null:
 		_coach_tween.kill()
@@ -104,7 +99,6 @@ func show_party(party: Array[Character]) -> void:
 	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
 
 
-# Plays the transition to the fight, and returns once it is done. From then on the stage follows the fight model, the rope, the nameplates and the falls, and its preview presenter writes the preview over them.
 func show_encounter(fight_model: FightModel) -> void:
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
@@ -131,7 +125,6 @@ func show_encounter(fight_model: FightModel) -> void:
 	_view = View.FIGHT
 
 
-# Stopped, a free hero hops and the selected hero stands raised; otherwise every puppet sways.
 func show_choices(brain: PlayerBrain) -> void:
 	var is_waiting := brain.is_waiting()
 	for character in _fight_puppets:
@@ -151,7 +144,7 @@ func show_choices(brain: PlayerBrain) -> void:
 		highlighted.append(brain.hovered_character)
 	if _preview_presenter != null:
 		_preview_presenter.show_choice(brain.get_inspected_character(), brain.get_previewed_action())
-	_timeline_rope.set_marks(highlighted)
+	_timeline_rope.highlight_actors(highlighted)
 
 
 func hide_choices() -> void:
@@ -161,7 +154,7 @@ func hide_choices() -> void:
 		puppet.set_pressed(false)
 	if _preview_presenter != null:
 		_preview_presenter.show_choice(null, null)
-	_timeline_rope.clear_marks()
+	_timeline_rope.clear_highlights()
 
 
 func bob_puppet(character: Character) -> void:
@@ -179,7 +172,6 @@ func get_action_at(global_point: Vector2) -> Action:
 	return _timeline_rope.get_action_at(global_point)
 
 
-# The actor's puppet lunges at its target's and calls `on_impact` as the blow lands; returns once it is home and the stage has paused.
 func show_action(action: Action, on_impact: Callable) -> void:
 	var actor_puppet := _fight_puppets[action.actor]
 	var target_puppet := _fight_puppets[action.target]
@@ -197,13 +189,11 @@ func show_action(action: Action, on_impact: Callable) -> void:
 	await get_tree().create_timer(BLOW_PAUSE).timeout
 
 
-# Returns once the hold on the beat is over.
 func show_beat() -> void:
 	await get_tree().create_timer(BEAT_HOLD_DURATION).timeout
 
 
-# Shows the model after the coach travelled to `map_node`, and returns once the coach is there.
-# Nothing is pickable while the coach moves.
+# The model has travelled already: this only shows it.
 func show_travel(map_node: MapNode) -> void:
 	_scenery.set_input_enabled(false)
 	_coach_tween = create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
@@ -212,18 +202,17 @@ func show_travel(map_node: MapNode) -> void:
 	_scenery.set_input_enabled(true)
 
 
-# Returns once the offers hang still.
 func show_offers(offers: Array[Offer]) -> void:
 	await _offer_presenter.show_offers(offers)
 
 
-# Shows the model after the pick, and returns once the offers are gone.
+# The model has picked already: this only shows it.
 func hide_offers() -> void:
 	_scenery.update_highlights()
 	await _offer_presenter.hide_offers()
 
 
-# A target keeps its red when hovered: it is pressed down instead. Any other hovered puppet takes the hover ink.
+# A target keeps its red when hovered: it is pressed down instead.
 func _get_ink(brain: PlayerBrain, character: Character) -> ShaderMaterial:
 	if brain.is_target(character):
 		return _aimed_ink if character == brain.aimed_target else _target_ink
@@ -232,7 +221,6 @@ func _get_ink(brain: PlayerBrain, character: Character) -> ShaderMaterial:
 	return null
 
 
-# Under the cursor and pickable, or the actor of a hovered medallion.
 func _is_hovered(brain: PlayerBrain, character: Character) -> bool:
 	var hovered_action := brain.hovered_action
 	if hovered_action != null and character == hovered_action.actor:
@@ -273,7 +261,6 @@ func _slide_coach(x: float) -> void:
 	await _coach_tween.finished
 
 
-# Each puppet starts beyond the curtains at `offstage_x` and slides to its stand position on `tween`.
 func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side: PuppetLayout.Side, offstage_x: float) -> void:
 	var stand_positions := PuppetLayout.get_stand_positions(area, characters.size(), side)
 	for index in characters.size():
@@ -285,7 +272,7 @@ func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side:
 		tween.tween_property(puppet, "position:x", stand_positions[index].x, PUPPET_SLIDE_DURATION)
 
 
-# The nameplates that change flip one after another, left to right; a side with more characters than nameplates leaves the hindmost out.
+# A side with more characters than nameplates leaves the hindmost out.
 func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character], side: PuppetLayout.Side) -> void:
 	var count := mini(characters.size(), nameplates.size())
 	var flip_delay := 0.0
@@ -297,7 +284,6 @@ func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character]
 	_update_nameplates()
 
 
-# One after another, left to right.
 func _hide_nameplates(nameplates: Array[Nameplate]) -> void:
 	var flip_delay := 0.0
 	for nameplate in nameplates:

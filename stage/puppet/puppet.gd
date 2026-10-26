@@ -113,6 +113,5 @@ func sink() -> void:
 	await tween.finished
 
 
-# Only a swaying puppet rocks; the others stand upright.
 func _set_sway(cycle_angle: float) -> void:
 	rotation = SWAY_ANGLE * sin(cycle_angle + _sway_phase) if _stance == Stance.SWAY else 0.0

@@ -6,7 +6,6 @@ signal offer_pressed(offer: Offer)
 
 const POSTER_SCENE := preload("res://stage/offer/poster.tscn")
 
-# Posters hang from the top edge, centred across the width.
 @export var spacing := 80.0:
 	set(value):
 		spacing = value
@@ -33,7 +32,6 @@ func _ready() -> void:
 	_update_preview()
 
 
-# Drops one poster per offer, and returns once they all hang still.
 func show_offers(offers: Array[Offer]) -> void:
 	clear()
 	for offer in offers:
@@ -45,7 +43,7 @@ func show_offers(offers: Array[Offer]) -> void:
 	_lay_out_posters()
 	if _posters.is_empty():
 		return
-	# The last poster drops last.
+	# The last poster drops last, so awaiting it awaits them all.
 	for index in _posters.size() - 1:
 		_posters[index].play_drop(index * stagger)
 	await _posters.back().play_drop((_posters.size() - 1) * stagger)
@@ -53,7 +51,6 @@ func show_offers(offers: Array[Offer]) -> void:
 		poster.is_pickable = true
 
 
-# Lifts every poster away, and returns once they are gone.
 func hide_offers() -> void:
 	if _posters.is_empty():
 		return

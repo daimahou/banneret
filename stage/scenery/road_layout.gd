@@ -25,13 +25,13 @@ class Road:
 	var start_node: MapNode
 	var end_node: MapNode
 
-# Where a laid dash sits on one road; `offset` is along the road's curve.
+# `offset` is along the road's curve.
 class RoadPlace:
 	var road: Road
 	var offset: float
 	var is_first_step: bool
 
-# A road dash in stage space, with every road it sits on.
+# In stage space.
 class LaidRoadDash:
 	var road_dash: Flat.RoadDash
 	var places: Array[RoadPlace] = []
@@ -48,7 +48,7 @@ var _map_node_positions: Dictionary[MapNode, Vector2] = {}
 var _rng := RandomNumberGenerator.new()
 
 
-# The mission map's road dashes in stage space, given each flat's rect and each map node's position in stage space.
+# Everything in stage space.
 static func lay_out(mission_map: MissionMap, flat_rects: Array[Rect2], map_node_positions: Dictionary[MapNode, Vector2], road_seed: int) -> Array[Flat.RoadDash]:
 	var road_layout := RoadLayout.new()
 	road_layout._flat_rects = flat_rects
@@ -88,7 +88,6 @@ static func create_laid_road_dash(texture: Texture2D, dash_position: Vector2, an
 
 # Where roads branch or converge, a dash whose ink really overlaps one kept from another road is merged into the
 # one it overlaps most; the merged dash moves, so it is checked again against the rest until it overlaps none.
-# A merged dash takes the average position and rotation of every dash in it, so it sits on all their roads.
 static func prune_road_dashes(laid: Array[LaidRoadDash]) -> Array[LaidRoadDash]:
 	var kept: Array[LaidRoadDash] = []
 	for candidate in laid:
