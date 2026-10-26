@@ -35,7 +35,7 @@ func get_mission_controller() -> MissionController:
 	return _mission_controller
 
 
-# Replaces the current mission; the party stays the run's. Over the fight, the stage plays the transition back.
+# Replaces the current mission; the party stays the run's.
 func start_mission(map_seed: int) -> void:
 	if _stage.is_in_transition():
 		LimboConsole.warn("The stage is in a transition")
