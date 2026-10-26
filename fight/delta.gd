@@ -89,8 +89,10 @@ func is_resolving_action(action_id: int) -> bool:
 func get_moved_tick(action_id: int) -> int:
 	var moved_tick := -1
 	for change in changes:
-		if change is Change.MoveAction and (change as Change.MoveAction).action_id == action_id:
-			moved_tick = (change as Change.MoveAction).resolve_tick
+		var move := change as Change.MoveAction
+		if move == null or move.action_id != action_id:
+			continue
+		moved_tick = move.resolve_tick
 	return moved_tick
 
 
