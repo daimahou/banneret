@@ -17,7 +17,6 @@ enum Side { HERO, ENEMY }
 var tick := 0
 var heroes: Array[Character] = []
 var enemies: Array[Character] = []
-# The pending actions, in the order they resolve.
 var timeline: Array[Action] = []
 var next_action_id := 0
 var history: Array[Delta] = []

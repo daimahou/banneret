@@ -8,7 +8,6 @@ class Outcome:
 
 	var is_won := false
 	var ticks := 0
-	# By character, heroes then enemies.
 	var healths: Array[int] = []
 
 

@@ -4,7 +4,6 @@ extends Node
 
 signal stop_pressed
 signal pass_pressed
-# Stop or Pass, by the button's own label.
 signal stop_button_pressed
 signal hero_cycled(step: int)
 signal number_pressed(index: int)

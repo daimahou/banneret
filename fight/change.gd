@@ -27,7 +27,6 @@ class AddAction:
 
 	var actor_id: int
 	var skill: SkillData
-	# -1 for no target.
 	var target_id: int
 	var resolve_tick: int
 
