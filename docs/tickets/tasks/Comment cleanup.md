@@ -3,8 +3,8 @@ triage: ready-for-agent
 id: 1.2-1.10
 requires:
 started: 2026-10-26
-finished:
-hours: 1
+finished: 2026-10-26
+hours: 2.3
 parent: "[[Warrior kit]]"
 ---
 # Done when
