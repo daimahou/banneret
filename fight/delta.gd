@@ -85,7 +85,7 @@ func is_resolving_action(action_id: int) -> bool:
 	return false
 
 
-# The tick this delta last moves the action of this id to, or -1.
+# -1 if this delta does not move the action.
 func get_moved_tick(action_id: int) -> int:
 	var moved_tick := -1
 	for change in changes:
