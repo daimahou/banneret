@@ -35,7 +35,6 @@ func get_mission_controller() -> MissionController:
 	return _mission_controller
 
 
-# Replaces the current mission; the party stays the run's.
 func start_mission(map_seed: int) -> void:
 	if _stage.is_in_transition():
 		LimboConsole.warn("The stage is in a transition")
@@ -50,7 +49,7 @@ func start_mission(map_seed: int) -> void:
 	_mission_controller.mission_ended.connect(_on_mission_ended)
 
 
-# For debugging: from the autoexec script, it waits for the first mission, so a launch goes straight to the fight.
+# For debugging, from the autoexec script.
 func start_fight(fight_seed := randi()) -> void:
 	if _mission_controller == null:
 		await _stage.laid_out
@@ -93,7 +92,6 @@ func _start_encounter(fight_seed: int) -> void:
 	await _play_fight()
 
 
-# Either way the stage goes back to a new mission, after a hold on the fight's end; a defeat loses the run first, and a new one starts.
 func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
