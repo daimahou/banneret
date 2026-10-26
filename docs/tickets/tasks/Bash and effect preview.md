@@ -5,8 +5,8 @@ requires:
   - "[[Simulated preview]]"
   - "[[Preview presenter]]"
 started: 2026-10-26
-finished:
-hours: 0.5
+finished: 2026-10-26
+hours: 2.1
 parent: "[[Warrior kit]]"
 ---
 # Done when
