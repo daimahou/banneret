@@ -13,13 +13,11 @@ var _resolved_offer: Offer
 var _rng := RandomNumberGenerator.new()
 
 
-# A seed of their own, so offers don't replay the generator's random sequence.
 func _init(model_mission_map: MissionMap, map_seed: int) -> void:
 	mission_map = model_mission_map
 	_rng.seed = hash([map_seed, "offers"])
 
 
-# Draws the event's offers at once: a picked event leaves them pending, any other resolves with the first.
 func travel_to(map_node: MapNode) -> void:
 	if map_node not in get_open_map_nodes():
 		push_error("Map node (%d, %d) is not open" % [map_node.column, map_node.row])
@@ -56,7 +54,6 @@ func get_resolved_offer() -> Offer:
 	return _resolved_offer
 
 
-# Null before the first travel.
 func get_current_map_node() -> MapNode:
 	return null if _trail.is_empty() else _trail.back()
 
@@ -66,7 +63,6 @@ func is_mission_ended() -> bool:
 	return current != null and current.event_type == MapNode.EventType.ENCOUNTER
 
 
-# None while offers are pending.
 func get_open_map_nodes() -> Array[MapNode]:
 	if not _offers.is_empty():
 		return []
@@ -85,7 +81,7 @@ func get_map_node_visitation(map_node: MapNode) -> Visitation:
 	return Visitation.CLOSED
 
 
-# A road takes its start node's reach; a lead-in road, from off the map, has no start node.
+# A lead-in road, from off the map, has no start node.
 func get_road_visitation(start_node: MapNode, end_node: MapNode) -> Visitation:
 	var trail_index := _trail.find(end_node)
 	if trail_index != -1 and start_node == (null if trail_index == 0 else _trail[trail_index - 1]):
@@ -97,7 +93,6 @@ func get_road_visitation(start_node: MapNode, end_node: MapNode) -> Visitation:
 	return Visitation.CLOSED
 
 
-# Every map node the coach can still reach from where it is, pending offers or not.
 func _get_reachable_map_nodes() -> Dictionary[MapNode, bool]:
 	var reachable: Dictionary[MapNode, bool] = {}
 	var frontier := _get_next_map_nodes()

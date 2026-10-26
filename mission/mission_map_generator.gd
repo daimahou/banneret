@@ -104,7 +104,6 @@ static func _fill_events(mission_map: MissionMap, mission_index: int, map_seed: 
 		map_node.event_type = _pick_event_type(map_node, mission_index, rng)
 
 
-# The content rules, in order: the first that matches picks the event.
 static func _pick_event_type(map_node: MapNode, _mission_index: int, rng: RandomNumberGenerator) -> MapNode.EventType:
 	if map_node.column == ENCOUNTER_COLUMN:
 		return MapNode.EventType.ENCOUNTER

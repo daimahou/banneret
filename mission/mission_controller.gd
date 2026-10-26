@@ -19,13 +19,11 @@ func _init(mission_stage: Stage, map_seed: int) -> void:
 	_stage.show_mission(_mission_model, map_seed)
 
 
-# Stops answering the stage, so a mission that replaces this one is the only one it reaches.
 func dispose() -> void:
 	_stage.map_node_pressed.disconnect(_on_map_node_pressed)
 	_stage.offer_pressed.disconnect(_on_offer_pressed)
 
 
-# Input waits until the stage has shown each change: the travel, the offers dropping, the offers lifting.
 func _on_map_node_pressed(map_node: MapNode) -> void:
 	if _is_stage_busy or map_node not in _mission_model.get_open_map_nodes():
 		return
