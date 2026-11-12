@@ -102,7 +102,9 @@ func test_a_fight_suspends_at_once_while_the_player_chooses() -> void:
 	fight_controller.resume()
 	player_brain.arm_skill(player_brain.hero.skills[0])
 	player_brain.confirm()
-	assert_bool(fight_controller.fight_model.timeline.any(func(action: Action) -> bool: return action.actor in fight_controller.fight_model.heroes)).is_true()
+	var fight_model := fight_controller.fight_model
+	var is_hero_action := func(action: Action) -> bool: return action.actor in fight_model.heroes
+	assert_bool(fight_model.timeline.any(is_hero_action)).is_true()
 
 
 func test_a_second_suspend_is_refused_while_one_is_requested() -> void:

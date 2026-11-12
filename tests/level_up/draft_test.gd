@@ -26,7 +26,7 @@ func test_confirming_applies_the_choice_once_to_its_hero_only() -> void:
 	var other := _create_hero()
 	var draft := _create_draft([hero, other])
 	var hero_draft := draft.hero_drafts[0]
-	var new_offer: DraftOffer = hero_draft.offers.filter(func(offer: DraftOffer) -> bool: return not offer.is_upgrade())[0]
+	var new_offer := _get_new_skill_offer(hero_draft)
 
 	hero_draft.select_offer(new_offer)
 	hero_draft.confirm()
@@ -43,7 +43,7 @@ func test_an_upgrade_confirms_only_with_a_talent_and_takes_one_rank() -> void:
 	var hero := _create_hero()
 	var draft := _create_draft([hero])
 	var hero_draft := draft.hero_drafts[0]
-	var upgrade_offer: DraftOffer = hero_draft.offers.filter(func(offer: DraftOffer) -> bool: return offer.is_upgrade())[0]
+	var upgrade_offer: DraftOffer = hero_draft.offers.filter(_is_upgrade)[0]
 
 	hero_draft.select_offer(upgrade_offer)
 	hero_draft.confirm()
@@ -74,11 +74,19 @@ func test_the_draft_completes_once_every_hero_has_confirmed() -> void:
 
 	for hero_draft in draft.hero_drafts:
 		assert_bool(draft.is_complete()).is_false()
-		var offer: DraftOffer = hero_draft.offers.filter(func(offer: DraftOffer) -> bool: return not offer.is_upgrade())[0]
+		var offer := _get_new_skill_offer(hero_draft)
 		hero_draft.select_offer(offer)
 		hero_draft.confirm()
 
 	assert_bool(draft.is_complete()).is_true()
+
+
+func _get_new_skill_offer(hero_draft: HeroDraft) -> DraftOffer:
+	return hero_draft.offers.filter(func(offer: DraftOffer) -> bool: return not _is_upgrade(offer))[0]
+
+
+func _is_upgrade(offer: DraftOffer) -> bool:
+	return offer.is_upgrade()
 
 
 func _create_draft(heroes: Array[Character]) -> Draft:

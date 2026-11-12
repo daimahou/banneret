@@ -18,7 +18,7 @@ func _init(drafted: Character, kind: Learnable.Kind, bag: Array[Learnable], roll
 	if hero.is_fallen():
 		state = State.FALLEN
 		return
-	offers = DraftRules.create_offers(hero, kind, bag, roll)
+	offers = DraftRules.draw_offers(hero.build, kind, bag, roll)
 	if offers.is_empty():
 		state = State.STARVED
 

@@ -14,16 +14,16 @@ static func get_kind(pick: int) -> Learnable.Kind:
 
 
 # Missing offers of one category are drawn from the other.
-static func create_offers(hero: Character, kind: Learnable.Kind, bag: Array[Learnable], roll: Callable) -> Array[DraftOffer]:
-	var new_skills := get_new_skills(hero, kind, bag)
-	var upgrades := get_upgrade_offers(hero, kind)
+static func draw_offers(build: Build, kind: Learnable.Kind, bag: Array[Learnable], roll: Callable) -> Array[DraftOffer]:
+	var new_skills := get_new_skills(build, kind, bag)
+	var upgrades := get_upgrade_offers(build, kind)
 	var new_count := mini(NEW_SKILL_OFFER_COUNT, new_skills.size())
 	var upgrade_count := mini(OFFER_COUNT - new_count, upgrades.size())
 	new_count = mini(OFFER_COUNT - upgrade_count, new_skills.size())
 	var offers: Array[DraftOffer] = []
 	var weights: Array[int] = []
 	for skill in new_skills:
-		weights.append(get_offer_weight(skill, hero.build.get_class_data()))
+		weights.append(get_offer_weight(skill, build.get_class_data()))
 	for count in new_count:
 		var index := _draw_weighted(weights, roll)
 		var offer := DraftOffer.new()
@@ -35,27 +35,28 @@ static func create_offers(hero: Character, kind: Learnable.Kind, bag: Array[Lear
 	return offers
 
 
-static func get_new_skills(hero: Character, kind: Learnable.Kind, bag: Array[Learnable]) -> Array[Learnable]:
+static func get_new_skills(build: Build, kind: Learnable.Kind, bag: Array[Learnable]) -> Array[Learnable]:
 	var skills: Array[Learnable] = []
-	if not hero.build.has_free_slot(kind):
+	if not build.has_free_slot(kind):
 		return skills
-	var class_data := hero.build.get_class_data()
+	var class_data := build.get_class_data()
 	for skill in bag:
-		var is_eligible := skill.get_kind() == kind and not hero.build.owns(skill) and skill not in skills
+		var is_eligible := skill.get_kind() == kind and not build.owns(skill) and skill not in skills
 		if is_eligible and _is_open_to(skill.required_class, class_data) and get_offer_weight(skill, class_data) > 0:
 			skills.append(skill)
 	return skills
 
 
-static func get_upgrade_offers(hero: Character, kind: Learnable.Kind) -> Array[DraftOffer]:
+static func get_upgrade_offers(build: Build, kind: Learnable.Kind) -> Array[DraftOffer]:
 	var offers: Array[DraftOffer] = []
-	for owned in hero.build.get_owned(kind):
+	for owned in build.get_owned(kind):
 		var upgrade := owned.get_next_upgrade()
 		if upgrade == null:
 			continue
-		var talents := get_eligible_talents(upgrade, hero.build.get_class_data())
+		var talents := get_eligible_talents(upgrade, build.get_class_data())
 		if talents.size() > MAX_TALENTS:
-			push_error("%s's next upgrade has %d eligible talents, more than %d" % [owned.skill.name, talents.size(), MAX_TALENTS])
+			var error := "%s's next upgrade has %d eligible talents, more than %d"
+			push_error(error % [owned.skill.name, talents.size(), MAX_TALENTS])
 			continue
 		if talents.is_empty():
 			continue

@@ -16,7 +16,14 @@ static func get_offer_title(offer: DraftOffer) -> String:
 static func get_offer_description(offer: DraftOffer) -> String:
 	if offer.is_upgrade():
 		var upgrade := offer.skill.upgrades[offer.rank - 1]
-		return "" if upgrade.mod == null else upgrade.mod.get_description()
+		if upgrade.mod == null:
+			return ""
+		var rank_mods := offer.skill.get_basic_mods()
+		for rank in offer.rank:
+			if offer.skill.upgrades[rank].mod != null:
+				rank_mods.append(offer.skill.upgrades[rank].mod)
+		var total := SkillMod.create_sum(rank_mods).get_description().replace("\n", ", ")
+		return "%s\n%s in all: %s" % [upgrade.mod.get_description(), OwnedSkill.RANK_NAMES[offer.rank], total]
 	return get_skill_description(offer.skill)
 
 
@@ -35,7 +42,8 @@ static func get_talent_description(talent: Talent, bag: Array[Learnable]) -> Str
 	var mod_description := "" if talent.mod == null else talent.mod.get_description()
 	if talent.granted_class == null:
 		return mod_description
-	var class_description := "Become %s. %s" % [talent.granted_class.name, get_class_offer_changes(talent.granted_class, bag)]
+	var class_data := talent.granted_class
+	var class_description := "Become %s. %s" % [class_data.name, get_class_offer_changes(class_data, bag)]
 	return ("%s. %s" % [mod_description.replace("\n", ", "), class_description]).trim_prefix(". ")
 
 

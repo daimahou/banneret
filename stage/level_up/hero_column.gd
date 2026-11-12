@@ -39,7 +39,8 @@ var _active_slots: Array[BuildSlot] = []
 func _ready() -> void:
 	for index in Build.PASSIVE_SLOTS + 1:
 		var slot: BuildSlot = BUILD_SLOT_SCENE.instantiate()
-		slot.position = Vector2(index % PASSIVE_SLOTS_PER_ROW, floori(index / float(PASSIVE_SLOTS_PER_ROW))) * PASSIVE_SLOT_STEP
+		var row := floori(index / float(PASSIVE_SLOTS_PER_ROW))
+		slot.position = Vector2(index % PASSIVE_SLOTS_PER_ROW, row) * PASSIVE_SLOT_STEP
 		_passive_area.add_child(slot)
 		_passive_slots.append(slot)
 	for index in Build.ACTIVE_SLOTS + 1:
@@ -132,9 +133,10 @@ func _show_confirm_button() -> void:
 	if _hero_draft.state == HeroDraft.State.CONFIRMED:
 		_confirm_button.texture_normal = CONFIRMED_TEXTURE
 		_confirm_label.text = "CONFIRMED ✓"
-	else:
-		_confirm_button.texture_normal = CONFIRM_ENABLED_TEXTURE if _hero_draft.can_confirm() else CONFIRM_DISABLED_TEXTURE
-		_confirm_label.text = "CONFIRM"
+		return
+	_confirm_label.text = "CONFIRM"
+	var is_confirmable := _hero_draft.can_confirm()
+	_confirm_button.texture_normal = CONFIRM_ENABLED_TEXTURE if is_confirmable else CONFIRM_DISABLED_TEXTURE
 
 
 func _cut_portrait_from_puppet(character_data: CharacterData) -> Texture2D:

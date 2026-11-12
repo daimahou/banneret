@@ -6,10 +6,11 @@ const ROLLS: Array[float] = [0.0, 0.3, 0.5, 0.7, 0.99]
 func test_offers_are_distinct_skills_of_the_draft_kind_and_new_ones_are_not_owned() -> void:
 	var hero := _create_hero()
 	hero.build.learn(_create_passive())
-	var bag: Array[Learnable] = [_create_passive(), _create_passive(), _create_passive(), _create_active(), _create_active()]
+	var bag: Array[Learnable] = [_create_passive(), _create_passive(), _create_passive()]
+	bag.append_array([_create_active(), _create_active()])
 	for kind in [Learnable.Kind.PASSIVE, Learnable.Kind.ACTIVE]:
 		for roll in ROLLS:
-			var offers := DraftRules.create_offers(hero, kind, bag, func() -> float: return roll)
+			var offers := DraftRules.draw_offers(hero.build, kind, bag, func() -> float: return roll)
 			var skills: Array[Learnable] = []
 			for offer in offers:
 				skills.append(offer.skill)
@@ -28,7 +29,7 @@ func test_a_hero_with_no_free_slot_is_offered_only_upgrades() -> void:
 	var bag: Array[Learnable] = [_create_passive(), _create_passive()]
 
 	for roll in ROLLS:
-		var offers := DraftRules.create_offers(hero, Learnable.Kind.PASSIVE, bag, func() -> float: return roll)
+		var offers := DraftRules.draw_offers(hero.build, Learnable.Kind.PASSIVE, bag, func() -> float: return roll)
 
 		assert_int(offers.size()).is_equal(DraftRules.OFFER_COUNT)
 		assert_bool(offers.all(func(offer: DraftOffer) -> bool: return offer.is_upgrade())).is_true()
@@ -40,7 +41,7 @@ func test_a_hero_with_nothing_to_upgrade_is_offered_only_new_skills() -> void:
 	var bag: Array[Learnable] = [_create_active(), _create_active(), _create_active(), _create_active()]
 
 	for roll in ROLLS:
-		var offers := DraftRules.create_offers(hero, Learnable.Kind.ACTIVE, bag, func() -> float: return roll)
+		var offers := DraftRules.draw_offers(hero.build, Learnable.Kind.ACTIVE, bag, func() -> float: return roll)
 
 		assert_int(offers.size()).is_equal(DraftRules.OFFER_COUNT)
 		assert_bool(offers.any(func(offer: DraftOffer) -> bool: return offer.is_upgrade())).is_false()
@@ -50,7 +51,7 @@ func test_fewer_valid_offers_than_three_are_all_offered() -> void:
 	var hero := _create_hero()
 	var bag: Array[Learnable] = [_create_active()]
 
-	var offers := DraftRules.create_offers(hero, Learnable.Kind.ACTIVE, bag, func() -> float: return 0.5)
+	var offers := DraftRules.draw_offers(hero.build, Learnable.Kind.ACTIVE, bag, func() -> float: return 0.5)
 
 	assert_int(offers.size()).is_equal(2)
 
@@ -63,7 +64,10 @@ func test_a_hero_with_full_slots_and_maximal_skills_has_no_offers() -> void:
 		active.upgrades = []
 		hero.build.learn(active)
 
-	assert_array(DraftRules.create_offers(hero, Learnable.Kind.ACTIVE, [_create_active()], func() -> float: return 0.5)).is_empty()
+	var bag: Array[Learnable] = [_create_active()]
+	var offers := DraftRules.draw_offers(hero.build, Learnable.Kind.ACTIVE, bag, func() -> float: return 0.5)
+
+	assert_array(offers).is_empty()
 
 
 func test_every_eligible_upgrade_can_be_drawn() -> void:
@@ -74,7 +78,7 @@ func test_every_eligible_upgrade_can_be_drawn() -> void:
 
 	for step in 100:
 		var roll := step / 100.0
-		for offer in DraftRules.create_offers(hero, Learnable.Kind.PASSIVE, [], func() -> float: return roll):
+		for offer in DraftRules.draw_offers(hero.build, Learnable.Kind.PASSIVE, [], func() -> float: return roll):
 			drawn.append(offer.skill)
 
 	for owned in hero.build.get_owned(Learnable.Kind.PASSIVE):
@@ -126,7 +130,8 @@ func test_a_skill_weighted_zero_for_the_hero_class_is_never_offered() -> void:
 func _get_all_offers(hero: Character, bag: Array[Learnable]) -> Array[DraftOffer]:
 	var offers: Array[DraftOffer] = []
 	for roll in ROLLS:
-		offers.append_array(DraftRules.create_offers(hero, Learnable.Kind.PASSIVE, bag, func() -> float: return roll))
+		var rolled := func() -> float: return roll
+		offers.append_array(DraftRules.draw_offers(hero.build, Learnable.Kind.PASSIVE, bag, rolled))
 	return offers
 
 func _create_hero() -> Character:
