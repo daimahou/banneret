@@ -107,15 +107,13 @@ func show_encounter(fight_model: FightModel) -> void:
 	var previous_view := _view
 	_view = View.TRANSITION
 	_scenery.set_input_enabled(false)
-	match previous_view:
-		View.EMPTY:
-			_coach.position.x = _get_puppet_x(OFFSTAGE_RIGHT_X)
-			await _scenery.flip_to_battle()
-		View.MISSION_MAP:
+	if previous_view == View.FIGHT:
+		await _clear_fight(fight_model)
+	else:
+		if previous_view == View.MISSION_MAP:
 			await _slide_coach(_get_puppet_x(OFFSTAGE_RIGHT_X))
-			await _scenery.flip_to_battle()
-		View.FIGHT:
-			await _clear_fight(fight_model)
+		_coach.position.x = _get_puppet_x(OFFSTAGE_RIGHT_X)
+		await _scenery.flip_to_battle()
 	var area := Rect2(Vector2.ZERO, _puppets.size)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	_add_puppets(tween, fight_model.heroes, area, PuppetLayout.Side.LEFT, _get_puppet_x(OFFSTAGE_LEFT_X))
@@ -313,6 +311,9 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 
 func _clear_fight(next_fight_model: FightModel) -> void:
 	hide_choices()
+	_fight_model.health_changed.disconnect(_on_health_changed)
+	_fight_model.character_fell.disconnect(_on_character_fell)
+	_fight_model.changed.disconnect(_on_fight_changed)
 	_preview_presenter.dispose()
 	_preview_presenter = null
 	_timeline_rope.clear()
@@ -322,9 +323,10 @@ func _clear_fight(next_fight_model: FightModel) -> void:
 			leaving.append(character)
 	if leaving.is_empty():
 		return
+	var offstage_x := _get_puppet_x(OFFSTAGE_RIGHT_X)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	for character in leaving:
-		tween.tween_property(_fight_puppets[character], "position:x", _get_puppet_x(OFFSTAGE_RIGHT_X), PUPPET_SLIDE_DURATION)
+		tween.tween_property(_fight_puppets[character], "position:x", offstage_x, PUPPET_SLIDE_DURATION)
 	await tween.finished
 	for character in leaving:
 		_fight_puppets[character].queue_free()
