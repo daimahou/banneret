@@ -1,104 +1,93 @@
 # Skill design
 
-How a skill is designed, so a run's build comes together from whatever the run gives.
-
-## A skill stands alone
-
-- The base form has an effect of its own and is useful the moment it is picked.
-- The base form is not enough to beat the final boss: it is strengthened through the run.
-- A mechanic a skill produces has an effect of its own. [[Rage]] is not only a resource to spend.
-
-## Several ways to make it viable
-
-| Route | Example for [[Warcry]] |
-|---|---|
-| Its own upgrades | Rage to an ally; Rage turned into healing |
-| Another skill on the same hero | The cry, then [[Strike]] |
-| Another hero | A rogue given Rage: fast hits gain more from it |
-| An artifact | One that makes Rage stronger this run |
-| The hero's class or ascension | The berserker holds Rage longer |
-
-- No route is required. A skill is never viable only with one partner.
-- A skill is picked because the build has synergies for it, or because something makes it strong alone.
-
-## A net, not a kit
-
-- A skill is not designed for class A, but as a spectrum across classes.
-- Design one skill, explore what it synergises with, then jump to those skills.
-- Links to look for: the same family on the same class; the same family on another class; another hero in the party; opposites.
-- A hero is rarely a pure class by the end of a run. Sub-classes and their skills are designed with the other sub-classes in mind.
-
-## Where a talent lives
-
-- **A skill talent** changes what that skill does, or, when its text says so, the mechanic for the whole hero: "your bleed" rather than "Strike's bleed". Class picks are too few to hold every hero-wide effect, so skills carry some.
-- **A class talent** applies across all the hero's skills.
-- An ascension tunes the class into a path that makes sense within that class. It does not import another class: a purple paladin is a martyr, not a reaver.
-
-> [!frontier] Does a bag have an intrinsic effect?
-> Taking the blood bag would make [[Strike]] apply Bleed 2 before any talent. Undecided.
-
-> [!frontier] Two hero-wide talents on the same mechanic
-> Both can apply, but some will conflict. Watch for it when designing bags.
-
-## Skills and upgrades
-
-- Each hero has 5–6 skill slots. One is pre-set with his base skill.
-- A skill grows outward in three rungs:
-
-| Rung | Holds | Filled by |
-|---|---|---|
-| 1 | The skill | Held from the start, or drafted |
-| 2 | A tier-2 talent from the direction's bag: bleed offers applying bleed, or rupturing it | The level-up offers the direction (bleed, light, arcane…); the talent is picked freely |
-| 3 | A tier-3 talent from the same bag: ways to deepen, and bridges that bend the skill into another build | One picked among those whose requirement is met |
-
-- A bag is one direction's whole set of talents, tier 2 and tier 3.
-- A tier-3 talent may require a tier-2 talent (improve rupture needs rupture) or a class (a martyr bridge needs the martyr). Without a requirement, it is open to any holder of the bag.
-
-- A skill's directions follow its colours: [[Strike]] offers a strength, an intelligence and a light direction. Two directions of the same colour are fine when the skill asks for it.
-- The direction is the lasting choice on a skill.
-- Bridges sit on rung 3: the need for one shows up late in a run, once the build has drifted. Not every talent bridges to every build.
-- Bridges are discovered in play; nothing announces them in advance.
-- Class passives that adopt other mechanics work alongside the skill's bridges: a martyr passive can take in bleed from any skill.
-
-- A skill belongs to its precursor: any of that precursor's classes can be offered it. [[Consecration]] is the paladin's skill, but any fighter class can take it.
-- Class-gated options sit inside open skills: a direction offered only to one class ([[Warcry]]'s paladin direction), or a tier-3 talent requiring that class.
-- Pick order is part of the decision: a skill levelled before the class pick never sees that class's rung-2 options.
-
-> [!frontier] Does every class skill need a direction anyone can take?
-> Otherwise a non-paladin holding Consecration may have nothing to grow it with.
-
-> [!frontier] How many tier-3 talents rung 3 shows
-> All whose requirement is met, or a fixed number such as three.
-
-> [!frontier] Respec
-> Possibly none. If any, it is not free: it costs something and happens at a set place.
-
-> [!frontier] An ultimate beyond rung 3
+A hero develops an active kit and a passive build through separate drafts. Classes shape the available choices; active upgrades progressively give familiar actions a particular identity.
 
 ## Levelling up
 
-- Each hero levels up once per mission. A level-up offers a HoMM-style pick between:
-  - a new skill, filling an empty slot;
-  - a skill's next rung, as a bag: one talent is picked inside it;
-  - a class rung, as a bag: its talent applies to all the hero's skills.
-- When several directions qualify for a rung, the offer names them; inside a bag, the pick is free.
-- No gems, no points, no passive tree.
+- Each level-up gives each hero **one pick from three offers**.
+- All three heroes share the same draft type at each level-up. Spread passive and active picks across progression, mixing stretches of two passive picks per active pick with stretches of one each. Do not reserve active catch-up for the end.
+- Full development comprises **23 passive picks and 14 active picks per hero**. An offer and its internal option together form one decision: 37 per hero, 111 across the party at maximum development.
+
+- Active picks occur at party level-ups **3, 6, 8, 11, 14, 16, 19, 22, 24, 27, 30, 32, 35, 37**. All other picks from 1 through 37 are passive. New runs reset to pick 1; debug level-ups consume the next pick in the same sequence.
+- Completing or skipping all heroes' picks advances the sequence once. After pick 37, the combat prototype continues fights without further drafts; the level-up command reports completion rather than restarting the sequence.
+
+- Each draft offers **two new skills and one upgrade to an owned skill**, within the current draft's active or passive category.
+- The run selects the skill offered for upgrade with equal chances among eligible owned skills, including the class slot. New-skill offers support weights.
+- The player chooses its development from authored eligible options, not a random sample: target three options, with a maximum of four.
+- Switching heroes or returning from an option does not reroll offers.
+- Missing new-skill or upgrade offers are filled from the other category within the same draft. Show three distinct offers whenever possible, or all valid offers if fewer than three remain.
+- Fallen heroes skip their picks; the shared draft sequence still advances.
+- No gems, points or passive tree.
+
+> [!frontier] Level-up trigger and map pacing
+> Proposed: completing each map node grants one level-up, including non-fight events. Aim for two to three fights per two active-skill picks. The combat-only milestone uses victory as its temporary trigger.
+
+- A scheduled level-up must have a valid offer in the intended content set. No valid offers indicates incomplete content, not a normal progression outcome.
+
+- During placeholder development, report missing content and skip that hero's pick if no valid offers exist. Do not invent a reward or convert the pick to the other draft type. If every hero is skipped, finish the level-up automatically so testing can continue.
+
+## Passive skills
+
+- Passive skills develop through **Basic, Advanced and Expert**.
+- A passive provides its rank's effect; Advanced and Expert also offer an additional passive-node choice.
+- Shared passives support several classes. Some passives are exclusive to one class; shared passives can contain class-specific upgrade options.
+- Upgrade options reflect the hero's class and ascension when the upgrade is taken. Becoming a class later does not reopen or replace earlier selections. Pick order is intentional.
+
+- Seven acquired passive slots plus the starting class slot. Each acquired passive has three ranks; the class has two upgrades. Rows are presentation only, not class requirements or triggers.
+
+> [!frontier] Power and rank values
+> Proposed: a scalable attack Power stat, used differently by active skills. Offense illustrates the model with Basic +2, Advanced +4 and Expert +6 attack Power, plus node choices at Advanced and Expert. Exact values and whether those bonuses are totals per rank remain to be specified.
 
 ## Classes
 
-A class grows like a skill, as a hierarchy.
+- The class starts in an occupied passive slot, such as **Warrior**, and develops through the passive draft's upgrade offer.
+- Upgrading Warrior offers a choice of specialization, such as Paladin, Berserker or Marshal. The player chooses within the class offer; qualification through other passive investments is not required.
+- Choosing Paladin closes the competing specialization paths and leaves Paladin's ascensions as its subsequent class-upgrade choices. An offered Paladin upgrade lets the player choose its ascension freely.
+- Class selection consumes the level-up pick. Filling an ordinary passive slot does not also grant a class choice.
+- The initial eligible passive pool has equal offer weights. A class adds its exclusive passives and changes the weights of existing passives: Paladin can favour defensive choices while retaining the possibility of an unconventional build.
+- A class establishes a direction through its passive effect, offer weights, exclusive content and class-specific upgrade options.
+- An ascension is a **capstone** that alters a mechanic towards its fantasy. Its effect provides the defining moment; it does not require a separate catalogue of additional skills.
 
-| Pick | Offer | Effect |
-|---|---|---|
-| First | A class, such as Paladin, with options that specialise in one of its mechanics | The hero becomes that class |
-| Second | Options that depend on the first pick, bending its mechanic different ways | The hero becomes an ascension: Martyr, Crusader, Fanatic… |
+> [!frontier] Class content and offer weights
+> Author the starting classes, specializations, ascension effects, exclusive passives and weight changes. Class-slot upgrades have the same chance as other eligible owned passive upgrades.
 
-- Class talents work across the board. They can adopt other mechanics into the build: a martyr talent can take in bleed from any skill.
+## Active skills
 
-## Run size
+- Active skills are the actions used in combat. Their acquisition and upgrades use the active draft, separately from passive progression.
+- An active upgrade develops that particular skill into an expression of itself, changing behaviour rather than only increasing numbers.
+- Shared development options can coexist with class-specific options. A known skill can acquire a class-specific development when upgraded after specializing.
+- The player inspects and chooses the development inside the offered upgrade. The class does not automatically convert the whole active kit.
+- The basic attack is part of this intended development: a Warrior's Strike can develop differently as a Paladin or Berserker.
 
-- A complete hero is about 15 picks; a party about 45.
-- One level-up per hero per mission gives about 15 missions: five per act, two fights each, about 30 fights per run.
+- Four acquired active skills plus the starting basic attack. Acquired skills have three ranks; the basic attack has two upgrades.
 
-> [!frontier] Values for the first build
-> How many choices an offer shows. How the skill offered for upgrade is picked. Whether the basic attack takes rungs like other skills, and whether an ultimate rung exists; both change the pick count.
+> [!frontier] Active development choices
+> Author the eligible expressions at each upgrade of each active skill.
+
+> [!fog] Warcry and Appease example
+> Illustrative direction, not an authored skill rule: Warcry builds Rage; a Paladin development makes the skill become Appease while the hero has Rage, draining it into self-healing. The change belongs visibly to the active skill. Exact effects and values remain to be designed.
+
+> [!frontier] Active offer pool
+> Specify the initial active-skill pool, class-exclusive skills and any class-dependent offer weights.
+
+## A skill stands alone
+
+- The base form has an effect of its own and is useful when acquired; development strengthens and gives it identity during the run.
+- A mechanic a skill produces has an effect of its own. [[Rage]] is not only a resource to spend.
+- A skill can become valuable through its own upgrades, another skill, another hero, a relic, or its class and ascension. No single partner is required.
+- Design shared skills across several possible builds, alongside exclusive skills where the class needs its own design space.
+
+## Where an improvement lives
+
+| Choice | Role |
+|---|---|
+| Active-skill development | Changes a particular action and how it is used |
+| Passive development | Builds stats and interactions across the hero's kit |
+| Class | Establishes a direction and shapes subsequent offers and options |
+| Ascension | Transforms a mechanic as a build-defining capstone |
+
+> [!frontier] Overlapping passive effects
+> Define how effects on the same mechanic combine when authoring the affected content.
+
+> [!frontier] Respec
+> Whether a separate respec opportunity exists remains open. Class changes themselves never revise earlier choices.

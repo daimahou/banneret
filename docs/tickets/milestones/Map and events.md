@@ -22,6 +22,9 @@ Start at the first map node and choose a route through fights, relic events and 
 - Party builds, health, relevant limited resources, relics and twists persist as the player moves between nodes.
 - The selected relics and twists come from [[Act 1 prototype]]. Boss-specific effects are completed in [[Boss and complete act]].
 
+> [!frontier] Level-ups from map nodes
+> Proposed: each completed node grants one level-up, including relic and complication events. All three heroes share a schedule that spreads passive and active development through a mix of 2:1 and 1:1 stretches. Aim for two to three fights per two active picks; see [[Skill design]].
+
 > [!frontier] Act map structure
 > How many nodes and branches make up the act, and what ends the route before the boss is introduced?
 
