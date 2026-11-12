@@ -3,8 +3,8 @@ triage: ready-for-agent
 id: 1.3-1.1
 requires: []
 started: 2026-11-12
-finished:
-hours: 0.2
+finished: 2026-11-12
+hours: 0.7
 parent: "[[Combat and progression]]"
 ---
 

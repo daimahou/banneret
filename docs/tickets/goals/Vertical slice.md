@@ -5,7 +5,7 @@ started: 2026-10-01
 finished:
 hours: 31.5
 extra_hours: 0.4
-total_hours: 64.2
+total_hours: 64.7
 deadline: 2027-02-01
 ---
 
