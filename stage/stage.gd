@@ -104,16 +104,7 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 
 
 func show_encounter(fight_model: FightModel) -> void:
-	var previous_view := _view
-	_view = View.TRANSITION
-	_scenery.set_input_enabled(false)
-	if previous_view == View.FIGHT:
-		await _clear_fight(fight_model)
-	else:
-		if previous_view == View.MISSION_MAP:
-			await _slide_coach(_get_puppet_x(OFFSTAGE_RIGHT_X))
-		_coach.position.x = _get_puppet_x(OFFSTAGE_RIGHT_X)
-		await _scenery.flip_to_battle()
+	await _prepare_encounter(fight_model)
 	var area := Rect2(Vector2.ZERO, _puppets.size)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	_add_puppets(tween, fight_model.heroes, area, PuppetLayout.Side.LEFT, _get_puppet_x(OFFSTAGE_LEFT_X))
@@ -307,6 +298,19 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 	await _slide_coach(_coach_start_x)
 	_view = View.MISSION_MAP
 	_scenery.set_input_enabled(true)
+
+
+func _prepare_encounter(fight_model: FightModel) -> void:
+	var previous_view := _view
+	_view = View.TRANSITION
+	_scenery.set_input_enabled(false)
+	if previous_view == View.FIGHT:
+		await _clear_fight(fight_model)
+		return
+	if previous_view == View.MISSION_MAP:
+		await _slide_coach(_get_puppet_x(OFFSTAGE_RIGHT_X))
+	_coach.position.x = _get_puppet_x(OFFSTAGE_RIGHT_X)
+	await _scenery.flip_to_battle()
 
 
 func _clear_fight(next_fight_model: FightModel) -> void:
