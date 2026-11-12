@@ -1,7 +1,6 @@
 filters:
   and:
-    - file.folder == "Skills"
-    - file.ext == "md"
+    - file.folder == "skills"
 properties:
   file.name:
     displayName: Skill
@@ -13,11 +12,74 @@ properties:
     displayName: Sphere
   note.cooldown:
     displayName: CD
+  note.base:
+    displayName: Base
 views:
   - type: table
     name: Library
     groupBy:
       property: class
+      direction: ASC
+    order:
+      - gate
+      - file.name
+      - class
+      - base
+      - mechanics
+      - summary
+      - spheres
+      - ap
+      - DMG
+      - delay
+      - cooldown
+      - cost
+    sort:
+      - property: base
+        direction: ASC
+    columnSize:
+      file.name: 134
+      note.class: 146
+      note.base: 160
+      note.summary: 258
+      note.spheres: 112
+      note.delay: 73
+      note.cooldown: 64
+      note.cost: 72
+  - type: table
+    name: Skills
+    filters:
+      or:
+        - class == this.asLink()
+    order:
+      - file.name
+      - summary
+      - spheres
+    sort:
+      - property: DMG
+        direction: ASC
+      - property: file.name
+        direction: ASC
+    columnSize:
+      file.name: 142
+      note.summary: 432
+  - type: table
+    name: Forms
+    filters:
+      and:
+        - base == this.asLink()
+    order:
+      - file.name
+      - summary
+      - DMG
+      - delay
+      - cooldown
+      - spheres
+    columnSize:
+      note.summary: 276
+  - type: table
+    name: By base
+    groupBy:
+      property: base
       direction: ASC
     order:
       - file.name
@@ -26,30 +88,13 @@ views:
       - DMG
       - delay
       - cooldown
-      - status
       - spheres
-    sort:
-      - property: file.name
-        direction: ASC
+      - base
+    sort: []
     columnSize:
       file.name: 134
-      note.class: 121
+      note.class: 146
       note.summary: 276
       note.cooldown: 67
-      note.status: 95
-      note.spheres: 197
-  - type: table
-    name: Skills
-    filters:
-      and:
-        - class == this.asLink()
-    order:
-      - file.name
-      - status
-      - summary
-      - DMG
-      - delay
-      - cooldown
-      - spheres
-    columnSize:
-      note.summary: 164
+      note.spheres: 134
+      note.base: 170

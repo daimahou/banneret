@@ -1,7 +1,6 @@
 filters:
   and:
-    - file.folder.startsWith("Skills/Upgrades")
-    - file.ext == "md"
+    - file.folder == "skills"
 properties:
   note.specialization:
     displayName: Spec
@@ -15,20 +14,26 @@ views:
       - file.name
       - summary
     columnSize:
-      file.name: 113
+      file.name: 137
   - type: table
     name: Upgrades
     filters:
       and:
-        - skill == this.asLink()
-        - file.folder == "Skills/Upgrades/" + this.file.name
+        - base == this.asLink()
     order:
       - file.name
       - summary
-      - specialization
+      - class
+    sort:
+      - property: file.name
+        direction: DESC
+      - property: affinity
+        direction: ASC
+      - property: effect
+        direction: ASC
     columnSize:
-      file.name: 189
-      note.summary: 269
+      file.name: 182
+      note.summary: 332
   - type: table
     name: Specialization
     filters:

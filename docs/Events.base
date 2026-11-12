@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.folder.startsWith("Events")
+    - file.folder.startsWith("events")
     - file.ext == "md"
 properties:
   file.name:

@@ -1,0 +1,68 @@
+filters:
+  and:
+    - file.folder == "skills/passives"
+properties:
+  file.name:
+    displayName: Passive
+  note.skill:
+    displayName: Skill
+  note.effect:
+    displayName: Effect
+  note.affinity:
+    displayName: Affinity
+  note.ranks:
+    displayName: Ranks
+views:
+  - type: table
+    name: All passives
+    groupBy:
+      property: skill
+      direction: ASC
+    order:
+      - file.name
+      - effect
+      - affinity
+      - ranks
+    columnSize:
+      file.name: 152
+  - type: table
+    name: Passives
+    filters:
+      and:
+        - skill == this.asLink()
+    groupBy:
+      property: tier
+      direction: ASC
+    order:
+      - tier
+      - file.name
+      - affinity
+      - mechanics
+    sort:
+      - property: rank
+        direction: ASC
+      - property: affinity
+        direction: ASC
+    columnSize:
+      note.tier: 65
+      file.name: 153
+      note.class: 144
+      note.affinity: 125
+  - type: table
+    name: By mechanic
+    filters:
+      and:
+        - mechanics == this.asLink()
+    groupBy:
+      property: skill
+      direction: ASC
+    order:
+      - file.name
+      - effect
+      - ranks
+    sort:
+      - property: effect
+        direction: ASC
+    columnSize:
+      file.name: 144
+      note.effect: 322

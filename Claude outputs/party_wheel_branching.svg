@@ -1,0 +1,534 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2600" height="1800" viewBox="0 0 2600 1800" font-family="Georgia, serif" role="img" aria-labelledby="title desc">
+<title id="title">Party wheel — branching skill evolutions</title><desc id="desc">Comparison C. Each skill begins with two tier-one choices. A selected talent reveals three next-tier choices depending on that selection. Exactly one talent is chosen per tier. Unchosen nodes remain dim. Only the selected path has connecting lines; available choices have no branch lines. Strike shows a selected two-tier path and three available tier-three talents, with Aftershock previewed in the right panel. The three class trees follow the same branching major-choice design as skills: two first-tier options, then three dependent options. Paladin leads to Martyr, Wizard leads to Pyromancer, and Assassin reveals its next choices. No separate sockets, minor talents, or orbiting gems. Names and effects are illustrative. Static SVG mockup.</desc>
+<defs>
+<symbol id="icon-sword" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 34 L30 5 L35 5 L35 11 L15 37 Z" fill="currentColor"/><path d="M5 29 L20 40 M9 35 L4 41"/></g></symbol>
+<symbol id="icon-cleave" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 35 L31 6 L36 7 L34 13 L14 38 Z" fill="currentColor"/><path d="M4 29 L20 40 M7 11 Q25 0 39 20 M7 11 L8 20"/></g></symbol>
+<symbol id="icon-shield" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4 L37 10 L35 27 Q30 36 22 41 Q11 35 8 26 L7 10 Z"/><path d="M22 11 V32 M13 20 H31"/></g></symbol>
+<symbol id="icon-sun" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="9" fill="currentColor"/><path d="M22 2 V8 M22 36 V42 M2 22 H8 M36 22 H42 M7 7 L12 12 M32 32 L37 37 M7 37 L12 32 M32 12 L37 7"/></g></symbol>
+<symbol id="icon-flame" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3 Q27 15 34 16 Q42 34 25 41 Q7 43 7 27 Q7 18 16 13 Q12 24 21 25 Q28 20 22 3 Z" fill="currentColor"/></g></symbol>
+<symbol id="icon-bolt" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 2 L8 25 H20 L16 42 L37 17 H25 L30 2 Z" fill="currentColor"/></g></symbol>
+<symbol id="icon-snow" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3 V41 M5 12 L39 32 M5 32 L39 12 M16 7 L22 12 L28 7 M16 37 L22 32 L28 37 M6 19 L13 17 L12 10 M32 34 L31 27 L38 25 M6 25 L13 27 L12 34 M32 10 L31 17 L38 19"/></g></symbol>
+<symbol id="icon-poison" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 H28 M18 4 V17 L8 32 Q4 41 15 41 H30 Q40 41 35 32 L26 17 V4 M12 29 H32"/><circle cx="18" cy="34" r="2" fill="currentColor"/></g></symbol>
+<symbol id="icon-arrow" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 37 L36 7 M21 7 H36 V22 M5 28 L14 37"/></g></symbol>
+<symbol id="icon-banner" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 41 V4 M11 6 H35 L29 15 L35 24 H11"/></g></symbol>
+<symbol id="icon-echo" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 15 L17 6 L26 15 L17 24 Z M19 26 L28 17 L37 26 L28 35 Z M8 28 L17 37"/></g></symbol>
+<symbol id="icon-eye" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 Q22 1 41 22 Q22 43 3 22 Z"/><circle cx="22" cy="22" r="7" fill="currentColor"/></g></symbol>
+<symbol id="icon-moon" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M29 3 Q10 18 29 39 Q8 43 5 23 Q4 5 29 3 Z" fill="currentColor"/></g></symbol>
+<symbol id="icon-rupture" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10 H19 L15 21 L23 26 L16 40 M25 3 L22 15 L30 20 L25 31 H40"/></g></symbol>
+<symbol id="icon-burst" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 L27 15 L41 10 L33 23 L42 34 L28 32 L22 43 L16 31 L2 35 L11 23 L3 11 L17 15 Z"/></g></symbol>
+<symbol id="icon-wave" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14 Q12 4 21 14 T40 14 M3 25 Q12 15 21 25 T40 25 M3 36 Q12 26 21 36 T40 36"/></g></symbol>
+<symbol id="icon-chains" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 25 L27 15 M14 28 L10 32 Q1 30 5 22 L15 11 Q23 6 27 13 M19 31 Q24 39 31 33 L40 23 Q45 15 36 12 L32 16"/></g></symbol>
+<symbol id="icon-wing" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 37 Q4 12 39 4 L31 15 L20 18 L32 18 L23 28 L14 29 L22 31 L13 39 Z"/></g></symbol>
+</defs>
+<rect x="0" y="0" width="2600" height="1800" rx="0" fill="#19120e" stroke="none"/>
+<text x="55.0" y="58.0" fill="#d4af67" font-size="22" text-anchor="start" font-weight="bold">BANNERET</text>
+<text x="55.0" y="113.0" fill="#ecdcc0" font-size="44" text-anchor="start" font-weight="bold">Party wheel · branching evolutions</text>
+<text x="55.0" y="153.0" fill="#bda98c" font-size="22" text-anchor="start" font-weight="normal">COMPARISON C   /   One defining choice per tier. The next rung follows your chosen talent.</text>
+<g transform="translate(95 180) scale(.88)">
+<path d="M658.4 812.5 L558.9 755.0 A290 290 0 0 1 639.5 665.4 L707.1 758.4 A175 175 0 0 0 658.4 812.5 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M558.9 755.0 L420.3 675.0 A450 450 0 0 1 545.5 535.9 L639.5 665.4 A290 290 0 0 0 558.9 755.0 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M420.3 675.0 L277.4 592.5 A615 615 0 0 1 448.5 402.5 L545.5 535.9 A450 450 0 0 0 420.3 675.0 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M277.4 592.5 L156.2 522.5 A755 755 0 0 1 366.2 289.2 L448.5 402.5 A615 615 0 0 0 277.4 592.5 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M156.15082014274878 522.5 A755 755 0 0 1 366.2221345191829 289.19216924691466" fill="none" stroke="#ba4c41" stroke-width="3"/>
+<text x="212.5" y="362.0" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">War Banner</text>
+<path d="M707.1 758.4 L639.5 665.4 A290 290 0 0 1 749.7 616.3 L773.6 728.8 A175 175 0 0 0 707.1 758.4 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M639.5 665.4 L545.5 535.9 A450 450 0 0 1 716.4 459.8 L749.7 616.3 A290 290 0 0 0 639.5 665.4 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M545.5 535.9 L448.5 402.5 A615 615 0 0 1 682.1 298.4 L716.4 459.8 A450 450 0 0 0 545.5 535.9 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M448.5 402.5 L366.2 289.2 A755 755 0 0 1 653.0 161.5 L682.1 298.4 A615 615 0 0 0 448.5 402.5 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M366.2221345191829 289.19216924691466 A755 755 0 0 1 653.0266734325917 161.49856144597675" fill="none" stroke="#ba4c41" stroke-width="3"/>
+<text x="483.0" y="165.5" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Warcry</text>
+<path d="M846.4 728.8 L870.3 616.3 A290 290 0 0 1 980.5 665.4 L912.9 758.4 A175 175 0 0 0 846.4 728.8 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M870.3 616.3 L903.6 459.8 A450 450 0 0 1 1074.5 535.9 L980.5 665.4 A290 290 0 0 0 870.3 616.3 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M903.6 459.8 L937.9 298.4 A615 615 0 0 1 1171.5 402.5 L1074.5 535.9 A450 450 0 0 0 903.6 459.8 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M937.9 298.4 L967.0 161.5 A755 755 0 0 1 1253.8 289.2 L1171.5 402.5 A615 615 0 0 0 937.9 298.4 Z" fill="#281c18" stroke="#443626" stroke-width="1.1"/>
+<path d="M966.9733265674083 161.49856144597675 A755 755 0 0 1 1253.7778654808171 289.19216924691466" fill="none" stroke="#ba4c41" stroke-width="3"/>
+<text x="1137.0" y="165.5" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="bold">Strike</text>
+<path d="M912.9 758.4 L980.5 665.4 A290 290 0 0 1 1061.1 755.0 L961.6 812.5 A175 175 0 0 0 912.9 758.4 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M980.5 665.4 L1074.5 535.9 A450 450 0 0 1 1199.7 675.0 L1061.1 755.0 A290 290 0 0 0 980.5 665.4 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1074.5 535.9 L1171.5 402.5 A615 615 0 0 1 1342.6 592.5 L1199.7 675.0 A450 450 0 0 0 1074.5 535.9 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1171.5 402.5 L1253.8 289.2 A755 755 0 0 1 1463.8 522.5 L1342.6 592.5 A615 615 0 0 0 1171.5 402.5 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1253.7778654808171 289.19216924691466 A755 755 0 0 1 1463.8491798572513 522.5" fill="none" stroke="#ba4c41" stroke-width="3"/>
+<text x="1407.5" y="362.0" fill="#756751" font-size="23" text-anchor="middle" font-weight="normal">Empty slot</text>
+<path d="M961.6 812.5 L1061.1 755.0 A290 290 0 0 1 1098.4 869.7 L984.0 881.7 A175 175 0 0 0 961.6 812.5 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1061.1 755.0 L1199.7 675.0 A450 450 0 0 1 1257.5 853.0 L1098.4 869.7 A290 290 0 0 0 1061.1 755.0 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1199.7 675.0 L1342.6 592.5 A615 615 0 0 1 1421.6 835.7 L1257.5 853.0 A450 450 0 0 0 1199.7 675.0 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1342.6 592.5 L1463.8 522.5 A755 755 0 0 1 1560.9 821.1 L1421.6 835.7 A615 615 0 0 0 1342.6 592.5 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1463.8491798572513 522.5 A755 755 0 0 1 1560.8640310030464 821.0810102329216" fill="none" stroke="#70a6c1" stroke-width="3"/>
+<text x="1574.6" y="651.6" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Bolt</text>
+<path d="M984.0 881.7 L1098.4 869.7 A290 290 0 0 1 1085.8 989.6 L976.4 954.1 A175 175 0 0 0 984.0 881.7 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1098.4 869.7 L1257.5 853.0 A450 450 0 0 1 1238.0 1039.1 L1085.8 989.6 A290 290 0 0 0 1098.4 869.7 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1257.5 853.0 L1421.6 835.7 A615 615 0 0 1 1394.9 1090.0 L1238.0 1039.1 A450 450 0 0 0 1257.5 853.0 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1421.6 835.7 L1560.9 821.1 A755 755 0 0 1 1528.0 1133.3 L1394.9 1090.0 A615 615 0 0 0 1421.6 835.7 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1560.8640310030464 821.0810102329216 A755 755 0 0 1 1528.047669802841 1133.3078307530852" fill="none" stroke="#70a6c1" stroke-width="3"/>
+<text x="1609.6" y="984.0" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Mana Ward</text>
+<path d="M940.1 1017.1 L1025.5 1094.0 A290 290 0 0 1 928.0 1164.9 L881.2 1059.9 A175 175 0 0 0 940.1 1017.1 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1025.5 1094.0 L1144.4 1201.1 A450 450 0 0 1 993.0 1311.1 L928.0 1164.9 A290 290 0 0 0 1025.5 1094.0 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1144.4 1201.1 L1267.0 1311.5 A615 615 0 0 1 1060.1 1461.8 L993.0 1311.1 A450 450 0 0 0 1144.4 1201.1 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M1267.0 1311.5 L1371.1 1405.2 A755 755 0 0 1 1117.1 1589.7 L1060.1 1461.8 A615 615 0 0 0 1267.0 1311.5 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1371.0743432354327 1405.193607800938 A755 755 0 0 1 1117.0861655222293 1589.7268205201635" fill="none" stroke="#70a6c1" stroke-width="3"/>
+<text x="1282.6" y="1550.4" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Frost Nova</text>
+<path d="M881.2 1059.9 L928.0 1164.9 A290 290 0 0 1 810.0 1190.0 L810.0 1075.0 A175 175 0 0 0 881.2 1059.9 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M928.0 1164.9 L993.0 1311.1 A450 450 0 0 1 810.0 1350.0 L810.0 1190.0 A290 290 0 0 0 928.0 1164.9 Z" fill="#1c2428" stroke="#443626" stroke-width="1.1"/>
+<path d="M993.0 1311.1 L1060.1 1461.8 A615 615 0 0 1 810.0 1515.0 L810.0 1350.0 A450 450 0 0 0 993.0 1311.1 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1060.1 1461.8 L1117.1 1589.7 A755 755 0 0 1 810.0 1655.0 L810.0 1515.0 A615 615 0 0 0 1060.1 1461.8 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M1117.0861655222293 1589.7268205201635 A755 755 0 0 1 810.0 1655.0" fill="none" stroke="#70a6c1" stroke-width="3"/>
+<text x="977.2" y="1686.4" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Echo</text>
+<path d="M810.0 1075.0 L810.0 1190.0 A290 290 0 0 1 692.0 1164.9 L738.8 1059.9 A175 175 0 0 0 810.0 1075.0 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M810.0 1190.0 L810.0 1350.0 A450 450 0 0 1 627.0 1311.1 L692.0 1164.9 A290 290 0 0 0 810.0 1190.0 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M810.0 1350.0 L810.0 1515.0 A615 615 0 0 1 559.9 1461.8 L627.0 1311.1 A450 450 0 0 0 810.0 1350.0 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M810.0 1515.0 L810.0 1655.0 A755 755 0 0 1 502.9 1589.7 L559.9 1461.8 A615 615 0 0 0 810.0 1515.0 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M810.0 1655.0 A755 755 0 0 1 502.9138344777708 1589.7268205201635" fill="none" stroke="#83a858" stroke-width="3"/>
+<text x="642.8" y="1686.4" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Smoke</text>
+<path d="M738.8 1059.9 L692.0 1164.9 A290 290 0 0 1 594.5 1094.0 L679.9 1017.1 A175 175 0 0 0 738.8 1059.9 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M692.0 1164.9 L627.0 1311.1 A450 450 0 0 1 475.6 1201.1 L594.5 1094.0 A290 290 0 0 0 692.0 1164.9 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M627.0 1311.1 L559.9 1461.8 A615 615 0 0 1 353.0 1311.5 L475.6 1201.1 A450 450 0 0 0 627.0 1311.1 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M559.9 1461.8 L502.9 1589.7 A755 755 0 0 1 248.9 1405.2 L353.0 1311.5 A615 615 0 0 0 559.9 1461.8 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M502.9138344777708 1589.7268205201635 A755 755 0 0 1 248.92565676456752 1405.193607800938" fill="none" stroke="#83a858" stroke-width="3"/>
+<text x="337.4" y="1550.4" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Lacerate</text>
+<path d="M643.6 954.1 L534.2 989.6 A290 290 0 0 1 521.6 869.7 L636.0 881.7 A175 175 0 0 0 643.6 954.1 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M534.2 989.6 L382.0 1039.1 A450 450 0 0 1 362.5 853.0 L521.6 869.7 A290 290 0 0 0 534.2 989.6 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M382.0 1039.1 L225.1 1090.0 A615 615 0 0 1 198.4 835.7 L362.5 853.0 A450 450 0 0 0 382.0 1039.1 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M225.1 1090.0 L92.0 1133.3 A755 755 0 0 1 59.1 821.1 L198.4 835.7 A615 615 0 0 0 225.1 1090.0 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M91.95233019715909 1133.3078307530855 A755 755 0 0 1 59.13596899695369 821.0810102329216" fill="none" stroke="#83a858" stroke-width="3"/>
+<text x="10.4" y="984.0" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Envenom</text>
+<path d="M636.0 881.7 L521.6 869.7 A290 290 0 0 1 558.9 755.0 L658.4 812.5 A175 175 0 0 0 636.0 881.7 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M521.6 869.7 L362.5 853.0 A450 450 0 0 1 420.3 675.0 L558.9 755.0 A290 290 0 0 0 521.6 869.7 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M362.5 853.0 L198.4 835.7 A615 615 0 0 1 277.4 592.5 L420.3 675.0 A450 450 0 0 0 362.5 853.0 Z" fill="#22271b" stroke="#443626" stroke-width="1.1"/>
+<path d="M198.4 835.7 L59.1 821.1 A755 755 0 0 1 156.2 522.5 L277.4 592.5 A615 615 0 0 0 198.4 835.7 Z" fill="#18130f" stroke="#443626" stroke-width="1.1"/>
+<path d="M59.13596899695369 821.0810102329216 A755 755 0 0 1 156.1508201427489 522.5" fill="none" stroke="#83a858" stroke-width="3"/>
+<text x="45.4" y="651.6" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="normal">Stab</text>
+<g id="class-tree-0">
+<path d="M773.6 728.8 L749.7 616.3 A290 290 0 0 1 870.3 616.3 L846.4 728.8 A175 175 0 0 0 773.6 728.8 Z" fill="#351d18" stroke="#ba4c41" stroke-opacity=".5"/>
+<path d="M749.7 616.3 L716.4 459.8 A450 450 0 0 1 903.6 459.8 L870.3 616.3 A290 290 0 0 0 749.7 616.3 Z" fill="#351d18" stroke="#ba4c41" stroke-opacity=".5"/>
+<path d="M716.4 459.8 L682.1 298.4 A615 615 0 0 1 937.9 298.4 L903.6 459.8 A450 450 0 0 0 716.4 459.8 Z" fill="#351d18" stroke="#ba4c41" stroke-opacity=".5"/>
+<path d="M682.1 298.4 L653.0 161.5 A755 755 0 0 1 967.0 161.5 L937.9 298.4 A615 615 0 0 0 682.1 298.4 Z" fill="#351d18" stroke="#ba4c41" stroke-opacity=".5"/>
+<text x="810.0" y="96.0" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="bold">Warrior class tree</text>
+<text x="810.0" y="123.0" fill="#bda98c" font-size="18" text-anchor="middle" font-weight="normal">Paladin · Martyr</text>
+<path d="M653.0266734325917 161.49856144597675 A755 755 0 0 1 966.9733265674083 161.49856144597675" fill="none" stroke="#ba4c41" stroke-width="3"/>
+<path d="M810.0 675.0 L776.5 531.5" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M776.5 531.5 L810.0 365.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<g opacity="1">
+<circle cx="810.0" cy="675.0" r="31" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-sword" x="791.0" y="656.0" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="776.5" cy="531.5" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-shield" x="757.5" y="512.5" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="0.28">
+<circle cx="843.5" cy="531.5" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-cleave" x="824.5" y="512.5" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="0.28">
+<circle cx="735.5" cy="370.2" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-sun" x="716.5" y="351.2" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="810.0" cy="365.0" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-chains" x="791.0" y="346.0" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="0.28">
+<circle cx="884.5" cy="370.2" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-banner" x="865.5" y="351.2" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="713.3" cy="211.8" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-wing" x="694.3" y="192.8" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="810.0" cy="205.0" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-burst" x="791.0" y="186.0" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="906.7" cy="211.8" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-flame" x="887.7" y="192.8" width="38" height="38" color="#c23a34"/>
+</g>
+</g>
+<g id="class-tree-1">
+<path d="M976.4 954.1 L1085.8 989.6 A290 290 0 0 1 1025.5 1094.0 L940.1 1017.1 A175 175 0 0 0 976.4 954.1 Z" fill="#182c37" stroke="#70a6c1" stroke-opacity=".5"/>
+<path d="M1085.8 989.6 L1238.0 1039.1 A450 450 0 0 1 1144.4 1201.1 L1025.5 1094.0 A290 290 0 0 0 1085.8 989.6 Z" fill="#182c37" stroke="#70a6c1" stroke-opacity=".5"/>
+<path d="M1238.0 1039.1 L1394.9 1090.0 A615 615 0 0 1 1267.0 1311.5 L1144.4 1201.1 A450 450 0 0 0 1238.0 1039.1 Z" fill="#182c37" stroke="#70a6c1" stroke-opacity=".5"/>
+<path d="M1394.9 1090.0 L1528.0 1133.3 A755 755 0 0 1 1371.1 1405.2 L1267.0 1311.5 A615 615 0 0 0 1394.9 1090.0 Z" fill="#182c37" stroke="#70a6c1" stroke-opacity=".5"/>
+<text x="1506.3" y="1302.0" fill="#dfcda9" font-size="23" text-anchor="start" font-weight="bold">Caster class tree</text>
+<text x="1506.3" y="1329.0" fill="#bda98c" font-size="18" text-anchor="start" font-weight="normal">Wizard · Pyromancer</text>
+<path d="M1528.047669802841 1133.3078307530852 A755 755 0 0 1 1371.0743432354327 1405.193607800938" fill="none" stroke="#70a6c1" stroke-width="3"/>
+<path d="M1004.9 1012.5 L1145.9 1055.2" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M1145.9 1055.2 L1306.0 1100.4" fill="none" stroke="#a28a62" stroke-width="2"/>
+<g opacity="1">
+<circle cx="1004.9" cy="1012.5" r="31" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-bolt" x="985.9" y="993.5" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="1145.9" cy="1055.2" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-eye" x="1126.9" y="1036.2" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="0.28">
+<circle cx="1112.3" cy="1113.3" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-moon" x="1093.3" y="1094.3" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="1306.0" cy="1100.4" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-flame" x="1287.0" y="1081.4" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="0.28">
+<circle cx="1273.3" cy="1167.5" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-snow" x="1254.3" y="1148.5" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="0.28">
+<circle cx="1231.6" cy="1229.4" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-bolt" x="1212.6" y="1210.4" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="1454.4" cy="1160.4" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-burst" x="1435.4" y="1141.4" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="1411.9" cy="1247.5" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-wave" x="1392.9" y="1228.5" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="1357.7" cy="1327.9" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-sun" x="1338.7" y="1308.9" width="38" height="38" color="#d9a93a"/>
+</g>
+</g>
+<g id="class-tree-2">
+<path d="M679.9 1017.1 L594.5 1094.0 A290 290 0 0 1 534.2 989.6 L643.6 954.1 A175 175 0 0 0 679.9 1017.1 Z" fill="#26311b" stroke="#83a858" stroke-opacity=".5"/>
+<path d="M594.5 1094.0 L475.6 1201.1 A450 450 0 0 1 382.0 1039.1 L534.2 989.6 A290 290 0 0 0 594.5 1094.0 Z" fill="#26311b" stroke="#83a858" stroke-opacity=".5"/>
+<path d="M475.6 1201.1 L353.0 1311.5 A615 615 0 0 1 225.1 1090.0 L382.0 1039.1 A450 450 0 0 0 475.6 1201.1 Z" fill="#26311b" stroke="#83a858" stroke-opacity=".5"/>
+<path d="M353.0 1311.5 L248.9 1405.2 A755 755 0 0 1 92.0 1133.3 L225.1 1090.0 A615 615 0 0 0 353.0 1311.5 Z" fill="#18130f" stroke="#83a858" stroke-opacity=".5"/>
+<text x="113.7" y="1302.0" fill="#dfcda9" font-size="23" text-anchor="middle" font-weight="bold">Skirmisher class tree</text>
+<text x="113.7" y="1329.0" fill="#bda98c" font-size="18" text-anchor="middle" font-weight="normal">Assassin</text>
+<path d="M248.92565676456752 1405.193607800938 A755 755 0 0 1 91.95233019715909 1133.3078307530855" fill="none" stroke="#83a858" stroke-width="3"/>
+<path d="M615.1 1012.5 L474.1 1055.2" fill="none" stroke="#a28a62" stroke-width="2"/>
+<g opacity="1">
+<circle cx="615.1" cy="1012.5" r="31" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-arrow" x="596.1" y="993.5" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="0.28">
+<circle cx="507.7" cy="1113.3" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-wing" x="488.7" y="1094.3" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="474.1" cy="1055.2" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-poison" x="455.1" y="1036.2" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="388.4" cy="1229.4" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-eye" x="369.4" y="1210.4" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="346.7" cy="1167.5" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-moon" x="327.7" y="1148.5" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="314.0" cy="1100.4" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-rupture" x="295.0" y="1081.4" width="38" height="38" color="#c23a34"/>
+</g>
+</g>
+<path d="M718.5 694.5 L629.5 577.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M901.5 694.5 L990.5 577.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M990.5 577.0 L1027.6 411.3" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M1024.0 830.5 L1170.8 818.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M942.3 1082.0 L1053.7 1178.4" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M677.7 1082.0 L566.3 1178.4" fill="none" stroke="#a28a62" stroke-width="2"/>
+<path d="M596.0 830.5 L449.2 818.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<g opacity="1">
+<circle cx="642.8" cy="749.4" r="31" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-banner" x="623.8" y="730.4" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="513.7" cy="678.4" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-banner" x="494.7" y="659.4" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="558.6" cy="628.5" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-flame" x="539.6" y="609.5" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="718.5" cy="694.5" r="31" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-sun" x="699.5" y="675.5" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="629.5" cy="577.0" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-sun" x="610.5" y="558.0" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="0.28">
+<circle cx="690.8" cy="549.7" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-echo" x="671.8" y="530.7" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="526.5" cy="446.3" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-shield" x="507.5" y="427.3" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="592.4" cy="411.3" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-chains" x="573.4" y="392.3" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="662.5" cy="385.7" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-wing" x="643.5" y="366.7" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="901.5" cy="694.5" r="31" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-sword" x="882.5" y="675.5" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="0.28">
+<circle cx="929.2" cy="549.7" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-shield" x="910.2" y="530.7" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="990.5" cy="577.0" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-cleave" x="971.5" y="558.0" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="0.28">
+<circle cx="957.5" cy="385.7" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-wing" x="938.5" y="366.7" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="1027.6" cy="411.3" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-rupture" x="1008.6" y="392.3" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="0.28">
+<circle cx="1093.5" cy="446.3" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-chains" x="1074.5" y="427.3" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="1001.6" cy="231.9" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-burst" x="982.6" y="212.9" width="38" height="38" color="#9a6fb3"/>
+<circle cx="1001.6" cy="231.9" r="37" fill="none" stroke="#d4af67" stroke-dasharray="4 5" stroke-width="2"/>
+</g>
+<g opacity="1">
+<circle cx="1092.7" cy="265.1" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-rupture" x="1073.7" y="246.1" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="1178.3" cy="310.6" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-wave" x="1159.3" y="291.6" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="1024.0" cy="830.5" r="31" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-bolt" x="1005.0" y="811.5" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="0.28">
+<circle cx="1150.1" cy="754.2" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-bolt" x="1131.1" y="735.2" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="1170.8" cy="818.0" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-arrow" x="1151.8" y="799.0" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="1290.9" cy="665.5" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-shield" x="1271.9" y="646.5" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="1318.8" cy="734.7" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-chains" x="1299.8" y="715.7" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="1336.9" cy="807.1" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-wing" x="1317.9" y="788.1" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="1033.8" cy="923.5" r="31" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-shield" x="1014.8" y="904.5" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="1180.0" cy="905.2" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-shield" x="1161.0" y="886.2" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="1173.0" cy="971.9" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-wing" x="1154.0" y="952.9" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="942.3" cy="1082.0" r="31" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-snow" x="923.3" y="1063.0" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="1053.7" cy="1178.4" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-snow" x="1034.7" y="1159.4" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="0.28">
+<circle cx="999.5" cy="1217.8" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-flame" x="980.5" y="1198.8" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="1181.6" cy="1284.8" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-burst" x="1162.6" y="1265.8" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="1124.5" cy="1332.8" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-sun" x="1105.5" y="1313.8" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="1061.2" cy="1372.4" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-eye" x="1042.2" y="1353.4" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="856.8" cy="1120.1" r="31" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-echo" x="837.8" y="1101.1" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="919.4" cy="1253.5" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-echo" x="900.4" y="1234.5" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="853.8" cy="1267.4" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-echo" x="834.8" y="1248.4" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="763.2" cy="1120.1" r="31" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-moon" x="744.2" y="1101.1" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="766.2" cy="1267.4" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-moon" x="747.2" y="1248.4" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="700.6" cy="1253.5" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-sun" x="681.6" y="1234.5" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="677.7" cy="1082.0" r="31" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-rupture" x="658.7" y="1063.0" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="0.28">
+<circle cx="620.5" cy="1217.8" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-rupture" x="601.5" y="1198.8" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="566.3" cy="1178.4" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-eye" x="547.3" y="1159.4" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="558.8" cy="1372.4" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-burst" x="539.8" y="1353.4" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="495.5" cy="1332.8" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-sun" x="476.5" y="1313.8" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="438.4" cy="1284.8" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-eye" x="419.4" y="1265.8" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="586.2" cy="923.5" r="31" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-poison" x="567.2" y="904.5" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="447.0" cy="971.9" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-poison" x="428.0" y="952.9" width="38" height="38" color="#9a6fb3"/>
+</g>
+<g opacity="1">
+<circle cx="440.0" cy="905.2" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-arrow" x="421.0" y="886.2" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="1">
+<circle cx="596.0" cy="830.5" r="31" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-arrow" x="577.0" y="811.5" width="38" height="38" color="#6f9d4c"/>
+</g>
+<g opacity="1">
+<circle cx="449.2" cy="818.0" r="29" fill="#251e19" stroke="#93a1b3" stroke-width="2"/>
+<use href="#icon-arrow" x="430.2" y="799.0" width="38" height="38" color="#93a1b3"/>
+</g>
+<g opacity="0.28">
+<circle cx="469.9" cy="754.2" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-wing" x="450.9" y="735.2" width="38" height="38" color="#c23a34"/>
+</g>
+<g opacity="1">
+<circle cx="283.1" cy="807.1" r="29" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-wave" x="264.1" y="788.1" width="38" height="38" color="#d9a93a"/>
+</g>
+<g opacity="1">
+<circle cx="301.2" cy="734.7" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-flame" x="282.2" y="715.7" width="38" height="38" color="#6fa8c8"/>
+</g>
+<g opacity="1">
+<circle cx="329.1" cy="665.5" r="29" fill="#251e19" stroke="#6f9d4c" stroke-width="2"/>
+<use href="#icon-moon" x="310.1" y="646.5" width="38" height="38" color="#6f9d4c"/>
+</g>
+<circle cx="810.0" cy="900.0" r="174" fill="#140f0b" stroke="#736044" stroke-width="2"/>
+<circle cx="810.0" cy="788.0" r="49" fill="#30251b" stroke="#ba4c41" stroke-width="3"/>
+<text x="810.0" y="794.0" fill="#ba4c41" font-size="17" text-anchor="middle" font-weight="bold">Warrior</text>
+<circle cx="907.0" cy="956.0" r="49" fill="#30251b" stroke="#70a6c1" stroke-width="3"/>
+<text x="907.0" y="962.0" fill="#70a6c1" font-size="17" text-anchor="middle" font-weight="bold">Caster</text>
+<circle cx="713.0" cy="956.0" r="49" fill="#30251b" stroke="#83a858" stroke-width="3"/>
+<text x="713.0" y="962.0" fill="#83a858" font-size="17" text-anchor="middle" font-weight="bold">Skirmisher</text>
+<g id="gem-pouch" transform="translate(-140 -110)">
+<circle cx="950.0" cy="1010.0" r="58" fill="#1f1810" stroke="#8b7251" stroke-width="2"/>
+<path d="M950.0 962.0 L958.0 970.0 L950.0 978.0 L942.0 970.0 Z" fill="#c23a34" stroke="#f3e6cc" stroke-width="1.8"/>
+<text x="950.0" y="997.0" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal">1</text>
+<path d="M984.6 982.0 L992.6 990.0 L984.6 998.0 L976.6 990.0 Z" fill="#57441d" stroke="#5a4a38" stroke-width="1.4"/>
+<text x="965.6" y="1006.0" fill="#6f6455" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal">0</text>
+<path d="M984.6 1022.0 L992.6 1030.0 L984.6 1038.0 L976.6 1030.0 Z" fill="#6fa8c8" stroke="#f3e6cc" stroke-width="1.8"/>
+<text x="965.6" y="1024.0" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal">2</text>
+<path d="M950.0 1042.0 L958.0 1050.0 L950.0 1058.0 L942.0 1050.0 Z" fill="#6f9d4c" stroke="#f3e6cc" stroke-width="1.8"/>
+<text x="950.0" y="1033.0" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal">1</text>
+<path d="M915.4 1022.0 L923.4 1030.0 L915.4 1038.0 L907.4 1030.0 Z" fill="#443241" stroke="#5a4a38" stroke-width="1.4"/>
+<text x="934.4" y="1024.0" fill="#6f6455" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal">0</text>
+<path d="M915.4 982.0 L923.4 990.0 L915.4 998.0 L907.4 990.0 Z" fill="#93a1b3" stroke="#f3e6cc" stroke-width="1.8"/>
+<text x="934.4" y="1006.0" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal">1</text>
+</g>
+</g>
+<rect x="1700" y="202" width="840" height="1448" rx="16" fill="#241b14" stroke="#695039"/>
+<rect x="1700" y="202" width="840" height="6" rx="2" fill="#d4af67" stroke="none"/>
+<text x="1742.0" y="258.0" fill="#d4af67" font-size="19" text-anchor="start" font-weight="bold">WARRIOR / STRIKE</text>
+<text x="1742.0" y="316.0" fill="#ecdcc0" font-size="35" text-anchor="start" font-weight="bold">Choose the next evolution</text>
+<text x="1742.0" y="357.0" fill="#bda98c" font-size="24" text-anchor="start" font-weight="normal">Tier 3 · Choose one of three</text>
+<text x="1742.0" y="416.0" fill="#d4af67" font-size="17" text-anchor="start" font-weight="bold">YOUR CHOSEN PATH</text>
+<path d="M1836.0 477.0 L2039.0 477.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<g opacity="1">
+<circle cx="1800.0" cy="477.0" r="30" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-sword" x="1781.0" y="458.0" width="38" height="38" color="#c23a34"/>
+</g>
+<text x="1800.0" y="543.0" fill="#ecdcc0" font-size="21" text-anchor="middle" font-weight="normal">Strike</text>
+<path d="M2111.0 477.0 L2314.0 477.0" fill="none" stroke="#a28a62" stroke-width="2"/>
+<g opacity="1">
+<circle cx="2075.0" cy="477.0" r="30" fill="#251e19" stroke="#d9a93a" stroke-width="2"/>
+<use href="#icon-cleave" x="2056.0" y="458.0" width="38" height="38" color="#d9a93a"/>
+</g>
+<text x="2075.0" y="543.0" fill="#ecdcc0" font-size="21" text-anchor="middle" font-weight="normal">Sweeping strike</text>
+<g opacity="1">
+<circle cx="2350.0" cy="477.0" r="30" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-rupture" x="2331.0" y="458.0" width="38" height="38" color="#9a6fb3"/>
+</g>
+<text x="2350.0" y="543.0" fill="#ecdcc0" font-size="21" text-anchor="middle" font-weight="normal">Rupture</text>
+<text x="1742.0" y="596.0" fill="#bda98c" font-size="23" text-anchor="start" font-weight="normal">Rupture reveals these three follow-ups:</text>
+<rect x="1742" y="630" width="756" height="151" rx="10" fill="#3b2c19" stroke="#d4af67"/>
+<g opacity="1">
+<circle cx="1798.0" cy="689.0" r="29" fill="#251e19" stroke="#9a6fb3" stroke-width="2"/>
+<use href="#icon-burst" x="1779.0" y="670.0" width="38" height="38" color="#9a6fb3"/>
+</g>
+<text x="1850.0" y="673.0" fill="#ecdcc0" font-size="28" text-anchor="start" font-weight="bold">Aftershock</text>
+<text x="1850.0" y="710.0" fill="#cbbb9e" font-size="22" text-anchor="start" font-weight="normal">Ruptured enemies release a shockwave</text>
+<text x="1850.0" y="741.0" fill="#cbbb9e" font-size="22" text-anchor="start" font-weight="normal">when the rupture ends.</text>
+<rect x="1742" y="803" width="756" height="151" rx="10" fill="#2b2119" stroke="#57412e"/>
+<g opacity="1">
+<circle cx="1798.0" cy="862.0" r="29" fill="#251e19" stroke="#c23a34" stroke-width="2"/>
+<use href="#icon-rupture" x="1779.0" y="843.0" width="38" height="38" color="#c23a34"/>
+</g>
+<text x="1850.0" y="846.0" fill="#ecdcc0" font-size="28" text-anchor="start" font-weight="bold">Fracture</text>
+<text x="1850.0" y="883.0" fill="#cbbb9e" font-size="22" text-anchor="start" font-weight="normal">Rupture breaks through protection,</text>
+<text x="1850.0" y="914.0" fill="#cbbb9e" font-size="22" text-anchor="start" font-weight="normal">exposing the target to your allies.</text>
+<rect x="1742" y="976" width="756" height="151" rx="10" fill="#2b2119" stroke="#57412e"/>
+<g opacity="1">
+<circle cx="1798.0" cy="1035.0" r="29" fill="#251e19" stroke="#6fa8c8" stroke-width="2"/>
+<use href="#icon-wave" x="1779.0" y="1016.0" width="38" height="38" color="#6fa8c8"/>
+</g>
+<text x="1850.0" y="1019.0" fill="#ecdcc0" font-size="28" text-anchor="start" font-weight="bold">Cascade</text>
+<text x="1850.0" y="1056.0" fill="#cbbb9e" font-size="22" text-anchor="start" font-weight="normal">When a ruptured enemy falls,</text>
+<text x="1850.0" y="1087.0" fill="#cbbb9e" font-size="22" text-anchor="start" font-weight="normal">the rupture spreads to another enemy.</text>
+<text x="1742.0" y="1207.0" fill="#d4af67" font-size="19" text-anchor="start" font-weight="bold">PREVIEW · AFTERSHOCK</text>
+<text x="1742.0" y="1252.0" fill="#ecdcc0" font-size="27" text-anchor="start" font-weight="bold">Changes what Strike does.</text>
+<text x="1742.0" y="1292.0" fill="#bda98c" font-size="22" text-anchor="start" font-weight="normal">Choosing it closes the other options in this tier.</text>
+<text x="1742.0" y="1328.0" fill="#bda98c" font-size="22" text-anchor="start" font-weight="normal">Any later choices would follow Aftershock.</text>
+<rect x="1742" y="1372" width="756" height="75" rx="9" fill="#d4af67" stroke="none"/>
+<text x="2120.0" y="1420.0" fill="#25180e" font-size="27" text-anchor="middle" font-weight="bold">Choose Aftershock</text>
+<text x="1742.0" y="1512.0" fill="#bda98c" font-size="22" text-anchor="start" font-weight="normal">Only the chosen talent reveals the next rung.</text>
+<text x="1742.0" y="1550.0" fill="#bda98c" font-size="22" text-anchor="start" font-weight="normal">No additional upgrade layer in this version.</text>
+<text x="1742.0" y="1608.0" fill="#998870" font-size="17" text-anchor="start" font-weight="normal">STATIC CONCEPT · Names and effects are illustrative.</text>
+<text x="55.0" y="1712.0" fill="#d1bea0" font-size="20" text-anchor="start" font-weight="normal">Icon colour = gem type     ·     Connected path = chosen     ·     Dim = not chosen     ·     Bright outline = available     ·     Dotted outline = preview</text>
+<text x="55.0" y="1754.0" fill="#bda98c" font-size="21" text-anchor="start" font-weight="normal">Skills and classes: 2 options → select one → 3 dependent options → select one → next rung. Hidden branches have no descendants.</text>
+</svg>

@@ -10,7 +10,7 @@ parent: "[[Warrior kit]]"
 ---
 # Done when
 
-- A skill costs 1 AP; AP regenerates one pip per beat and carries over up to a cap — see [[AP economy]].
+- A skill costs 1 AP; AP regenerates one pip per beat and carries over up to a cap — see [[Action Point (AP)]].
 - A hero schedules as many skills as his AP allows; each resolves at its own delay.
 - Every character's AP shows on its nameplate.
 - Reschedule is gone: a stop no longer replaces a pending action, the player spends AP instead.

@@ -5,7 +5,7 @@ deadline:
 started: 2026-10-20
 finished: 2026-10-22
 hours: 0
-total_hours: 6.5
+total_hours: 2.2
 parent: "[[Playable Prototype]]"
 ---
 

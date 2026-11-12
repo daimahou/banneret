@@ -1,4 +1,4 @@
 ---
 event: "[[Wayside Shrine]]"
-summary: Placeholder — learn [[Bash]].
+summary: Placeholder — learn Bash.
 ---

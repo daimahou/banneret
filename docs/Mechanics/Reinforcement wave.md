@@ -1,0 +1,6 @@
+---
+gate:
+class:
+summary:
+type:
+---

@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.folder == "Enemies"
+    - file.folder == "enemies"
     - file.ext == "md"
 properties:
   file.name:

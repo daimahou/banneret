@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: 1.1-3.4
 requires:
   - "[[Encounter transition]]"
-  - "[[Timeline]]"
+  - "[[Implement Timeline]]"
 started: 2026-10-23
 finished: 2026-10-23
 hours: 2.4

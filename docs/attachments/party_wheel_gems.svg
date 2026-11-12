@@ -1,0 +1,328 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2160" height="1580" viewBox="0 0 2160 1580" font-family="Georgia, serif" role="img" aria-labelledby="title desc" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo5OTQ0YTExZC1hMzFhLTQ0NDktYjIxYS1mNWY0OGE0ZGY1YjcAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaKWwO8g0qwNQ6gFSzITk6MMAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo2ZjFiZDhlMC1hNzNjLTRjNmUtOWY5My1hZDdiODZhZWY4MTlscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoJAgH2mdY+fvIst749myOogAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggMVmOkFbbuaJus6LG6kcjKulnA4wQTOaF/6b58LsWD36kZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaPfwKQqrlFNZWQopJn2A4v4AAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCCWhSYRx35HoH/yJ7G7y9pbRDUIucGQuLW1NPj9ZUF1zGRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBjfZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjk5NDRhMTFkLWEzMWEtNDQ0OS1iMjFhLWY1ZjQ4YTRkZjViNy9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjE5YTYxODUwLTc0MWUtNDJmYi1hMWJiLTEwZmJjNTg5ZDY0MnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAxWY6QVtu5om6zosbqRyMq6WcDjBBM5oX/pvnwuxYPfqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg0Bo+hb3KvxMeMgtNszwq6rHcLMxTPAOj1ANdRyB67IWiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggQUMS9W3ZmkqQ3kOQSAH9vKEluxV+EPEtrJ+aIyd+bRB0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQHa5mJBTUDIP6N/bUhUW8iicB7tkO8+cRkxqdWPrInpiYCl5JqhM2Zp9TA43xqkjYtJA32viLtXGN4FTDSK0Oe0=</c2pa:manifest></metadata>
+<title id="title">Banneret — gems on the party wheel</title>
+<desc id="desc">Layout proposal. The party wheel holds three heroes (Warrior, Skirmisher, Caster). Each hero faces a hero tree wedge (starting colour, then a class keystone and an ascendancy keystone, each revealing the branch beyond it) flanked by four skill wedges: the basic attack and three slots. Coloured gems from the map are the only progression; spent on an empty slot, a skill, or the hero tree. Worked example: the Warrior's Strike evolved into Arcane Strike with a blue gem, and a yellow gem on his hero tree made him a Paladin. Illustrative nodes; no balance values.</desc>
+<rect x="0" y="0" width="2160" height="1580" fill="#1a120c"/>
+<text x="70.0" y="75.0" fill="#d4af67" font-size="22" text-anchor="start" font-weight="bold">BANNERET</text>
+<text x="70.0" y="130.0" fill="#ecdcc0" font-size="44" text-anchor="start" font-weight="bold">Gems on the party wheel</text>
+<text x="70.0" y="170.0" fill="#bda98c" font-size="20" text-anchor="start" font-weight="normal">LAYOUT PROPOSAL · Illustrative nodes, skills and colours; no costs or balance values specified.</text>
+<path d="M70.00 202.00 L2090.00 202.00" fill="none" stroke="#6e5435" stroke-width="2"/>
+<text x="70.0" y="250.0" fill="#d4af67" font-size="21" text-anchor="start" font-weight="bold">PARTY OVERVIEW</text>
+<text x="70.0" y="281.0" fill="#bda98c" font-size="19" text-anchor="start" font-weight="normal">The whole party's build</text>
+<text x="70.0" y="307.0" fill="#bda98c" font-size="19" text-anchor="start" font-weight="normal">4 skills each · no levels</text>
+<path d="M434.12 695.00 L356.17 650.00 A270 270 0 0 1 431.30 566.57 L484.20 639.38 A180 180 0 0 0 434.12 695.00 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M356.17 650.00 L269.57 600.00 A370 370 0 0 1 372.52 485.66 L431.30 566.57 A270 270 0 0 0 356.17 650.00 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M269.57 600.00 L182.97 550.00 A470 470 0 0 1 313.74 404.76 L372.52 485.66 A370 370 0 0 0 269.57 600.00 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M436.17 635.49 L447.17 646.49 L436.17 657.49 L425.17 646.49 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M484.20 639.38 L431.30 566.57 A270 270 0 0 1 533.86 520.90 L552.58 608.93 A180 180 0 0 0 484.20 639.38 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M431.30 566.57 L372.52 485.66 A370 370 0 0 1 513.07 423.09 L533.86 520.90 A270 270 0 0 0 431.30 566.57 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M372.52 485.66 L313.74 404.76 A470 470 0 0 1 492.28 325.27 L513.07 423.09 A370 370 0 0 0 372.52 485.66 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M505.81 595.90 L480.18 538.34" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="505.81" cy="595.90" r="11" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M480.18 527.34 L491.18 538.34 L480.18 549.34 L469.18 538.34 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M439.51 435.99 L450.51 446.99 L439.51 457.99 L428.51 446.99 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M552.58 608.93 L533.86 520.90 A270 270 0 0 1 646.14 520.90 L627.42 608.93 A180 180 0 0 0 552.58 608.93 Z" fill="#3a2c1f" stroke="#8a6d45" stroke-width="2"/>
+<path d="M533.86 520.90 L513.07 423.09 A370 370 0 0 1 666.93 423.09 L646.14 520.90 A270 270 0 0 0 533.86 520.90 Z" fill="#352819" stroke="#8a6d45" stroke-width="2"/>
+<path d="M513.07 423.09 L492.28 325.27 A470 470 0 0 1 687.72 325.27 L666.93 423.09 A370 370 0 0 0 513.07 423.09 Z" fill="#1c1814" stroke="#8a6d45" stroke-width="2"/>
+<path d="M590.00 578.00 L590.00 515.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="590.00" cy="578.00" r="9" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<path d="M590.00 503.00 L557.17 484.79" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M590.00 503.00 L622.83 484.79" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M557.17 484.79 L556.52 438.61" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M622.83 484.79 L623.48 438.61" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="557.17" cy="484.79" r="7" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="622.83" cy="484.79" r="7" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="556.52" cy="438.61" r="7" fill="#211a13" stroke="#d9a93a" stroke-width="2.5"/>
+<circle cx="623.48" cy="438.61" r="7" fill="#211a13" stroke="#d9a93a" stroke-width="2.5"/>
+<path d="M590.00 503.00 L602.00 515.00 L590.00 527.00 L578.00 515.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M590.00 403.00 L602.00 415.00 L590.00 427.00 L578.00 415.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M552.58 608.93 L492.28 325.27 A470 470 0 0 1 687.72 325.27 L627.42 608.93 A180 180 0 0 0 552.58 608.93 Z" fill="none" stroke="#a4844f" stroke-width="2"/>
+<path d="M627.42 608.93 L646.14 520.90 A270 270 0 0 1 748.70 566.57 L695.80 639.38 A180 180 0 0 0 627.42 608.93 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M646.14 520.90 L666.93 423.09 A370 370 0 0 1 807.48 485.66 L748.70 566.57 A270 270 0 0 0 646.14 520.90 Z" fill="#2d2219" stroke="#51402f" stroke-width="2"/>
+<path d="M666.93 423.09 L687.72 325.27 A470 470 0 0 1 866.26 404.76 L807.48 485.66 A370 370 0 0 0 666.93 423.09 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M674.19 595.90 L699.82 538.34" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="674.19" cy="595.90" r="11" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M704.70 527.38 L682.12 497.39" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M704.70 527.38 L742.09 524.10" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M682.12 497.39 L700.31 454.94" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M742.09 524.10 L761.47 482.18" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="682.12" cy="497.39" r="7" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="742.09" cy="524.10" r="7" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="700.31" cy="454.94" r="7" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<circle cx="761.47" cy="482.18" r="7" fill="#211a13" stroke="#b8322f" stroke-width="2.5"/>
+<path d="M699.82 527.34 L710.82 538.34 L699.82 549.34 L688.82 538.34 Z" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<path d="M740.49 435.99 L751.49 446.99 L740.49 457.99 L729.49 446.99 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M627.42 608.93 L687.72 325.27 A470 470 0 0 1 866.26 404.76 L695.80 639.38 A180 180 0 0 0 627.42 608.93 Z" fill="none" stroke="#e0b85c" stroke-width="3"/>
+<path d="M695.80 639.38 L748.70 566.57 A270 270 0 0 1 823.83 650.00 L745.88 695.00 A180 180 0 0 0 695.80 639.38 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M748.70 566.57 L807.48 485.66 A370 370 0 0 1 910.43 600.00 L823.83 650.00 A270 270 0 0 0 748.70 566.57 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M807.48 485.66 L866.26 404.76 A470 470 0 0 1 997.03 550.00 L910.43 600.00 A370 370 0 0 0 807.48 485.66 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M743.83 635.49 L754.83 646.49 L743.83 657.49 L732.83 646.49 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M745.88 695.00 L823.83 650.00 A270 270 0 0 1 858.52 756.78 L769.01 766.18 A180 180 0 0 0 745.88 695.00 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M823.83 650.00 L910.43 600.00 A370 370 0 0 1 957.97 746.32 L858.52 756.78 A270 270 0 0 0 823.83 650.00 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M910.43 600.00 L997.03 550.00 A470 470 0 0 1 1057.43 735.87 L957.97 746.32 A370 370 0 0 0 910.43 600.00 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M786.87 710.03 L797.87 721.03 L786.87 732.03 L775.87 721.03 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M769.01 766.18 L858.52 756.78 A270 270 0 0 1 846.79 868.43 L761.19 840.62 A180 180 0 0 0 769.01 766.18 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M858.52 756.78 L957.97 746.32 A370 370 0 0 1 941.89 899.34 L846.79 868.43 A270 270 0 0 0 858.52 756.78 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M957.97 746.32 L1057.43 735.87 A470 470 0 0 1 1037.00 930.24 L941.89 899.34 A370 370 0 0 0 957.97 746.32 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M795.87 806.64 L858.52 813.22" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="795.87" cy="806.64" r="11" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M858.52 802.22 L869.52 813.22 L858.52 824.22 L847.52 813.22 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M957.97 812.68 L968.97 823.68 L957.97 834.68 L946.97 823.68 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M761.19 840.62 L846.79 868.43 A270 270 0 0 1 790.65 965.67 L723.77 905.44 A180 180 0 0 0 761.19 840.62 Z" fill="#3a2c1f" stroke="#8a6d45" stroke-width="2"/>
+<path d="M846.79 868.43 L941.89 899.34 A370 370 0 0 1 864.96 1032.58 L790.65 965.67 A270 270 0 0 0 846.79 868.43 Z" fill="#352819" stroke="#8a6d45" stroke-width="2"/>
+<path d="M941.89 899.34 L1037.00 930.24 A470 470 0 0 1 939.28 1099.49 L864.96 1032.58 A370 370 0 0 0 941.89 899.34 Z" fill="#1c1814" stroke="#8a6d45" stroke-width="2"/>
+<path d="M769.27 888.50 L823.83 920.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="769.27" cy="888.50" r="9" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<path d="M834.22 926.00 L866.40 906.68" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M834.22 926.00 L833.58 963.53" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M866.40 906.68 L906.72 929.20" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M833.58 963.53 L873.24 987.18" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="866.40" cy="906.68" r="7" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="833.58" cy="963.53" r="7" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<circle cx="906.72" cy="929.20" r="7" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<circle cx="873.24" cy="987.18" r="7" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<path d="M823.83 908.00 L835.83 920.00 L823.83 932.00 L811.83 920.00 Z" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<path d="M910.43 958.00 L922.43 970.00 L910.43 982.00 L898.43 970.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M761.19 840.62 L1037.00 930.24 A470 470 0 0 1 939.28 1099.49 L723.77 905.44 A180 180 0 0 0 761.19 840.62 Z" fill="none" stroke="#a4844f" stroke-width="2"/>
+<path d="M723.77 905.44 L790.65 965.67 A270 270 0 0 1 699.82 1031.66 L663.21 949.44 A180 180 0 0 0 723.77 905.44 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M790.65 965.67 L864.96 1032.58 A370 370 0 0 1 740.49 1123.01 L699.82 1031.66 A270 270 0 0 0 790.65 965.67 Z" fill="#2d2219" stroke="#51402f" stroke-width="2"/>
+<path d="M864.96 1032.58 L939.28 1099.49 A470 470 0 0 1 781.17 1214.37 L740.49 1123.01 A370 370 0 0 0 864.96 1032.58 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M711.67 952.47 L748.70 1003.43" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="711.67" cy="952.47" r="11" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M755.76 1013.14 L793.02 1008.58" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M755.76 1013.14 L739.90 1047.17" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M793.02 1008.58 L820.68 1045.56" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M739.90 1047.17 L766.52 1084.91" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="793.02" cy="1008.58" r="7" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="739.90" cy="1047.17" r="7" fill="#211a13" stroke="#b8322f" stroke-width="2.5"/>
+<circle cx="820.68" cy="1045.56" r="7" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<circle cx="766.52" cy="1084.91" r="7" fill="#211a13" stroke="#b8322f" stroke-width="2.5"/>
+<path d="M748.70 992.43 L759.70 1003.43 L748.70 1014.43 L737.70 1003.43 Z" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<path d="M807.48 1073.34 L818.48 1084.34 L807.48 1095.34 L796.48 1084.34 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M663.21 949.44 L699.82 1031.66 A270 270 0 0 1 590.00 1055.00 L590.00 965.00 A180 180 0 0 0 663.21 949.44 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M699.82 1031.66 L740.49 1123.01 A370 370 0 0 1 590.00 1155.00 L590.00 1055.00 A270 270 0 0 0 699.82 1031.66 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M740.49 1123.01 L781.17 1214.37 A470 470 0 0 1 590.00 1255.00 L590.00 1155.00 A370 370 0 0 0 740.49 1123.01 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M633.04 976.48 L644.04 987.48 L633.04 998.48 L622.04 987.48 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M590.00 965.00 L590.00 1055.00 A270 270 0 0 1 480.18 1031.66 L516.79 949.44 A180 180 0 0 0 590.00 965.00 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M590.00 1055.00 L590.00 1155.00 A370 370 0 0 1 439.51 1123.01 L480.18 1031.66 A270 270 0 0 0 590.00 1055.00 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M590.00 1155.00 L590.00 1255.00 A470 470 0 0 1 398.83 1214.37 L439.51 1123.01 A370 370 0 0 0 590.00 1155.00 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M546.96 976.48 L557.96 987.48 L546.96 998.48 L535.96 987.48 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M516.79 949.44 L480.18 1031.66 A270 270 0 0 1 389.35 965.67 L456.23 905.44 A180 180 0 0 0 516.79 949.44 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M480.18 1031.66 L439.51 1123.01 A370 370 0 0 1 315.04 1032.58 L389.35 965.67 A270 270 0 0 0 480.18 1031.66 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M439.51 1123.01 L398.83 1214.37 A470 470 0 0 1 240.72 1099.49 L315.04 1032.58 A370 370 0 0 0 439.51 1123.01 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M468.33 952.47 L431.30 1003.43" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="468.33" cy="952.47" r="11" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M431.30 992.43 L442.30 1003.43 L431.30 1014.43 L420.30 1003.43 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M372.52 1073.34 L383.52 1084.34 L372.52 1095.34 L361.52 1084.34 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M456.23 905.44 L389.35 965.67 A270 270 0 0 1 333.21 868.43 L418.81 840.62 A180 180 0 0 0 456.23 905.44 Z" fill="#3a2c1f" stroke="#8a6d45" stroke-width="2"/>
+<path d="M389.35 965.67 L315.04 1032.58 A370 370 0 0 1 238.11 899.34 L333.21 868.43 A270 270 0 0 0 389.35 965.67 Z" fill="#1c1814" stroke="#8a6d45" stroke-width="2"/>
+<path d="M315.04 1032.58 L240.72 1099.49 A470 470 0 0 1 143.00 930.24 L238.11 899.34 A370 370 0 0 0 315.04 1032.58 Z" fill="#1c1814" stroke="#8a6d45" stroke-width="2"/>
+<path d="M410.73 888.50 L356.17 920.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="410.73" cy="888.50" r="9" fill="#4f7f3a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M356.17 908.00 L368.17 920.00 L356.17 932.00 L344.17 920.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M269.57 958.00 L281.57 970.00 L269.57 982.00 L257.57 970.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M456.23 905.44 L240.72 1099.49 A470 470 0 0 1 143.00 930.24 L418.81 840.62 A180 180 0 0 0 456.23 905.44 Z" fill="none" stroke="#a4844f" stroke-width="2"/>
+<path d="M418.81 840.62 L333.21 868.43 A270 270 0 0 1 321.48 756.78 L410.99 766.18 A180 180 0 0 0 418.81 840.62 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M333.21 868.43 L238.11 899.34 A370 370 0 0 1 222.03 746.32 L321.48 756.78 A270 270 0 0 0 333.21 868.43 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M238.11 899.34 L143.00 930.24 A470 470 0 0 1 122.57 735.87 L222.03 746.32 A370 370 0 0 0 238.11 899.34 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M384.13 806.64 L321.48 813.22" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="384.13" cy="806.64" r="11" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M321.48 802.22 L332.48 813.22 L321.48 824.22 L310.48 813.22 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M222.03 812.68 L233.03 823.68 L222.03 834.68 L211.03 823.68 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M410.99 766.18 L321.48 756.78 A270 270 0 0 1 356.17 650.00 L434.12 695.00 A180 180 0 0 0 410.99 766.18 Z" fill="#2c2119" stroke="#51402f" stroke-width="2"/>
+<path d="M321.48 756.78 L222.03 746.32 A370 370 0 0 1 269.57 600.00 L356.17 650.00 A270 270 0 0 0 321.48 756.78 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M222.03 746.32 L122.57 735.87 A470 470 0 0 1 182.97 550.00 L269.57 600.00 A370 370 0 0 0 222.03 746.32 Z" fill="#1c1814" stroke="#51402f" stroke-width="2"/>
+<path d="M393.13 710.03 L404.13 721.03 L393.13 732.03 L382.13 721.03 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M432.65 691.57 L188.45 546.58 A467 467 0 0 1 991.55 546.58 L747.35 691.57 A183 183 0 0 0 432.65 691.57 Z" fill="none" stroke="#b8322f" stroke-width="4"/>
+<path d="M749.59 695.44 L997.26 556.46 A467 467 0 0 1 595.71 1251.97 L592.24 967.99 A183 183 0 0 0 749.59 695.44 Z" fill="none" stroke="#6fa8c8" stroke-width="4"/>
+<path d="M587.76 967.99 L584.29 1251.97 A467 467 0 0 1 182.74 556.46 L430.41 695.44 A183 183 0 0 0 587.76 967.99 Z" fill="none" stroke="#4f7f3a" stroke-width="4"/>
+<polygon points="398.83,341.63 402.54,350.54 412.15,351.31 404.83,357.58 407.06,366.96 398.83,361.93 390.60,366.96 392.84,357.58 385.52,351.31 395.13,350.54" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<polygon points="781.17,341.63 784.87,350.54 794.48,351.31 787.16,357.58 789.40,366.96 781.17,361.93 772.94,366.96 775.17,357.58 767.85,351.31 777.46,350.54" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<polygon points="1057.43,820.13 1061.13,829.03 1070.74,829.80 1063.42,836.08 1065.65,845.45 1057.43,840.43 1049.20,845.45 1051.43,836.08 1044.11,829.80 1053.72,829.03" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<polygon points="866.26,1151.24 869.96,1160.14 879.57,1160.91 872.25,1167.18 874.49,1176.56 866.26,1171.54 858.03,1176.56 860.27,1167.18 852.94,1160.91 862.56,1160.14" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<polygon points="313.74,1151.24 317.44,1160.14 327.06,1160.91 319.73,1167.18 321.97,1176.56 313.74,1171.54 305.51,1176.56 307.75,1167.18 300.43,1160.91 310.04,1160.14" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<polygon points="122.57,820.13 126.28,829.03 135.89,829.80 128.57,836.08 130.80,845.45 122.57,840.43 114.35,845.45 116.58,836.08 109.26,829.80 118.87,829.03" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<circle cx="590" cy="785" r="180" fill="#16100b" stroke="#6b5740" stroke-width="2"/>
+<circle cx="590" cy="785" r="70" fill="#2b2016" stroke="#a4844f" stroke-width="2"/>
+<path d="M590.00 728.00 L599.00 737.00 L590.00 746.00 L581.00 737.00 Z" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<text x="590.0" y="763.0" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold">3</text>
+<path d="M631.57 752.00 L640.57 761.00 L631.57 770.00 L622.57 761.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<text x="613.4" y="776.5" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold">2</text>
+<path d="M631.57 800.00 L640.57 809.00 L631.57 818.00 L622.57 809.00 Z" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<text x="613.4" y="803.5" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold">1</text>
+<path d="M590.00 824.00 L599.00 833.00 L590.00 842.00 L581.00 833.00 Z" fill="#8a9bb0" fill-opacity="0.6" stroke="#6b5f50" stroke-width="1.5"/>
+<text x="590.0" y="817.0" fill="#6f6455" font-size="14" text-anchor="middle" font-weight="normal">0</text>
+<path d="M548.43 800.00 L557.43 809.00 L548.43 818.00 L539.43 809.00 Z" fill="#4f7f3a" stroke="#f0d79a" stroke-width="2"/>
+<text x="566.6" y="803.5" fill="#f0d79a" font-size="14" text-anchor="middle" font-weight="bold">1</text>
+<path d="M548.43 752.00 L557.43 761.00 L548.43 770.00 L539.43 761.00 Z" fill="#7d5594" fill-opacity="0.6" stroke="#6b5f50" stroke-width="1.5"/>
+<text x="566.6" y="776.5" fill="#6f6455" font-size="14" text-anchor="middle" font-weight="normal">0</text>
+<text x="590.0" y="877.0" fill="#bda98c" font-size="13" text-anchor="middle" font-weight="normal" font-style="italic">unspent gems</text>
+<circle cx="590.00" cy="657.00" r="40" fill="#b8322f" stroke="#e1c27e" stroke-width="2"/>
+<text x="590.0" y="663.0" fill="#fbf1dc" font-size="16" text-anchor="middle" font-weight="normal">Warrior</text>
+<circle cx="700.85" cy="849.00" r="40" fill="#6fa8c8" stroke="#e1c27e" stroke-width="2"/>
+<text x="700.9" y="855.0" fill="#fbf1dc" font-size="16" text-anchor="middle" font-weight="normal">Caster</text>
+<circle cx="479.15" cy="849.00" r="40" fill="#4f7f3a" stroke="#e1c27e" stroke-width="2"/>
+<text x="479.1" y="855.0" fill="#fbf1dc" font-size="12" text-anchor="middle" font-weight="normal">Skirmisher</text>
+<text x="216.9" y="433.1" fill="#8f7f68" font-size="18" text-anchor="end" font-weight="normal">Empty slot</text>
+<text x="385.8" y="274.4" fill="#ecdcc0" font-size="18" text-anchor="middle" font-weight="normal">War Banner</text>
+<text x="385.8" y="295.4" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">acquired</text>
+<circle cx="378.8" cy="307.4" r="5" fill="#b8322f" stroke="#1a120c" stroke-width="1"/>
+<circle cx="392.8" cy="307.4" r="5" fill="#7d5594" stroke="#1a120c" stroke-width="1"/>
+<text x="590.0" y="245.0" fill="#f0d79a" font-size="18" text-anchor="middle" font-weight="normal">Warrior tree</text>
+<text x="590.0" y="266.0" fill="#e1c27e" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">class: Paladin</text>
+<text x="794.2" y="274.4" fill="#f0cf83" font-size="18" text-anchor="middle" font-weight="normal">Arcane Strike</text>
+<text x="794.2" y="295.4" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">was Strike · basic</text>
+<circle cx="780.2" cy="307.4" r="5" fill="#d9a93a" stroke="#1a120c" stroke-width="1"/>
+<circle cx="794.2" cy="307.4" r="5" fill="#b8322f" stroke="#1a120c" stroke-width="1"/>
+<circle cx="808.2" cy="307.4" r="5" fill="#6fa8c8" stroke="#1a120c" stroke-width="1"/>
+<text x="963.1" y="433.1" fill="#8f7f68" font-size="18" text-anchor="start" font-weight="normal">Empty slot</text>
+<text x="1067.4" y="613.9" fill="#8f7f68" font-size="18" text-anchor="start" font-weight="normal">Empty slot</text>
+<text x="1089.2" y="822.5" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">Mana Ward</text>
+<text x="1089.2" y="843.5" fill="#bda98c" font-size="15" text-anchor="start" font-weight="normal" font-style="italic">acquired</text>
+<circle cx="1095.2" cy="855.5" r="5" fill="#6fa8c8" stroke="#1a120c" stroke-width="1"/>
+<circle cx="1109.2" cy="855.5" r="5" fill="#d9a93a" stroke="#1a120c" stroke-width="1"/>
+<text x="1024.7" y="1048.0" fill="#f0d79a" font-size="18" text-anchor="start" font-weight="normal">Caster tree</text>
+<text x="1024.7" y="1069.0" fill="#e1c27e" font-size="15" text-anchor="start" font-weight="normal" font-style="italic">class: Wizard</text>
+<text x="885.1" y="1203.1" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">Fire Bolt</text>
+<text x="885.1" y="1224.1" fill="#bda98c" font-size="15" text-anchor="start" font-weight="normal" font-style="italic">was Bolt · basic</text>
+<circle cx="891.1" cy="1236.1" r="5" fill="#6fa8c8" stroke="#1a120c" stroke-width="1"/>
+<circle cx="905.1" cy="1236.1" r="5" fill="#b8322f" stroke="#1a120c" stroke-width="1"/>
+<circle cx="919.1" cy="1236.1" r="5" fill="#7d5594" stroke="#1a120c" stroke-width="1"/>
+<text x="694.4" y="1288.0" fill="#8f7f68" font-size="18" text-anchor="middle" font-weight="normal">Empty slot</text>
+<text x="485.6" y="1288.0" fill="#8f7f68" font-size="18" text-anchor="middle" font-weight="normal">Empty slot</text>
+<text x="294.9" y="1203.1" fill="#ecdcc0" font-size="18" text-anchor="end" font-weight="normal">Envenom</text>
+<text x="294.9" y="1224.1" fill="#bda98c" font-size="15" text-anchor="end" font-weight="normal" font-style="italic">acquired</text>
+<circle cx="274.9" cy="1236.1" r="5" fill="#4f7f3a" stroke="#1a120c" stroke-width="1"/>
+<circle cx="288.9" cy="1236.1" r="5" fill="#7d5594" stroke="#1a120c" stroke-width="1"/>
+<text x="155.3" y="1048.0" fill="#f0d79a" font-size="18" text-anchor="end" font-weight="normal">Skirmisher tree</text>
+<text x="155.3" y="1069.0" fill="#e1c27e" font-size="15" text-anchor="end" font-weight="normal" font-style="italic">no class yet</text>
+<text x="90.8" y="822.5" fill="#ecdcc0" font-size="18" text-anchor="end" font-weight="normal">Stab</text>
+<text x="90.8" y="843.5" fill="#bda98c" font-size="15" text-anchor="end" font-weight="normal" font-style="italic">basic</text>
+<circle cx="56.8" cy="855.5" r="5" fill="#4f7f3a" stroke="#1a120c" stroke-width="1"/>
+<circle cx="70.8" cy="855.5" r="5" fill="#6fa8c8" stroke="#1a120c" stroke-width="1"/>
+<circle cx="84.8" cy="855.5" r="5" fill="#7d5594" stroke="#1a120c" stroke-width="1"/>
+<text x="112.6" y="613.9" fill="#8f7f68" font-size="18" text-anchor="end" font-weight="normal">Empty slot</text>
+<path d="M872.2 268.4 L1160 268.4 L1200 300" fill="none" stroke="#d7b65f" stroke-width="2" stroke-dasharray="6 6"/>
+<text x="70.0" y="1322.0" fill="#d4af67" font-size="17" text-anchor="start" font-weight="normal">Gem colours:</text>
+<path d="M198.00 1308.00 L206.00 1316.00 L198.00 1324.00 L190.00 1316.00 Z" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<text x="214.0" y="1322.0" fill="#ecdcc0" font-size="17" text-anchor="start" font-weight="normal">Strength</text>
+<path d="M328.00 1308.00 L336.00 1316.00 L328.00 1324.00 L320.00 1316.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<text x="344.0" y="1322.0" fill="#ecdcc0" font-size="17" text-anchor="start" font-weight="normal">Light</text>
+<path d="M428.00 1308.00 L436.00 1316.00 L428.00 1324.00 L420.00 1316.00 Z" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<text x="444.0" y="1322.0" fill="#ecdcc0" font-size="17" text-anchor="start" font-weight="normal">Intelligence</text>
+<path d="M583.00 1308.00 L591.00 1316.00 L583.00 1324.00 L575.00 1316.00 Z" fill="#4f7f3a" stroke="#f0d79a" stroke-width="2"/>
+<text x="599.0" y="1322.0" fill="#ecdcc0" font-size="17" text-anchor="start" font-weight="normal">Dexterity</text>
+<path d="M723.00 1308.00 L731.00 1316.00 L723.00 1324.00 L715.00 1316.00 Z" fill="#7d5594" stroke="#f0d79a" stroke-width="2"/>
+<text x="739.0" y="1322.0" fill="#ecdcc0" font-size="17" text-anchor="start" font-weight="normal">Dark</text>
+<path d="M823.00 1308.00 L831.00 1316.00 L823.00 1324.00 L815.00 1316.00 Z" fill="#8a9bb0" stroke="#f0d79a" stroke-width="2"/>
+<text x="839.0" y="1322.0" fill="#ecdcc0" font-size="17" text-anchor="start" font-weight="normal">Balance</text>
+<text x="70.0" y="1356.0" fill="#ecdcc0" font-size="16" text-anchor="start" font-weight="normal">Skill wedge, outward: skill · keystone 1 (first form) · keystone 2 (ascended) · keystone 3 on the rim (ultimate)</text>
+<text x="70.0" y="1380.0" fill="#bda98c" font-size="16" text-anchor="start" font-weight="normal">Hero tree wedge: starting colour · keystone 1 (class) · keystone 2 (ascendancy). Each gem reveals the band beyond it.</text>
+<text x="70.0" y="1404.0" fill="#bda98c" font-size="16" text-anchor="start" font-weight="normal">Each hero: hero tree + 4 skills (basic attack + 3 slots). Unrevealed bands stay empty.</text>
+<rect x="1200" y="232" width="890" height="1193" rx="16" fill="#2a2017" stroke="#8b6a3f" stroke-width="2"/>
+<text x="1236.0" y="278.0" fill="#d4af67" font-size="19" text-anchor="start" font-weight="bold">WORKED EXAMPLE · THE WARRIOR</text>
+<text x="1236.0" y="324.0" fill="#ecdcc0" font-size="36" text-anchor="start" font-weight="bold">Strike → Arcane Strike</text>
+<text x="1236.0" y="358.0" fill="#c7b395" font-size="19" text-anchor="start" font-weight="normal">A blue gem evolved his basic attack. A yellow gem made him a Paladin.</text>
+<rect x="1222" y="382" width="846" height="350" rx="10" fill="#30251a" stroke="#a88a55" stroke-width="2"/>
+<text x="1246.0" y="414.0" fill="#e7c57b" font-size="19" text-anchor="start" font-weight="normal">SKILL · STRIKE (BASIC ATTACK) · ACCEPTS</text>
+<circle cx="1712" cy="408" r="6" fill="#d9a93a"/>
+<circle cx="1730" cy="408" r="6" fill="#b8322f"/>
+<circle cx="1748" cy="408" r="6" fill="#6fa8c8"/>
+<text x="1246.0" y="444.0" fill="#c7b395" font-size="17" text-anchor="start" font-weight="normal">Yellow → Smite  ·  Red → Bash  ·  Blue → Arcane Strike</text>
+<text x="1270.0" y="492.0" fill="#e7c57b" font-size="15" text-anchor="middle" font-weight="normal">Skill</text>
+<text x="1504.0" y="492.0" fill="#e7c57b" font-size="15" text-anchor="middle" font-weight="normal">Keystone 1 · first form</text>
+<text x="1767.0" y="492.0" fill="#e7c57b" font-size="15" text-anchor="middle" font-weight="normal">Keystone 2 · ascended</text>
+<text x="1950.0" y="492.0" fill="#e7c57b" font-size="15" text-anchor="middle" font-weight="normal">Keystone 3 · ultimate</text>
+<path d="M1285.00 560.00 L1331.00 560.00" fill="none" stroke="#8e7148" stroke-width="3"/>
+<circle cx="1270" cy="560" r="15" fill="#cbb48a" stroke="#f0d79a" stroke-width="2"/>
+<rect x="1366" y="508" width="276" height="104" rx="8" fill="#2d2a2a" stroke="#6fa8c8" stroke-width="1.5" stroke-opacity="0.6"/>
+<path d="M1345.00 560.00 L1400.00 560.00" fill="none" stroke="#8e7148" stroke-width="2"/>
+<path d="M1400.00 560.00 L1464.00 534.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1400.00 560.00 L1464.00 586.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1464.00 534.00 L1536.00 534.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1464.00 586.00 L1536.00 586.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1536.00 534.00 L1604.00 560.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1536.00 586.00 L1604.00 560.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="1400.00" cy="560.00" r="10" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="1464.00" cy="534.00" r="10" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="1464.00" cy="586.00" r="10" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<circle cx="1536.00" cy="534.00" r="10" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<circle cx="1536.00" cy="586.00" r="10" fill="#211a13" stroke="#b8322f" stroke-width="2.5"/>
+<circle cx="1604.00" cy="560.00" r="10" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<path d="M1345.00 546.00 L1359.00 560.00 L1345.00 574.00 L1331.00 560.00 Z" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<path d="M1642.00 560.00 L1666.00 560.00" fill="none" stroke="#5a4c3a" stroke-width="2" stroke-dasharray="5 5"/>
+<path d="M1680.00 546.00 L1694.00 560.00 L1680.00 574.00 L1666.00 560.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<rect x="1704" y="524" width="126" height="72" rx="8" fill="#1c1814" stroke="#4a4239" stroke-width="1.5" stroke-dasharray="5 4"/>
+<path d="M1830.00 560.00 L1930.00 560.00" fill="none" stroke="#5a4c3a" stroke-width="2" stroke-dasharray="5 5"/>
+<polygon points="1950.00,542.00 1954.76,553.45 1967.12,554.44 1957.70,562.50 1960.58,574.56 1950.00,568.10 1939.42,574.56 1942.30,562.50 1932.88,554.44 1945.24,553.45" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<text x="1270.0" y="638.0" fill="#ecdcc0" font-size="16" text-anchor="middle" font-weight="normal">Strike</text>
+<text x="1270.0" y="658.0" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">no nodes</text>
+<text x="1504.0" y="638.0" fill="#ecdcc0" font-size="16" text-anchor="middle" font-weight="normal">Arcane Strike</text>
+<text x="1504.0" y="658.0" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">its node tree, revealed</text>
+<text x="1767.0" y="638.0" fill="#ecdcc0" font-size="16" text-anchor="middle" font-weight="normal">ascended</text>
+<text x="1767.0" y="658.0" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">colour bound to</text>
+<text x="1767.0" y="677.0" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">the ascendancy</text>
+<text x="1950.0" y="638.0" fill="#ecdcc0" font-size="16" text-anchor="middle" font-weight="normal">ultimate · any colour</text>
+<text x="1950.0" y="658.0" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">adds that colour's mechanic</text>
+<text x="1950.0" y="677.0" fill="#bda98c" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic">e.g. blue: channeling</text>
+<text x="1246.0" y="716.0" fill="#c7b395" font-size="17" text-anchor="start" font-weight="normal">The blue gem gave 2 blue points, usable in Strike's tree only: two blue nodes bought.</text>
+<rect x="1222" y="748" width="846" height="194" rx="10" fill="#30251a" stroke="#a88a55" stroke-width="2"/>
+<text x="1246.0" y="780.0" fill="#e7c57b" font-size="19" text-anchor="start" font-weight="normal">HERO TREE · WARRIOR → PALADIN</text>
+<text x="1270.0" y="815.0" fill="#e7c57b" font-size="15" text-anchor="middle" font-weight="normal">Start: red</text>
+<text x="1502.0" y="815.0" fill="#e7c57b" font-size="15" text-anchor="middle" font-weight="normal">Keystone 1 · class: Paladin</text>
+<text x="1876.0" y="815.0" fill="#9c8d76" font-size="15" text-anchor="middle" font-weight="normal">Keystone 2 · ascendancy</text>
+<path d="M1281.00 850.00 L1330.00 850.00" fill="none" stroke="#8e7148" stroke-width="3"/>
+<circle cx="1270" cy="850" r="11" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<rect x="1364" y="824" width="276" height="52" rx="8" fill="#352819" stroke="#d9a93a" stroke-width="1.5" stroke-opacity="0.7"/>
+<path d="M1340.00 850.00 L1400.00 850.00" fill="none" stroke="#8e7148" stroke-width="2"/>
+<path d="M1400.00 850.00 L1466.00 850.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1466.00 850.00 L1536.00 850.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<path d="M1536.00 850.00 L1604.00 850.00" fill="none" stroke="#6b5740" stroke-width="2"/>
+<circle cx="1400.00" cy="850.00" r="9" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="1466.00" cy="850.00" r="9" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<circle cx="1536.00" cy="850.00" r="9" fill="#211a13" stroke="#d9a93a" stroke-width="2.5"/>
+<circle cx="1604.00" cy="850.00" r="9" fill="#211a13" stroke="#d9a93a" stroke-width="2.5"/>
+<path d="M1340.00 836.00 L1354.00 850.00 L1340.00 864.00 L1326.00 850.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M1640.00 850.00 L1666.00 850.00" fill="none" stroke="#5a4c3a" stroke-width="2" stroke-dasharray="5 5"/>
+<path d="M1680.00 836.00 L1694.00 850.00 L1680.00 864.00 L1666.00 850.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<rect x="1704" y="824" width="344" height="52" rx="8" fill="#1c1814" stroke="#4a4239" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1246.0" y="902.0" fill="#c7b395" font-size="17" text-anchor="start" font-weight="normal">Yellow gem on his hero tree: 5 yellow points, for yellow nodes in any of his trees.</text>
+<text x="1246.0" y="928.0" fill="#a8977c" font-size="16" text-anchor="start" font-weight="normal" font-style="italic">No nodes until the class gem, like a skill.</text>
+<rect x="1222" y="958" width="846" height="252" rx="10" fill="#261d15" stroke="#6e5435" stroke-width="2"/>
+<text x="1246.0" y="990.0" fill="#e7c57b" font-size="19" text-anchor="start" font-weight="normal">THREE WAYS TO SPEND A GEM</text>
+<path d="M1262.00 1018.00 L1274.00 1030.00 L1262.00 1042.00 L1250.00 1030.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<text x="1290.0" y="1036.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="bold">On an empty slot</text>
+<text x="1480.0" y="1036.0" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">offers three new skills of that colour</text>
+<text x="1480.0" y="1062.0" fill="#c7b395" font-size="16" text-anchor="start" font-weight="normal" font-style="italic">no node points</text>
+<path d="M1262.00 1080.00 L1274.00 1092.00 L1262.00 1104.00 L1250.00 1092.00 Z" fill="#6fa8c8" stroke="#f0d79a" stroke-width="2"/>
+<text x="1290.0" y="1098.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="bold">On a skill</text>
+<text x="1480.0" y="1098.0" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">fills its next keystone (form, ascended, ultimate)</text>
+<text x="1480.0" y="1124.0" fill="#c7b395" font-size="16" text-anchor="start" font-weight="normal" font-style="italic">2 points of that colour · that skill's tree only</text>
+<path d="M1262.00 1142.00 L1274.00 1154.00 L1262.00 1166.00 L1250.00 1154.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<text x="1290.0" y="1160.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="bold">On the hero tree</text>
+<text x="1480.0" y="1160.0" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">sets the class, later the ascendancy</text>
+<text x="1480.0" y="1186.0" fill="#c7b395" font-size="16" text-anchor="start" font-weight="normal" font-style="italic">5 points of that colour · any of that hero's trees</text>
+<rect x="1222" y="1226" width="846" height="122" rx="10" fill="#261d15" stroke="#6e5435" stroke-width="2"/>
+<text x="1246.0" y="1258.0" fill="#e7c57b" font-size="19" text-anchor="start" font-weight="normal">NO GEM IS A DEAD DROP</text>
+<path d="M1262.00 1278.00 L1272.00 1288.00 L1262.00 1298.00 L1252.00 1288.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<text x="1284.0" y="1294.0" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">Warrior's empty slot → choose one of three paladin skills.</text>
+<path d="M1262.00 1312.00 L1272.00 1322.00 L1262.00 1332.00 L1252.00 1322.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<text x="1284.0" y="1328.0" fill="#ecdcc0" font-size="18" text-anchor="start" font-weight="normal">Skirmisher's empty slot → no yellow in its kit, so generic yellow skills (e.g. Heal).</text>
+<text x="1246.0" y="1386.0" fill="#f0cf83" font-size="19" text-anchor="start" font-weight="normal">Gems are the only progression. Points of a colour buy nodes of that colour.</text>
+<text x="1246.0" y="1410.0" fill="#ad9878" font-size="15" text-anchor="start" font-weight="normal">Node counts, skill names and accepted colours are illustrative.</text>
+<path d="M70.00 1450.00 L2090.00 1450.00" fill="none" stroke="#6e5435" stroke-width="2"/>
+<circle cx="84.00" cy="1499.00" r="11" fill="#b8322f" stroke="#f0d79a" stroke-width="2"/>
+<text x="104.0" y="1505.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="normal">Purchased node</text>
+<circle cx="300.00" cy="1499.00" r="11" fill="#211a13" stroke="#6fa8c8" stroke-width="2.5"/>
+<text x="320.0" y="1505.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="normal">Available node</text>
+<path d="M520.00 1486.00 L533.00 1499.00 L520.00 1512.00 L507.00 1499.00 Z" fill="#d9a93a" stroke="#f0d79a" stroke-width="2"/>
+<path d="M552.00 1486.00 L565.00 1499.00 L552.00 1512.00 L539.00 1499.00 Z" fill="#221d18" stroke="#9a8768" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="576.0" y="1505.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="normal">Keystone: filled / empty</text>
+<rect x="830" y="1483" width="34" height="32" rx="5" fill="#1c1814" stroke="#4a4239" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="876.0" y="1505.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="normal">Tree not revealed yet</text>
+<polygon points="1130.00,1484.00 1133.70,1492.90 1143.31,1493.67 1135.99,1499.95 1138.23,1509.33 1130.00,1504.30 1121.77,1509.33 1124.01,1499.95 1116.69,1493.67 1126.30,1492.90" fill="#1f1b17" stroke="#8c7a5e" stroke-width="2"/>
+<text x="1154.0" y="1505.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="normal">Ultimate: any colour adds its mechanic · one per hero</text>
+<circle cx="1706" cy="1499" r="6" fill="#d9a93a"/>
+<circle cx="1722" cy="1499" r="6" fill="#b8322f"/>
+<circle cx="1738" cy="1499" r="6" fill="#6fa8c8"/>
+<text x="1752.0" y="1505.0" fill="#ecdcc0" font-size="19" text-anchor="start" font-weight="normal">Colours a skill accepts</text>
+</svg>

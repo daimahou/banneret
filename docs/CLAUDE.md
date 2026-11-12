@@ -14,6 +14,7 @@
 - Never work on `main`. One branch per ticket: `<id>-<slug>` (e.g. `1.1-1.2-dash-combat`), squash-merged to `main`, then deleted.
 - Exception: ticket authoring (tickets, their templates, the tracker rules) goes straight to `main` — no ticket, no branch.
 - Prototypes stay on their own branch, and are merged only if the user keeps them. Throwaway branches are deleted, never piled into one folder.
+- Binaries (images, fonts, plugin libraries) are in Git LFS. If `git-lfs` is missing from the shell, every one shows as modified: install it before using git (the release binary into `~/.local/bin`, then `git lfs install --skip-repo`).
 - Commit or merge only when asked. No `Co-Authored-By` line in commit messages.
 - When `main` is ahead of `origin`, push it before starting a branch, merging, or anything else that relies on it being pushed.
 - Every commit on `main` and every merge updates ticket time first: see Time in [[issue-tracker]].

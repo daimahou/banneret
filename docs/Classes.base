@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.folder == "Classes"
+    - file.folder == "classes"
     - file.ext == "md"
 properties:
   file.name:
@@ -23,8 +23,8 @@ views:
         direction: ASC
     columnSize:
       file.name: 79
-      note.spheres: 102
-      note.fantasy: 108
+      note.spheres: 117
+      note.fantasy: 595
   - type: table
     name: Sub-classes
     filters:
@@ -34,6 +34,9 @@ views:
       - file.name
       - spheres
       - fantasy
+    columnSize:
+      file.name: 122
+      note.spheres: 150
   - type: table
     name: STR classes
     filters:

@@ -1,13 +1,9 @@
 ---
+summary:
+base:
+status: draft
 class: "[[Warrior]]"
-status: planned
-summary: "4 damage; [[Stagger]]: pushes the target's pending actions back 2 ticks."
-spheres:
-  - STR
-DMG: 4
-delay: 2
-cooldown: 2
 ---
-## Upgrades
+# Bash
 
-![[Skill Upgrades.base#Upgrades]]
+## Nodes

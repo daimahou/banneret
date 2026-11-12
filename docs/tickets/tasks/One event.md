@@ -2,7 +2,7 @@
 triage: ready-for-agent
 id: 1.1-1.2
 requires:
-  - "[[Mission map]]"
+  - "[[tickets/tasks/Mission map]]"
 started: 2026-10-21
 finished: 2026-10-22
 hours: 2.2

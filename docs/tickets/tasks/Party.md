@@ -42,7 +42,7 @@ A run sits above the mission: it holds the party and starts each mission on the 
 ## Out of scope
 
 - Puppets and any party visuals, handing the party to the encounter — [[Encounter transition]].
-- Skills — [[Timeline]], [[Fight on stage]].
+- Skills — [[Implement Timeline]], [[Fight on stage]].
 
 ![[Children.base#Open tickets]]
 

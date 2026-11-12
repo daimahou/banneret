@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.folder == "Mechanics"
+    - file.folder == "mechanics"
     - file.ext == "md"
 properties:
   file.name:
@@ -12,12 +12,21 @@ views:
       property: type
       direction: ASC
     order:
+      - gate
       - file.name
-      - type
       - class
       - summary
+      - type
+    sort:
+      - property: file.name
+        direction: ASC
+      - property: summary
+        direction: ASC
     columnSize:
-      note.type: 104
+      file.name: 186
+      note.class: 126
+      note.summary: 601
+      note.type: 198
   - type: table
     name: Class mechanics
     filters:
@@ -26,3 +35,18 @@ views:
     order:
       - file.name
       - summary
+  - type: table
+    name: By Type
+    filters:
+      and:
+        - type == this.asLink()
+    order:
+      - file.name
+      - summary
+    columnSize:
+      file.name: 164
+  - type: table
+    name: By Relation
+    filters:
+      and:
+        - related.contains(this.asLink())
