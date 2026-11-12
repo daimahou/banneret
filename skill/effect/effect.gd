@@ -7,5 +7,9 @@ func add_changes(_fight_model: FightModel, _delta: Delta, _action: Action) -> vo
 	pass
 
 
+func create_changed(_mod: SkillMod) -> Effect:
+	return self
+
+
 func get_description() -> String:
 	return ""

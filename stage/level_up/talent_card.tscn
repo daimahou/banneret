@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://stage/level_up/talent_card.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://stage/level_up/assets/talent_normal.png" id="2_normal"]
+[ext_resource type="Texture2D" path="res://stage/level_up/assets/talent_icon_frame.png" id="3_icon_frame"]
+[ext_resource type="Texture2D" path="res://stage/level_up/assets/check_selected.png" id="4_check"]
+
+[node name="TalentCard" type="TextureButton"]
+offset_right = 1024.0
+offset_bottom = 200.0
+focus_mode = 0
+texture_normal = ExtResource("2_normal")
+script = ExtResource("1_script")
+
+[node name="IconFrame" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 48.0
+offset_right = 144.0
+offset_bottom = 152.0
+mouse_filter = 2
+texture = ExtResource("3_icon_frame")
+
+[node name="Monogram" type="Label" parent="IconFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.427451, 0.239216, 0.12549, 1)
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 172.0
+offset_top = 26.0
+offset_right = 900.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/font_size = 40
+text_overrun_behavior = 3
+
+[node name="Description" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 172.0
+offset_top = 78.0
+offset_right = 910.0
+offset_bottom = 180.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Check" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 920.0
+offset_top = 76.0
+offset_right = 968.0
+offset_bottom = 124.0
+mouse_filter = 2
+texture = ExtResource("4_check")

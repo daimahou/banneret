@@ -1,0 +1,98 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://stage/level_up/level_up_view.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://stage/level_up/assets/background.png" id="2_background"]
+[ext_resource type="PackedScene" path="res://stage/level_up/hero_column.tscn" id="3_column"]
+[ext_resource type="Texture2D" path="res://stage/level_up/assets/button_compact.png" id="4_continue"]
+
+[node name="LevelUpView" type="Control"]
+visible = false
+z_index = 300
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Board" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1672.0
+offset_top = -941.0
+offset_right = 1672.0
+offset_bottom = 941.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_background")
+
+[node name="Title" type="Label" parent="Board"]
+layout_mode = 0
+offset_left = 1472.0
+offset_top = 8.0
+offset_right = 1872.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.913725, 0.843137, 0.690196, 1)
+theme_override_font_sizes/font_size = 44
+text = "LEVEL UP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeroColumn1" parent="Board" instance=ExtResource("3_column")]
+layout_mode = 0
+offset_left = 128.0
+offset_right = 1152.0
+
+[node name="HeroColumn2" parent="Board" instance=ExtResource("3_column")]
+layout_mode = 0
+offset_left = 1184.0
+offset_right = 2208.0
+
+[node name="HeroColumn3" parent="Board" instance=ExtResource("3_column")]
+layout_mode = 0
+offset_left = 2240.0
+offset_right = 3264.0
+
+[node name="Ready" type="Label" parent="Board"]
+layout_mode = 0
+offset_left = 1272.0
+offset_top = 1790.0
+offset_right = 2072.0
+offset_bottom = 1858.0
+theme_override_colors/font_color = Color(0.913725, 0.843137, 0.690196, 1)
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="TextureButton" parent="Board"]
+layout_mode = 0
+offset_left = 2768.0
+offset_top = 1774.0
+offset_right = 3248.0
+offset_bottom = 1870.0
+focus_mode = 0
+texture_normal = ExtResource("4_continue")
+
+[node name="Label" type="Label" parent="Board/ContinueButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.913725, 0.843137, 0.690196, 1)
+theme_override_font_sizes/font_size = 36
+text = "CONTINUE"
+horizontal_alignment = 1
+vertical_alignment = 1

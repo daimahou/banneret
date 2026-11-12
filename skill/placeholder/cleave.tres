@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_fl2uw"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_bdccr"]
+[ext_resource type="Script" path="res://skill/effect/damage_effect.gd" id="3_tb36c"]
+[ext_resource type="Script" path="res://skill/effect/stagger_effect.gd" id="4_i8uac"]
+[ext_resource type="Script" path="res://skill/skill_data.gd" id="5_6jthp"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_l1jd0"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_txwhn"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="8_acohq"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="9_0gwh8"]
+
+[sub_resource type="Resource" id="Resource_d8lkw"]
+script = ExtResource("3_tb36c")
+amount = 6
+
+[sub_resource type="Resource" id="Resource_mwt1r"]
+script = ExtResource("4_i8uac")
+ticks = 1
+
+[sub_resource type="Resource" id="Resource_kuvrp"]
+script = ExtResource("8_acohq")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_sbuir"]
+script = ExtResource("7_txwhn")
+name = "Wide Cleave"
+mod = SubResource("Resource_kuvrp")
+
+[sub_resource type="Resource" id="Resource_gyvw3"]
+script = ExtResource("8_acohq")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_kkwny"]
+script = ExtResource("7_txwhn")
+name = "Heavy Cleave"
+mod = SubResource("Resource_gyvw3")
+
+[sub_resource type="Resource" id="Resource_txg4y"]
+script = ExtResource("8_acohq")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_mufgc"]
+script = ExtResource("7_txwhn")
+name = "Quick Cleave"
+mod = SubResource("Resource_txg4y")
+
+[sub_resource type="Resource" id="Resource_kgdtk"]
+script = ExtResource("6_l1jd0")
+talents = Array[ExtResource("7_txwhn")]([SubResource("Resource_sbuir"), SubResource("Resource_kkwny"), SubResource("Resource_mufgc")])
+
+[sub_resource type="Resource" id="Resource_webl0"]
+script = ExtResource("8_acohq")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_jxktd"]
+script = ExtResource("7_txwhn")
+name = "Sundering Cleave"
+mod = SubResource("Resource_webl0")
+
+[sub_resource type="Resource" id="Resource_q543k"]
+script = ExtResource("8_acohq")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_b3vh8"]
+script = ExtResource("7_txwhn")
+name = "Rhythm"
+mod = SubResource("Resource_q543k")
+
+[sub_resource type="Resource" id="Resource_23sj5"]
+script = ExtResource("8_acohq")
+damage_change = 2
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_ym77i"]
+script = ExtResource("7_txwhn")
+name = "Reaver"
+required_class = ExtResource("9_0gwh8")
+mod = SubResource("Resource_23sj5")
+
+[sub_resource type="Resource" id="Resource_ntqkb"]
+script = ExtResource("6_l1jd0")
+talents = Array[ExtResource("7_txwhn")]([SubResource("Resource_jxktd"), SubResource("Resource_b3vh8"), SubResource("Resource_ym77i")])
+
+[resource]
+script = ExtResource("5_6jthp")
+delay = 5
+cooldown = 2
+effects = Array[ExtResource("2_bdccr")]([SubResource("Resource_d8lkw"), SubResource("Resource_mwt1r")])
+name = "Cleave"
+upgrades = Array[ExtResource("6_l1jd0")]([SubResource("Resource_kgdtk"), SubResource("Resource_ntqkb")])

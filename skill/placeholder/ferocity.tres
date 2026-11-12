@@ -1,0 +1,98 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_o2m2x"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="2_8x26q"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="3_gu8lu"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="4_dged6"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="5_wisfe"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_5ciql"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_eruns"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="8_4yuh3"]
+
+[sub_resource type="Resource" id="Resource_rubda"]
+script = ExtResource("4_dged6")
+damage_change = 2
+delay_change = 1
+
+[sub_resource type="Resource" id="Resource_l8p8b"]
+script = ExtResource("4_dged6")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_w7iwo"]
+script = ExtResource("4_dged6")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_px21j"]
+script = ExtResource("7_eruns")
+name = "Frenzy"
+mod = SubResource("Resource_w7iwo")
+
+[sub_resource type="Resource" id="Resource_5m31x"]
+script = ExtResource("4_dged6")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_2mldc"]
+script = ExtResource("7_eruns")
+name = "Savage"
+mod = SubResource("Resource_5m31x")
+
+[sub_resource type="Resource" id="Resource_j4kii"]
+script = ExtResource("4_dged6")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_fuqls"]
+script = ExtResource("7_eruns")
+name = "Bloodlust"
+required_class = ExtResource("8_4yuh3")
+mod = SubResource("Resource_j4kii")
+
+[sub_resource type="Resource" id="Resource_bpnqm"]
+script = ExtResource("6_5ciql")
+mod = SubResource("Resource_l8p8b")
+talents = Array[ExtResource("7_eruns")]([SubResource("Resource_px21j"), SubResource("Resource_2mldc"), SubResource("Resource_fuqls")])
+
+[sub_resource type="Resource" id="Resource_mnl0y"]
+script = ExtResource("4_dged6")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_4i5l8"]
+script = ExtResource("4_dged6")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_k47uw"]
+script = ExtResource("7_eruns")
+name = "Rampage"
+mod = SubResource("Resource_4i5l8")
+
+[sub_resource type="Resource" id="Resource_tjdj6"]
+script = ExtResource("4_dged6")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_5iqiu"]
+script = ExtResource("7_eruns")
+name = "Wild Swing"
+mod = SubResource("Resource_tjdj6")
+
+[sub_resource type="Resource" id="Resource_7yjcx"]
+script = ExtResource("4_dged6")
+damage_change = 1
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_bbk2p"]
+script = ExtResource("7_eruns")
+name = "Hunger"
+mod = SubResource("Resource_7yjcx")
+
+[sub_resource type="Resource" id="Resource_prqpt"]
+script = ExtResource("6_5ciql")
+mod = SubResource("Resource_mnl0y")
+talents = Array[ExtResource("7_eruns")]([SubResource("Resource_k47uw"), SubResource("Resource_5iqiu"), SubResource("Resource_bbk2p")])
+
+[resource]
+script = ExtResource("5_wisfe")
+mod = SubResource("Resource_rubda")
+name = "Ferocity"
+class_offer_weights = Dictionary[ExtResource("1_o2m2x"), int]({
+ExtResource("2_8x26q"): 0
+})
+upgrades = Array[ExtResource("6_5ciql")]([SubResource("Resource_bpnqm"), SubResource("Resource_prqpt")])

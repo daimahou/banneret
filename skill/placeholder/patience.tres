@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_ql78p"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_kbl2e"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="3_dun3n"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="4_n0v76"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="5_etdto"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="6_3143t"]
+
+[sub_resource type="Resource" id="Resource_fl885"]
+script = ExtResource("3_dun3n")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_hl2f2"]
+script = ExtResource("3_dun3n")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_l2yt5"]
+script = ExtResource("3_dun3n")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_s8dj3"]
+script = ExtResource("6_3143t")
+name = "Calm"
+mod = SubResource("Resource_l2yt5")
+
+[sub_resource type="Resource" id="Resource_jndcf"]
+script = ExtResource("3_dun3n")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_7rn8i"]
+script = ExtResource("6_3143t")
+name = "Focus"
+mod = SubResource("Resource_jndcf")
+
+[sub_resource type="Resource" id="Resource_njfhy"]
+script = ExtResource("3_dun3n")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_2ikio"]
+script = ExtResource("6_3143t")
+name = "Timing"
+mod = SubResource("Resource_njfhy")
+
+[sub_resource type="Resource" id="Resource_xx23g"]
+script = ExtResource("5_etdto")
+mod = SubResource("Resource_hl2f2")
+talents = Array[ExtResource("6_3143t")]([SubResource("Resource_s8dj3"), SubResource("Resource_7rn8i"), SubResource("Resource_2ikio")])
+
+[sub_resource type="Resource" id="Resource_0q1od"]
+script = ExtResource("3_dun3n")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_cr38o"]
+script = ExtResource("3_dun3n")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_l321f"]
+script = ExtResource("6_3143t")
+name = "Stillness"
+mod = SubResource("Resource_cr38o")
+
+[sub_resource type="Resource" id="Resource_tcwi6"]
+script = ExtResource("3_dun3n")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_35g1x"]
+script = ExtResource("6_3143t")
+name = "Measured Blow"
+mod = SubResource("Resource_tcwi6")
+
+[sub_resource type="Resource" id="Resource_guyrx"]
+script = ExtResource("3_dun3n")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_jfibp"]
+script = ExtResource("6_3143t")
+name = "Steady"
+mod = SubResource("Resource_guyrx")
+
+[sub_resource type="Resource" id="Resource_66253"]
+script = ExtResource("5_etdto")
+mod = SubResource("Resource_0q1od")
+talents = Array[ExtResource("6_3143t")]([SubResource("Resource_l321f"), SubResource("Resource_35g1x"), SubResource("Resource_jfibp")])
+
+[resource]
+script = ExtResource("4_n0v76")
+mod = SubResource("Resource_fl885")
+name = "Patience"
+upgrades = Array[ExtResource("5_etdto")]([SubResource("Resource_xx23g"), SubResource("Resource_66253")])

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ClassData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_22h4x"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="2_e8shx"]
+
+[resource]
+script = ExtResource("1_22h4x")
+name = "Duelist"

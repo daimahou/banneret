@@ -34,6 +34,7 @@ func _play_fights(first_fight_seed: int) -> void:
 			run_model = RunModel.new()
 		else:
 			LimboConsole.info("Fight won")
+			await play_draft()
 		fight_seed = randi()
 
 
@@ -50,6 +51,20 @@ func _play_fight(fight_seed: int) -> void:
 	await fight_controller.play()
 	fight_controller.dispose()
 	fight_controller = null
+
+
+func play_draft() -> void:
+	var draft := run_model.open_draft()
+	if draft == null:
+		LimboConsole.info("Progression is complete")
+		return
+	for hero_draft in draft.hero_drafts:
+		if hero_draft.state == HeroDraft.State.STARVED:
+			var kind_name: String = Learnable.Kind.keys()[draft.kind].to_lower()
+			LimboConsole.warn("%s has no valid %s offers: pick skipped" % [hero_draft.hero.data.name, kind_name])
+	if not draft.is_complete():
+		await _stage.show_draft(draft)
+	run_model.close_draft()
 
 
 func _on_action_resolved(action: Action) -> void:

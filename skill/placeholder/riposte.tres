@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_s3f2f"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_c04mp"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="3_xdmwc"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="4_x5cnd"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="5_1ogqb"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_njn4u"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_og7hp"]
+
+[sub_resource type="Resource" id="Resource_1xrui"]
+script = ExtResource("3_xdmwc")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_35vfr"]
+script = ExtResource("3_xdmwc")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_5bav1"]
+script = ExtResource("3_xdmwc")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_tstd4"]
+script = ExtResource("7_og7hp")
+name = "Counter"
+mod = SubResource("Resource_5bav1")
+
+[sub_resource type="Resource" id="Resource_lx6td"]
+script = ExtResource("3_xdmwc")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_etd4d"]
+script = ExtResource("7_og7hp")
+name = "Parry"
+mod = SubResource("Resource_lx6td")
+
+[sub_resource type="Resource" id="Resource_lck78"]
+script = ExtResource("3_xdmwc")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_no27c"]
+script = ExtResource("7_og7hp")
+name = "Quick Return"
+mod = SubResource("Resource_lck78")
+
+[sub_resource type="Resource" id="Resource_86ruf"]
+script = ExtResource("6_njn4u")
+mod = SubResource("Resource_35vfr")
+talents = Array[ExtResource("7_og7hp")]([SubResource("Resource_tstd4"), SubResource("Resource_etd4d"), SubResource("Resource_no27c")])
+
+[sub_resource type="Resource" id="Resource_8y4x0"]
+script = ExtResource("3_xdmwc")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_13j3c"]
+script = ExtResource("3_xdmwc")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_l0m6l"]
+script = ExtResource("7_og7hp")
+name = "Perfect Parry"
+mod = SubResource("Resource_13j3c")
+
+[sub_resource type="Resource" id="Resource_qwmrl"]
+script = ExtResource("3_xdmwc")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_1xgos"]
+script = ExtResource("7_og7hp")
+name = "Killing Point"
+mod = SubResource("Resource_qwmrl")
+
+[sub_resource type="Resource" id="Resource_tntf8"]
+script = ExtResource("3_xdmwc")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_gs2vu"]
+script = ExtResource("7_og7hp")
+name = "Swift Counter"
+mod = SubResource("Resource_tntf8")
+
+[sub_resource type="Resource" id="Resource_fqbmp"]
+script = ExtResource("6_njn4u")
+mod = SubResource("Resource_8y4x0")
+talents = Array[ExtResource("7_og7hp")]([SubResource("Resource_l0m6l"), SubResource("Resource_1xgos"), SubResource("Resource_gs2vu")])
+
+[resource]
+script = ExtResource("5_1ogqb")
+mod = SubResource("Resource_1xrui")
+name = "Riposte"
+required_class = ExtResource("4_x5cnd")
+upgrades = Array[ExtResource("6_njn4u")]([SubResource("Resource_86ruf"), SubResource("Resource_fqbmp")])

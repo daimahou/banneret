@@ -16,6 +16,7 @@ var _stage: Stage
 var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
+var _is_suspended := false
 var _is_stopped := false
 var _ghost_action: Action
 var _is_stop_requested := false
@@ -61,6 +62,16 @@ func is_stop_requested() -> bool:
 
 func is_waiting() -> bool:
 	return _is_waiting
+
+
+func set_suspended(is_suspended: bool) -> void:
+	_is_suspended = is_suspended
+	if _input != null:
+		_input.set_process_unhandled_input(not is_suspended)
+	if not is_suspended:
+		hovered_skill = null
+		_disarm()
+		_show_choices()
 
 
 func get_next_action(fight_model: FightModel) -> Action:
@@ -143,7 +154,7 @@ func press_number(index: int) -> void:
 	if not _is_waiting or get_inspected_character() != hero:
 		return
 	if armed_skill == null:
-		var skills := hero.data.skills
+		var skills := hero.skills
 		if index < skills.size():
 			arm_skill(skills[index])
 		return
@@ -292,7 +303,7 @@ func _show_choices() -> void:
 	var inspected := get_inspected_character()
 	var skills: Array[SkillData] = []
 	if inspected != null:
-		skills = inspected.data.skills
+		skills = inspected.skills
 	skill_bar.show_skills(skills)
 	for index in skills.size():
 		skill_bar.show_cooldown(index, FightRules.get_cooldown_beats(inspected, skills[index]))
@@ -327,6 +338,8 @@ func _disarm() -> void:
 
 
 func _decide(action: Action) -> void:
+	if _is_suspended:
+		return
 	_is_waiting = false
 	hovered_skill = null
 	_disarm()

@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="ClassData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_0m3j3"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="2_1a8b1"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="3_fp2ul"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="4_x444h"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="5_507ek"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="6_thll1"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="7_hiygs"]
+[ext_resource type="Script" path="res://skill/effect/damage_effect.gd" id="8_yj6ac"]
+
+[sub_resource type="Resource" id="Resource_bufnl"]
+script = ExtResource("6_thll1")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_42xs6"]
+script = ExtResource("3_fp2ul")
+name = "Guardian"
+mod = SubResource("Resource_bufnl")
+granted_class = ExtResource("4_x444h")
+
+[sub_resource type="Resource" id="Resource_t1o3p"]
+script = ExtResource("6_thll1")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_c7o1d"]
+script = ExtResource("3_fp2ul")
+name = "Duelist"
+mod = SubResource("Resource_t1o3p")
+granted_class = ExtResource("7_hiygs")
+
+[sub_resource type="Resource" id="Resource_mx3jl"]
+script = ExtResource("2_1a8b1")
+talents = Array[ExtResource("3_fp2ul")]([SubResource("Resource_42xs6"), SubResource("Resource_c7o1d")])
+
+[sub_resource type="Resource" id="Resource_fmqc6"]
+script = ExtResource("8_yj6ac")
+amount = 2
+
+[sub_resource type="Resource" id="Resource_kudk5"]
+script = ExtResource("6_thll1")
+stagger_change = 2
+added_effects = Array[ExtResource("5_507ek")]([SubResource("Resource_fmqc6")])
+
+[sub_resource type="Resource" id="Resource_ommvk"]
+script = ExtResource("3_fp2ul")
+name = "Bulwark Ascension"
+required_class = ExtResource("4_x444h")
+mod = SubResource("Resource_kudk5")
+
+[sub_resource type="Resource" id="Resource_c7t8o"]
+script = ExtResource("6_thll1")
+damage_change = 1
+stagger_change = 1
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_sddht"]
+script = ExtResource("3_fp2ul")
+name = "Warden Ascension"
+required_class = ExtResource("4_x444h")
+mod = SubResource("Resource_c7t8o")
+
+[sub_resource type="Resource" id="Resource_2nh2r"]
+script = ExtResource("6_thll1")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_tjcol"]
+script = ExtResource("3_fp2ul")
+name = "Bladestorm Ascension"
+required_class = ExtResource("7_hiygs")
+mod = SubResource("Resource_2nh2r")
+
+[sub_resource type="Resource" id="Resource_vye7g"]
+script = ExtResource("6_thll1")
+damage_change = 1
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_8mxuw"]
+script = ExtResource("3_fp2ul")
+name = "Flicker Ascension"
+required_class = ExtResource("7_hiygs")
+mod = SubResource("Resource_vye7g")
+
+[sub_resource type="Resource" id="Resource_a3srj"]
+script = ExtResource("2_1a8b1")
+talents = Array[ExtResource("3_fp2ul")]([SubResource("Resource_ommvk"), SubResource("Resource_sddht"), SubResource("Resource_tjcol"), SubResource("Resource_8mxuw")])
+
+[resource]
+script = ExtResource("1_0m3j3")
+name = "Recruit"
+upgrades = Array[ExtResource("2_1a8b1")]([SubResource("Resource_mx3jl"), SubResource("Resource_a3srj")])

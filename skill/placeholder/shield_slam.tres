@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_nvnq2"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_o1rai"]
+[ext_resource type="Script" path="res://skill/effect/damage_effect.gd" id="3_v5dqf"]
+[ext_resource type="Script" path="res://skill/effect/stagger_effect.gd" id="4_sgmu2"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="5_u1cec"]
+[ext_resource type="Script" path="res://skill/skill_data.gd" id="6_e02vs"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="7_bdy8o"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="8_1n82y"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="9_03rxo"]
+
+[sub_resource type="Resource" id="Resource_11ocm"]
+script = ExtResource("3_v5dqf")
+amount = 2
+
+[sub_resource type="Resource" id="Resource_v1h26"]
+script = ExtResource("4_sgmu2")
+ticks = 3
+
+[sub_resource type="Resource" id="Resource_ckcxk"]
+script = ExtResource("9_03rxo")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_nc7iu"]
+script = ExtResource("8_1n82y")
+name = "Slam Down"
+mod = SubResource("Resource_ckcxk")
+
+[sub_resource type="Resource" id="Resource_kipyb"]
+script = ExtResource("9_03rxo")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_7alqa"]
+script = ExtResource("8_1n82y")
+name = "Rebound"
+mod = SubResource("Resource_kipyb")
+
+[sub_resource type="Resource" id="Resource_mw0cr"]
+script = ExtResource("9_03rxo")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_myq5g"]
+script = ExtResource("8_1n82y")
+name = "Edge of Shield"
+mod = SubResource("Resource_mw0cr")
+
+[sub_resource type="Resource" id="Resource_c3fli"]
+script = ExtResource("7_bdy8o")
+talents = Array[ExtResource("8_1n82y")]([SubResource("Resource_nc7iu"), SubResource("Resource_7alqa"), SubResource("Resource_myq5g")])
+
+[sub_resource type="Resource" id="Resource_b28tk"]
+script = ExtResource("9_03rxo")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_4x8dd"]
+script = ExtResource("8_1n82y")
+name = "Earthshaker"
+mod = SubResource("Resource_b28tk")
+
+[sub_resource type="Resource" id="Resource_r31bx"]
+script = ExtResource("9_03rxo")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_ytqsx"]
+script = ExtResource("8_1n82y")
+name = "Quick Slam"
+mod = SubResource("Resource_r31bx")
+
+[sub_resource type="Resource" id="Resource_raqfo"]
+script = ExtResource("9_03rxo")
+damage_change = 4
+
+[sub_resource type="Resource" id="Resource_o7o7a"]
+script = ExtResource("8_1n82y")
+name = "Bone Breaker"
+mod = SubResource("Resource_raqfo")
+
+[sub_resource type="Resource" id="Resource_icv7o"]
+script = ExtResource("7_bdy8o")
+talents = Array[ExtResource("8_1n82y")]([SubResource("Resource_4x8dd"), SubResource("Resource_ytqsx"), SubResource("Resource_o7o7a")])
+
+[resource]
+script = ExtResource("6_e02vs")
+delay = 3
+cooldown = 2
+effects = Array[ExtResource("2_o1rai")]([SubResource("Resource_11ocm"), SubResource("Resource_v1h26")])
+name = "Shield Slam"
+required_class = ExtResource("5_u1cec")
+upgrades = Array[ExtResource("7_bdy8o")]([SubResource("Resource_c3fli"), SubResource("Resource_icv7o")])

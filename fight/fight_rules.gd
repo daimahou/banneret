@@ -8,7 +8,7 @@ const AP_PER_BEAT := 1
 
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
 	var skills: Array[SkillData] = []
-	for skill in character.data.skills:
+	for skill in character.skills:
 		if get_cooldown_beats(character, skill) == 0 and character.ap >= skill.ap_cost:
 			skills.append(skill)
 	return skills

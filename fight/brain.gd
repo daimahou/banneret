@@ -9,6 +9,14 @@ func is_stop_requested() -> bool:
 	return false
 
 
+func is_waiting() -> bool:
+	return false
+
+
+func set_suspended(_is_suspended: bool) -> void:
+	pass
+
+
 func dispose() -> void:
 	pass
 

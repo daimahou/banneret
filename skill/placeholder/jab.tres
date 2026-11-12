@@ -1,0 +1,98 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_dmn0x"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_4qxn0"]
+[ext_resource type="Script" path="res://skill/effect/damage_effect.gd" id="3_ww3ce"]
+[ext_resource type="Script" path="res://skill/skill_data.gd" id="4_bcfiu"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="5_thnof"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="6_yriwf"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="7_bmrg7"]
+[ext_resource type="Script" path="res://skill/effect/stagger_effect.gd" id="8_1g72f"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="9_o16f4"]
+
+[sub_resource type="Resource" id="Resource_61n4j"]
+script = ExtResource("3_ww3ce")
+amount = 3
+
+[sub_resource type="Resource" id="Resource_6fb1n"]
+script = ExtResource("3_ww3ce")
+amount = 2
+
+[sub_resource type="Resource" id="Resource_omo1g"]
+script = ExtResource("7_bmrg7")
+added_effects = Array[ExtResource("2_4qxn0")]([SubResource("Resource_6fb1n")])
+
+[sub_resource type="Resource" id="Resource_5m7bw"]
+script = ExtResource("6_yriwf")
+name = "Double Jab"
+mod = SubResource("Resource_omo1g")
+
+[sub_resource type="Resource" id="Resource_7hqjp"]
+script = ExtResource("7_bmrg7")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_pvqix"]
+script = ExtResource("6_yriwf")
+name = "Snap Jab"
+mod = SubResource("Resource_7hqjp")
+
+[sub_resource type="Resource" id="Resource_o6wrh"]
+script = ExtResource("8_1g72f")
+ticks = 1
+
+[sub_resource type="Resource" id="Resource_uyhmq"]
+script = ExtResource("7_bmrg7")
+added_effects = Array[ExtResource("2_4qxn0")]([SubResource("Resource_o6wrh")])
+
+[sub_resource type="Resource" id="Resource_3in3f"]
+script = ExtResource("6_yriwf")
+name = "Stunning Jab"
+mod = SubResource("Resource_uyhmq")
+
+[sub_resource type="Resource" id="Resource_l7x71"]
+script = ExtResource("5_thnof")
+talents = Array[ExtResource("6_yriwf")]([SubResource("Resource_5m7bw"), SubResource("Resource_pvqix"), SubResource("Resource_3in3f")])
+
+[sub_resource type="Resource" id="Resource_fohqu"]
+script = ExtResource("7_bmrg7")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_u3jch"]
+script = ExtResource("6_yriwf")
+name = "Hard Jab"
+mod = SubResource("Resource_fohqu")
+
+[sub_resource type="Resource" id="Resource_0t2sm"]
+script = ExtResource("7_bmrg7")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_77hil"]
+script = ExtResource("6_yriwf")
+name = "Lightning Jab"
+mod = SubResource("Resource_0t2sm")
+
+[sub_resource type="Resource" id="Resource_o24h6"]
+script = ExtResource("8_1g72f")
+ticks = 2
+
+[sub_resource type="Resource" id="Resource_a83xw"]
+script = ExtResource("7_bmrg7")
+added_effects = Array[ExtResource("2_4qxn0")]([SubResource("Resource_o24h6")])
+
+[sub_resource type="Resource" id="Resource_igra7"]
+script = ExtResource("6_yriwf")
+name = "Pinning Jab"
+required_class = ExtResource("9_o16f4")
+mod = SubResource("Resource_a83xw")
+
+[sub_resource type="Resource" id="Resource_3dbb0"]
+script = ExtResource("5_thnof")
+talents = Array[ExtResource("6_yriwf")]([SubResource("Resource_u3jch"), SubResource("Resource_77hil"), SubResource("Resource_igra7")])
+
+[resource]
+script = ExtResource("4_bcfiu")
+delay = 2
+cooldown = 1
+effects = Array[ExtResource("2_4qxn0")]([SubResource("Resource_61n4j")])
+name = "Jab"
+upgrades = Array[ExtResource("5_thnof")]([SubResource("Resource_l7x71"), SubResource("Resource_3dbb0")])

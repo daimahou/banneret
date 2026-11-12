@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://stage/level_up/talent_icon.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://stage/level_up/assets/talent_socket_empty.png" id="2_empty"]
+
+[node name="TalentIcon" type="TextureRect"]
+offset_right = 48.0
+offset_bottom = 48.0
+texture = ExtResource("2_empty")
+script = ExtResource("1_script")
+
+[node name="Monogram" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.913725, 0.843137, 0.690196, 1)
+theme_override_colors/font_outline_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1

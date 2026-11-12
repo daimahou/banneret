@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_00sgl"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="2_xnxhk"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="3_0n1d0"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="4_0brin"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="5_o2k7r"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_dmhx3"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_ffdfh"]
+
+[sub_resource type="Resource" id="Resource_ch6mm"]
+script = ExtResource("4_0brin")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_abi44"]
+script = ExtResource("4_0brin")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_ihnvm"]
+script = ExtResource("4_0brin")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_uk10w"]
+script = ExtResource("7_ffdfh")
+name = "Shove"
+mod = SubResource("Resource_ihnvm")
+
+[sub_resource type="Resource" id="Resource_dcv7u"]
+script = ExtResource("4_0brin")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_ue21s"]
+script = ExtResource("7_ffdfh")
+name = "Drive"
+mod = SubResource("Resource_dcv7u")
+
+[sub_resource type="Resource" id="Resource_oe6u7"]
+script = ExtResource("4_0brin")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_kuju2"]
+script = ExtResource("7_ffdfh")
+name = "Brace"
+required_class = ExtResource("2_xnxhk")
+mod = SubResource("Resource_oe6u7")
+
+[sub_resource type="Resource" id="Resource_gwaqn"]
+script = ExtResource("6_dmhx3")
+mod = SubResource("Resource_abi44")
+talents = Array[ExtResource("7_ffdfh")]([SubResource("Resource_uk10w"), SubResource("Resource_ue21s"), SubResource("Resource_kuju2")])
+
+[sub_resource type="Resource" id="Resource_eqmjj"]
+script = ExtResource("4_0brin")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_7iijx"]
+script = ExtResource("4_0brin")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_pii1l"]
+script = ExtResource("7_ffdfh")
+name = "Avalanche"
+mod = SubResource("Resource_7iijx")
+
+[sub_resource type="Resource" id="Resource_1c374"]
+script = ExtResource("4_0brin")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_646g2"]
+script = ExtResource("7_ffdfh")
+name = "Follow Through"
+mod = SubResource("Resource_1c374")
+
+[sub_resource type="Resource" id="Resource_n8xuj"]
+script = ExtResource("4_0brin")
+stagger_change = 1
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_k21o2"]
+script = ExtResource("7_ffdfh")
+name = "Hold the Line"
+required_class = ExtResource("2_xnxhk")
+mod = SubResource("Resource_n8xuj")
+
+[sub_resource type="Resource" id="Resource_gkpyj"]
+script = ExtResource("6_dmhx3")
+mod = SubResource("Resource_eqmjj")
+talents = Array[ExtResource("7_ffdfh")]([SubResource("Resource_pii1l"), SubResource("Resource_646g2"), SubResource("Resource_k21o2")])
+
+[resource]
+script = ExtResource("5_o2k7r")
+mod = SubResource("Resource_ch6mm")
+name = "Momentum"
+class_offer_weights = Dictionary[ExtResource("1_00sgl"), int]({
+ExtResource("2_xnxhk"): 3
+})
+upgrades = Array[ExtResource("6_dmhx3")]([SubResource("Resource_gwaqn"), SubResource("Resource_gkpyj")])

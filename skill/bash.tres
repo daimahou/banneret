@@ -1,9 +1,14 @@
 [gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://mcqofounfgl1"]
 
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_cfw3n"]
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
 [ext_resource type="Script" uid="uid://cgyd6knv35foa" path="res://skill/effect/effect.gd" id="2_effect"]
 [ext_resource type="Script" uid="uid://dvmvof2d7aipm" path="res://skill/effect/damage_effect.gd" id="3_damage_effect"]
 [ext_resource type="Script" uid="uid://6euoevb8n0lv" path="res://skill/effect/stagger_effect.gd" id="4_stagger_effect"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_b6sec"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_wkxux"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="8_iy1n5"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="9_r8xj2"]
 
 [sub_resource type="Resource" id="Resource_damage"]
 script = ExtResource("3_damage_effect")
@@ -13,9 +18,73 @@ amount = 4
 script = ExtResource("4_stagger_effect")
 ticks = 2
 
+[sub_resource type="Resource" id="Resource_hgu8m"]
+script = ExtResource("8_iy1n5")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_e3oo2"]
+script = ExtResource("7_wkxux")
+name = "Concuss"
+mod = SubResource("Resource_hgu8m")
+
+[sub_resource type="Resource" id="Resource_k8gnh"]
+script = ExtResource("8_iy1n5")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_7aqpy"]
+script = ExtResource("7_wkxux")
+name = "Quick Bash"
+mod = SubResource("Resource_k8gnh")
+
+[sub_resource type="Resource" id="Resource_076r0"]
+script = ExtResource("8_iy1n5")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_abh8c"]
+script = ExtResource("7_wkxux")
+name = "Brutal Bash"
+mod = SubResource("Resource_076r0")
+
+[sub_resource type="Resource" id="Resource_5irae"]
+script = ExtResource("6_b6sec")
+talents = Array[ExtResource("7_wkxux")]([SubResource("Resource_e3oo2"), SubResource("Resource_7aqpy"), SubResource("Resource_abh8c")])
+
+[sub_resource type="Resource" id="Resource_4uyf0"]
+script = ExtResource("8_iy1n5")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_huokd"]
+script = ExtResource("7_wkxux")
+name = "Pummel"
+mod = SubResource("Resource_4uyf0")
+
+[sub_resource type="Resource" id="Resource_x4cjg"]
+script = ExtResource("8_iy1n5")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_mhlwm"]
+script = ExtResource("7_wkxux")
+name = "Crack"
+mod = SubResource("Resource_x4cjg")
+
+[sub_resource type="Resource" id="Resource_53ic5"]
+script = ExtResource("8_iy1n5")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_lpbxi"]
+script = ExtResource("7_wkxux")
+name = "Shield Bash"
+required_class = ExtResource("9_r8xj2")
+mod = SubResource("Resource_53ic5")
+
+[sub_resource type="Resource" id="Resource_vwjkc"]
+script = ExtResource("6_b6sec")
+talents = Array[ExtResource("7_wkxux")]([SubResource("Resource_huokd"), SubResource("Resource_mhlwm"), SubResource("Resource_lpbxi")])
+
 [resource]
 script = ExtResource("1_skill_data")
-name = "Bash"
 delay = 2
 cooldown = 2
 effects = Array[ExtResource("2_effect")]([SubResource("Resource_damage"), SubResource("Resource_stagger")])
+name = "Bash"
+upgrades = Array[ExtResource("6_b6sec")]([SubResource("Resource_5irae"), SubResource("Resource_vwjkc")])
