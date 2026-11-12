@@ -1,0 +1,13 @@
+Generated with the built-in image generation tool.
+Reference: party_level_up_simple_talent_options.png
+
+Use case: precise-object-edit, high-fidelity game UI mockup styling pass.
+Edit the supplied Banneret level-up screen. Preserve its full wide landscape composition, three equal hero columns, all portraits, names, stats, skill and talent icons, parchment cards, text, current selection state, and theatre styling (wood, curtains, lanterns). This is a restrained visual hierarchy pass, NOT a redesign. Keep Basic/Advanced/Expert terminology and "+4 Attack Power." exactly. Add no draft-type label and no extra explanatory text.
+Changes:
+1. Empty active slots and all unused little upgrade sockets become dark recessed wood with subtle low-contrast bronze outlines, no bright gold. They remain visible.
+2. Small sub-skill/talent icons stay present in exactly their current places, with crisp legible artwork but much thinner, quieter bronze frames than parent skill icons. Do NOT delete these important icons.
+3. Unselected parent skill frames and card borders become muted antique brass, with less glint and no luminous glow. Retain warm parchment brightness and readable dark text.
+4. Reserve the strongest luminous gold edge and checkmark for the selected "Opening Strike" talent in Aldric's left column. His enabled CONFIRM button should remain clear but subordinate to this selection. Advanced Offense is the open parent card and should have a restrained focus edge, not compete with Opening Strike.
+5. Hero portraits, headings, curtain decorations and wood framing should be slightly more subdued so the actual choices lead the eye. Preserve beautiful textured handcrafted fantasy art, not flat modern UI.
+Preserve the current interaction state: Aldric is choosing an Offense talent and Opening Strike is selected but not confirmed; Sable and Elara still show three offers; their CONFIRM buttons and overall CONTINUE remain disabled; footer stays "0/3 ready". Do not introduce a confirmed hero in this version.
+Maintain exact existing wording and all meaningful symbols. Render an exceptionally polished, crisp readable mockup at high resolution matching the reference's aspect ratio.

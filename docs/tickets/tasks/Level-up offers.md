@@ -15,12 +15,25 @@ Implement the party's passive and active drafts using placeholder content, betwe
 
 ## Player flow
 
-- Victory pauses the fight sequence and opens the level-up view. Show all three heroes, their current builds and the current draft type.
-- Select a hero to inspect their offers; switching heroes lets the player consider the party together. Generate each hero's offers once per draft. Switching heroes or backing out never rerolls them.
+- Victory pauses the fight sequence and opens the three-column level-up view. Show all three heroes, their current builds and their offers together.
+- Interact with any hero's column to inspect and select their offers while the other columns remain visible. Generate each hero's offers once per draft. Switching heroes or backing out never rerolls them.
 - A new active skill shows its effect and costs; a passive shows its effect; an upgrade shows what changes. A class choice also explains which offer-pool changes it brings.
 - Selecting an upgrade opens its authored development options. The player can go back until confirming the complete choice. That confirmation consumes the hero's one pick and cannot be undone in this task.
 - Heroes at 0 health skip their picks. A hero with no valid offers is skipped with a diagnostic warning identifying the hero and draft type; no substitute reward or cross-draft conversion is granted.
 - After every eligible hero confirms, Continue returns to combat. A victory-triggered draft starts the next fight; a command-triggered draft resumes the same fight. If everyone is skipped, return automatically.
+
+## UI reference
+
+![[attachments/party_level_up_simple_talent_options.png]]
+
+- Use this mockup as the reference for layout, visual hierarchy and interaction states. Its names, skills, icons and values illustrate the UI; they do not require implementing that content in this task.
+- Three equal hero columns: portrait, name, class and stats; an eight-slot passive build; a separate five-slot active row; offers or talent options; a per-hero Confirm button. Keep all three builds visible for comparison.
+- Selecting an upgrade keeps its parent card visible with Back and replaces that column's remaining offer area with the talent choices. Other heroes' offers remain visible. Support up to four talent options without obscuring confirmation controls.
+- Keep **Basic / Advanced / Expert** titles and show the resulting rank's value. Inspect the owned skill by hovering its build icon for a tooltip with its current effect and chosen options. No additional draft-type banner or mandatory before/after number notation is needed.
+- Preserve sub-skill icons on offer cards and beside owned skills: they communicate development options and selected talents. Keep their tooltips available; do not remove them to simplify the screen.
+- Match the wood, parchment and theatre framing. Empty slots and unused sockets are dark and recessed; small sub-skill icons have quieter frames than their parent skill; unselected card borders use muted brass. Reserve the strongest gold highlight for the selected offer or talent.
+- Selection is not confirmation: show the selected talent's checkmark and enable that hero's Confirm button. After confirmation, retain the chosen reward and build, clearly mark that column as confirmed, and prevent further changes.
+- Keep the shared readiness count and Continue at the bottom. Update readiness only when a hero is confirmed or skipped; Continue remains disabled while a required choice is outstanding.
 
 ## Shared pick sequence
 
@@ -63,7 +76,7 @@ Implement the party's passive and active drafts using placeholder content, betwe
 - Provide enough examples to exercise new passive and active acquisition, both ranks of upgrades, class and ascension selection, weighted offers, exclusive entries and class-dependent options. A complete production pool is not required.
 - Use existing damage, stagger, timing and resource capabilities for small observable example effects. Do not implement the proposed Power system, Rage, Appease or other new combat systems just to demonstrate progression.
 - Include test configurations with full slots, maximum ranks, insufficient offers and no valid offers. Real skill design, balance and new mechanics belong to [[Progression content]].
-- Use the existing stage presentation and UI assets where practical. The required interaction is the hero selector, three offers, the internal option choice, confirmation and Continue; new final artwork is not required.
+- Use existing stage and UI assets where practical, following the mockup's three-column layout, offer/talent states and visual hierarchy. Placeholder content may use existing icons; new final artwork is not required.
 
 ## Level-up command
 
@@ -93,6 +106,7 @@ Implement the party's passive and active drafts using placeholder content, betwe
 - Fallen, exhausted and content-starved heroes cannot stall the flow. Completing position 37 stops further drafts without ending the combat loop.
 - Command-triggered progression freezes and resumes the same fight without advancing time, losing pending actions, resetting cooldowns or duplicating drafts.
 - The flow is playable using existing assets, and placeholder effects agree between previews and combat.
+- The UI follows the reference's simultaneous three-hero layout, visible build and sub-skill icons, in-column talent selection, restrained framing and clear selection/confirmation states.
 
 ## Validation
 
@@ -102,6 +116,7 @@ Implement the party's passive and active drafts using placeholder content, betwe
 - Check that confirm/back/switch actions preserve offers and apply the choice once, to one hero only. Acquiring and upgrading an active must change subsequent combat behaviour without leaking into another hero or queued action.
 - Exercise command requests while waiting for input, during action resolution, while a draft is open, and as a fight ends. Confirm that combat resumes once with its preserved state.
 - Run the checks in [[feedback-loop]], including the existing combat and preview tests. Judge visual layout and real input by playing, not by headless layout assertions.
+- Compare the running view against the reference at the game's actual size: inspect build and sub-skill tooltips, three/four-option layouts, switching between columns, selected versus confirmed states, readiness and Continue. All choices and controls must remain readable and accessible.
 
 ## Out of scope
 
