@@ -1,0 +1,107 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_kvn84"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="2_chv41"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="3_ksua7"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="4_ucp8d"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="5_hqt0u"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_8fj01"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_lgu4o"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="8_bio6p"]
+
+[sub_resource type="Resource" id="Resource_ijx11"]
+script = ExtResource("4_ucp8d")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_auphq"]
+script = ExtResource("4_ucp8d")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_d7c8s"]
+script = ExtResource("4_ucp8d")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_n4aph"]
+script = ExtResource("7_lgu4o")
+name = "Heavy Hand"
+mod = SubResource("Resource_d7c8s")
+
+[sub_resource type="Resource" id="Resource_q4x4w"]
+script = ExtResource("4_ucp8d")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_urg1f"]
+script = ExtResource("7_lgu4o")
+name = "Opening Edge"
+mod = SubResource("Resource_q4x4w")
+
+[sub_resource type="Resource" id="Resource_afy5h"]
+script = ExtResource("4_ucp8d")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_ar0ss"]
+script = ExtResource("7_lgu4o")
+name = "Shield Weight"
+required_class = ExtResource("8_bio6p")
+mod = SubResource("Resource_afy5h")
+
+[sub_resource type="Resource" id="Resource_q8nj7"]
+script = ExtResource("6_8fj01")
+mod = SubResource("Resource_auphq")
+talents = Array[ExtResource("7_lgu4o")]([SubResource("Resource_n4aph"), SubResource("Resource_urg1f"), SubResource("Resource_ar0ss")])
+
+[sub_resource type="Resource" id="Resource_kp405"]
+script = ExtResource("4_ucp8d")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_xu3am"]
+script = ExtResource("4_ucp8d")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_vesif"]
+script = ExtResource("7_lgu4o")
+name = "Crushing"
+mod = SubResource("Resource_xu3am")
+
+[sub_resource type="Resource" id="Resource_6e0p7"]
+script = ExtResource("4_ucp8d")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_2uo01"]
+script = ExtResource("7_lgu4o")
+name = "Relentless"
+mod = SubResource("Resource_6e0p7")
+
+[sub_resource type="Resource" id="Resource_6a6o1"]
+script = ExtResource("4_ucp8d")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_kfj7i"]
+script = ExtResource("7_lgu4o")
+name = "Rending"
+mod = SubResource("Resource_6a6o1")
+
+[sub_resource type="Resource" id="Resource_b00t7"]
+script = ExtResource("4_ucp8d")
+damage_change = 1
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_yq1jk"]
+script = ExtResource("7_lgu4o")
+name = "Finesse"
+required_class = ExtResource("2_chv41")
+mod = SubResource("Resource_b00t7")
+
+[sub_resource type="Resource" id="Resource_2gy1c"]
+script = ExtResource("6_8fj01")
+mod = SubResource("Resource_kp405")
+talents = Array[ExtResource("7_lgu4o")]([SubResource("Resource_vesif"), SubResource("Resource_2uo01"), SubResource("Resource_kfj7i"), SubResource("Resource_yq1jk")])
+
+[resource]
+script = ExtResource("5_hqt0u")
+mod = SubResource("Resource_ijx11")
+name = "Might"
+class_offer_weights = Dictionary[ExtResource("1_kvn84"), int]({
+ExtResource("2_chv41"): 3
+})
+upgrades = Array[ExtResource("6_8fj01")]([SubResource("Resource_q8nj7"), SubResource("Resource_2gy1c")])

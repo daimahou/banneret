@@ -4,12 +4,18 @@ import json
 ROOT=Path(__file__).resolve().parents[3]
 OUT=ROOT/'stage/level_up/assets'
 SOURCES=ROOT/'docs/attachments/level_up_asset_sources'
+# The sources are drawn at 1672 × 941; the game's viewport is 3840 × 2160, so every export is upscaled by SCALE once, here.
+SCALE=2
+REF=(1672*SCALE,941*SCALE)
+def sc(values):return None if values is None else tuple(v*SCALE for v in values)
 ims={name:Image.open(SOURCES/(name+'.png')).convert('RGBA') for name in ['skin','clean_skin','components','background']}
 for im in ims.values():
  assert im.size==(1672,941)
-manifest={'reference_size':[1672,941],'display_scale':1,'background':'background.png','assets':{},'layout':{'column_x':[64,592,1120],'card_y':[320,480,640],'talent_y':[480,588,696],'confirm_y':804,'active_tray_y':232},'notes':['Draw at exported size: no runtime scaling or NinePatchRect stretching.','Source elements were generated at reference scale, then cropped and normalized offline to the exact exported sizes. No runtime scaling is needed.','All words, numbers, portraits and gameplay icons are separate runtime content.']}
+ims={name:im.resize(REF,Image.Resampling.LANCZOS) for name,im in ims.items()}
+manifest={'reference_size':list(REF),'display_scale':1,'background':'background.png','assets':{},'layout':{'column_x':list(sc((64,592,1120))),'card_y':list(sc((320,480,640))),'talent_y':list(sc((480,588,696))),'confirm_y':804*SCALE,'active_tray_y':232*SCALE},'notes':['Draw at exported size: no runtime scaling or NinePatchRect stretching.','Source elements were generated at reference scale, then cropped and normalized offline to the exact exported sizes. No runtime scaling is needed.','All words, numbers, portraits and gameplay icons are separate runtime content.']}
 
 def export(name,source,box,size,margins=None,inner=None):
+ box,size,margins,inner=sc(box),sc(size),sc(margins),sc(inner)
  im=ims[source].crop(box)
  # Remove only nearly invisible alpha noise before finding the visible crop.
  alpha=im.getchannel('A').point(lambda a:0 if a<8 else a)
@@ -32,11 +38,11 @@ def export(name,source,box,size,margins=None,inner=None):
   canvas.paste(im,((size[0]-im.width)//2,(size[1]-im.height)//2)); im=canvas
  im.save(OUT/(name+'.png'))
  manifest['assets'][name]={'file':name+'.png','size':list(size),'source':source+'.png','source_region':list(box),'trimmed_source_size':list(source_size),'processing':method}
- if inner:manifest['assets'][name]['content_rect']=inner
+ if inner:manifest['assets'][name]['content_rect']=list(inner)
  return im
 
 ims['background'].convert('RGB').save(OUT/'background.png')
-manifest['assets']['background']={'file':'background.png','size':[1672,941],'processing':'native size; no resampling'}
+manifest['assets']['background']={'file':'background.png','size':list(REF),'processing':'offline Lanczos upscale by SCALE'}
 # Blank reusable cards, all states with identical exported bounds.
 export('offer_normal','clean_skin',(588,318,1088,476),(512,152),(16,56,16,16),[20,14,472,120])
 export('offer_focused','clean_skin',(49,318,583,476),(512,152),(16,56,16,16),[20,14,472,120])
@@ -63,19 +69,20 @@ export('check_muted','components',(944,630,1009,690),(24,24))
 # card selection supplies the bright state rather than more competing gold.
 (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 # Native-size asset contact sheet: only text labels are drawn, artwork stays 1:1.
-font=ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial.ttf',16)
-contact=Image.new('RGB',(1672,941),(35,29,25));d=ImageDraw.Draw(contact)
+font=ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial.ttf',16*SCALE)
+contact=Image.new('RGB',REF,(35,29,25));d=ImageDraw.Draw(contact)
 placements=[('offer_normal',24,48),('offer_focused',580,48),('offer_selected',1136,48),('talent_normal',24,248),('talent_selected',580,248),('active_tray',1136,248),('button_normal',24,416),('button_enabled',410,416),('button_disabled',796,416),('button_back',1184,416),('button_compact',24,548),('portrait_frame',346,548),('skill_frame',560,548),('skill_slot_empty',704,548),('offer_icon_frame',896,548),('talent_icon_frame',1104,548),('talent_socket',24,790),('talent_socket_empty',264,790),('check_selected',560,790),('check_muted',800,790)]
 for n,x,y in placements:
+ x,y=x*SCALE,y*SCALE
  im=Image.open(OUT/(n+'.png')).convert('RGBA');contact.paste(im,(x,y),im)
- d.text((x,y-36),n,font=font,fill=(234,215,178));d.text((x,y-18),f'{im.width}×{im.height}',font=font,fill=(175,158,131))
-d.text((24,884),'Native-size exports • transparent PNGs • no baked text or gameplay icons',font=font,fill=(234,215,178))
+ d.text((x,y-36*SCALE),n,font=font,fill=(234,215,178));d.text((x,y-18*SCALE),f'{im.width}×{im.height}',font=font,fill=(175,158,131))
+d.text((24*SCALE,884*SCALE),'Native-size exports • transparent PNGs • no baked text or gameplay icons',font=font,fill=(234,215,178))
 contact.save(ROOT/'docs/attachments/level_up_assets_contact_sheet.png')
 # Representative native-scale composition, independent of game implementation.
 preview=ims['background'].copy()
 for col,x in enumerate([64,592,1120]):
  def place(n,xx,yy):
-  im=Image.open(OUT/(n+'.png')).convert('RGBA');preview.alpha_composite(im,(xx,yy))
+  im=Image.open(OUT/(n+'.png')).convert('RGBA');preview.alpha_composite(im,(xx*SCALE,yy*SCALE))
  place('portrait_frame',x+12,72)
  for row in range(2):
   for j in range(4):

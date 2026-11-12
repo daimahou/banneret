@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SkillBag" format=3]
+
+[ext_resource type="Script" path="res://skill/skill_bag.gd" id="1_bag"]
+[ext_resource type="Script" path="res://skill/learnable.gd" id="2_04yb7"]
+[ext_resource type="Resource" path="res://skill/placeholder/might.tres" id="3_jkr1a"]
+[ext_resource type="Resource" path="res://skill/placeholder/footwork.tres" id="4_rinm4"]
+[ext_resource type="Resource" path="res://skill/placeholder/momentum.tres" id="5_xgtji"]
+[ext_resource type="Resource" path="res://skill/placeholder/patience.tres" id="6_1t4u8"]
+[ext_resource type="Resource" path="res://skill/placeholder/ferocity.tres" id="7_fspw4"]
+[ext_resource type="Resource" path="res://skill/placeholder/bastion.tres" id="8_2uusi"]
+[ext_resource type="Resource" path="res://skill/placeholder/riposte.tres" id="9_4ksam"]
+[ext_resource type="Resource" path="res://skill/placeholder/jab.tres" id="10_7tj8o"]
+[ext_resource type="Resource" path="res://skill/placeholder/cleave.tres" id="11_bjl10"]
+[ext_resource type="Resource" path="res://skill/placeholder/shield_slam.tres" id="12_r4k37"]
+[ext_resource type="Resource" path="res://skill/placeholder/lunge.tres" id="13_wt8r4"]
+[ext_resource type="Resource" path="res://skill/bash.tres" id="14_83uei"]
+[ext_resource type="Resource" path="res://skill/overpower.tres" id="15_30kbf"]
+
+[resource]
+script = ExtResource("1_bag")
+skills = Array[ExtResource("2_04yb7")]([ExtResource("3_jkr1a"), ExtResource("4_rinm4"), ExtResource("5_xgtji"), ExtResource("6_1t4u8"), ExtResource("7_fspw4"), ExtResource("8_2uusi"), ExtResource("9_4ksam"), ExtResource("10_7tj8o"), ExtResource("11_bjl10"), ExtResource("12_r4k37"), ExtResource("13_wt8r4"), ExtResource("14_83uei"), ExtResource("15_30kbf")])

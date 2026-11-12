@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_07xpo"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_8sdf7"]
+[ext_resource type="Script" path="res://skill/effect/damage_effect.gd" id="3_wshsc"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="4_bvoak"]
+[ext_resource type="Script" path="res://skill/skill_data.gd" id="5_d1y5l"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_1qgwh"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_whxnk"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="8_xvft3"]
+[ext_resource type="Script" path="res://skill/effect/stagger_effect.gd" id="9_31y21"]
+
+[sub_resource type="Resource" id="Resource_eo10d"]
+script = ExtResource("3_wshsc")
+amount = 6
+
+[sub_resource type="Resource" id="Resource_el6gf"]
+script = ExtResource("8_xvft3")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_xc3ny"]
+script = ExtResource("7_whxnk")
+name = "Deep Lunge"
+mod = SubResource("Resource_el6gf")
+
+[sub_resource type="Resource" id="Resource_xoqsi"]
+script = ExtResource("8_xvft3")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_mf7ho"]
+script = ExtResource("7_whxnk")
+name = "Swift Lunge"
+mod = SubResource("Resource_xoqsi")
+
+[sub_resource type="Resource" id="Resource_pksg7"]
+script = ExtResource("9_31y21")
+ticks = 1
+
+[sub_resource type="Resource" id="Resource_2ey5h"]
+script = ExtResource("8_xvft3")
+added_effects = Array[ExtResource("2_8sdf7")]([SubResource("Resource_pksg7")])
+
+[sub_resource type="Resource" id="Resource_ol5mk"]
+script = ExtResource("7_whxnk")
+name = "Off Balance"
+mod = SubResource("Resource_2ey5h")
+
+[sub_resource type="Resource" id="Resource_3gouv"]
+script = ExtResource("6_1qgwh")
+talents = Array[ExtResource("7_whxnk")]([SubResource("Resource_xc3ny"), SubResource("Resource_mf7ho"), SubResource("Resource_ol5mk")])
+
+[sub_resource type="Resource" id="Resource_xxk0h"]
+script = ExtResource("8_xvft3")
+damage_change = 4
+
+[sub_resource type="Resource" id="Resource_noqm4"]
+script = ExtResource("7_whxnk")
+name = "Fleche"
+mod = SubResource("Resource_xxk0h")
+
+[sub_resource type="Resource" id="Resource_cqtx3"]
+script = ExtResource("8_xvft3")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_jx75m"]
+script = ExtResource("7_whxnk")
+name = "Recover"
+mod = SubResource("Resource_cqtx3")
+
+[sub_resource type="Resource" id="Resource_gqyp6"]
+script = ExtResource("8_xvft3")
+damage_change = 2
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_pb37y"]
+script = ExtResource("7_whxnk")
+name = "Pierce"
+mod = SubResource("Resource_gqyp6")
+
+[sub_resource type="Resource" id="Resource_ye1ti"]
+script = ExtResource("6_1qgwh")
+talents = Array[ExtResource("7_whxnk")]([SubResource("Resource_noqm4"), SubResource("Resource_jx75m"), SubResource("Resource_pb37y")])
+
+[resource]
+script = ExtResource("5_d1y5l")
+delay = 2
+cooldown = 2
+effects = Array[ExtResource("2_8sdf7")]([SubResource("Resource_eo10d")])
+name = "Lunge"
+required_class = ExtResource("4_bvoak")
+upgrades = Array[ExtResource("6_1qgwh")]([SubResource("Resource_3gouv"), SubResource("Resource_ye1ti")])

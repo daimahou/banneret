@@ -1,17 +1,92 @@
 [gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://bflbetiqudmim"]
 
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_14prj"]
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
 [ext_resource type="Script" uid="uid://cgyd6knv35foa" path="res://skill/effect/effect.gd" id="2_effect"]
 [ext_resource type="Script" uid="uid://dvmvof2d7aipm" path="res://skill/effect/damage_effect.gd" id="3_damage_effect"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="5_0gwjf"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="6_ie66m"]
+[ext_resource type="Script" uid="uid://6euoevb8n0lv" path="res://skill/effect/stagger_effect.gd" id="7_ywhyu"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="8_3o17f"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="9_3ds80"]
 
 [sub_resource type="Resource" id="Resource_damage"]
 script = ExtResource("3_damage_effect")
 amount = 18
 
+[sub_resource type="Resource" id="Resource_8m7ch"]
+script = ExtResource("7_ywhyu")
+ticks = 2
+
+[sub_resource type="Resource" id="Resource_1mehd"]
+script = ExtResource("8_3o17f")
+added_effects = Array[ExtResource("2_effect")]([SubResource("Resource_8m7ch")])
+
+[sub_resource type="Resource" id="Resource_r5h74"]
+script = ExtResource("6_ie66m")
+name = "Crushing Blow"
+mod = SubResource("Resource_1mehd")
+
+[sub_resource type="Resource" id="Resource_n4ntd"]
+script = ExtResource("8_3o17f")
+damage_change = 4
+
+[sub_resource type="Resource" id="Resource_linf8"]
+script = ExtResource("6_ie66m")
+name = "Momentous"
+mod = SubResource("Resource_n4ntd")
+
+[sub_resource type="Resource" id="Resource_8bxen"]
+script = ExtResource("8_3o17f")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_7y8w3"]
+script = ExtResource("6_ie66m")
+name = "Ready Stance"
+mod = SubResource("Resource_8bxen")
+
+[sub_resource type="Resource" id="Resource_0v1pn"]
+script = ExtResource("5_0gwjf")
+talents = Array[ExtResource("6_ie66m")]([SubResource("Resource_r5h74"), SubResource("Resource_linf8"), SubResource("Resource_7y8w3")])
+
+[sub_resource type="Resource" id="Resource_11u66"]
+script = ExtResource("8_3o17f")
+damage_change = 6
+
+[sub_resource type="Resource" id="Resource_y8u0t"]
+script = ExtResource("6_ie66m")
+name = "Annihilate"
+mod = SubResource("Resource_11u66")
+
+[sub_resource type="Resource" id="Resource_lyxcr"]
+script = ExtResource("8_3o17f")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_d1bum"]
+script = ExtResource("6_ie66m")
+name = "Second Wind"
+mod = SubResource("Resource_lyxcr")
+
+[sub_resource type="Resource" id="Resource_42x60"]
+script = ExtResource("8_3o17f")
+damage_change = 4
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_fh3jf"]
+script = ExtResource("6_ie66m")
+name = "Executioner"
+required_class = ExtResource("9_3ds80")
+mod = SubResource("Resource_42x60")
+
+[sub_resource type="Resource" id="Resource_o8x5m"]
+script = ExtResource("5_0gwjf")
+talents = Array[ExtResource("6_ie66m")]([SubResource("Resource_y8u0t"), SubResource("Resource_d1bum"), SubResource("Resource_fh3jf")])
+
 [resource]
 script = ExtResource("1_skill_data")
-name = "Overpower"
 delay = 6
 cooldown = 3
 blow = 1
 effects = Array[ExtResource("2_effect")]([SubResource("Resource_damage")])
+name = "Overpower"
+upgrades = Array[ExtResource("5_0gwjf")]([SubResource("Resource_0v1pn"), SubResource("Resource_o8x5m")])

@@ -126,7 +126,7 @@ func _show_cooldowns() -> void:
 	var previewed := null if _inspected == null else _preview_model.get_character(_inspected.id)
 	if previewed == null:
 		return
-	var skills := _inspected.data.skills
+	var skills := _inspected.skills
 	for index in skills.size():
 		var beats := FightRules.get_cooldown_beats(previewed, skills[index])
 		_skill_bar.show_cooldown(index, beats, get_cooldown_style(_preview_model, _inspected, skills[index]))

@@ -1,15 +1,100 @@
 [gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://3bpbae2bacqx"]
 
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_iggm5"]
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
 [ext_resource type="Script" uid="uid://cgyd6knv35foa" path="res://skill/effect/effect.gd" id="2_effect"]
 [ext_resource type="Script" uid="uid://dvmvof2d7aipm" path="res://skill/effect/damage_effect.gd" id="3_damage_effect"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="5_sno30"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="6_ailvh"]
+[ext_resource type="Script" uid="uid://6euoevb8n0lv" path="res://skill/effect/stagger_effect.gd" id="7_nfc0l"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="8_8ef1t"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="9_mpxh1"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="10_7faa7"]
 
 [sub_resource type="Resource" id="Resource_damage"]
 script = ExtResource("3_damage_effect")
 amount = 8
 
+[sub_resource type="Resource" id="Resource_yc8pm"]
+script = ExtResource("7_nfc0l")
+ticks = 1
+
+[sub_resource type="Resource" id="Resource_8l81q"]
+script = ExtResource("8_8ef1t")
+added_effects = Array[ExtResource("2_effect")]([SubResource("Resource_yc8pm")])
+
+[sub_resource type="Resource" id="Resource_in2d5"]
+script = ExtResource("6_ailvh")
+name = "Staggering Strike"
+mod = SubResource("Resource_8l81q")
+
+[sub_resource type="Resource" id="Resource_eus2v"]
+script = ExtResource("8_8ef1t")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_jhmu7"]
+script = ExtResource("6_ailvh")
+name = "Swift Strike"
+mod = SubResource("Resource_eus2v")
+
+[sub_resource type="Resource" id="Resource_xvvsa"]
+script = ExtResource("7_nfc0l")
+ticks = 2
+
+[sub_resource type="Resource" id="Resource_iyh80"]
+script = ExtResource("8_8ef1t")
+added_effects = Array[ExtResource("2_effect")]([SubResource("Resource_xvvsa")])
+
+[sub_resource type="Resource" id="Resource_ltc5u"]
+script = ExtResource("6_ailvh")
+name = "Shield Strike"
+required_class = ExtResource("9_mpxh1")
+mod = SubResource("Resource_iyh80")
+
+[sub_resource type="Resource" id="Resource_inyj5"]
+script = ExtResource("5_sno30")
+talents = Array[ExtResource("6_ailvh")]([SubResource("Resource_in2d5"), SubResource("Resource_jhmu7"), SubResource("Resource_ltc5u")])
+
+[sub_resource type="Resource" id="Resource_7yjj6"]
+script = ExtResource("8_8ef1t")
+damage_change = 3
+
+[sub_resource type="Resource" id="Resource_pe1bh"]
+script = ExtResource("6_ailvh")
+name = "Hard Strike"
+mod = SubResource("Resource_7yjj6")
+
+[sub_resource type="Resource" id="Resource_pxj4c"]
+script = ExtResource("3_damage_effect")
+amount = 4
+
+[sub_resource type="Resource" id="Resource_osk0x"]
+script = ExtResource("8_8ef1t")
+added_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pxj4c")])
+
+[sub_resource type="Resource" id="Resource_s0ik4"]
+script = ExtResource("6_ailvh")
+name = "Twin Strike"
+mod = SubResource("Resource_osk0x")
+
+[sub_resource type="Resource" id="Resource_enmko"]
+script = ExtResource("8_8ef1t")
+damage_change = 1
+delay_change = -2
+
+[sub_resource type="Resource" id="Resource_rmdw8"]
+script = ExtResource("6_ailvh")
+name = "Flurry"
+required_class = ExtResource("10_7faa7")
+mod = SubResource("Resource_enmko")
+
+[sub_resource type="Resource" id="Resource_32g8j"]
+script = ExtResource("5_sno30")
+talents = Array[ExtResource("6_ailvh")]([SubResource("Resource_pe1bh"), SubResource("Resource_s0ik4"), SubResource("Resource_rmdw8")])
+
 [resource]
 script = ExtResource("1_skill_data")
-name = "Strike"
 delay = 4
 effects = Array[ExtResource("2_effect")]([SubResource("Resource_damage")])
+name = "Strike"
+upgrades = Array[ExtResource("5_sno30")]([SubResource("Resource_inyj5"), SubResource("Resource_32g8j")])

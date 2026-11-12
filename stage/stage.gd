@@ -71,6 +71,7 @@ var _preview_presenter: PreviewPresenter
 @onready var _puppets: Control = $StageSet/Puppets
 @onready var _coach: Puppet = $StageSet/Puppets/Coach
 @onready var _offer_presenter: OfferPresenter = $OfferPresenter
+@onready var _level_up_view: LevelUpView = $LevelUpView
 @onready var _timeline_rope: TimelineRope = $StageSet/TimelineRope
 @onready var skill_bar: SkillBar = $SkillBar
 @onready var _coach_start_x := _coach.position.x
@@ -199,6 +200,10 @@ func show_travel(map_node: MapNode) -> void:
 
 func show_offers(offers: Array[Offer]) -> void:
 	await _offer_presenter.show_offers(offers)
+
+
+func show_draft(draft: Draft) -> void:
+	await _level_up_view.show_draft(draft)
 
 
 func hide_offers() -> void:

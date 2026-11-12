@@ -1,0 +1,98 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_08hyy"]
+[ext_resource type="Resource" path="res://skill/placeholder/duelist.tres" id="2_fjj6f"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="3_qavrp"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="4_jnqm1"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="5_mea37"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="6_nmhfq"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="7_ojcj0"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="8_hgpfv"]
+
+[sub_resource type="Resource" id="Resource_dk7or"]
+script = ExtResource("5_mea37")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_b46ca"]
+script = ExtResource("5_mea37")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_rlvlo"]
+script = ExtResource("5_mea37")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_ml06i"]
+script = ExtResource("8_hgpfv")
+name = "Light Step"
+mod = SubResource("Resource_rlvlo")
+
+[sub_resource type="Resource" id="Resource_lv3b6"]
+script = ExtResource("5_mea37")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_rddsf"]
+script = ExtResource("8_hgpfv")
+name = "Quick Recovery"
+mod = SubResource("Resource_lv3b6")
+
+[sub_resource type="Resource" id="Resource_kcjl2"]
+script = ExtResource("5_mea37")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_fdk46"]
+script = ExtResource("8_hgpfv")
+name = "Feint"
+mod = SubResource("Resource_kcjl2")
+
+[sub_resource type="Resource" id="Resource_dchm3"]
+script = ExtResource("7_ojcj0")
+mod = SubResource("Resource_b46ca")
+talents = Array[ExtResource("8_hgpfv")]([SubResource("Resource_ml06i"), SubResource("Resource_rddsf"), SubResource("Resource_fdk46")])
+
+[sub_resource type="Resource" id="Resource_8bnu1"]
+script = ExtResource("5_mea37")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_34oso"]
+script = ExtResource("5_mea37")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_v6p81"]
+script = ExtResource("8_hgpfv")
+name = "Blur"
+mod = SubResource("Resource_34oso")
+
+[sub_resource type="Resource" id="Resource_iuib0"]
+script = ExtResource("5_mea37")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_0fd28"]
+script = ExtResource("8_hgpfv")
+name = "Sidestep"
+mod = SubResource("Resource_iuib0")
+
+[sub_resource type="Resource" id="Resource_to755"]
+script = ExtResource("5_mea37")
+damage_change = 2
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_54n3b"]
+script = ExtResource("8_hgpfv")
+name = "Dance"
+required_class = ExtResource("2_fjj6f")
+mod = SubResource("Resource_to755")
+
+[sub_resource type="Resource" id="Resource_riivf"]
+script = ExtResource("7_ojcj0")
+mod = SubResource("Resource_8bnu1")
+talents = Array[ExtResource("8_hgpfv")]([SubResource("Resource_v6p81"), SubResource("Resource_0fd28"), SubResource("Resource_54n3b")])
+
+[resource]
+script = ExtResource("6_nmhfq")
+mod = SubResource("Resource_dk7or")
+name = "Footwork"
+class_offer_weights = Dictionary[ExtResource("1_08hyy"), int]({
+ExtResource("2_fjj6f"): 3,
+ExtResource("3_qavrp"): 1
+})
+upgrades = Array[ExtResource("7_ojcj0")]([SubResource("Resource_dchm3"), SubResource("Resource_riivf")])

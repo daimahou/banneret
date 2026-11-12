@@ -1,0 +1,92 @@
+[gd_resource type="Resource" script_class="PassiveData" format=3]
+
+[ext_resource type="Script" path="res://skill/class_data.gd" id="1_f8tfc"]
+[ext_resource type="Script" path="res://skill/effect/effect.gd" id="2_216u6"]
+[ext_resource type="Script" path="res://skill/skill_mod.gd" id="3_b3vn0"]
+[ext_resource type="Resource" path="res://skill/placeholder/guardian.tres" id="4_55gci"]
+[ext_resource type="Script" path="res://skill/passive_data.gd" id="5_lr2sd"]
+[ext_resource type="Script" path="res://skill/upgrade.gd" id="6_evmvv"]
+[ext_resource type="Script" path="res://skill/talent.gd" id="7_blpmy"]
+
+[sub_resource type="Resource" id="Resource_an4y7"]
+script = ExtResource("3_b3vn0")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_ou803"]
+script = ExtResource("3_b3vn0")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_wqyx6"]
+script = ExtResource("3_b3vn0")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_sy4mq"]
+script = ExtResource("7_blpmy")
+name = "Rampart"
+mod = SubResource("Resource_wqyx6")
+
+[sub_resource type="Resource" id="Resource_qbrby"]
+script = ExtResource("3_b3vn0")
+damage_change = 1
+
+[sub_resource type="Resource" id="Resource_nj4py"]
+script = ExtResource("7_blpmy")
+name = "Battlement"
+mod = SubResource("Resource_qbrby")
+
+[sub_resource type="Resource" id="Resource_6ctpq"]
+script = ExtResource("3_b3vn0")
+cooldown_change = -1
+
+[sub_resource type="Resource" id="Resource_5w0i0"]
+script = ExtResource("7_blpmy")
+name = "Gatekeeper"
+mod = SubResource("Resource_6ctpq")
+
+[sub_resource type="Resource" id="Resource_bpd46"]
+script = ExtResource("6_evmvv")
+mod = SubResource("Resource_ou803")
+talents = Array[ExtResource("7_blpmy")]([SubResource("Resource_sy4mq"), SubResource("Resource_nj4py"), SubResource("Resource_5w0i0")])
+
+[sub_resource type="Resource" id="Resource_p8j32"]
+script = ExtResource("3_b3vn0")
+stagger_change = 1
+
+[sub_resource type="Resource" id="Resource_qtcj8"]
+script = ExtResource("3_b3vn0")
+stagger_change = 2
+
+[sub_resource type="Resource" id="Resource_5lws6"]
+script = ExtResource("7_blpmy")
+name = "Fortress"
+mod = SubResource("Resource_qtcj8")
+
+[sub_resource type="Resource" id="Resource_8jqra"]
+script = ExtResource("3_b3vn0")
+damage_change = 2
+
+[sub_resource type="Resource" id="Resource_do04a"]
+script = ExtResource("7_blpmy")
+name = "Bulwark Strike"
+mod = SubResource("Resource_8jqra")
+
+[sub_resource type="Resource" id="Resource_of0vs"]
+script = ExtResource("3_b3vn0")
+delay_change = -1
+
+[sub_resource type="Resource" id="Resource_e1e6d"]
+script = ExtResource("7_blpmy")
+name = "Vigil"
+mod = SubResource("Resource_of0vs")
+
+[sub_resource type="Resource" id="Resource_toxt8"]
+script = ExtResource("6_evmvv")
+mod = SubResource("Resource_p8j32")
+talents = Array[ExtResource("7_blpmy")]([SubResource("Resource_5lws6"), SubResource("Resource_do04a"), SubResource("Resource_e1e6d")])
+
+[resource]
+script = ExtResource("5_lr2sd")
+mod = SubResource("Resource_an4y7")
+name = "Bastion"
+required_class = ExtResource("4_55gci")
+upgrades = Array[ExtResource("6_evmvv")]([SubResource("Resource_bpd46"), SubResource("Resource_toxt8")])

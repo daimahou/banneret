@@ -3,7 +3,7 @@ triage: ready-for-agent
 id: "1.3-1.2"
 requires:
   - "[[Fight sequence and starting party]]"
-started:
+started: 2026-11-13
 finished:
 hours: 0.1
 parent: "[[Combat and progression]]"

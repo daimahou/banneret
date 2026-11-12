@@ -287,7 +287,7 @@ func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
 	var action := _schedule(fight_model, _create_choice(fight_model, enemy, 2, 1, 1))
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, action))
 	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
-	fight_model.enemies[1].data.skills = []
+	fight_model.enemies[1].skills = []
 
 	assert_object(await brain.get_next_action(fight_model)).is_null()
 
@@ -296,7 +296,7 @@ func test_an_enemy_spends_all_its_ap() -> void:
 	var fight_model := _create_fight_model()
 	var enemy := _create_character(10, 2)
 	fight_model.enemies = [enemy]
-	enemy.data.skills.append(SkillData.new())
+	enemy.skills.append(SkillData.new())
 	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
 	var actors: Array[Character] = []
 	var choice := await brain.get_next_action(fight_model)
@@ -327,7 +327,7 @@ func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int,
 	choice.skill = SkillData.new()
 	choice.skill.delay = skill_delay
 	choice.skill.cooldown = skill_cooldown
-	actor.data.skills.append(choice.skill)
+	actor.skills.append(choice.skill)
 	var damage := DamageEffect.new()
 	damage.amount = damage_amount
 	choice.skill.effects = [damage]

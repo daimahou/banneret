@@ -69,6 +69,73 @@ func test_the_fight_lands_on_every_beat_it_crosses() -> void:
 			assert_array(ticks).contains([beat_tick])
 
 
+
+func test_a_fight_suspended_mid_play_holds_its_state_until_resumed_then_plays_on() -> void:
+	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, FrameBrain.new(FightModel.Side.HERO, 1))
+	var fight_model := fight_controller.fight_model
+	fight_controller.play()
+
+	assert_bool(await fight_controller.suspend()).is_true()
+	var held := _record_state(fight_model)
+	for frame in 5:
+		await get_tree().process_frame
+	assert_array(_record_state(fight_model)).is_equal(held)
+
+	fight_controller.resume()
+	await await_signal_on(fight_model, "changed", [], 2000)
+	assert_array(_record_state(fight_model)).is_not_equal(held)
+
+
+func test_a_fight_suspends_at_once_while_the_player_chooses() -> void:
+	var player_brain := PlayerBrain.new()
+	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, player_brain)
+	fight_controller.play()
+	assert_bool(player_brain.is_waiting()).is_true()
+	var tick := fight_controller.fight_model.tick
+
+	assert_bool(await fight_controller.suspend()).is_true()
+	assert_int(fight_controller.fight_model.tick).is_equal(tick)
+	player_brain.arm_skill(player_brain.hero.skills[0])
+	player_brain.confirm()
+	assert_bool(player_brain.is_waiting()).is_true()
+
+	fight_controller.resume()
+	player_brain.arm_skill(player_brain.hero.skills[0])
+	player_brain.confirm()
+	var fight_model := fight_controller.fight_model
+	var is_hero_action := func(action: Action) -> bool: return action.actor in fight_model.heroes
+	assert_bool(fight_model.timeline.any(is_hero_action)).is_true()
+
+
+func test_a_second_suspend_is_refused_while_one_is_requested() -> void:
+	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, FrameBrain.new(FightModel.Side.HERO, 1))
+	fight_controller.play()
+
+	fight_controller.suspend()
+	assert_bool(await fight_controller.suspend()).is_false()
+	for frame in 5:
+		await get_tree().process_frame
+	assert_bool(fight_controller.is_suspended()).is_true()
+	fight_controller.resume()
+
+
+func test_a_suspend_requested_as_the_fight_ends_is_dropped() -> void:
+	var hero_brain := EndingBrain.new()
+	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, hero_brain)
+	fight_controller.play()
+
+	assert_bool(await fight_controller.suspend()).is_false()
+	assert_bool(fight_controller.is_suspended()).is_false()
+	assert_bool(fight_controller.fight_model.is_won()).is_true()
+
+
+# The tick, the timeline as action ids, and each character's health, AP and cooldowns.
+func _record_state(fight_model: FightModel) -> Array:
+	var state: Array = [fight_model.tick, fight_model.timeline.map(func(action: Action) -> int: return action.id)]
+	for character in fight_model.heroes + fight_model.enemies:
+		state.append([character.health, character.ap, character.skill_cooldowns.duplicate()])
+	return state
+
 # Each resolved action as its actor, target and tick, by index among the fight's characters.
 func _record_fight(fight_seed: int) -> Array[Vector3i]:
 	var fight_controller := _create_fight_controller(fight_seed)
@@ -126,4 +193,26 @@ class StoppingBrain:
 		var next_action := fight_model.get_next_action()
 		if next_action != null and next_action.resolve_tick == fight_model.tick:
 			is_asked_with_action_due = true
+		return await super(fight_model)
+
+
+# Knocks out every enemy a frame after it is asked, then passes.
+class EndingBrain:
+	extends Brain
+
+	func get_next_action(fight_model: FightModel) -> Action:
+		await (Engine.get_main_loop() as SceneTree).process_frame
+		var delta := Delta.new()
+		for enemy in fight_model.get_standing(FightModel.Side.ENEMY):
+			FightRules.add_damage(fight_model, delta, enemy, enemy.health)
+		fight_model.apply(delta)
+		return await super(fight_model)
+
+
+# Plays at random, a frame after it is asked.
+class FrameBrain:
+	extends RandomBrain
+
+	func get_next_action(fight_model: FightModel) -> Action:
+		await (Engine.get_main_loop() as SceneTree).process_frame
 		return await super(fight_model)
