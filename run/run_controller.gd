@@ -8,101 +8,48 @@ const HOLD_DURATION := 0.4
 var run_model := RunModel.new()
 var fight_controller: FightController
 
-var _mission_controller: MissionController
-
 @onready var _stage: Stage = $Stage
-
-
-func _enter_tree() -> void:
-	LimboConsole.register_command(start_mission, "map_seed", "Rebuild the mission map from a seed")
-	LimboConsole.register_command(start_debug_fight, "fight", "Skip the mission: play the encounter at once, from a seed or a random one")
-
-
-func _exit_tree() -> void:
-	LimboConsole.unregister_command(start_mission)
-	LimboConsole.unregister_command(start_debug_fight)
 
 
 func _ready() -> void:
 	LimboConsole.info("Party: %s" % ", ".join(run_model.party.map(func(hero: Character) -> String: return hero.data.name)))
 	await _stage.laid_out
-	start_mission(randi())
-	_start_debug_fight_from_arguments()
+	_play_fights(_get_first_fight_seed())
 
 
-# Null until the stage is laid out.
-func get_mission_controller() -> MissionController:
-	return _mission_controller
-
-
-func start_mission(map_seed: int) -> void:
-	if _stage.is_in_transition():
-		LimboConsole.warn("The stage is in a transition")
-		return
-	if fight_controller != null:
-		LimboConsole.warn("A fight is playing")
-		return
-	if _mission_controller != null:
-		_mission_controller.dispose()
-	_stage.show_party(run_model.party)
-	_mission_controller = MissionController.new(_stage, map_seed)
-	_mission_controller.mission_ended.connect(_on_mission_ended)
-
-
-func start_debug_fight(fight_seed := randi()) -> void:
-	if _mission_controller == null:
-		await _stage.laid_out
-	if _stage.is_in_transition():
-		LimboConsole.warn("The stage is in a transition")
-		return
-	if fight_controller != null:
-		LimboConsole.warn("A fight is playing")
-		return
-	await _start_encounter(fight_seed)
-
-
-func _start_debug_fight_from_arguments() -> void:
+func _get_first_fight_seed() -> int:
 	for argument in OS.get_cmdline_args() + OS.get_cmdline_user_args():
-		if argument == "--fight":
-			start_debug_fight(randi())
-			return
 		if argument.begins_with("--fight="):
-			start_debug_fight(int(argument.trim_prefix("--fight=")))
-			return
+			return int(argument.trim_prefix("--fight="))
+	return randi()
 
 
-func _on_mission_ended() -> void:
-	await _start_encounter(randi())
+func _play_fights(first_fight_seed: int) -> void:
+	var fight_seed := first_fight_seed
+	while is_inside_tree():
+		await _play_fight(fight_seed)
+		await get_tree().create_timer(HOLD_DURATION).timeout
+		if run_model.is_lost():
+			LimboConsole.info("Run lost")
+			run_model = RunModel.new()
+		else:
+			LimboConsole.info("Fight won")
+		fight_seed = randi()
 
 
-func _start_encounter(fight_seed: int) -> void:
-	var enemies: Array[Character] = []
-	for enemy_data in RunModel.ENCOUNTER_ENEMIES:
-		enemies.append(Character.new(enemy_data))
+func _play_fight(fight_seed: int) -> void:
 	LimboConsole.info("Fight seed: %d" % fight_seed)
-	var fight_model := FightModel.new(run_model.party, enemies)
+	var fight_model := FightModel.new(run_model.party, run_model.create_encounter_enemies())
 	await _stage.show_encounter(fight_model)
 	var enemy_brain := RandomBrain.new(FightModel.Side.ENEMY, fight_seed)
 	fight_controller = FightController.new(fight_model, enemy_brain, PlayerBrain.new(_stage))
 	fight_controller.set_stage(_stage)
 	fight_started.emit(fight_controller)
 	await get_tree().create_timer(HOLD_DURATION).timeout
-	await _play_fight()
-
-
-func _play_fight() -> void:
 	fight_controller.action_resolved.connect(_on_action_resolved)
 	await fight_controller.play()
-	var is_won := fight_controller.fight_model.is_won()
 	fight_controller.dispose()
 	fight_controller = null
-	await get_tree().create_timer(HOLD_DURATION).timeout
-	if is_won:
-		LimboConsole.info("Fight won")
-	else:
-		LimboConsole.info("Run lost")
-		run_model = RunModel.new()
-	start_mission(randi())
 
 
 func _on_action_resolved(action: Action) -> void:

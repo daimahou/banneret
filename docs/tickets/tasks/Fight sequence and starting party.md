@@ -29,7 +29,7 @@ The first playable step of [[Combat and progression]]: start with three heroes a
 - **Defeat:** a fresh run starts at once, straight into a fight.
 - **Stage at startup:** opens on the fight scenery; heroes and enemies enter from offstage. No mission map, no coach.
 - **Stage between fights:** heroes stay in place, the timeline clears, the new enemies slide in from offstage right. No flip, no coach.
-- **Mission code:** `mission/` and the `map_seed` console command stay, unreachable from play. `--fight=<seed>` seeds the first fight. The `fight` console command is removed.
+- **Mission code:** `mission/` stays, unreachable from play. The `map_seed` and `fight` console commands are removed: fights chain without end, so no mission can start. `--fight=<seed>` seeds the first fight.
 
 ## Implementation starting points
 
