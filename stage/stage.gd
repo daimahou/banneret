@@ -5,7 +5,7 @@ signal laid_out
 signal map_node_pressed(map_node: MapNode)
 signal offer_pressed(offer: Offer)
 
-enum View { MISSION_MAP, TRANSITION, FIGHT }
+enum View { EMPTY, MISSION_MAP, TRANSITION, FIGHT }
 
 const TRAVEL_DURATION := 0.6
 const TRAVEL_TRANSITION := Tween.TRANS_SINE
@@ -51,7 +51,7 @@ const OFFSTAGE_RIGHT_X := 4240.0
 const PUPPET_SCENE := preload("res://stage/puppet/puppet.tscn")
 
 var _coach_tween: Tween
-var _view := View.MISSION_MAP
+var _view := View.EMPTY
 var _fight_puppets: Dictionary[Character, Puppet] = {}
 var _hero_nameplates: Array[Nameplate] = []
 var _enemy_nameplates: Array[Nameplate] = []
@@ -97,20 +97,14 @@ func show_mission(mission_model: MissionModel, map_seed: int) -> void:
 	if _view == View.FIGHT:
 		await _play_transition_to_mission(mission_model, map_seed)
 		return
+	_view = View.MISSION_MAP
 	_coach.position.x = _coach_start_x
 	_scenery.set_input_enabled(true)
 	_scenery.show_mission_map(mission_model, map_seed)
 
 
-func show_party(party: Array[Character]) -> void:
-	_show_nameplates(_hero_nameplates, party, PuppetLayout.Side.LEFT)
-
-
 func show_encounter(fight_model: FightModel) -> void:
-	_view = View.TRANSITION
-	_scenery.set_input_enabled(false)
-	await _slide_coach(_get_puppet_x(OFFSTAGE_RIGHT_X))
-	await _scenery.flip_to_battle()
+	await _prepare_encounter(fight_model)
 	var area := Rect2(Vector2.ZERO, _puppets.size)
 	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	_add_puppets(tween, fight_model.heroes, area, PuppetLayout.Side.LEFT, _get_puppet_x(OFFSTAGE_LEFT_X))
@@ -306,6 +300,43 @@ func _play_transition_to_mission(mission_model: MissionModel, map_seed: int) -> 
 	_scenery.set_input_enabled(true)
 
 
+func _prepare_encounter(fight_model: FightModel) -> void:
+	var previous_view := _view
+	_view = View.TRANSITION
+	_scenery.set_input_enabled(false)
+	if previous_view == View.FIGHT:
+		await _clear_fight(fight_model)
+		return
+	if previous_view == View.MISSION_MAP:
+		await _slide_coach(_get_puppet_x(OFFSTAGE_RIGHT_X))
+	_coach.position.x = _get_puppet_x(OFFSTAGE_RIGHT_X)
+	await _scenery.flip_to_battle()
+
+
+func _clear_fight(next_fight_model: FightModel) -> void:
+	hide_choices()
+	_fight_model.health_changed.disconnect(_on_health_changed)
+	_fight_model.character_fell.disconnect(_on_character_fell)
+	_fight_model.changed.disconnect(_on_fight_changed)
+	_preview_presenter.dispose()
+	_preview_presenter = null
+	_timeline_rope.clear()
+	var leaving: Array[Character] = []
+	for character in _fight_puppets:
+		if character not in next_fight_model.heroes:
+			leaving.append(character)
+	if leaving.is_empty():
+		return
+	var offstage_x := _get_puppet_x(OFFSTAGE_RIGHT_X)
+	var tween := create_tween().set_parallel().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
+	for character in leaving:
+		tween.tween_property(_fight_puppets[character], "position:x", offstage_x, PUPPET_SLIDE_DURATION)
+	await tween.finished
+	for character in leaving:
+		_fight_puppets[character].queue_free()
+		_fight_puppets.erase(character)
+
+
 func _slide_coach(x: float) -> void:
 	_coach_tween = create_tween().set_trans(TRAVEL_TRANSITION).set_ease(TRAVEL_EASE)
 	_coach_tween.tween_property(_coach, "position:x", x, COACH_SLIDE_DURATION)
@@ -315,6 +346,8 @@ func _slide_coach(x: float) -> void:
 func _add_puppets(tween: Tween, characters: Array[Character], area: Rect2, side: PuppetLayout.Side, offstage_x: float) -> void:
 	var stand_positions := PuppetLayout.get_stand_positions(area, characters.size(), side)
 	for index in characters.size():
+		if characters[index].is_fallen() or characters[index] in _fight_puppets:
+			continue
 		var puppet: Puppet = PUPPET_SCENE.instantiate()
 		puppet.texture = characters[index].data.puppet
 		puppet.position = Vector2(offstage_x, stand_positions[index].y)
@@ -329,6 +362,8 @@ func _show_nameplates(nameplates: Array[Nameplate], characters: Array[Character]
 	for index in nameplates.size():
 		var line_index := count - 1 - index if side == PuppetLayout.Side.LEFT else index - (nameplates.size() - count)
 		var character := characters[line_index] if line_index >= 0 and line_index < count else null
+		if character != null and character.is_fallen():
+			character = null
 		if nameplates[index].show_character(character, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 	_update_nameplates()
