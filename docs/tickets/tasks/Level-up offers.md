@@ -26,6 +26,7 @@ Implement the party's passive and active drafts using placeholder content, betwe
 
 ![[attachments/party_level_up_simple_talent_options.png]]
 
+- Reusable UI pieces are available in `stage/level_up/assets/`; its `README.md` and `manifest.json` define final pixel sizes, transparency and integration constraints. Review [[attachments/level_up_assets_native_preview.png|the native-size assembly]] and [[attachments/level_up_assets_contact_sheet.png|the piece sheet]]. The set targets 1672 × 941; resolve presentation against the current project viewport without silently scaling individual textures.
 - Use this mockup as the reference for layout, visual hierarchy and interaction states. Its names, skills, icons and values illustrate the UI; they do not require implementing that content in this task.
 - Three equal hero columns: portrait, name, class and stats; an eight-slot passive build; a separate five-slot active row; offers or talent options; a per-hero Confirm button. Keep all three builds visible for comparison.
 - Selecting an upgrade keeps its parent card visible with Back and replaces that column's remaining offer area with the talent choices. Other heroes' offers remain visible. Support up to four talent options without obscuring confirmation controls.

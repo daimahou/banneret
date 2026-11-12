@@ -1,0 +1,530 @@
+{
+  "reference_size": [
+    1672,
+    941
+  ],
+  "display_scale": 1,
+  "background": "background.png",
+  "assets": {
+    "background": {
+      "file": "background.png",
+      "size": [
+        1672,
+        941
+      ],
+      "processing": "native size; no resampling"
+    },
+    "offer_normal": {
+      "file": "offer_normal.png",
+      "size": [
+        512,
+        152
+      ],
+      "source": "clean_skin.png",
+      "source_region": [
+        588,
+        318,
+        1088,
+        476
+      ],
+      "trimmed_source_size": [
+        497,
+        158
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        20,
+        14,
+        472,
+        120
+      ]
+    },
+    "offer_focused": {
+      "file": "offer_focused.png",
+      "size": [
+        512,
+        152
+      ],
+      "source": "clean_skin.png",
+      "source_region": [
+        49,
+        318,
+        583,
+        476
+      ],
+      "trimmed_source_size": [
+        529,
+        158
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        20,
+        14,
+        472,
+        120
+      ]
+    },
+    "offer_selected": {
+      "file": "offer_selected.png",
+      "size": [
+        512,
+        152
+      ],
+      "source": "clean_skin.png",
+      "source_region": [
+        1093,
+        316,
+        1625,
+        476
+      ],
+      "trimmed_source_size": [
+        528,
+        160
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        20,
+        14,
+        472,
+        120
+      ]
+    },
+    "talent_normal": {
+      "file": "talent_normal.png",
+      "size": [
+        512,
+        100
+      ],
+      "source": "clean_skin.png",
+      "source_region": [
+        54,
+        480,
+        580,
+        583
+      ],
+      "trimmed_source_size": [
+        521,
+        103
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        18,
+        12,
+        476,
+        76
+      ]
+    },
+    "talent_selected": {
+      "file": "talent_selected.png",
+      "size": [
+        512,
+        100
+      ],
+      "source": "clean_skin.png",
+      "source_region": [
+        53,
+        586,
+        582,
+        691
+      ],
+      "trimmed_source_size": [
+        523,
+        105
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        18,
+        12,
+        476,
+        76
+      ]
+    },
+    "active_tray": {
+      "file": "active_tray.png",
+      "size": [
+        512,
+        88
+      ],
+      "source": "clean_skin.png",
+      "source_region": [
+        62,
+        225,
+        581,
+        319
+      ],
+      "trimmed_source_size": [
+        513,
+        94
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        20,
+        16,
+        472,
+        56
+      ]
+    },
+    "button_enabled": {
+      "file": "button_enabled.png",
+      "size": [
+        320,
+        64
+      ],
+      "source": "skin.png",
+      "source_region": [
+        166,
+        794,
+        489,
+        867
+      ],
+      "trimmed_source_size": [
+        315,
+        65
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        40,
+        12,
+        240,
+        40
+      ]
+    },
+    "button_normal": {
+      "file": "button_normal.png",
+      "size": [
+        320,
+        64
+      ],
+      "source": "skin.png",
+      "source_region": [
+        1183,
+        794,
+        1511,
+        867
+      ],
+      "trimmed_source_size": [
+        323,
+        64
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        40,
+        12,
+        240,
+        40
+      ]
+    },
+    "button_disabled": {
+      "file": "button_disabled.png",
+      "size": [
+        320,
+        64
+      ],
+      "source": "skin.png",
+      "source_region": [
+        674,
+        794,
+        1000,
+        867
+      ],
+      "trimmed_source_size": [
+        320,
+        64
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        40,
+        12,
+        240,
+        40
+      ]
+    },
+    "button_compact": {
+      "file": "button_compact.png",
+      "size": [
+        240,
+        48
+      ],
+      "source": "skin.png",
+      "source_region": [
+        1386,
+        888,
+        1630,
+        941
+      ],
+      "trimmed_source_size": [
+        235,
+        48
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        24,
+        8,
+        192,
+        32
+      ]
+    },
+    "button_back": {
+      "file": "button_back.png",
+      "size": [
+        104,
+        40
+      ],
+      "source": "components.png",
+      "source_region": [
+        51,
+        240,
+        213,
+        325
+      ],
+      "trimmed_source_size": [
+        144,
+        59
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        12,
+        7,
+        80,
+        26
+      ]
+    },
+    "portrait_frame": {
+      "file": "portrait_frame.png",
+      "size": [
+        136,
+        148
+      ],
+      "source": "skin.png",
+      "source_region": [
+        78,
+        70,
+        215,
+        216
+      ],
+      "trimmed_source_size": [
+        131,
+        141
+      ],
+      "processing": "native crop and transparent padding",
+      "content_rect": [
+        16,
+        14,
+        104,
+        120
+      ]
+    },
+    "skill_frame": {
+      "file": "skill_frame.png",
+      "size": [
+        56,
+        56
+      ],
+      "source": "skin.png",
+      "source_region": [
+        215,
+        100,
+        272,
+        158
+      ],
+      "trimmed_source_size": [
+        55,
+        57
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        7,
+        7,
+        42,
+        42
+      ]
+    },
+    "talent_socket": {
+      "file": "talent_socket.png",
+      "size": [
+        24,
+        24
+      ],
+      "source": "skin.png",
+      "source_region": [
+        270,
+        101,
+        298,
+        130
+      ],
+      "trimmed_source_size": [
+        27,
+        27
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        5,
+        5,
+        14,
+        14
+      ]
+    },
+    "offer_icon_frame": {
+      "file": "offer_icon_frame.png",
+      "size": [
+        88,
+        88
+      ],
+      "source": "components.png",
+      "source_region": [
+        519,
+        386,
+        654,
+        533
+      ],
+      "trimmed_source_size": [
+        122,
+        127
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        10,
+        10,
+        68,
+        68
+      ]
+    },
+    "talent_icon_frame": {
+      "file": "talent_icon_frame.png",
+      "size": [
+        52,
+        52
+      ],
+      "source": "skin.png",
+      "source_region": [
+        215,
+        100,
+        272,
+        158
+      ],
+      "trimmed_source_size": [
+        55,
+        57
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        7,
+        7,
+        38,
+        38
+      ]
+    },
+    "skill_slot_empty": {
+      "file": "skill_slot_empty.png",
+      "size": [
+        56,
+        56
+      ],
+      "source": "components.png",
+      "source_region": [
+        415,
+        610,
+        511,
+        710
+      ],
+      "trimmed_source_size": [
+        87,
+        91
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        10,
+        10,
+        36,
+        36
+      ]
+    },
+    "talent_socket_empty": {
+      "file": "talent_socket_empty.png",
+      "size": [
+        24,
+        24
+      ],
+      "source": "components.png",
+      "source_region": [
+        761,
+        630,
+        819,
+        685
+      ],
+      "trimmed_source_size": [
+        44,
+        46
+      ],
+      "processing": "offline normalization to final pixel size (Lanczos)",
+      "content_rect": [
+        6,
+        6,
+        12,
+        12
+      ]
+    },
+    "check_selected": {
+      "file": "check_selected.png",
+      "size": [
+        24,
+        24
+      ],
+      "source": "components.png",
+      "source_region": [
+        872,
+        630,
+        940,
+        690
+      ],
+      "trimmed_source_size": [
+        44,
+        39
+      ],
+      "processing": "uniform offline resample to final size"
+    },
+    "check_muted": {
+      "file": "check_muted.png",
+      "size": [
+        24,
+        24
+      ],
+      "source": "components.png",
+      "source_region": [
+        944,
+        630,
+        1009,
+        690
+      ],
+      "trimmed_source_size": [
+        42,
+        38
+      ],
+      "processing": "uniform offline resample to final size"
+    }
+  },
+  "layout": {
+    "column_x": [
+      64,
+      592,
+      1120
+    ],
+    "card_y": [
+      320,
+      480,
+      640
+    ],
+    "talent_y": [
+      480,
+      588,
+      696
+    ],
+    "confirm_y": 804,
+    "active_tray_y": 232
+  },
+  "notes": [
+    "Draw at exported size: no runtime scaling or NinePatchRect stretching.",
+    "Source elements were generated at reference scale, then cropped and normalized offline to the exact exported sizes. No runtime scaling is needed.",
+    "All words, numbers, portraits and gameplay icons are separate runtime content."
+  ]
+}
