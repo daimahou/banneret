@@ -100,6 +100,26 @@ func test_a_choice_without_a_target_is_only_chosen() -> void:
 	assert_object(preview_model.get_action(choice.id)).is_not_null()
 
 
+func test_an_upgraded_skill_plays_out_as_the_fight_resolves_it() -> void:
+	var fight_model := _create_fight_model()
+	var preview_model := FightModel.new([], [])
+	var enemy := fight_model.enemies[0]
+	var choice := _create_choice(fight_model.heroes[0], enemy, 4, 3)
+	var rank := SkillFixture.add_rank(choice.skill.data)
+	rank.modifiers.append(SkillFixture.create_modifier(SkillModifier.Stat.DELAY, -1))
+	rank.perks[0].effects.append(SkillFixture.create_damage(2))
+	choice.skill.upgrade(rank.perks[0])
+
+	Simulation.run(preview_model, fight_model, choice)
+	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, fight_model.get_next_action()))
+
+	assert_int(preview_model.tick).is_equal(3)
+	assert_int(preview_model.get_character(enemy.id).health).is_equal(5)
+	assert_int(fight_model.tick).is_equal(preview_model.tick)
+	assert_int(enemy.health).is_equal(5)
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character(), _create_character()]
 	var enemies: Array[Character] = [_create_character(), _create_character()]

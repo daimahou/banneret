@@ -123,6 +123,26 @@ func test_a_skill_pick_from_the_run_reaches_the_hero() -> void:
 	assert_object(hero.skills.back().data).is_same(offer.skill_data)
 
 
+func test_confirming_an_upgrade_raises_its_skill_with_the_chosen_perk() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	_complete_level_ups(run_model, 2)
+	var hero := run_model.party[0]
+	var skill := Skill.new(SkillData.new())
+	var perk := SkillFixture.add_rank(skill.data, 2).perks[1]
+	var gained := SkillFixture.create_damage(1)
+	perk.effects.append(gained)
+	hero.skills.append(skill)
+	var level_up := run_model.create_level_up()
+	var is_upgrade := func(offer: LevelUpOffer) -> bool: return offer.is_upgrade()
+	var upgrade: LevelUpOffer = level_up.get_offers(hero).filter(is_upgrade)[0]
+
+	level_up.select_offer(hero, upgrade, perk)
+	_confirm_first_offers(run_model, level_up)
+
+	assert_array(skill.get_effects()).contains([gained])
+	assert_object(skill.get_next_rank()).is_null()
+
+
 func _complete_level_ups(run_model: RunModel, count: int) -> void:
 	for index in count:
 		_confirm_first_offers(run_model, run_model.create_level_up())
@@ -130,8 +150,9 @@ func _complete_level_ups(run_model: RunModel, count: int) -> void:
 
 func _confirm_first_offers(run_model: RunModel, level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
-		if not level_up.is_skipped(hero):
-			level_up.select_offer(hero, level_up.get_offers(hero)[0])
+		if not level_up.is_skipped(hero) and level_up.get_selected_offer(hero) == null:
+			var offer := level_up.get_offers(hero)[0]
+			level_up.select_offer(hero, offer, offer.get_perks()[0] if offer.is_upgrade() else null)
 	run_model.confirm_level_up(level_up)
 
 

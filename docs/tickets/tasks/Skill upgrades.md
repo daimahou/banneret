@@ -1,12 +1,12 @@
 ---
 triage: ready-for-agent
-id: "1.3-1.2.3"
+id: 1.3-1.2.3
 parent: "[[Level-up offers]]"
 requires:
   - "[[Skill acquisition]]"
-started:
-finished:
-hours:
+started: 2026-11-14
+finished: 2026-11-14
+hours: 0.6
 ---
 Upgrade offers for skills, with ranks and perks: [[Level-up offers]].
 

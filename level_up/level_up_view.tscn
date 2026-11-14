@@ -1,25 +1,26 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cpnd7busyj3qd"]
 
-[ext_resource type="Script" path="res://level_up/level_up_view.gd" id="1_view"]
-[ext_resource type="Texture2D" path="res://level_up/assets/background.png" id="2_background"]
+[ext_resource type="Script" uid="uid://cnb41fesmp6g0" path="res://level_up/level_up_view.gd" id="1_view"]
+[ext_resource type="Texture2D" uid="uid://dvnlbs4vvjlr4" path="res://level_up/assets/background.png" id="2_background"]
 [ext_resource type="PackedScene" path="res://level_up/level_up_column.tscn" id="3_column"]
-[ext_resource type="Texture2D" path="res://level_up/assets/button_compact.png" id="4_button_compact"]
+[ext_resource type="Texture2D" uid="uid://1qdqusv2aq8c" path="res://level_up/assets/button_compact.png" id="4_button_compact"]
 
-[node name="LevelUpView" type="Control"]
+[node name="LevelUpView" type="Control" unique_id=2029031252]
 visible = false
+z_index = 4096
 layout_mode = 3
 anchors_preset = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
 script = ExtResource("1_view")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=220675170]
 layout_mode = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
 texture = ExtResource("2_background")
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=555301491]
 layout_mode = 0
 offset_left = 1711.0
 offset_right = 2124.0
@@ -30,23 +31,26 @@ text = "LEVEL UP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Columns" type="Control" parent="."]
+[node name="Columns" type="Control" parent="." unique_id=894021547]
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="Column1" parent="Columns" instance=ExtResource("3_column")]
+[node name="Column1" parent="Columns" unique_id=867900425 instance=ExtResource("3_column")]
+layout_mode = 0
 offset_left = 147.0
 offset_right = 1323.0
 
-[node name="Column2" parent="Columns" instance=ExtResource("3_column")]
+[node name="Column2" parent="Columns" unique_id=854941153 instance=ExtResource("3_column")]
+layout_mode = 0
 offset_left = 1360.0
 offset_right = 2536.0
 
-[node name="Column3" parent="Columns" instance=ExtResource("3_column")]
+[node name="Column3" parent="Columns" unique_id=1421341239 instance=ExtResource("3_column")]
+layout_mode = 0
 offset_left = 2572.0
 offset_right = 3748.0
 
-[node name="ReadyLabel" type="Label" parent="."]
+[node name="ReadyLabel" type="Label" parent="." unique_id=31846938]
 layout_mode = 0
 offset_left = 1420.0
 offset_top = 2040.0
@@ -58,7 +62,7 @@ text = "0 / 3 ready"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContinueButton" type="TextureButton" parent="."]
+[node name="ContinueButton" type="TextureButton" parent="." unique_id=1798979310]
 layout_mode = 0
 offset_left = 3180.0
 offset_top = 2040.0
@@ -67,7 +71,7 @@ offset_bottom = 2150.0
 disabled = true
 texture_normal = ExtResource("4_button_compact")
 
-[node name="Label" type="Label" parent="ContinueButton"]
+[node name="Label" type="Label" parent="ContinueButton" unique_id=963977326]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

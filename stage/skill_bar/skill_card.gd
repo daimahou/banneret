@@ -14,6 +14,8 @@ const GREYED_INK_COLOR := Color("454545ff")
 # Null while the slot is empty.
 var skill: Skill
 
+var _shown_data: SkillData
+var _shown_rank := Skill.Rank.BASIC
 var _is_awaiting_swap := false
 var _cooldown_beats := 0
 var _cooldown_style := PreviewPulse.Style.NONE
@@ -44,10 +46,12 @@ func _ready() -> void:
 
 # Null empties the slot.
 func show_skill(shown_skill: Skill, delay: float) -> bool:
-	var is_card_unchanged := _get_skill_data(shown_skill) == _get_skill_data(skill)
+	var is_card_unchanged := _get_skill_data(shown_skill) == _shown_data and _get_rank(shown_skill) == _shown_rank
 	skill = shown_skill
 	if is_card_unchanged:
 		return false
+	_shown_data = _get_skill_data(shown_skill)
+	_shown_rank = _get_rank(shown_skill)
 	_is_awaiting_swap = true
 	_cooldown_beats = 0
 	_cooldown_style = PreviewPulse.Style.NONE
@@ -56,7 +60,7 @@ func show_skill(shown_skill: Skill, delay: float) -> bool:
 	pivot_offset = size / 2.0
 	_flip_tween = create_tween().set_trans(Scenery.FLIP_TRANSITION)
 	_flip_tween.tween_property(self, "scale:x", 0.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN).set_delay(delay)
-	_flip_tween.tween_callback(_show_content.bind(_get_skill_data(shown_skill)))
+	_flip_tween.tween_callback(_show_content.bind(shown_skill))
 	_flip_tween.tween_property(self, "scale:x", 1.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT)
 	return true
 
@@ -72,18 +76,18 @@ func show_cooldown(beats: int, style := PreviewPulse.Style.NONE) -> void:
 		_show_cooldown()
 
 
-func _show_content(shown_skill: SkillData) -> void:
+func _show_content(shown_skill: Skill) -> void:
 	_is_awaiting_swap = false
 	texture_normal = EMPTY_TEXTURE if shown_skill == null else CARD_TEXTURE
 	_content.visible = shown_skill != null
 	if shown_skill != null:
-		_icon.texture = shown_skill.icon if shown_skill.icon != null else PLACEHOLDER_ICON
-		_name.text = shown_skill.name
+		_icon.texture = shown_skill.data.icon if shown_skill.data.icon != null else PLACEHOLDER_ICON
+		_name.text = shown_skill.data.name
 		var lines := PackedStringArray()
-		for effect in shown_skill.effects:
+		for effect in shown_skill.get_effects():
 			lines.append(effect.get_description())
 		_description.text = "\n".join(lines)
-		_delay.text = str(shown_skill.delay)
+		_delay.text = str(shown_skill.get_delay())
 	_show_cooldown()
 
 
@@ -94,7 +98,7 @@ func _show_cooldown() -> void:
 	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
 	_cooldown_label.text = str(_cooldown_beats)
 	_cooldown_pulse.show_style(_cooldown_style)
-	_wipe_fraction = _cooldown_beats / float(skill.data.cooldown) if _cooldown_beats > 0 else 0.0
+	_wipe_fraction = _cooldown_beats / float(skill.get_cooldown()) if _cooldown_beats > 0 else 0.0
 	_wipe.queue_redraw()
 
 
@@ -142,3 +146,7 @@ func _draw_wipe() -> void:
 
 static func _get_skill_data(card_skill: Skill) -> SkillData:
 	return null if card_skill == null else card_skill.data
+
+
+static func _get_rank(card_skill: Skill) -> Skill.Rank:
+	return Skill.Rank.BASIC if card_skill == null else card_skill.rank

@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://level_up/level_up_perk_icon.gd" id="1_icon"]
+[ext_resource type="Texture2D" uid="uid://behk85tx1cfj5" path="res://level_up/assets/talent_socket_empty.png" id="2_empty"]
+
+[node name="LevelUpPerkIcon" type="TextureRect"]
+offset_right = 55.0
+offset_bottom = 55.0
+mouse_filter = 1
+texture = ExtResource("2_empty")
+script = ExtResource("1_icon")
+
+[node name="Icon" type="TextureRect" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_left = 11.0
+offset_top = 11.0
+offset_right = 43.0
+offset_bottom = 43.0
+mouse_filter = 2
+stretch_mode = 3

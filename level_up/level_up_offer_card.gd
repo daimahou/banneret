@@ -4,14 +4,22 @@ extends TextureButton
 
 const NORMAL_TEXTURE := preload("res://level_up/assets/offer_normal.png")
 const SELECTED_TEXTURE := preload("res://level_up/assets/offer_selected.png")
+const OPEN_TEXTURE := preload("res://level_up/assets/offer_focused.png")
 
 # Null while the card is hidden.
 var offer: LevelUpOffer
+
+var _perk_icons: Array[LevelUpPerkIcon] = []
 
 @onready var _icon: TextureRect = $IconFrame/Icon
 @onready var _name: Label = $Name
 @onready var _description: Label = $Description
 @onready var _check: TextureRect = $Check
+@onready var _perk_row: HBoxContainer = $PerkRow
+
+
+func _ready() -> void:
+	_perk_icons.assign(_perk_row.get_children())
 
 
 # Null hides the card.
@@ -20,17 +28,18 @@ func show_offer(shown_offer: LevelUpOffer) -> void:
 	visible = offer != null
 	if offer == null:
 		return
-	var skill_data := offer.skill_data
-	_icon.texture = skill_data.icon
-	_name.text = skill_data.name
-	var lines := PackedStringArray(["%d AP, delay %d" % [skill_data.ap_cost, skill_data.delay]])
-	if skill_data.cooldown > 0:
-		lines[0] += ", cooldown %d" % skill_data.cooldown
-	for effect in skill_data.effects:
-		lines.append(effect.get_description())
-	_description.text = "\n".join(lines)
+	var offered_skill := offer.create_skill_before_perk()
+	_icon.texture = offer.skill_data.icon
+	_name.text = "%s · %s" % [offer.skill_data.name, offered_skill.get_rank_title()]
+	_description.text = offered_skill.get_description()
+	var perks := offer.get_perks()
+	for index in _perk_icons.size():
+		_perk_icons[index].visible = index < perks.size()
+		if _perk_icons[index].visible:
+			_perk_icons[index].show_perk(perks[index])
 
 
-func set_selected(is_selected: bool) -> void:
-	texture_normal = SELECTED_TEXTURE if is_selected else NORMAL_TEXTURE
-	_check.visible = is_selected
+func show_state(is_selected: bool, is_open: bool) -> void:
+	texture_normal = OPEN_TEXTURE if is_open else SELECTED_TEXTURE if is_selected else NORMAL_TEXTURE
+	_check.visible = is_selected and not is_open
+	_perk_row.visible = not is_open

@@ -1,26 +1,42 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://7cfaa7r4h1cu"]
 
-[ext_resource type="Script" path="res://level_up/level_up_offer_card.gd" id="1_card"]
-[ext_resource type="Texture2D" path="res://level_up/assets/offer_normal.png" id="2_normal"]
-[ext_resource type="Texture2D" path="res://level_up/assets/offer_icon_frame.png" id="3_icon_frame"]
-[ext_resource type="Texture2D" path="res://level_up/assets/check_selected.png" id="4_check"]
+[ext_resource type="Script" uid="uid://bh0nluip278u6" path="res://level_up/level_up_offer_card.gd" id="1_card"]
+[ext_resource type="Texture2D" uid="uid://c50hatgmo1f6q" path="res://level_up/assets/offer_normal.png" id="2_normal"]
+[ext_resource type="Texture2D" uid="uid://yojqxxaex22u" path="res://level_up/assets/offer_icon_frame.png" id="3_icon_frame"]
+[ext_resource type="Texture2D" uid="uid://4r787yab80wg" path="res://level_up/assets/check_selected.png" id="4_check"]
+[ext_resource type="PackedScene" path="res://level_up/level_up_perk_icon.tscn" id="5_perk_icon"]
 
-[node name="LevelUpOfferCard" type="TextureButton"]
+[node name="LevelUpOfferCard" type="TextureButton" unique_id=949334340]
 offset_right = 1176.0
 offset_bottom = 349.0
 texture_normal = ExtResource("2_normal")
 script = ExtResource("1_card")
 
-[node name="IconFrame" type="TextureRect" parent="."]
-layout_mode = 0
+[node name="IconFrame" type="Control" parent="." unique_id=1176759748]
+anchors_preset = 0
 offset_left = 46.0
 offset_top = 73.0
 offset_right = 248.0
 offset_bottom = 275.0
 mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="IconFrame" unique_id=861241771]
+clip_contents = true
+layout_mode = 0
+offset_left = 23.0
+offset_top = 23.0
+offset_right = 179.0
+offset_bottom = 179.0
+color = Color(0.91764706, 0.7529412, 0.62352943, 1)
+
+[node name="Frame" type="TextureRect" parent="IconFrame" unique_id=1414339861]
+layout_mode = 0
+offset_right = 202.0
+offset_bottom = 202.0
+mouse_filter = 2
 texture = ExtResource("3_icon_frame")
 
-[node name="Icon" type="TextureRect" parent="IconFrame"]
+[node name="Icon" type="TextureRect" parent="IconFrame" unique_id=550087416]
 clip_contents = true
 layout_mode = 0
 offset_left = 23.0
@@ -30,7 +46,7 @@ offset_bottom = 179.0
 mouse_filter = 2
 stretch_mode = 3
 
-[node name="Name" type="Label" parent="."]
+[node name="Name" type="Label" parent="." unique_id=1883764649]
 layout_mode = 0
 offset_left = 290.0
 offset_top = 24.0
@@ -40,7 +56,7 @@ theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
 theme_override_font_sizes/font_size = 64
 text = "Offer name"
 
-[node name="Description" type="Label" parent="."]
+[node name="Description" type="Label" parent="." unique_id=1071065081]
 layout_mode = 0
 offset_left = 290.0
 offset_top = 146.0
@@ -51,7 +67,7 @@ theme_override_font_sizes/font_size = 44
 text = "What the offer does."
 autowrap_mode = 3
 
-[node name="Check" type="TextureRect" parent="."]
+[node name="Check" type="TextureRect" parent="." unique_id=611266060]
 visible = false
 layout_mode = 0
 offset_left = 1060.0
@@ -60,3 +76,25 @@ offset_right = 1115.0
 offset_bottom = 202.0
 mouse_filter = 2
 texture = ExtResource("4_check")
+
+[node name="PerkRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 886.0
+offset_top = 40.0
+offset_right = 1130.0
+offset_bottom = 95.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="PerkIcon1" parent="PerkRow" instance=ExtResource("5_perk_icon")]
+layout_mode = 2
+
+[node name="PerkIcon2" parent="PerkRow" instance=ExtResource("5_perk_icon")]
+layout_mode = 2
+
+[node name="PerkIcon3" parent="PerkRow" instance=ExtResource("5_perk_icon")]
+layout_mode = 2
+
+[node name="PerkIcon4" parent="PerkRow" instance=ExtResource("5_perk_icon")]
+layout_mode = 2
