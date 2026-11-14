@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cnb41fesmp6g0" path="res://level_up/level_up_view.gd" id="1_view"]
 [ext_resource type="Texture2D" uid="uid://dvnlbs4vvjlr4" path="res://level_up/assets/background.png" id="2_background"]
-[ext_resource type="PackedScene" path="res://level_up/level_up_column.tscn" id="3_column"]
+[ext_resource type="PackedScene" uid="uid://d4ml2aqhkhc8c" path="res://level_up/level_up_column.tscn" id="3_column"]
 [ext_resource type="Texture2D" uid="uid://1qdqusv2aq8c" path="res://level_up/assets/button_compact.png" id="4_button_compact"]
+[ext_resource type="Theme" uid="uid://c1lghj777s5qe" path="res://level_up/level_up_theme.tres" id="5_theme"]
 
 [node name="LevelUpView" type="Control" unique_id=2029031252]
 visible = false
@@ -12,6 +13,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 3840.0
 offset_bottom = 2160.0
+theme = ExtResource("5_theme")
 script = ExtResource("1_view")
 
 [node name="Background" type="TextureRect" parent="." unique_id=220675170]

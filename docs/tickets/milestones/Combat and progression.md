@@ -4,7 +4,7 @@ id: 1.3-1
 deadline:
 started: 2026-11-12
 finished:
-total_hours: 6.5
+total_hours: 7.6
 parent: "[[Act 1 prototype]]"
 ---
 

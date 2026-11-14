@@ -56,16 +56,18 @@ theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
 theme_override_font_sizes/font_size = 64
 text = "Offer name"
 
-[node name="Description" type="Label" parent="." unique_id=1071065081]
+[node name="Description" type="RichTextLabel" parent="." unique_id=1071065081]
 layout_mode = 0
 offset_left = 290.0
 offset_top = 146.0
 offset_right = 1040.0
 offset_bottom = 300.0
-theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
-theme_override_font_sizes/font_size = 44
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/normal_font_size = 44
+bbcode_enabled = true
 text = "What the offer does."
-autowrap_mode = 3
+scroll_active = false
 
 [node name="Check" type="TextureRect" parent="." unique_id=611266060]
 visible = false

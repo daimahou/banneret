@@ -4,9 +4,9 @@ id: "1.3-1.2.4"
 parent: "[[Level-up offers]]"
 requires:
   - "[[Skill upgrades]]"
-started:
-finished:
-hours:
+started: 2026-11-14
+finished: 2026-11-14
+hours: 1.1
 ---
 Talents, talent drafts and the class as a talent: [[Level-up offers]].
 

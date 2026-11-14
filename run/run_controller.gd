@@ -66,7 +66,7 @@ func _play_level_up() -> void:
 
 
 func _show_level_up(level_up: LevelUp) -> void:
-	var select_offer := func(hero: Character, offer: LevelUpOffer, perk: SkillPerk) -> void:
+	var select_offer := func(hero: Character, offer: LevelUpOffer, perk: Perk) -> void:
 		level_up.select_offer(hero, offer, perk)
 		_level_up_view.update_states()
 	_level_up_view.offer_selected.connect(select_offer)

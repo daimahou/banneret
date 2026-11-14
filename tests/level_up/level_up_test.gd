@@ -1,12 +1,18 @@
 extends GdUnitTestSuite
 
 const SKILL_DRAFT_NUMBER := 3
+const TALENT_DRAFT_NUMBER := 1
 
 var _rng := RandomNumberGenerator.new()
+var _game_bags := LevelUp.bags
 
 
 func before_test() -> void:
 	_rng.seed = 1
+
+
+func after_test() -> void:
+	LevelUp.bags = _game_bags
 
 
 func test_each_hero_gets_three_distinct_offers_of_skills_they_do_not_own() -> void:
@@ -17,7 +23,7 @@ func test_each_hero_gets_three_distinct_offers_of_skills_they_do_not_own() -> vo
 	var offers := _create_level_up([hero], bag).get_offers(hero)
 
 	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
-	var offered := offers.map(func(offer: LevelUpOffer) -> SkillData: return offer.skill_data)
+	var offered := offers.map(_get_skill_data)
 	assert_array(bag).contains(offered)
 	assert_array(offered).not_contains([bag[0]])
 	for skill_data in offered:
@@ -30,7 +36,7 @@ func test_fewer_valid_skills_than_three_are_all_offered() -> void:
 
 	var offers := _create_level_up([hero], bag).get_offers(hero)
 
-	var offered := offers.map(func(offer: LevelUpOffer) -> SkillData: return offer.skill_data)
+	var offered := offers.map(_get_skill_data)
 	assert_array(offered).contains_exactly_in_any_order(bag)
 
 
@@ -82,11 +88,102 @@ func test_a_fallen_hero_is_skipped_while_the_others_pick() -> void:
 	assert_bool(level_up.is_ready()).is_false()
 
 
-func test_a_talent_draft_skips_every_hero() -> void:
-	var level_up := LevelUp.new(1, [_create_hero(), _create_hero()], _create_bag(3), _rng)
+func test_a_talent_draft_offers_two_new_talents_and_one_upgrade_of_an_owned_talent() -> void:
+	var hero := _create_hero()
+	var talent_bag := _create_talent_bag(5)
+	TalentFixture.add_rank(talent_bag[0])
+	hero.add_talent(Talent.new(talent_bag[0]))
 
-	assert_int(level_up.draft).is_equal(LevelUp.Draft.TALENT)
-	assert_bool(level_up.has_offers()).is_false()
+	var offers := _create_talent_level_up([hero], talent_bag).get_offers(hero)
+
+	var upgrades := offers.filter(func(offer: LevelUpOffer) -> bool: return offer.is_upgrade())
+	var new_talents := offers.filter(func(offer: LevelUpOffer) -> bool: return not offer.is_upgrade())
+	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
+	assert_object((upgrades[0] as TalentOffer).talent).is_same(hero.talents[0])
+	var offered := new_talents.map(func(offer: TalentOffer) -> TalentData: return offer.talent.data)
+	assert_int(offered.size()).is_equal(2)
+	assert_array(offered).not_contains([talent_bag[0]])
+	assert_object(offered[0]).is_not_same(offered[1])
+
+
+func test_a_talent_draft_offers_no_skill() -> void:
+	var hero := _create_hero()
+	SkillFixture.add_rank(hero.skills[0].data)
+
+	LevelUp.bags = {LevelUp.Draft.SKILL: _create_bag(3)}
+
+	var offers := LevelUp.new(TALENT_DRAFT_NUMBER, [hero], _rng).get_offers(hero)
+
+	assert_array(offers).is_empty()
+
+
+func test_a_hero_with_every_talent_slot_full_is_offered_upgrades_only() -> void:
+	var hero := _create_hero(TalentFixture.create_talent_data("Class"))
+	while hero.has_free_talent_slot():
+		hero.add_talent(Talent.new(TalentFixture.create_talent_data("Owned")))
+	for talent in hero.talents:
+		TalentFixture.add_rank(talent.data)
+
+	var offers := _create_talent_level_up([hero], _create_talent_bag(5)).get_offers(hero)
+
+	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
+	assert_bool(offers.all(func(offer: LevelUpOffer) -> bool: return offer.is_upgrade())).is_true()
+
+
+func test_the_class_upgrade_offers_its_specializations() -> void:
+	var hero := _create_hero(TalentFixture.create_talent_data("Class"))
+	var specializations := TalentFixture.add_rank(hero.talents[0].data, 3)
+
+	var offers := _create_talent_level_up([hero], []).get_offers(hero)
+
+	assert_object((offers[0] as TalentOffer).talent).is_same(hero.talents[0])
+	assert_array(offers[0].get_perks()).contains_exactly(specializations.perks)
+
+
+func test_a_specialization_closes_the_others_and_opens_its_ascensions() -> void:
+	var hero := _create_hero(TalentFixture.create_talent_data("Class"))
+	TalentFixture.add_rank(hero.talents[0].data, 3)
+	var ascensions := TalentFixture.add_rank(hero.talents[0].data, 3)
+	_pick_first_upgrade(_create_talent_level_up([hero], []), hero, 1)
+
+	var offers := _create_talent_level_up([hero], []).get_offers(hero)
+
+	assert_array(offers[0].get_perks()).contains_exactly(ascensions.perks)
+
+
+func test_earlier_picks_are_unchanged_by_a_later_specialization() -> void:
+	var hero := _create_hero(TalentFixture.create_talent_data("Class"))
+	var specializations := TalentFixture.add_rank(hero.talents[0].data, 3)
+	specializations.perks[0].modifiers.append(TalentFixture.create_modifier(HeroModifier.Stat.MAX_HEALTH, 2))
+	var talent := Talent.new(TalentFixture.create_talent_data("Earlier"))
+	var talent_rank := TalentFixture.add_rank(talent.data)
+	talent_rank.modifiers.append(TalentFixture.create_modifier(HeroModifier.Stat.MAX_HEALTH, 1))
+	hero.add_talent(talent)
+	hero.upgrade_talent(talent, talent_rank.perks[0])
+	var skill := hero.skills[0]
+	skill.upgrade(SkillFixture.add_rank(skill.data).perks[0])
+
+	_pick_first_upgrade(_create_talent_level_up([hero], []), hero, 0)
+
+	assert_int(talent.rank).is_equal(Skill.Rank.ADVANCED)
+	assert_array(talent.perks).contains_exactly([talent_rank.perks[0]])
+	assert_int(skill.rank).is_equal(Skill.Rank.ADVANCED)
+	assert_int(skill.perks.size()).is_equal(1)
+	assert_int(hero.get_max_health()).is_equal(10 + 1 + 2)
+
+
+func test_applying_picks_adds_a_new_talent_with_its_gain() -> void:
+	var hero := _create_hero()
+	hero.health = 4
+	var talent_bag := _create_talent_bag(1)
+	talent_bag[0].modifiers.append(TalentFixture.create_modifier(HeroModifier.Stat.MAX_HEALTH, 3))
+	var level_up := _create_talent_level_up([hero], talent_bag)
+	level_up.select_offer(hero, level_up.get_offers(hero)[0])
+
+	level_up.apply_picks()
+
+	assert_object(hero.talents.back().data).is_same(talent_bag[0])
+	assert_int(hero.health).is_equal(7)
 
 
 func test_a_selection_makes_its_hero_ready_and_can_be_changed_without_applying_it() -> void:
@@ -113,7 +210,7 @@ func test_a_skill_draft_offers_two_new_skills_and_one_upgrade_of_an_owned_skill(
 	var upgrades := offers.filter(func(offer: LevelUpOffer) -> bool: return offer.is_upgrade())
 	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
 	assert_int(upgrades.size()).is_equal(1)
-	assert_object(upgrades[0].skill).is_same(hero.skills[0])
+	assert_object((upgrades[0] as SkillOffer).skill).is_same(hero.skills[0])
 
 
 func test_upgrades_fill_the_places_the_bag_cannot() -> void:
@@ -128,7 +225,7 @@ func test_upgrades_fill_the_places_the_bag_cannot() -> void:
 	var upgrades := offers.filter(func(offer: LevelUpOffer) -> bool: return offer.is_upgrade())
 	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
 	assert_int(upgrades.size()).is_equal(2)
-	assert_int(upgrades[0].skill.id).is_not_equal(upgrades[1].skill.id)
+	assert_int((upgrades[0] as SkillOffer).skill.id).is_not_equal((upgrades[1] as SkillOffer).skill.id)
 
 
 func test_a_hero_with_every_skill_slot_full_is_offered_upgrades_only() -> void:
@@ -170,6 +267,17 @@ func test_an_upgrade_lists_its_next_rank_s_perks_in_authored_order() -> void:
 	assert_array(offers[0].get_perks()).contains_exactly(rank.perks)
 
 
+func test_an_upgrade_describes_only_what_its_next_rank_adds() -> void:
+	var hero := _create_hero()
+	hero.skills[0].data.effects.append(SkillFixture.create_damage(1))
+	var rank := SkillFixture.add_rank(hero.skills[0].data)
+	rank.modifiers.append(SkillFixture.create_modifier(SkillModifier.Stat.DELAY, -1))
+
+	var offers := _create_level_up([hero], []).get_offers(hero)
+
+	assert_str(offers[0].get_description()).is_equal("Delay -1")
+
+
 func test_more_perks_than_the_limit_are_reported_and_all_kept() -> void:
 	var hero := _create_hero()
 	var rank := SkillFixture.add_rank(hero.skills[0].data, LevelUp.PERK_LIMIT + 1)
@@ -204,13 +312,27 @@ func test_an_upgrade_without_one_of_its_perks_cannot_be_selected() -> void:
 
 
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:
-	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, bag, _rng)
+	LevelUp.bags = {LevelUp.Draft.SKILL: bag}
+	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, _rng)
 
 
-func _create_hero() -> Character:
+func _create_talent_level_up(heroes: Array[Character], talent_bag: Array[TalentData]) -> LevelUp:
+	LevelUp.bags = {LevelUp.Draft.TALENT: talent_bag}
+	return LevelUp.new(TALENT_DRAFT_NUMBER, heroes, _rng)
+
+
+func _pick_first_upgrade(level_up: LevelUp, hero: Character, perk_index: int) -> void:
+	var is_upgrade := func(offer: LevelUpOffer) -> bool: return offer.is_upgrade()
+	var upgrade: LevelUpOffer = level_up.get_offers(hero).filter(is_upgrade)[0]
+	level_up.select_offer(hero, upgrade, upgrade.get_perks()[perk_index])
+	level_up.apply_picks()
+
+
+func _create_hero(class_data: TalentData = null) -> Character:
 	var hero_data := CharacterData.new()
 	hero_data.name = "Hero"
 	hero_data.max_health = 10
+	hero_data.class_talent = class_data
 	hero_data.skills.append(_create_skill_data("Basic attack"))
 	return Character.new(hero_data)
 
@@ -220,6 +342,17 @@ func _create_bag(size: int) -> Array[SkillData]:
 	for index in size:
 		bag.append(_create_skill_data("Skill %d" % index))
 	return bag
+
+
+func _create_talent_bag(size: int) -> Array[TalentData]:
+	var talent_bag: Array[TalentData] = []
+	for index in size:
+		talent_bag.append(TalentFixture.create_talent_data("Talent %d" % index))
+	return talent_bag
+
+
+func _get_skill_data(offer: SkillOffer) -> SkillData:
+	return offer.skill.data
 
 
 func _create_skill_data(skill_name: String) -> SkillData:

@@ -56,7 +56,8 @@ func _get_summary(outcomes: Array[Outcome]) -> String:
 		var total := 0
 		for outcome in outcomes:
 			total += outcome.healths[index]
-		lines.append("  %-10s %5.1f / %d" % [cast[index].data.name, float(total) / outcomes.size(), cast[index].data.max_health])
+		var average := float(total) / outcomes.size()
+		lines.append("  %-10s %5.1f / %d" % [cast[index].data.name, average, cast[index].get_max_health()])
 	return "\n".join(lines)
 
 
