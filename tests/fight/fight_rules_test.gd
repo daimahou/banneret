@@ -308,6 +308,46 @@ func test_an_enemy_spends_all_its_ap() -> void:
 	assert_array(actors).contains_exactly([enemy, enemy])
 
 
+func test_an_upgrade_s_modifiers_change_what_scheduling_its_skill_costs() -> void:
+	var fight_model := _create_fight_model()
+	var hero := fight_model.heroes[0]
+	var choice := _create_choice(fight_model, hero, 2, 1, 2)
+	var rank := SkillFixture.add_rank(choice.skill.data)
+	rank.modifiers.append(SkillFixture.create_modifier(SkillModifier.Stat.AP_COST, 1))
+	rank.modifiers.append(SkillFixture.create_modifier(SkillModifier.Stat.COOLDOWN, -1))
+	choice.skill.upgrade(rank.perks[0])
+
+	_schedule(fight_model, choice)
+
+	assert_int(hero.ap).is_equal(CharacterData.MAX_AP - 2)
+	assert_int(choice.skill.cooldown_beats).is_equal(1)
+
+
+func test_an_upgrade_keeps_its_skill_s_cooldown() -> void:
+	var fight_model := _create_fight_model()
+	var choice := _create_choice(fight_model, fight_model.heroes[0], 2, 1, 2)
+	_schedule(fight_model, choice)
+
+	choice.skill.upgrade(SkillFixture.add_rank(choice.skill.data).perks[0])
+
+	assert_int(choice.skill.cooldown_beats).is_equal(2)
+	assert_array(FightRules.get_usable_skills(choice.actor)).not_contains([choice.skill])
+
+
+func test_an_action_already_queued_resolves_with_an_upgrade_made_since() -> void:
+	var fight_model := _create_fight_model()
+	var choice := _create_choice(fight_model, fight_model.heroes[0], 2, 1)
+	var queued := _schedule(fight_model, choice)
+	var rank := SkillFixture.add_rank(choice.skill.data)
+	rank.effects.append(SkillFixture.create_damage(2))
+	rank.perks[0].effects.append(SkillFixture.create_damage(3))
+
+	choice.skill.upgrade(rank.perks[0])
+	fight_model.apply(FightRules.get_resolve_delta(fight_model, queued))
+
+	assert_int(choice.target.health).is_equal(10 - 1 - 2 - 3)
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character(10), _create_character(10)]
 	var enemies: Array[Character] = [_create_character(10), _create_character(10)]

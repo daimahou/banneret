@@ -1,5 +1,6 @@
 class_name SkillData
 extends Resource
+# A skill's preset, which is its Basic rank, and the ranks above it.
 
 enum Blow { QUICK, HEAVY }
 
@@ -11,3 +12,5 @@ enum Blow { QUICK, HEAVY }
 @export var ap_cost := 1
 @export var blow := Blow.QUICK
 @export var effects: Array[Effect] = []
+# Advanced, then Expert.
+@export var ranks: Array[SkillRank] = []

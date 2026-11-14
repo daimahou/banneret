@@ -1,12 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d4ml2aqhkhc8c"]
 
-[ext_resource type="Script" path="res://level_up/level_up_column.gd" id="1_column"]
-[ext_resource type="Texture2D" path="res://level_up/assets/portrait_frame.png" id="2_portrait_frame"]
-[ext_resource type="Texture2D" path="res://level_up/assets/active_tray.png" id="3_tray"]
+[ext_resource type="Script" uid="uid://dw5oswkrhhm0n" path="res://level_up/level_up_column.gd" id="1_column"]
+[ext_resource type="Texture2D" uid="uid://cdmhuststr5vd" path="res://level_up/assets/portrait_frame.png" id="2_portrait_frame"]
+[ext_resource type="Texture2D" uid="uid://p0cc32rhqvsy" path="res://level_up/assets/active_tray.png" id="3_tray"]
 [ext_resource type="PackedScene" path="res://level_up/level_up_skill_slot.tscn" id="4_skill_slot"]
-[ext_resource type="PackedScene" path="res://level_up/level_up_offer_card.tscn" id="5_offer_card"]
+[ext_resource type="PackedScene" uid="uid://7cfaa7r4h1cu" path="res://level_up/level_up_offer_card.tscn" id="5_offer_card"]
+[ext_resource type="PackedScene" path="res://level_up/level_up_perk_card.tscn" id="6_perk_card"]
+[ext_resource type="Texture2D" uid="uid://0126bve1chbp" path="res://level_up/assets/button_back.png" id="7_back"]
 
-[node name="LevelUpColumn" type="Control"]
+[node name="LevelUpColumn" type="Control" unique_id=232931765]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1176.0
@@ -14,7 +16,7 @@ offset_bottom = 2160.0
 mouse_filter = 2
 script = ExtResource("1_column")
 
-[node name="PortraitFrame" type="TextureRect" parent="."]
+[node name="PortraitFrame" type="TextureRect" parent="." unique_id=536752481]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 160.0
@@ -23,7 +25,7 @@ offset_bottom = 500.0
 mouse_filter = 2
 texture = ExtResource("2_portrait_frame")
 
-[node name="Portrait" type="TextureRect" parent="PortraitFrame"]
+[node name="Portrait" type="TextureRect" parent="PortraitFrame" unique_id=327118265]
 clip_contents = true
 layout_mode = 0
 offset_left = 37.0
@@ -33,7 +35,7 @@ offset_bottom = 308.0
 mouse_filter = 2
 stretch_mode = 3
 
-[node name="Name" type="Label" parent="."]
+[node name="Name" type="Label" parent="." unique_id=1165513543]
 layout_mode = 0
 offset_left = 380.0
 offset_top = 190.0
@@ -43,7 +45,7 @@ theme_override_colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
 theme_override_font_sizes/font_size = 80
 text = "Hero"
 
-[node name="Stats" type="Label" parent="."]
+[node name="Stats" type="Label" parent="." unique_id=796866876]
 layout_mode = 0
 offset_left = 380.0
 offset_top = 320.0
@@ -53,7 +55,7 @@ theme_override_colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
 theme_override_font_sizes/font_size = 52
 text = "Health 0 / 0   AP 0 / 0"
 
-[node name="SkillTray" type="TextureRect" parent="."]
+[node name="SkillTray" type="TextureRect" parent="." unique_id=488358826]
 layout_mode = 0
 offset_top = 533.0
 offset_right = 1176.0
@@ -61,31 +63,31 @@ offset_bottom = 735.0
 mouse_filter = 2
 texture = ExtResource("3_tray")
 
-[node name="SkillSlots" type="HBoxContainer" parent="SkillTray"]
+[node name="SkillSlots" type="HBoxContainer" parent="SkillTray" unique_id=810863189]
 layout_mode = 0
 offset_left = 46.0
-offset_top = 37.0
+offset_top = 44.0
 offset_right = 1130.0
-offset_bottom = 166.0
+offset_bottom = 173.0
 mouse_filter = 2
 theme_override_constants/separation = 102
 
-[node name="SkillSlot1" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot1" parent="SkillTray/SkillSlots" unique_id=1602439984 instance=ExtResource("4_skill_slot")]
 layout_mode = 2
 
-[node name="SkillSlot2" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot2" parent="SkillTray/SkillSlots" unique_id=402832218 instance=ExtResource("4_skill_slot")]
 layout_mode = 2
 
-[node name="SkillSlot3" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot3" parent="SkillTray/SkillSlots" unique_id=667435894 instance=ExtResource("4_skill_slot")]
 layout_mode = 2
 
-[node name="SkillSlot4" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot4" parent="SkillTray/SkillSlots" unique_id=2134078446 instance=ExtResource("4_skill_slot")]
 layout_mode = 2
 
-[node name="SkillSlot5" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot5" parent="SkillTray/SkillSlots" unique_id=934751055 instance=ExtResource("4_skill_slot")]
 layout_mode = 2
 
-[node name="Offers" type="VBoxContainer" parent="."]
+[node name="Offers" type="VBoxContainer" parent="." unique_id=1971481029]
 layout_mode = 0
 offset_top = 755.0
 offset_right = 1176.0
@@ -93,16 +95,62 @@ offset_bottom = 1838.0
 mouse_filter = 2
 theme_override_constants/separation = 18
 
-[node name="OfferCard1" parent="Offers" instance=ExtResource("5_offer_card")]
+[node name="OfferCard1" parent="Offers" unique_id=1127750678 instance=ExtResource("5_offer_card")]
 layout_mode = 2
 
-[node name="OfferCard2" parent="Offers" instance=ExtResource("5_offer_card")]
+[node name="OfferCard2" parent="Offers" unique_id=678197159 instance=ExtResource("5_offer_card")]
 layout_mode = 2
 
-[node name="OfferCard3" parent="Offers" instance=ExtResource("5_offer_card")]
+[node name="OfferCard3" parent="Offers" unique_id=393832508 instance=ExtResource("5_offer_card")]
 layout_mode = 2
 
-[node name="SkippedLabel" type="Label" parent="."]
+[node name="Perks" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 1104.0
+offset_right = 1176.0
+offset_bottom = 2024.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="PerkCard1" parent="Perks" instance=ExtResource("6_perk_card")]
+visible = false
+layout_mode = 2
+
+[node name="PerkCard2" parent="Perks" instance=ExtResource("6_perk_card")]
+visible = false
+layout_mode = 2
+
+[node name="PerkCard3" parent="Perks" instance=ExtResource("6_perk_card")]
+visible = false
+layout_mode = 2
+
+[node name="PerkCard4" parent="Perks" instance=ExtResource("6_perk_card")]
+visible = false
+layout_mode = 2
+
+[node name="BackButton" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 891.0
+offset_top = 785.0
+offset_right = 1130.0
+offset_bottom = 877.0
+texture_normal = ExtResource("7_back")
+
+[node name="Label" type="Label" parent="BackButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
+theme_override_font_sizes/font_size = 40
+text = "Back"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkippedLabel" type="Label" parent="." unique_id=374195422]
 visible = false
 layout_mode = 0
 offset_top = 1200.0

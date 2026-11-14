@@ -48,7 +48,11 @@ func confirm_level_up(level_up: LevelUp) -> void:
 		return
 	for hero in level_up.heroes:
 		var offer := level_up.get_selected_offer(hero)
-		if offer != null:
+		if offer == null:
+			continue
+		if offer.is_upgrade():
+			offer.skill.upgrade(level_up.get_selected_perk(hero))
+		else:
 			hero.skills.append(Skill.new(offer.skill_data))
 	level_up_count += 1
 

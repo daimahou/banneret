@@ -249,7 +249,7 @@ func _create_ghost_action() -> Action:
 	ghost.actor = hero
 	ghost.skill = shown
 	ghost.target = _get_ghost_target(shown)
-	ghost.resolve_tick = _fight_model.tick + shown.data.delay
+	ghost.resolve_tick = _fight_model.tick + shown.get_delay()
 	return ghost
 
 

@@ -1,10 +1,10 @@
 ---
 triage: ready-for-agent
-id: "1.3-1.2.3"
+id: 1.3-1.2.3
 parent: "[[Level-up offers]]"
 requires:
   - "[[Skill acquisition]]"
-started:
+started: 2026-11-14
 finished:
 hours:
 ---

@@ -1,8 +1,43 @@
 [gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://0bpt6xmzfvvm"]
 
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
+[ext_resource type="Script" uid="uid://bg7lowjig6amm" path="res://skill/skill_rank.gd" id="2_skill_rank"]
+[ext_resource type="Script" uid="uid://dcc6abto4lumy" path="res://skill/skill_perk.gd" id="3_skill_perk"]
+
+[sub_resource type="Resource" id="Resource_advanced_perk_a"]
+script = ExtResource("3_skill_perk")
+name = "Perk A"
+
+[sub_resource type="Resource" id="Resource_advanced_perk_b"]
+script = ExtResource("3_skill_perk")
+name = "Perk B"
+
+[sub_resource type="Resource" id="Resource_advanced_perk_c"]
+script = ExtResource("3_skill_perk")
+name = "Perk C"
+
+[sub_resource type="Resource" id="Resource_advanced"]
+script = ExtResource("2_skill_rank")
+perks = Array[ExtResource("3_skill_perk")]([SubResource("Resource_advanced_perk_a"), SubResource("Resource_advanced_perk_b"), SubResource("Resource_advanced_perk_c")])
+
+[sub_resource type="Resource" id="Resource_expert_perk_a"]
+script = ExtResource("3_skill_perk")
+name = "Perk A"
+
+[sub_resource type="Resource" id="Resource_expert_perk_b"]
+script = ExtResource("3_skill_perk")
+name = "Perk B"
+
+[sub_resource type="Resource" id="Resource_expert_perk_c"]
+script = ExtResource("3_skill_perk")
+name = "Perk C"
+
+[sub_resource type="Resource" id="Resource_expert"]
+script = ExtResource("2_skill_rank")
+perks = Array[ExtResource("3_skill_perk")]([SubResource("Resource_expert_perk_a"), SubResource("Resource_expert_perk_b"), SubResource("Resource_expert_perk_c")])
 
 [resource]
 script = ExtResource("1_skill_data")
 name = "Placeholder A"
 delay = 4
+ranks = Array[ExtResource("2_skill_rank")]([SubResource("Resource_advanced"), SubResource("Resource_expert")])
