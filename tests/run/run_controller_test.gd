@@ -53,7 +53,7 @@ func test_a_victory_opens_the_level_up_and_the_next_fight_carries_its_picks() ->
 	var picks: Dictionary[Character, SkillData] = {}
 	for hero in level_up.heroes:
 		var offer: LevelUpOffer = level_up.get_offers(hero)[0]
-		level_up.confirm_pick(hero, offer)
+		level_up.select_offer(hero, offer)
 		picks[hero] = offer.skill_data
 	(run_controller.get_node("LevelUpView/ContinueButton") as TextureButton).pressed.emit()
 	var fight_controller: FightController = await run_controller.fight_started

@@ -62,7 +62,7 @@ func test_a_skill_pick_from_the_run_reaches_the_hero() -> void:
 	var hero := run_model.party[0]
 	var offer: LevelUpOffer = level_up.get_offers(hero)[0]
 
-	level_up.confirm_pick(hero, offer)
+	_confirm_first_offers(level_up)
 
 	assert_object(hero.skills.back().data).is_same(offer.skill_data)
 
@@ -73,9 +73,12 @@ func _complete_level_ups(run_model: RunModel, count: int) -> void:
 
 
 func _confirm_first_offers(level_up: LevelUp) -> void:
+	if level_up.is_complete():
+		return
 	for hero in level_up.heroes:
 		if level_up.get_state(hero) == LevelUp.State.PENDING:
-			level_up.confirm_pick(hero, level_up.get_offers(hero)[0])
+			level_up.select_offer(hero, level_up.get_offers(hero)[0])
+	level_up.confirm_picks()
 
 
 func _create_seeded_rng() -> RandomNumberGenerator:

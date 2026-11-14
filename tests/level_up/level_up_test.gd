@@ -80,7 +80,7 @@ func test_a_fallen_hero_is_skipped_while_the_others_pick() -> void:
 	assert_int(level_up.get_state(fallen)).is_equal(LevelUp.State.SKIPPED)
 	assert_int(level_up.get_state(standing)).is_equal(LevelUp.State.PENDING)
 	assert_int(level_up.get_ready_count()).is_equal(1)
-	assert_bool(level_up.is_complete()).is_false()
+	assert_bool(level_up.is_ready()).is_false()
 
 
 func test_a_talent_draft_skips_every_hero() -> void:
@@ -90,32 +90,50 @@ func test_a_talent_draft_skips_every_hero() -> void:
 	assert_bool(level_up.is_complete()).is_true()
 
 
-func test_a_confirmed_pick_adds_the_skill_to_that_hero_only() -> void:
-	var picker := _create_hero()
-	var other := _create_hero()
-	var level_up := _create_level_up([picker, other], _create_bag(5))
-	var offer: LevelUpOffer = level_up.get_offers(picker)[0]
-
-	level_up.confirm_pick(picker, offer)
-
-	assert_object(picker.skills.back().data).is_same(offer.skill_data)
-	assert_int(picker.skills.size()).is_equal(2)
-	assert_int(other.skills.size()).is_equal(1)
-	assert_int(level_up.get_state(picker)).is_equal(LevelUp.State.CONFIRMED)
-	assert_int(level_up.get_ready_count()).is_equal(1)
-
-
-func test_a_confirmed_hero_cannot_pick_again() -> void:
+func test_a_selection_makes_its_hero_ready_and_can_be_changed_without_applying_it() -> void:
 	var hero := _create_hero()
-	var level_up := _create_level_up([hero], _create_bag(5))
+	var other := _create_hero()
+	var level_up := _create_level_up([hero, other], _create_bag(5))
 	var offers := level_up.get_offers(hero)
-	level_up.confirm_pick(hero, offers[0])
 
-	var confirm_again := func() -> void: level_up.confirm_pick(hero, offers[1])
-	await assert_error(confirm_again).is_push_error("%s cannot pick that offer" % hero.data.name)
+	level_up.select_offer(hero, offers[0])
+	level_up.select_offer(hero, offers[1])
 
-	assert_int(hero.skills.size()).is_equal(2)
+	assert_object(level_up.get_selected_offer(hero)).is_same(offers[1])
+	assert_int(level_up.get_ready_count()).is_equal(1)
+	assert_bool(level_up.is_ready()).is_false()
+	assert_int(hero.skills.size()).is_equal(1)
+
+
+func test_confirming_applies_each_selection_to_its_own_hero_once() -> void:
+	var heroes: Array[Character] = [_create_hero(), _create_hero()]
+	var level_up := _create_level_up(heroes, _create_bag(5))
+	var selected: Array[SkillData] = []
+	for index in heroes.size():
+		var offer: LevelUpOffer = level_up.get_offers(heroes[index])[index]
+		level_up.select_offer(heroes[index], offer)
+		selected.append(offer.skill_data)
+	assert_bool(level_up.is_ready()).is_true()
+
+	level_up.confirm_picks()
+	await assert_error(level_up.confirm_picks).is_push_error("Level-up 3 is already confirmed")
+
 	assert_bool(level_up.is_complete()).is_true()
+	for index in heroes.size():
+		assert_int(heroes[index].skills.size()).is_equal(2)
+		assert_object(heroes[index].skills.back().data).is_same(selected[index])
+
+
+func test_picks_are_not_confirmed_while_a_hero_has_no_selection() -> void:
+	var hero := _create_hero()
+	var other := _create_hero()
+	var level_up := _create_level_up([hero, other], _create_bag(5))
+	level_up.select_offer(hero, level_up.get_offers(hero)[0])
+
+	await assert_error(level_up.confirm_picks).is_push_error("Level-up 3 waits on a selection")
+
+	assert_int(hero.skills.size()).is_equal(1)
+	assert_bool(level_up.is_complete()).is_false()
 
 
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:

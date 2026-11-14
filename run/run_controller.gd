@@ -62,15 +62,16 @@ func _play_level_up() -> void:
 	LimboConsole.info("Level-up %d: %s draft" % [level_up.number, level_up.get_draft_name()])
 	if level_up.is_complete():
 		return
-	var confirm_pick := func(hero: Character, offer: LevelUpOffer) -> void:
-		level_up.confirm_pick(hero, offer)
+	var select_offer := func(hero: Character, offer: LevelUpOffer) -> void:
+		level_up.select_offer(hero, offer)
 		_level_up_view.update_states()
-	_level_up_view.pick_confirmed.connect(confirm_pick)
+	_level_up_view.offer_selected.connect(select_offer)
 	_level_up_view.show_level_up(level_up)
 	level_up_started.emit(level_up)
-	while not level_up.is_complete():
+	while not level_up.is_ready():
 		await _level_up_view.continue_pressed
-	_level_up_view.pick_confirmed.disconnect(confirm_pick)
+	level_up.confirm_picks()
+	_level_up_view.offer_selected.disconnect(select_offer)
 	_level_up_view.hide()
 
 
