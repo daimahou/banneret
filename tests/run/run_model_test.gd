@@ -72,7 +72,7 @@ func test_confirming_applies_each_selection_to_its_own_hero() -> void:
 		var hero := level_up.heroes[index]
 		var offer := level_up.get_offers(hero)[index] as SkillOffer
 		level_up.select_offer(hero, offer)
-		selected.append(offer.skill_data)
+		selected.append(offer.skill.data)
 
 	run_model.confirm_level_up(level_up)
 
@@ -122,7 +122,7 @@ func test_a_skill_pick_from_the_run_reaches_the_hero() -> void:
 
 	_confirm_first_offers(run_model, level_up)
 
-	assert_object(hero.skills.back().data).is_same(offer.skill_data)
+	assert_object(hero.skills.back().data).is_same(offer.skill.data)
 
 
 func test_confirming_an_upgrade_raises_its_skill_with_the_chosen_perk() -> void:
@@ -153,7 +153,7 @@ func test_a_talent_pick_from_the_run_reaches_the_hero() -> void:
 
 	_confirm_first_offers(run_model, level_up)
 
-	assert_object(hero.talents.back().data).is_same(offer.talent_data)
+	assert_object(hero.talents.back().data).is_same(offer.talent.data)
 
 
 func _complete_level_ups(run_model: RunModel, count: int) -> void:
@@ -172,4 +172,4 @@ func _confirm_first_offers(run_model: RunModel, level_up: LevelUp) -> void:
 # Each hero's offered skills, in party order.
 func _get_offered(level_up: LevelUp) -> Array:
 	return level_up.heroes.map(func(hero: Character) -> Array:
-		return level_up.get_offers(hero).map(func(offer: SkillOffer) -> SkillData: return offer.skill_data))
+		return level_up.get_offers(hero).map(func(offer: SkillOffer) -> SkillData: return offer.skill.data))

@@ -125,7 +125,7 @@ func test_levelup_pauses_the_game_opens_the_next_level_up_and_resumes_the_same_f
 	await runner.simulate_frames(2)
 	assert_bool(get_tree().paused).is_false()
 	assert_object(run_controller.fight_controller).is_same(fight_controller)
-	assert_object(hero.skills.back().data).is_same((opened[0].get_offers(hero)[0] as SkillOffer).skill_data)
+	assert_object(hero.skills.back().data).is_same((opened[0].get_offers(hero)[0] as SkillOffer).skill.data)
 	assert_int(run_controller.run_model.level_up_count).is_equal(3)
 
 

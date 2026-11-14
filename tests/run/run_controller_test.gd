@@ -58,7 +58,7 @@ func test_a_victory_opens_the_level_up_and_the_next_fight_carries_its_picks() ->
 	for hero in level_up.heroes:
 		var offer := level_up.get_offers(hero)[0] as SkillOffer
 		level_up.select_offer(hero, offer)
-		picks[hero] = offer.skill_data
+		picks[hero] = offer.skill.data
 	_press_continue(run_controller)
 	var fight_controller: FightController = await run_controller.fight_started
 

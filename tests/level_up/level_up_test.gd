@@ -95,7 +95,7 @@ func test_a_talent_draft_offers_two_new_talents_and_one_upgrade_of_an_owned_tale
 	var new_talents := offers.filter(func(offer: LevelUpOffer) -> bool: return not offer.is_upgrade())
 	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
 	assert_object((upgrades[0] as TalentOffer).talent).is_same(hero.talents[0])
-	var offered := new_talents.map(func(offer: TalentOffer) -> TalentData: return offer.talent_data)
+	var offered := new_talents.map(func(offer: TalentOffer) -> TalentData: return offer.talent.data)
 	assert_int(offered.size()).is_equal(2)
 	assert_array(offered).not_contains([talent_bag[0]])
 	assert_object(offered[0]).is_not_same(offered[1])
@@ -332,7 +332,7 @@ func _create_talent_bag(size: int) -> Array[TalentData]:
 
 
 func _get_skill_data(offer: SkillOffer) -> SkillData:
-	return offer.skill_data
+	return offer.skill.data
 
 
 func _create_skill_data(skill_name: String) -> SkillData:
