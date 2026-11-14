@@ -1,5 +1,5 @@
 class_name LevelUpSkillSlot
-extends TextureRect
+extends HBoxContainer
 # One skill slot of a hero's build in the level-up: empty, or an owned skill with its perks beside it. It shows what it is told.
 
 const FRAME_TEXTURE := preload("res://level_up/assets/skill_frame.png")
@@ -7,7 +7,8 @@ const EMPTY_TEXTURE := preload("res://level_up/assets/skill_slot_empty.png")
 
 var _perk_icons: Array[LevelUpPerkIcon] = []
 
-@onready var _name: Label = $Name
+@onready var _frame: TextureRect = $Frame
+@onready var _name: Label = $Frame/Name
 
 
 func _ready() -> void:
@@ -16,9 +17,9 @@ func _ready() -> void:
 
 # Null empties the slot.
 func show_skill(skill: Skill) -> void:
-	texture = EMPTY_TEXTURE if skill == null else FRAME_TEXTURE
+	_frame.texture = EMPTY_TEXTURE if skill == null else FRAME_TEXTURE
 	_name.text = "" if skill == null else skill.data.name
-	tooltip_text = "" if skill == null else _get_skill_tooltip(skill)
+	_frame.tooltip_text = "" if skill == null else _get_skill_tooltip(skill)
 	for index in _perk_icons.size():
 		var has_perk := skill != null and index < skill.perks.size()
 		_perk_icons[index].show_perk(skill.perks[index] if has_perk else null)

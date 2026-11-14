@@ -70,7 +70,7 @@ offset_top = 44.0
 offset_right = 1130.0
 offset_bottom = 173.0
 mouse_filter = 2
-theme_override_constants/separation = 102
+theme_override_constants/separation = 34
 
 [node name="SkillSlot1" parent="SkillTray/SkillSlots" unique_id=1602439984 instance=ExtResource("4_skill_slot")]
 layout_mode = 2
@@ -104,7 +104,7 @@ layout_mode = 2
 [node name="OfferCard3" parent="Offers" unique_id=393832508 instance=ExtResource("5_offer_card")]
 layout_mode = 2
 
-[node name="Perks" type="VBoxContainer" parent="."]
+[node name="Perks" type="VBoxContainer" parent="." unique_id=1645582185]
 layout_mode = 0
 offset_top = 1104.0
 offset_right = 1176.0
@@ -112,23 +112,23 @@ offset_bottom = 2024.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="PerkCard1" parent="Perks" instance=ExtResource("6_perk_card")]
+[node name="PerkCard1" parent="Perks" unique_id=339789878 instance=ExtResource("6_perk_card")]
 visible = false
 layout_mode = 2
 
-[node name="PerkCard2" parent="Perks" instance=ExtResource("6_perk_card")]
+[node name="PerkCard2" parent="Perks" unique_id=13578346 instance=ExtResource("6_perk_card")]
 visible = false
 layout_mode = 2
 
-[node name="PerkCard3" parent="Perks" instance=ExtResource("6_perk_card")]
+[node name="PerkCard3" parent="Perks" unique_id=2027761094 instance=ExtResource("6_perk_card")]
 visible = false
 layout_mode = 2
 
-[node name="PerkCard4" parent="Perks" instance=ExtResource("6_perk_card")]
+[node name="PerkCard4" parent="Perks" unique_id=526091138 instance=ExtResource("6_perk_card")]
 visible = false
 layout_mode = 2
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="TextureButton" parent="." unique_id=1288913586]
 visible = false
 layout_mode = 0
 offset_left = 891.0
@@ -137,7 +137,7 @@ offset_right = 1130.0
 offset_bottom = 877.0
 texture_normal = ExtResource("7_back")
 
-[node name="Label" type="Label" parent="BackButton"]
+[node name="Label" type="Label" parent="BackButton" unique_id=373035511]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
