@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://level_up/level_up_column.gd" id="1_column"]
 [ext_resource type="Texture2D" path="res://level_up/assets/portrait_frame.png" id="2_portrait_frame"]
 [ext_resource type="Texture2D" path="res://level_up/assets/active_tray.png" id="3_tray"]
+[ext_resource type="PackedScene" path="res://level_up/level_up_skill_slot.tscn" id="4_skill_slot"]
+[ext_resource type="PackedScene" path="res://level_up/level_up_offer_card.tscn" id="5_offer_card"]
 
 [node name="LevelUpColumn" type="Control"]
 layout_mode = 3
@@ -68,6 +70,21 @@ offset_bottom = 166.0
 mouse_filter = 2
 theme_override_constants/separation = 102
 
+[node name="SkillSlot1" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+layout_mode = 2
+
+[node name="SkillSlot2" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+layout_mode = 2
+
+[node name="SkillSlot3" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+layout_mode = 2
+
+[node name="SkillSlot4" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+layout_mode = 2
+
+[node name="SkillSlot5" parent="SkillTray/SkillSlots" instance=ExtResource("4_skill_slot")]
+layout_mode = 2
+
 [node name="Offers" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_top = 755.0
@@ -75,6 +92,15 @@ offset_right = 1176.0
 offset_bottom = 1838.0
 mouse_filter = 2
 theme_override_constants/separation = 18
+
+[node name="OfferCard1" parent="Offers" instance=ExtResource("5_offer_card")]
+layout_mode = 2
+
+[node name="OfferCard2" parent="Offers" instance=ExtResource("5_offer_card")]
+layout_mode = 2
+
+[node name="OfferCard3" parent="Offers" instance=ExtResource("5_offer_card")]
+layout_mode = 2
 
 [node name="SkippedLabel" type="Label" parent="."]
 visible = false

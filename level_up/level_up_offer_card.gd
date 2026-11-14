@@ -5,6 +5,7 @@ extends TextureButton
 const NORMAL_TEXTURE := preload("res://level_up/assets/offer_normal.png")
 const SELECTED_TEXTURE := preload("res://level_up/assets/offer_selected.png")
 
+# Null while the card is hidden.
 var offer: LevelUpOffer
 
 @onready var _icon: TextureRect = $IconFrame/Icon
@@ -13,7 +14,12 @@ var offer: LevelUpOffer
 @onready var _check: TextureRect = $Check
 
 
-func _ready() -> void:
+# Null hides the card.
+func show_offer(shown_offer: LevelUpOffer) -> void:
+	offer = shown_offer
+	visible = offer != null
+	if offer == null:
+		return
 	var skill_data := offer.skill_data
 	_icon.texture = skill_data.icon
 	_name.text = skill_data.name
