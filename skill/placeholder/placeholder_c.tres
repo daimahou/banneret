@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://keg1ub9awa66"]
+
+[ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
+
+[resource]
+script = ExtResource("1_skill_data")
+name = "Placeholder C"
+delay = 4

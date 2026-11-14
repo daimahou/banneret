@@ -6,7 +6,7 @@ requires:
 started: 2026-11-14
 finished:
 hours: 2.6
-total_hours: 3
+total_hours: 5
 extra_hours: 0.5
 parent: "[[Combat and progression]]"
 ---
@@ -21,7 +21,7 @@ Heroes never change during a run: they win a fight and enter the next with the s
 
 ## Solution
 
-After each victory, a full-screen level-up shows all three heroes side by side, each with their build and three offers from the shared draft. Each hero confirms one pick (an offer and its perk), then the next fight starts with the new builds. A `levelup` console command opens the same level-up mid-fight and resumes the same fight. Placeholder content exercises every rule; tags gate class-dependent content.
+After each victory, a full-screen level-up shows all three heroes side by side, each with their build and three offers from the shared draft. Each hero selects one pick (an offer and its perk); Continue confirms them all, then the next fight starts with the new builds. A `levelup` console command opens the same level-up mid-fight and resumes the same fight. Placeholder content exercises every rule; tags gate class-dependent content.
 
 ## User Stories
 
@@ -35,8 +35,8 @@ After each victory, a full-screen level-up shows all three heroes side by side, 
 8. As a player, I want an upgrade offer to show what changes and its perks, so that I can choose a direction for that skill or talent.
 9. As a player, I want the class upgrade to show the specializations it opens, so that I understand the direction I commit to.
 10. As a player, I want to open an upgrade, browse its perks and go back, so that I can explore before deciding.
-11. As a player, I want selection and confirmation to be distinct, so that I never commit by accident.
-12. As a player, I want a confirmed column marked and locked, so that I see who is done.
+11. As a player, I want to change my selections until I continue, so that I never commit by accident.
+12. As a player, I want a selected offer marked, so that I see who is ready.
 13. As a player, I want a readiness count and a Continue button enabled only when every required pick is made, so that I know when I can move on.
 14. As a player, I want fallen heroes to skip their pick, so that the level-up does not wait on someone who cannot fight.
 15. As a player, I want the level-up to close by itself when every hero is skipped, so that I'm never stuck.
@@ -73,7 +73,7 @@ After each victory, a full-screen level-up shows all three heroes side by side, 
 ### Level-up count
 
 - The run counts its level-ups, 1 to 37; each level-up's number sets its draft. Skill drafts at **3, 6, 8, 11, 14, 16, 19, 22, 24, 27, 30, 32, 35, 37**; every other one is a talent draft (23 talent, 14 skill).
-- The count advances once when every hero has confirmed or been skipped, including when all are skipped. Victory and `levelup` advance the same count. After the 37th, no more level-ups.
+- The count advances once when the picks are confirmed or every hero is skipped, including when all are skipped. Victory and `levelup` advance the same count. After the 37th, no more level-ups.
 - A new run is a new `RunModel`: count and builds reset.
 
 ### Model
@@ -111,7 +111,7 @@ After each victory, a full-screen level-up shows all three heroes side by side, 
 
 ### Level-up
 
-- **`LevelUp`**: a model object the run creates for its next level-up. It holds the draft type, each hero's offers (drawn once), each hero's state (pending, confirmed, skipped), and accepts one pick per pending hero (an offer and, for an upgrade, a perk). Confirming applies the pick to that hero only and cannot be undone. It is complete once no hero is pending; completion advances the run.
+- **`LevelUp`**: a model object the run creates for its next level-up. It holds the draft type, each hero's offers (drawn once), each hero's state (pending, confirmed, skipped), and accepts one selection per pending hero (an offer and, for an upgrade, a perk), changeable until confirmed. Confirming applies every selection at once, each to its hero only, and cannot be undone. It is complete once no hero is pending; completion advances the run.
 - Fallen heroes are skipped.
 
 ### Flow
@@ -123,10 +123,10 @@ After each victory, a full-screen level-up shows all three heroes side by side, 
 ### View
 
 - Full-screen overlay scene in the level-up feature folder, beside its assets. The fight is hidden behind it.
-- Three equal columns: portrait, name, class and stats; eight talent slots; five skill slots; offers or perks; a per-hero Confirm. Shared readiness count and Continue at the bottom.
-- Selecting an upgrade keeps its card with Back and replaces the column's remaining offers with its perks (up to four, never covering Confirm). Other columns stay visible.
+- Three equal columns: portrait, name, class and stats; eight talent slots; five skill slots; offers or perks. Shared readiness count and Continue at the bottom; no per-hero Confirm.
+- Selecting an upgrade keeps its card with Back and replaces the column's remaining offers with its perks (up to four). Other columns stay visible.
 - Rank titles **Basic / Advanced / Expert** with the resulting rank's value. Hover an owned talent or skill for its current effect and chosen perks. Perk icons on offer cards and beside owned entries, with tooltips.
-- Selection shows the check and enables Confirm; confirmation locks and marks the column. Readiness updates only on confirm or skip.
+- Selection shows the check and makes the hero ready; it can still change. Continue is enabled once every hero is ready and confirms all picks at once.
 - Assets: scale the level-up PNGs offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966) and update their README and manifest. Nodes stay at scale 1 × 1. The human redraws them at that size later.
 - Match the reference: wood, parchment, theatre framing; dark recessed empty slots; quieter frames on perk icons; muted brass on unselected cards; strongest gold only on the selected offer or perk.
 

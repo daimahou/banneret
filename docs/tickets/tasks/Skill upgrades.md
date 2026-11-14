@@ -16,7 +16,7 @@ Upgrade offers for skills, with ranks and perks: [[Level-up offers]].
 - Skill modifiers are flat and target delay, cooldown or AP cost. Rank and perk effects add to what the skill does on resolve; they never edit an effect they did not add.
 - A skill draft draws two new skills and one upgrade, distinct and uniform; a category that cannot fill its places fills from the other.
 - An owned skill (basic attack included) is upgradable if below Expert and its next rank has a perk. The offer names the skill, never a perk.
-- Selecting an upgrade keeps its card with Back and lists its perks in that column (in authored order, up to four, never covering Confirm). Back and switching keep the offers. More than four perks is reported as an error, never sampled down.
+- Selecting an upgrade keeps its card with Back and lists its perks in that column (in authored order, up to four). Back and switching keep the offers. More than four perks is reported as an error, never sampled down.
 - Rank titles Basic / Advanced / Expert with the resulting rank's value. Perk icons on offer cards and beside owned skills; hovering an owned skill shows its current effect and chosen perks.
 - The upgraded skill resolves differently, previews agree, its cooldown is kept, and an action already queued uses the upgrade.
 
