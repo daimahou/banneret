@@ -1,6 +1,7 @@
 extends GdUnitTestSuite
 
 const SKILL_DRAFT_NUMBERS: Array[int] = [3, 6, 8, 11, 14, 16, 19, 22, 24, 27, 30, 32, 35, 37]
+const RUN_SEED := 1
 
 
 func test_the_run_is_lost_only_once_every_hero_has_fallen() -> void:
@@ -14,74 +15,94 @@ func test_the_run_is_lost_only_once_every_hero_has_fallen() -> void:
 
 
 func test_each_level_up_number_sets_its_draft_until_the_37th() -> void:
-	var run_model := RunModel.new(_create_seeded_rng())
+	var run_model := RunModel.new(RUN_SEED)
 
 	for number in range(1, 38):
-		var level_up := run_model.get_next_level_up()
+		assert_bool(run_model.has_level_up_left()).is_true()
+		var level_up := run_model.create_level_up()
 		assert_int(level_up.number).is_equal(number)
 		var expected_draft := LevelUp.Draft.SKILL if number in SKILL_DRAFT_NUMBERS else LevelUp.Draft.TALENT
 		assert_int(level_up.draft).is_equal(expected_draft)
-		_confirm_first_offers(level_up)
+		_confirm_first_offers(run_model, level_up)
 
-	assert_object(run_model.get_next_level_up()).is_null()
+	assert_bool(run_model.has_level_up_left()).is_false()
 
 
-func test_the_count_advances_only_once_the_level_up_completes() -> void:
-	var run_model := RunModel.new(_create_seeded_rng())
+func test_the_count_advances_only_when_a_level_up_is_confirmed() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+
+	run_model.create_level_up()
+	assert_int(run_model.level_up_count).is_equal(0)
+	assert_int(run_model.create_level_up().number).is_equal(1)
+	_confirm_first_offers(run_model, run_model.create_level_up())
+
+	assert_int(run_model.level_up_count).is_equal(1)
+	assert_int(run_model.create_level_up().number).is_equal(2)
+
+
+func test_an_all_skipped_level_up_is_confirmed_without_picks() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	var level_up := run_model.create_level_up()
+	assert_bool(level_up.has_offers()).is_false()
+
+	run_model.confirm_level_up(level_up)
+
+	assert_int(run_model.level_up_count).is_equal(1)
+
+
+func test_a_level_up_already_confirmed_is_rejected() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	var level_up := run_model.create_level_up()
+	run_model.confirm_level_up(level_up)
+
+	await assert_error(func() -> void: run_model.confirm_level_up(level_up)).is_push_error("Level-up 1 is not the next one")
+
+	assert_int(run_model.level_up_count).is_equal(1)
+
+
+func test_the_same_run_seed_draws_the_same_offers_however_often_they_are_drawn() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	var other_run_model := RunModel.new(RUN_SEED)
 	_complete_level_ups(run_model, 2)
-	var level_up := run_model.get_next_level_up()
-	assert_int(level_up.draft).is_equal(LevelUp.Draft.SKILL)
+	_complete_level_ups(other_run_model, 2)
 
-	assert_object(run_model.get_next_level_up()).is_same(level_up)
-	_confirm_first_offers(level_up)
+	var offered := _get_offered(run_model.create_level_up())
 
-	assert_int(run_model.get_next_level_up().number).is_equal(4)
-
-
-func test_an_all_skipped_level_up_completes_at_once_and_advances_the_count() -> void:
-	var run_model := RunModel.new(_create_seeded_rng())
-
-	var level_up := run_model.get_next_level_up()
-
-	assert_int(level_up.draft).is_equal(LevelUp.Draft.TALENT)
-	assert_bool(level_up.is_complete()).is_true()
-	assert_int(run_model.get_next_level_up().number).is_equal(2)
+	assert_array(offered).is_not_empty()
+	assert_array(_get_offered(run_model.create_level_up())).is_equal(offered)
+	assert_array(_get_offered(other_run_model.create_level_up())).is_equal(offered)
 
 
-func test_a_new_run_starts_at_the_first_level_up() -> void:
-	var run_model := RunModel.new(_create_seeded_rng())
-	_complete_level_ups(run_model, 3)
-
-	assert_int(RunModel.new().get_next_level_up().number).is_equal(1)
+func test_a_new_run_starts_before_the_first_level_up() -> void:
+	assert_int(RunModel.new().level_up_count).is_equal(0)
+	assert_int(RunModel.new().create_level_up().number).is_equal(1)
 
 
 func test_a_skill_pick_from_the_run_reaches_the_hero() -> void:
-	var run_model := RunModel.new(_create_seeded_rng())
+	var run_model := RunModel.new(RUN_SEED)
 	_complete_level_ups(run_model, 2)
-	var level_up := run_model.get_next_level_up()
+	var level_up := run_model.create_level_up()
 	var hero := run_model.party[0]
 	var offer: LevelUpOffer = level_up.get_offers(hero)[0]
 
-	_confirm_first_offers(level_up)
+	_confirm_first_offers(run_model, level_up)
 
 	assert_object(hero.skills.back().data).is_same(offer.skill_data)
 
 
 func _complete_level_ups(run_model: RunModel, count: int) -> void:
 	for index in count:
-		_confirm_first_offers(run_model.get_next_level_up())
+		_confirm_first_offers(run_model, run_model.create_level_up())
 
 
-func _confirm_first_offers(level_up: LevelUp) -> void:
-	if level_up.is_complete():
-		return
+func _confirm_first_offers(run_model: RunModel, level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
-		if level_up.get_state(hero) == LevelUp.State.PENDING:
+		if not level_up.is_skipped(hero):
 			level_up.select_offer(hero, level_up.get_offers(hero)[0])
-	level_up.confirm_picks()
+	run_model.confirm_level_up(level_up)
 
 
-func _create_seeded_rng() -> RandomNumberGenerator:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1
-	return rng
+# Each hero's offered skills, in party order.
+func _get_offered(level_up: LevelUp) -> Array:
+	return level_up.heroes.map(func(hero: Character) -> Array:
+		return level_up.get_offers(hero).map(func(offer: LevelUpOffer) -> SkillData: return offer.skill_data))

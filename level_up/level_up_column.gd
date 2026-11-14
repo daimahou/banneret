@@ -37,7 +37,7 @@ func show_hero(level_up: LevelUp, hero: Character) -> void:
 func update_state() -> void:
 	for card in _offer_cards:
 		card.set_selected(card.offer != null and card.offer == _level_up.get_selected_offer(_hero))
-	_skipped_label.visible = _level_up.get_state(_hero) == LevelUp.State.SKIPPED
+	_skipped_label.visible = _level_up.is_skipped(_hero)
 	for index in _skill_slots.size():
 		_skill_slots[index].show_skill(_hero.skills[index] if index < _hero.skills.size() else null)
 

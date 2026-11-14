@@ -51,7 +51,7 @@ func test_a_hero_with_every_skill_slot_full_is_skipped() -> void:
 	var level_up := _create_level_up([hero], bag)
 
 	assert_array(level_up.get_offers(hero)).is_empty()
-	assert_int(level_up.get_state(hero)).is_equal(LevelUp.State.SKIPPED)
+	assert_bool(level_up.is_skipped(hero)).is_true()
 
 
 func test_a_hero_owning_the_whole_bag_is_skipped() -> void:
@@ -59,7 +59,7 @@ func test_a_hero_owning_the_whole_bag_is_skipped() -> void:
 	var hero := _create_hero()
 	hero.skills.append(Skill.new(bag[0]))
 
-	assert_int(_create_level_up([hero], bag).get_state(hero)).is_equal(LevelUp.State.SKIPPED)
+	assert_bool(_create_level_up([hero], bag).is_skipped(hero)).is_true()
 
 
 func test_a_skipped_hero_is_warned_by_name_and_draft() -> void:
@@ -77,8 +77,8 @@ func test_a_fallen_hero_is_skipped_while_the_others_pick() -> void:
 	var level_up := _create_level_up([fallen, standing], _create_bag(3))
 
 	assert_array(level_up.get_offers(fallen)).is_empty()
-	assert_int(level_up.get_state(fallen)).is_equal(LevelUp.State.SKIPPED)
-	assert_int(level_up.get_state(standing)).is_equal(LevelUp.State.PENDING)
+	assert_bool(level_up.is_skipped(fallen)).is_true()
+	assert_bool(level_up.is_skipped(standing)).is_false()
 	assert_int(level_up.get_ready_count()).is_equal(1)
 	assert_bool(level_up.is_ready()).is_false()
 
@@ -87,7 +87,7 @@ func test_a_talent_draft_skips_every_hero() -> void:
 	var level_up := LevelUp.new(1, [_create_hero(), _create_hero()], _create_bag(3), _rng)
 
 	assert_int(level_up.draft).is_equal(LevelUp.Draft.TALENT)
-	assert_bool(level_up.is_complete()).is_true()
+	assert_bool(level_up.has_offers()).is_false()
 
 
 func test_a_selection_makes_its_hero_ready_and_can_be_changed_without_applying_it() -> void:
@@ -118,7 +118,6 @@ func test_confirming_applies_each_selection_to_its_own_hero_once() -> void:
 	level_up.confirm_picks()
 	await assert_error(level_up.confirm_picks).is_push_error("Level-up 3 is already confirmed")
 
-	assert_bool(level_up.is_complete()).is_true()
 	for index in heroes.size():
 		assert_int(heroes[index].skills.size()).is_equal(2)
 		assert_object(heroes[index].skills.back().data).is_same(selected[index])
@@ -133,7 +132,6 @@ func test_picks_are_not_confirmed_while_a_hero_has_no_selection() -> void:
 	await assert_error(level_up.confirm_picks).is_push_error("Level-up 3 waits on a selection")
 
 	assert_int(hero.skills.size()).is_equal(1)
-	assert_bool(level_up.is_complete()).is_false()
 
 
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:
