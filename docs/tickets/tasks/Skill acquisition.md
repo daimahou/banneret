@@ -5,8 +5,8 @@ parent: "[[Level-up offers]]"
 requires:
   - "[[Skill wraps SkillData]]"
 started: 2026-11-14
-finished:
-hours:
+finished: 2026-11-14
+hours: 0.3
 ---
 Tracer bullet for [[Level-up offers]]: a victory opens the level-up, each hero picks a new skill, the next fight uses it.
 
