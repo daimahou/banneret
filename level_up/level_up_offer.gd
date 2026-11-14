@@ -3,6 +3,9 @@ class_name LevelUpOffer
 extends RefCounted
 # One offer a level-up puts up for one hero: a new skill or talent, or an upgrade of one they own.
 
+# Empty for a new skill or talent. An upgrade's are only those of its next rank whose requirements the hero meets.
+var perks: Array[Perk] = []
+
 
 @abstract func is_upgrade() -> bool
 
@@ -19,10 +22,6 @@ extends RefCounted
 
 # An upgrade describes only what its next rank adds.
 @abstract func get_description() -> String
-
-
-# Empty for a new skill or talent.
-@abstract func get_perks() -> Array[Perk]
 
 
 # The perk is null for a new skill or talent.

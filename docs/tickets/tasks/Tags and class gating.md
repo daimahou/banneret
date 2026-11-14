@@ -4,9 +4,9 @@ id: "1.3-1.2.5"
 parent: "[[Level-up offers]]"
 requires:
   - "[[Talents and class]]"
-started:
-finished:
-hours:
+started: 2026-11-14
+finished: 2026-11-14
+hours: 0.3
 ---
 Tags for designers, used to gate class content: [[Level-up offers]].
 

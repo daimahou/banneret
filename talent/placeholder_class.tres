@@ -4,34 +4,53 @@
 [ext_resource type="Script" uid="uid://b1p6fdjmjlh7n" path="res://talent/talent_data.gd" id="1_talent_data"]
 [ext_resource type="Script" uid="uid://bqgaluurg1anp" path="res://talent/talent_rank.gd" id="2_talent_rank"]
 [ext_resource type="Script" uid="uid://bbtfo81yge6j" path="res://talent/talent_perk.gd" id="3_talent_perk"]
+[ext_resource type="Script" uid="uid://drrmc5fwithan" path="res://tag/tag_requirement.gd" id="4_tag_requirement"]
 
 [sub_resource type="Resource" id="Resource_advanced_perk_a"]
 script = ExtResource("3_talent_perk")
 name = "Perk A"
+granted_tags = Array[StringName]([&"placeholder_a"])
 
 [sub_resource type="Resource" id="Resource_advanced_perk_b"]
 script = ExtResource("3_talent_perk")
 name = "Perk B"
+granted_tags = Array[StringName]([&"placeholder_b"])
 
 [sub_resource type="Resource" id="Resource_advanced_perk_c"]
 script = ExtResource("3_talent_perk")
 name = "Perk C"
+granted_tags = Array[StringName]([&"placeholder_c"])
 
 [sub_resource type="Resource" id="Resource_advanced"]
 script = ExtResource("2_talent_rank")
 perks = Array[ExtResource("3_talent_perk")]([SubResource("Resource_advanced_perk_a"), SubResource("Resource_advanced_perk_b"), SubResource("Resource_advanced_perk_c")])
 
+[sub_resource type="Resource" id="Resource_requirement_a"]
+script = ExtResource("4_tag_requirement")
+tag = &"placeholder_a"
+
 [sub_resource type="Resource" id="Resource_expert_perk_a"]
 script = ExtResource("3_talent_perk")
 name = "Perk A"
+requirements = Array[ExtResource("4_tag_requirement")]([SubResource("Resource_requirement_a")])
+
+[sub_resource type="Resource" id="Resource_requirement_b"]
+script = ExtResource("4_tag_requirement")
+tag = &"placeholder_b"
 
 [sub_resource type="Resource" id="Resource_expert_perk_b"]
 script = ExtResource("3_talent_perk")
 name = "Perk B"
+requirements = Array[ExtResource("4_tag_requirement")]([SubResource("Resource_requirement_b")])
+
+[sub_resource type="Resource" id="Resource_requirement_c"]
+script = ExtResource("4_tag_requirement")
+tag = &"placeholder_c"
 
 [sub_resource type="Resource" id="Resource_expert_perk_c"]
 script = ExtResource("3_talent_perk")
 name = "Perk C"
+requirements = Array[ExtResource("4_tag_requirement")]([SubResource("Resource_requirement_c")])
 
 [sub_resource type="Resource" id="Resource_expert"]
 script = ExtResource("2_talent_rank")

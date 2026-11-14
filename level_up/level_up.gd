@@ -78,7 +78,7 @@ func select_offer(hero: Character, offer: LevelUpOffer, perk: Perk = null) -> vo
 	if offer not in _offers[hero]:
 		push_error("%s cannot select that offer" % hero.data.name)
 		return
-	var is_perk_valid := perk in offer.get_perks() if offer.is_upgrade() else perk == null
+	var is_perk_valid := perk in offer.perks if offer.is_upgrade() else perk == null
 	if not is_perk_valid:
 		push_error("%s cannot select that perk" % hero.data.name)
 		return
@@ -122,11 +122,11 @@ func _get_new_offers(hero: Character, bag: Array) -> Array[LevelUpOffer]:
 	var offers: Array[LevelUpOffer] = []
 	if draft == Draft.SKILL and hero.has_free_skill_slot():
 		for skill_data: SkillData in bag:
-			if not hero.has_skill(skill_data):
+			if not hero.has_skill(skill_data) and hero.meets_requirements(skill_data.requirements):
 				offers.append(SkillOffer.new(Skill.new(skill_data), Skill.Rank.BASIC))
 	elif draft == Draft.TALENT and hero.has_free_talent_slot():
 		for talent_data: TalentData in bag:
-			if not hero.has_talent(talent_data):
+			if not hero.has_talent(talent_data) and hero.meets_requirements(talent_data.requirements):
 				offers.append(TalentOffer.new(Talent.new(talent_data), Skill.Rank.BASIC))
 	return offers
 
@@ -135,14 +135,22 @@ func _get_upgrade_offers(hero: Character) -> Array[LevelUpOffer]:
 	var candidates: Array[LevelUpOffer] = []
 	if draft == Draft.SKILL:
 		for skill in hero.skills.filter(func(skill: Skill) -> bool: return skill.get_next_rank() != null):
-			candidates.append(SkillOffer.new(skill, skill.rank + 1))
+			var skill_perks := _get_eligible_perks(hero, skill.get_next_rank().perks)
+			candidates.append(SkillOffer.new(skill, skill.rank + 1, skill_perks))
 	else:
 		for talent in hero.talents.filter(func(talent: Talent) -> bool: return talent.get_next_rank() != null):
-			candidates.append(TalentOffer.new(talent, talent.rank + 1))
+			var talent_perks := _get_eligible_perks(hero, talent.get_next_rank().perks)
+			candidates.append(TalentOffer.new(talent, talent.rank + 1, talent_perks))
 	var offers: Array[LevelUpOffer] = []
-	offers.assign(candidates.filter(func(offer: LevelUpOffer) -> bool: return not offer.get_perks().is_empty()))
+	offers.assign(candidates.filter(func(offer: LevelUpOffer) -> bool: return not offer.perks.is_empty()))
 	for offer in offers:
-		if offer.get_perks().size() > PERK_LIMIT:
-			var counts := [offer.get_perks().size(), offer.get_reached_rank_title(), PERK_LIMIT]
+		if offer.perks.size() > PERK_LIMIT:
+			var counts := [offer.perks.size(), offer.get_reached_rank_title(), PERK_LIMIT]
 			push_error("%s has %d perks at %s, more than %d" % ([offer.get_name()] + counts))
 	return offers
+
+
+func _get_eligible_perks(hero: Character, rank_perks: Array) -> Array[Perk]:
+	var perks: Array[Perk] = []
+	perks.assign(rank_perks.filter(func(perk: Perk) -> bool: return hero.meets_requirements(perk.requirements)))
+	return perks

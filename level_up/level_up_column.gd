@@ -52,7 +52,7 @@ func update_state() -> void:
 		card.show_state(card.offer != null and card.offer == selected_offer, card.offer == _open_offer)
 	var perks: Array[Perk] = []
 	if _open_offer != null:
-		perks = _open_offer.get_perks()
+		perks = _open_offer.perks
 	var selected_perk := _level_up.get_selected_perk(_hero) if selected_offer == _open_offer else null
 	for index in _perk_cards.size():
 		var card := _perk_cards[index]

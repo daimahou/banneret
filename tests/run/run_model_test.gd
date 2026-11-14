@@ -165,7 +165,7 @@ func _confirm_first_offers(run_model: RunModel, level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
 		if not level_up.is_skipped(hero) and level_up.get_selected_offer(hero) == null:
 			var offer := level_up.get_offers(hero)[0]
-			level_up.select_offer(hero, offer, offer.get_perks()[0] if offer.is_upgrade() else null)
+			level_up.select_offer(hero, offer, offer.perks[0] if offer.is_upgrade() else null)
 	run_model.confirm_level_up(level_up)
 
 
