@@ -100,7 +100,7 @@ func test_levelup_pauses_the_fight_opens_the_next_level_up_and_resumes_the_same_
 	assert_int(opened.size()).is_equal(1)
 	assert_int(opened[0].number).is_equal(3)
 	assert_bool(fight_controller.is_paused()).is_true()
-	_confirm_first_offers(opened[0])
+	_select_first_offers(opened[0])
 	_press_continue(run_controller)
 	await runner.simulate_frames(2)
 	assert_object(run_controller.fight_controller).is_same(fight_controller)
@@ -114,7 +114,10 @@ func test_levelup_after_the_last_level_up_changes_nothing() -> void:
 	var runner := scene_runner(RUN_SCENE)
 	var run_controller := await _start_run_at_first_skill_draft(runner)
 	while run_controller.run_model.has_level_up_left():
-		_confirm_first_offers(run_controller.run_model.get_next_level_up())
+		var level_up := run_controller.run_model.get_next_level_up()
+		if not level_up.is_complete():
+			_select_first_offers(level_up)
+			level_up.confirm_picks()
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 
 	debug_commands.request_level_up(run_controller)
@@ -153,10 +156,10 @@ func _start_run_at_first_skill_draft(runner: GdUnitSceneRunner) -> RunController
 	return run_controller
 
 
-func _confirm_first_offers(level_up: LevelUp) -> void:
+func _select_first_offers(level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
 		if level_up.get_state(hero) == LevelUp.State.PENDING:
-			level_up.confirm_pick(hero, level_up.get_offers(hero)[0])
+			level_up.select_offer(hero, level_up.get_offers(hero)[0])
 
 
 func _press_continue(run_controller: RunController) -> void:

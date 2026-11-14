@@ -3,8 +3,6 @@
 [ext_resource type="Script" path="res://level_up/level_up_column.gd" id="1_column"]
 [ext_resource type="Texture2D" path="res://level_up/assets/portrait_frame.png" id="2_portrait_frame"]
 [ext_resource type="Texture2D" path="res://level_up/assets/active_tray.png" id="3_tray"]
-[ext_resource type="Texture2D" path="res://level_up/assets/button_enabled.png" id="4_button_enabled"]
-[ext_resource type="Texture2D" path="res://level_up/assets/button_disabled.png" id="5_button_disabled"]
 
 [node name="LevelUpColumn" type="Control"]
 layout_mode = 3
@@ -78,25 +76,14 @@ offset_bottom = 1838.0
 mouse_filter = 2
 theme_override_constants/separation = 18
 
-[node name="ConfirmButton" type="TextureButton" parent="."]
+[node name="SkippedLabel" type="Label" parent="."]
+visible = false
 layout_mode = 0
-offset_left = 220.0
-offset_top = 1847.0
-offset_right = 955.0
-offset_bottom = 1994.0
-disabled = true
-texture_normal = ExtResource("4_button_enabled")
-texture_disabled = ExtResource("5_button_disabled")
-
-[node name="Label" type="Label" parent="ConfirmButton"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_top = 1200.0
+offset_right = 1176.0
+offset_bottom = 1300.0
 theme_override_colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
 theme_override_font_sizes/font_size = 60
-text = "CONFIRM"
+text = "SKIPPED"
 horizontal_alignment = 1
 vertical_alignment = 1
