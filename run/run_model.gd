@@ -43,7 +43,13 @@ func confirm_level_up(level_up: LevelUp) -> void:
 	if level_up.number != level_up_count + 1:
 		push_error("Level-up %d is not the next one" % level_up.number)
 		return
-	level_up.confirm_picks()
+	if not level_up.is_ready():
+		push_error("Level-up %d waits on a selection" % level_up.number)
+		return
+	for hero in level_up.heroes:
+		var offer := level_up.get_selected_offer(hero)
+		if offer != null:
+			offer.apply(hero)
 	level_up_count += 1
 
 

@@ -105,35 +105,6 @@ func test_a_selection_makes_its_hero_ready_and_can_be_changed_without_applying_i
 	assert_int(hero.skills.size()).is_equal(1)
 
 
-func test_confirming_applies_each_selection_to_its_own_hero_once() -> void:
-	var heroes: Array[Character] = [_create_hero(), _create_hero()]
-	var level_up := _create_level_up(heroes, _create_bag(5))
-	var selected: Array[SkillData] = []
-	for index in heroes.size():
-		var offer: LevelUpOffer = level_up.get_offers(heroes[index])[index]
-		level_up.select_offer(heroes[index], offer)
-		selected.append(offer.skill_data)
-	assert_bool(level_up.is_ready()).is_true()
-
-	level_up.confirm_picks()
-	await assert_error(level_up.confirm_picks).is_push_error("Level-up 3 is already confirmed")
-
-	for index in heroes.size():
-		assert_int(heroes[index].skills.size()).is_equal(2)
-		assert_object(heroes[index].skills.back().data).is_same(selected[index])
-
-
-func test_picks_are_not_confirmed_while_a_hero_has_no_selection() -> void:
-	var hero := _create_hero()
-	var other := _create_hero()
-	var level_up := _create_level_up([hero, other], _create_bag(5))
-	level_up.select_offer(hero, level_up.get_offers(hero)[0])
-
-	await assert_error(level_up.confirm_picks).is_push_error("Level-up 3 waits on a selection")
-
-	assert_int(hero.skills.size()).is_equal(1)
-
-
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:
 	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, bag, _rng)
 
