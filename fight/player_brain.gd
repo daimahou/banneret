@@ -12,10 +12,8 @@ var hovered_skill: Skill
 var hovered_character: Character
 var hovered_action: Action
 
-# Null without a stage.
-var input: PlayerInput
-
 var _stage: Stage
+var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
 var _is_stopped := false
@@ -29,28 +27,28 @@ func _init(stage: Stage = null) -> void:
 	if stage == null:
 		return
 	_stage = stage
-	input = PlayerInput.new(stage)
-	input.stop_pressed.connect(request_stop)
-	input.pass_pressed.connect(pass_stop)
-	input.stop_button_pressed.connect(_on_stop_button_pressed)
-	input.hero_cycled.connect(cycle_hero)
-	input.number_pressed.connect(press_number)
-	input.aim_cycled.connect(cycle_aim)
-	input.confirm_pressed.connect(confirm)
-	input.cancel_pressed.connect(disarm)
-	input.character_hovered.connect(hover_character)
-	input.action_hovered.connect(hover_action)
-	input.character_clicked.connect(pick)
-	input.skill_pressed.connect(arm_skill)
-	input.skill_hovered.connect(hover_skill)
-	(Engine.get_main_loop() as SceneTree).root.add_child(input)
+	_input = PlayerInput.new(stage)
+	_input.stop_pressed.connect(request_stop)
+	_input.pass_pressed.connect(pass_stop)
+	_input.stop_button_pressed.connect(_on_stop_button_pressed)
+	_input.hero_cycled.connect(cycle_hero)
+	_input.number_pressed.connect(press_number)
+	_input.aim_cycled.connect(cycle_aim)
+	_input.confirm_pressed.connect(confirm)
+	_input.cancel_pressed.connect(disarm)
+	_input.character_hovered.connect(hover_character)
+	_input.action_hovered.connect(hover_action)
+	_input.character_clicked.connect(pick)
+	_input.skill_pressed.connect(arm_skill)
+	_input.skill_hovered.connect(hover_skill)
+	(Engine.get_main_loop() as SceneTree).root.add_child(_input)
 	_show_choices()
 
 
 func dispose() -> void:
-	if input != null:
-		input.queue_free()
-		input = null
+	if _input != null:
+		_input.queue_free()
+		_input = null
 	if _stage != null:
 		_stage.hide_choices()
 		_stage.skill_bar.clear()

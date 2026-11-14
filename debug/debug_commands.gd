@@ -46,8 +46,6 @@ func request_level_up(run_controller: RunController) -> void:
 		LimboConsole.warn("A level-up is open")
 	elif run_controller.fight_controller == null:
 		LimboConsole.warn("The run is between fights")
-	elif run_controller.fight_controller.is_pause_requested():
-		LimboConsole.warn("A level-up is already requested")
 	elif not run_controller.run_model.has_level_up_left():
 		LimboConsole.info("Every level-up is done")
 	else:

@@ -9,10 +9,6 @@ func is_stop_requested() -> bool:
 	return false
 
 
-func is_waiting() -> bool:
-	return false
-
-
 func dispose() -> void:
 	pass
 

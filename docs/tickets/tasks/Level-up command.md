@@ -13,18 +13,18 @@ The `levelup` debug command and the mid-fight pause: [[Level-up offers]].
 # Done when
 
 - `levelup` in the debug console opens the next level-up without a victory and advances the same count.
-- The fight pauses at a safe boundary: after the action being presented and resolved, or at once while the player is choosing. While open, no time passes, nothing resolves and no action can be scheduled.
+- The game pauses at once, like any game pause, even mid-action. While open, no time passes, nothing resolves and no action can be scheduled.
 - Continue resumes the same fight once: timeline, health, AP and cooldowns preserved; skill choices and previews refresh.
-- Rejected with a message when no run is playing, the run is resetting, a request is pending or a level-up is open. After the 37th level-up it reports completion and changes nothing.
-- A fight ending before the pause discards the request; victory then opens its own level-up, never two.
+- Rejected with a message when no run is playing, the run is between fights or a level-up is open. After the 37th level-up it reports completion and changes nothing.
 
 ## Implementation decisions
 
-- `FightController` knows nothing of level-ups: `pause()` holds the fight at a safe boundary (false when the fight ends first) and `resume()` lets it play on; no second combat loop. The run pauses the fight, plays the level-up, then resumes it; the command calls the run's exposed request.
+- The fight knows nothing of level-ups. The run pauses the scene tree, plays the level-up (its view processes while paused), unpauses, then tells the fight its characters changed. The command calls the run's exposed request.
+- An action already playing out keeps the effects it was resolved with; only later actions see a level-up's changes.
 
 ## Testing decisions
 
-- `FightController` and `DebugCommands`: a request mid-action, while waiting, while open, and as the fight ends; resume preserves state and plays on once. Prior art: their existing tests.
+- `DebugCommands`: a request opens the next level-up with the fight held still, a second request is rejected, Continue resumes the same fight with the pick applied and the count advanced; after the 37th nothing changes. Prior art: its existing tests.
 
 ![[Children.base#Open tickets]]
 

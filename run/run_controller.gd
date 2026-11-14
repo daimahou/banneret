@@ -62,11 +62,11 @@ func is_level_up_open() -> bool:
 
 
 func request_level_up() -> void:
-	var paused_fight := fight_controller
-	if not await paused_fight.pause():
-		return
+	var fight_model := fight_controller.fight_model
+	get_tree().paused = true
 	await _play_level_up()
-	paused_fight.resume()
+	get_tree().paused = false
+	fight_model.notify_characters_changed()
 
 
 func _play_level_up() -> void:

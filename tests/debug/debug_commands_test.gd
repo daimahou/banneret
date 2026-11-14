@@ -4,6 +4,10 @@ const RUN_SCENE := "res://run/run.tscn"
 const TIME_FACTOR := 10.0
 
 
+func after_test() -> void:
+	get_tree().paused = false
+
+
 func test_a_knocked_out_side_falls_as_the_next_action_resolves() -> void:
 	for side in [FightModel.Side.HERO, FightModel.Side.ENEMY]:
 		var fight_controller := _create_fight_controller(RandomBrain.new(FightModel.Side.HERO, 1))
@@ -84,13 +88,14 @@ func _create_side(health: int, count: int) -> Array[Character]:
 	return characters
 
 
-func test_levelup_pauses_the_fight_opens_the_next_level_up_and_resumes_the_same_fight() -> void:
+func test_levelup_pauses_the_game_opens_the_next_level_up_and_resumes_the_same_fight() -> void:
 	var runner := scene_runner(RUN_SCENE)
 	var run_controller := await _start_run_at_first_skill_draft(runner)
 	var fight_controller := run_controller.fight_controller
-	var hero := fight_controller.fight_model.heroes[0]
-	var health := hero.health
+	var fight_model := fight_controller.fight_model
+	var hero := fight_model.heroes[0]
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
+	await debug_commands.set_player_brain(fight_controller, null, false)
 	var opened: Array[LevelUp] = []
 	run_controller.level_up_started.connect(opened.append)
 
@@ -99,16 +104,19 @@ func test_levelup_pauses_the_fight_opens_the_next_level_up_and_resumes_the_same_
 
 	assert_int(opened.size()).is_equal(1)
 	assert_int(opened[0].number).is_equal(3)
-	assert_bool(fight_controller.is_paused()).is_true()
-	var input := (fight_controller.hero_brain as PlayerBrain).input
-	assert_bool(input.can_process()).is_false()
+	assert_bool(get_tree().paused).is_true()
+	var tick := fight_model.tick
+	var timeline := fight_model.timeline.duplicate()
+	var health := hero.health
+	await runner.simulate_frames(10)
+	assert_int(fight_model.tick).is_equal(tick)
+	assert_array(fight_model.timeline).is_equal(timeline)
+	assert_int(hero.health).is_equal(health)
 	_select_first_offers(opened[0])
 	_press_continue(run_controller)
 	await runner.simulate_frames(2)
+	assert_bool(get_tree().paused).is_false()
 	assert_object(run_controller.fight_controller).is_same(fight_controller)
-	assert_bool(fight_controller.is_paused()).is_false()
-	assert_bool(input.can_process()).is_true()
-	assert_int(hero.health).is_equal(health)
 	assert_object(hero.skills.back().data).is_same(opened[0].get_offers(hero)[0].skill_data)
 	assert_int(run_controller.run_model.level_up_count).is_equal(3)
 
@@ -122,31 +130,13 @@ func test_levelup_after_the_last_level_up_changes_nothing() -> void:
 		_select_first_offers(level_up)
 		run_model.confirm_level_up(level_up)
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
-
-	debug_commands.request_level_up(run_controller)
-
-	assert_bool(run_controller.fight_controller.is_pause_requested()).is_false()
-	assert_bool(run_controller.fight_controller.is_paused()).is_false()
-
-
-func test_a_levelup_request_the_fight_ends_before_is_discarded_for_the_victory_level_up() -> void:
-	var runner := scene_runner(RUN_SCENE)
-	var run_controller := await _start_run_at_first_skill_draft(runner)
-	var fight_controller := run_controller.fight_controller
-	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
-	await debug_commands.set_player_brain(fight_controller, null, false)
 	var opened: Array[LevelUp] = []
 	run_controller.level_up_started.connect(opened.append)
 
-	debug_commands.knock_out(fight_controller, FightModel.Side.ENEMY)
-	var request_level_up := func(_action: Action) -> void: debug_commands.request_level_up(run_controller)
-	fight_controller.action_resolved.connect(request_level_up, CONNECT_ONE_SHOT)
-	await run_controller.level_up_started
+	debug_commands.request_level_up(run_controller)
 
-	assert_bool(fight_controller.fight_model.is_won()).is_true()
-
-	assert_int(opened.size()).is_equal(1)
-	assert_int(opened[0].number).is_equal(3)
+	assert_array(opened).is_empty()
+	assert_bool(get_tree().paused).is_false()
 
 
 func _start_run_at_first_skill_draft(runner: GdUnitSceneRunner) -> RunController:
