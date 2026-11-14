@@ -5,8 +5,8 @@ parent: "[[Level-up offers]]"
 requires:
   - "[[Skill acquisition]]"
 started: 2026-11-14
-finished:
-hours:
+finished: 2026-11-14
+hours: 1.7
 ---
 The `levelup` debug command and the mid-fight pause: [[Level-up offers]].
 
