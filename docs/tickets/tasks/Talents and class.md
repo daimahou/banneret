@@ -5,8 +5,8 @@ parent: "[[Level-up offers]]"
 requires:
   - "[[Skill upgrades]]"
 started: 2026-11-14
-finished:
-hours:
+finished: 2026-11-14
+hours: 1.1
 ---
 Talents, talent drafts and the class as a talent: [[Level-up offers]].
 

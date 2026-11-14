@@ -6,7 +6,7 @@ requires:
 started: 2026-11-14
 finished:
 hours: 2.6
-total_hours: 5.8
+total_hours: 6.9
 extra_hours: 0.5
 parent: "[[Combat and progression]]"
 ---
