@@ -29,6 +29,10 @@ func create_encounter_enemies() -> Array[Character]:
 	return enemies
 
 
+func has_level_up_left() -> bool:
+	return _level_up == null or not _level_up.is_complete() or _level_up.number < LevelUp.LAST_NUMBER
+
+
 # Null once the last level-up is complete.
 func get_next_level_up() -> LevelUp:
 	if _level_up != null and not _level_up.is_complete():

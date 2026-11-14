@@ -16,6 +16,7 @@ var _stage: Stage
 var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
+var _is_paused := false
 var _is_stopped := false
 var _ghost_action: Action
 var _is_stop_requested := false
@@ -91,7 +92,17 @@ func request_stop() -> void:
 	_show_choices()
 
 
+func set_paused(is_paused: bool) -> void:
+	_is_paused = is_paused
+	if _input != null:
+		_input.set_process_unhandled_input(not is_paused)
+	if not is_paused:
+		_show_choices()
+
+
 func pass_stop() -> void:
+	if _is_paused:
+		return
 	if not _is_waiting:
 		_show_choices()
 		return
@@ -167,7 +178,7 @@ func cycle_aim(step: int) -> void:
 
 
 func confirm() -> void:
-	if not _is_waiting or aimed_target == null:
+	if not _is_waiting or _is_paused or aimed_target == null:
 		return
 	var action := Action.new()
 	action.actor = hero

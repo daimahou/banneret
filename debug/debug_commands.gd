@@ -13,6 +13,7 @@ func _ready() -> void:
 	LimboConsole.register_command(win_fight, "fight win", "Knock out every enemy: the fight is won")
 	LimboConsole.register_command(lose_fight, "fight lose", "Knock out every hero: the fight, and the run, are lost")
 	LimboConsole.register_command(toggle_auto_combat, "fight auto_combat", "Toggle random heroes, in this fight and the next")
+	LimboConsole.register_command(level_up, "levelup", "Open the next level-up, pausing the fight at a safe point")
 
 
 func _exit_tree() -> void:
@@ -21,6 +22,7 @@ func _exit_tree() -> void:
 	LimboConsole.unregister_command(win_fight)
 	LimboConsole.unregister_command(lose_fight)
 	LimboConsole.unregister_command(toggle_auto_combat)
+	LimboConsole.unregister_command(level_up)
 
 
 func win_fight() -> void:
@@ -29,6 +31,27 @@ func win_fight() -> void:
 
 func lose_fight() -> void:
 	_knock_out_in_run(FightModel.Side.HERO)
+
+
+func level_up() -> void:
+	var run_controller := get_tree().current_scene as RunController
+	if run_controller == null:
+		LimboConsole.warn("No run is playing")
+		return
+	request_level_up(run_controller)
+
+
+func request_level_up(run_controller: RunController) -> void:
+	if run_controller.is_level_up_open():
+		LimboConsole.warn("A level-up is open")
+	elif run_controller.fight_controller == null:
+		LimboConsole.warn("The run is between fights")
+	elif run_controller.fight_controller.is_pause_requested():
+		LimboConsole.warn("A level-up is already requested")
+	elif not run_controller.run_model.has_level_up_left():
+		LimboConsole.info("Every level-up is done")
+	else:
+		run_controller.request_level_up()
 
 
 func toggle_auto_combat() -> void:

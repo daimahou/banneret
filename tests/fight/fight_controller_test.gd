@@ -1,5 +1,7 @@
 extends GdUnitTestSuite
 
+signal pause_released
+
 const SEEDS: Array[int] = [1, 2, 3, 4, 5, 6, 7, 8]
 
 
@@ -69,6 +71,68 @@ func test_the_fight_lands_on_every_beat_it_crosses() -> void:
 			assert_array(ticks).contains([beat_tick])
 
 
+func test_a_pause_requested_mid_action_waits_for_it_to_resolve_and_holds_the_fight_still() -> void:
+	var fight_controller := _create_fight_controller(1)
+	var fight_model := fight_controller.fight_model
+	var resolved: Array[Action] = []
+	fight_controller.action_resolved.connect(resolved.append)
+	var pause := FramesPause.new(fight_model)
+	var request_pause := func(_action: Action) -> void: fight_controller.request_pause(pause.play)
+	fight_controller.action_resolved.connect(request_pause, CONNECT_ONE_SHOT)
+
+	await fight_controller.play()
+
+	assert_int(pause.play_count).is_equal(1)
+	assert_int(pause.resolved_count_at_start).is_equal(1)
+	assert_bool(pause.is_fight_held).is_true()
+	assert_bool(fight_model.is_over()).is_true()
+	assert_int(resolved.size()).is_greater(1)
+
+
+func test_a_pause_requested_while_the_player_chooses_starts_at_once_and_blocks_choices() -> void:
+	var player_brain := PlayerBrain.new()
+	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, player_brain)
+	var hero_actions: Array[Action] = []
+	fight_controller.fight_model.action_added.connect(func(action: Action) -> void:
+		if action.actor in fight_controller.fight_model.heroes:
+			hero_actions.append(action))
+	fight_controller.play()
+	assert_bool(player_brain.is_waiting()).is_true()
+	var released := Signal(self, "pause_released")
+
+	fight_controller.request_pause(func() -> void: await released)
+	assert_bool(fight_controller.is_paused()).is_true()
+	_choose_first_target(player_brain)
+	assert_array(hero_actions).is_empty()
+
+	pause_released.emit()
+	await get_tree().process_frame
+	assert_bool(fight_controller.is_paused()).is_false()
+	_choose_first_target(player_brain)
+	assert_int(hero_actions.size()).is_equal(1)
+
+
+func test_a_pause_still_requested_when_the_fight_ends_is_discarded() -> void:
+	var fight_controller := _create_fight_controller(1)
+	var pause := FramesPause.new(fight_controller.fight_model)
+	fight_controller.action_resolved.connect(func(_action: Action) -> void:
+		var delta := Delta.new()
+		for enemy in fight_controller.fight_model.get_standing(FightModel.Side.ENEMY):
+			FightRules.add_damage(fight_controller.fight_model, delta, enemy, enemy.health)
+		fight_controller.fight_model.apply(delta)
+		fight_controller.request_pause(pause.play), CONNECT_ONE_SHOT)
+
+	await fight_controller.play()
+
+	assert_int(pause.play_count).is_equal(0)
+	assert_bool(fight_controller.is_pause_requested()).is_false()
+
+
+func _choose_first_target(player_brain: PlayerBrain) -> void:
+	player_brain.arm_skill(player_brain.hero.skills[0])
+	player_brain.pick(player_brain.get_targets()[0])
+
+
 # Each resolved action as its actor, target and tick, by index among the fight's characters.
 func _record_fight(fight_seed: int) -> Array[Vector3i]:
 	var fight_controller := _create_fight_controller(fight_seed)
@@ -127,3 +191,30 @@ class StoppingBrain:
 		if next_action != null and next_action.resolve_tick == fight_model.tick:
 			is_asked_with_action_due = true
 		return await super(fight_model)
+
+
+# Stands a few frames, noting whether the fight moved meanwhile.
+class FramesPause:
+	extends RefCounted
+
+	const FRAMES := 5
+
+	var play_count := 0
+	var resolved_count_at_start := -1
+	var is_fight_held := true
+	var _fight_model: FightModel
+	var _resolved_count := 0
+
+	func _init(fight_model: FightModel) -> void:
+		_fight_model = fight_model
+		fight_model.action_resolved.connect(func(_action: Action) -> void: _resolved_count += 1)
+
+	func play() -> void:
+		play_count += 1
+		resolved_count_at_start = _resolved_count
+		var tick := _fight_model.tick
+		var timeline_size := _fight_model.timeline.size()
+		for frame in FRAMES:
+			await (Engine.get_main_loop() as SceneTree).process_frame
+		var is_timeline_held := _fight_model.timeline.size() == timeline_size and _resolved_count == resolved_count_at_start
+		is_fight_held = _fight_model.tick == tick and is_timeline_held

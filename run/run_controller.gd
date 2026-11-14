@@ -9,6 +9,8 @@ const HOLD_DURATION := 0.4
 var run_model := RunModel.new()
 var fight_controller: FightController
 
+var _is_level_up_open := false
+
 @onready var _stage: Stage = $Stage
 @onready var _level_up_view: LevelUpView = $LevelUpView
 
@@ -55,6 +57,14 @@ func _play_fight(fight_seed: int) -> void:
 	fight_controller = null
 
 
+func is_level_up_open() -> bool:
+	return _is_level_up_open
+
+
+func request_level_up() -> void:
+	fight_controller.request_pause(_play_level_up)
+
+
 func _play_level_up() -> void:
 	var level_up := run_model.get_next_level_up()
 	if level_up == null:
@@ -65,6 +75,7 @@ func _play_level_up() -> void:
 	var confirm_pick := func(hero: Character, offer: LevelUpOffer) -> void:
 		level_up.confirm_pick(hero, offer)
 		_level_up_view.update_states()
+	_is_level_up_open = true
 	_level_up_view.pick_confirmed.connect(confirm_pick)
 	_level_up_view.show_level_up(level_up)
 	level_up_started.emit(level_up)
@@ -72,6 +83,7 @@ func _play_level_up() -> void:
 		await _level_up_view.continue_pressed
 	_level_up_view.pick_confirmed.disconnect(confirm_pick)
 	_level_up_view.hide()
+	_is_level_up_open = false
 
 
 func _on_action_resolved(action: Action) -> void:
