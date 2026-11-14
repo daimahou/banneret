@@ -22,7 +22,7 @@ func test_the_party_carries_its_health_ap_and_cooldowns_into_the_next_fight() ->
 	await runner.await_func_on(first_fight_controller.hero_brain, "is_waiting").is_true()
 	hero.health = 7
 	hero.ap = 0
-	hero.skill_cooldowns[hero.data.skills[0]] = 2
+	hero.skills[0].cooldown_beats = 2
 
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 	debug_commands.knock_out(first_fight_controller, FightModel.Side.ENEMY)
@@ -31,5 +31,5 @@ func test_the_party_carries_its_health_ap_and_cooldowns_into_the_next_fight() ->
 	assert_array(fight_controller.fight_model.heroes).contains([hero])
 	assert_int(hero.health).is_equal(7)
 	assert_int(hero.ap).is_equal(0)
-	assert_int(hero.skill_cooldowns[hero.data.skills[0]]).is_equal(2)
+	assert_int(hero.skills[0].cooldown_beats).is_equal(2)
 	assert_array(fight_controller.fight_model.timeline).is_empty()

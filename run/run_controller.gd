@@ -53,4 +53,5 @@ func _play_fight(fight_seed: int) -> void:
 
 
 func _on_action_resolved(action: Action) -> void:
-	LimboConsole.info("%s: %s on %s, %d health left" % [action.actor.data.name, action.skill.name, action.target.data.name, action.target.health])
+	var names := [action.actor.data.name, action.skill.data.name, action.target.data.name]
+	LimboConsole.info("%s: %s on %s, %d health left" % (names + [action.target.health]))

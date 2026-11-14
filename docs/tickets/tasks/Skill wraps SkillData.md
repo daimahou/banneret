@@ -4,8 +4,8 @@ id: 1.3-1.2.1
 parent: "[[Level-up offers]]"
 requires: []
 started: 2026-11-14
-finished:
-hours:
+finished: 2026-11-14
+hours: 0.4
 ---
 Prefactor for [[Level-up offers]]: a hero's skills become runtime objects of their own. No behaviour change.
 

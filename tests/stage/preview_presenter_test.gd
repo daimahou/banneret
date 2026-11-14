@@ -39,7 +39,7 @@ func test_a_cooldown_the_preview_starts_shows_worse() -> void:
 	var fight_model := _create_fight_model()
 	var hero := fight_model.heroes[0]
 	var choice := _create_choice(hero, fight_model.enemies[0], 2, 3)
-	choice.skill.cooldown = 2
+	choice.skill.data.cooldown = 2
 	var preview_model := _run(fight_model, choice)
 
 	var style := PreviewPresenter.get_cooldown_style(preview_model, hero, choice.skill)
@@ -50,8 +50,9 @@ func test_a_cooldown_the_preview_starts_shows_worse() -> void:
 func test_a_cooldown_a_beat_on_the_way_shortens_shows_better() -> void:
 	var fight_model := _create_fight_model()
 	var hero := fight_model.heroes[0]
-	var resting := SkillData.new()
-	hero.skill_cooldowns[resting] = 1
+	var resting := Skill.new(SkillData.new())
+	resting.cooldown_beats = 1
+	hero.skills.append(resting)
 	var preview_model := _run(fight_model, _create_choice(hero, fight_model.enemies[0], 6, 3))
 
 	var style := PreviewPresenter.get_cooldown_style(preview_model, hero, resting)
@@ -184,18 +185,19 @@ func _create_choice(actor: Character, target: Character, skill_delay: int, damag
 	var choice := Action.new()
 	choice.actor = actor
 	choice.target = target
-	choice.skill = SkillData.new()
-	choice.skill.delay = skill_delay
+	choice.skill = Skill.new(SkillData.new())
+	choice.skill.data.delay = skill_delay
+	actor.skills.append(choice.skill)
 	var damage := DamageEffect.new()
 	damage.amount = damage_amount
-	choice.skill.effects = [damage]
+	choice.skill.data.effects = [damage]
 	return choice
 
 
 func _add_stagger(choice: Action, ticks: int) -> void:
 	var stagger := StaggerEffect.new()
 	stagger.ticks = ticks
-	choice.skill.effects.append(stagger)
+	choice.skill.data.effects.append(stagger)
 
 
 func _get_unique(values: Array) -> Array:

@@ -31,7 +31,7 @@ func test_a_skill_click_arms_nothing_while_an_enemy_is_hovered() -> void:
 	fight_controller.play()
 
 	player_brain.hover_character(fight_controller.fight_model.enemies[0])
-	player_brain.arm_skill(player_brain.hero.data.skills[0])
+	player_brain.arm_skill(player_brain.hero.skills[0])
 
 	assert_object(player_brain.armed_skill).is_null()
 
@@ -43,9 +43,9 @@ func test_a_skill_click_arms_once_the_hover_ends() -> void:
 	player_brain.hover_character(fight_controller.fight_model.enemies[0])
 
 	player_brain.hover_character(null)
-	player_brain.arm_skill(player_brain.hero.data.skills[0])
+	player_brain.arm_skill(player_brain.hero.skills[0])
 
-	assert_object(player_brain.armed_skill).is_same(player_brain.hero.data.skills[0])
+	assert_object(player_brain.armed_skill).is_same(player_brain.hero.skills[0])
 
 
 func test_the_hero_stays_selected_while_holding_ap() -> void:
@@ -86,7 +86,7 @@ func _create_fight_controller(heroes_brain: Brain, heroes_max_ap := 1, hero_coun
 
 
 func _choose_first_skill(player_brain: PlayerBrain) -> void:
-	player_brain.arm_skill(player_brain.hero.data.skills[0])
+	player_brain.arm_skill(player_brain.hero.skills[0])
 	player_brain.confirm()
 
 

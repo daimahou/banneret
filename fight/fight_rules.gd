@@ -6,21 +6,16 @@ const BEAT_TICKS := 4
 const AP_PER_BEAT := 1
 
 
-#TODO: remove unused argument fight_model
-static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
-	var skills: Array[SkillData] = []
-	for skill in character.data.skills:
-		if get_cooldown_beats(character, skill) == 0 and character.ap >= skill.ap_cost:
+static func get_usable_skills(character: Character) -> Array[Skill]:
+	var skills: Array[Skill] = []
+	for skill in character.skills:
+		if skill.cooldown_beats == 0 and character.ap >= skill.data.ap_cost:
 			skills.append(skill)
 	return skills
 
 
-static func is_ready(fight_model: FightModel, character: Character) -> bool:
-	return not get_usable_skills(fight_model, character).is_empty()
-
-
-static func get_cooldown_beats(character: Character, skill: SkillData) -> int:
-	return character.skill_cooldowns.get(skill, 0)
+static func is_ready(character: Character) -> bool:
+	return not get_usable_skills(character).is_empty()
 
 
 static func is_beat(tick: int) -> bool:
@@ -37,17 +32,17 @@ static func is_beat_next(fight_model: FightModel) -> bool:
 	return next_action == null or get_beat_at_or_after(fight_model.tick + 1) <= next_action.resolve_tick
 
 
-static func get_targets(fight_model: FightModel, character: Character, _skill: SkillData) -> Array[Character]:
+static func get_targets(fight_model: FightModel, character: Character, _skill: Skill) -> Array[Character]:
 	return fight_model.get_standing(FightModel.Side.ENEMY if fight_model.get_side(character) == FightModel.Side.HERO else FightModel.Side.HERO)
 
 
 static func get_timeline_delta(fight_model: FightModel, action: Action) -> Delta:
-	action.resolve_tick = fight_model.tick + action.skill.delay
+	action.resolve_tick = fight_model.tick + action.skill.data.delay
 	var delta := Delta.new()
 	delta.add_action(action)
-	delta.add_ap(action.actor, -action.skill.ap_cost)
-	if action.skill.cooldown > 0:
-		delta.add_cooldown(action.actor, action.skill, action.skill.cooldown)
+	delta.add_ap(action.actor, -action.skill.data.ap_cost)
+	if action.skill.data.cooldown > 0:
+		delta.add_cooldown(action.actor, action.skill, action.skill.data.cooldown)
 	return delta
 
 
@@ -58,10 +53,9 @@ static func get_beat_delta(fight_model: FightModel) -> Delta:
 		var regained := mini(AP_PER_BEAT, character.data.max_ap - character.ap)
 		if regained > 0:
 			delta.add_ap(character, regained)
-		for skill in character.skill_cooldowns:
-			var beats := character.skill_cooldowns[skill]
-			if beats > 0:
-				delta.add_cooldown(character, skill, beats - 1)
+		for skill in character.skills:
+			if skill.cooldown_beats > 0:
+				delta.add_cooldown(character, skill, skill.cooldown_beats - 1)
 	return delta
 
 
@@ -69,7 +63,7 @@ static func get_resolve_delta(fight_model: FightModel, action: Action) -> Delta:
 	var delta := Delta.new()
 	delta.ticks = action.resolve_tick - fight_model.tick
 	delta.resolve_action(action)
-	for effect in action.skill.effects:
+	for effect in action.skill.data.effects:
 		effect.add_changes(fight_model, delta, action)
 	return delta
 

@@ -176,7 +176,7 @@ func show_action(action: Action, on_impact: Callable) -> void:
 	var actor_puppet := _fight_puppets[action.actor]
 	var target_puppet := _fight_puppets[action.target]
 	actor_puppet.z_index = 1
-	match action.skill.blow:
+	match action.skill.data.blow:
 		SkillData.Blow.QUICK:
 			await _play_quick_blow(actor_puppet, target_puppet, on_impact)
 		SkillData.Blow.HEAVY:

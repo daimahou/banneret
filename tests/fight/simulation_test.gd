@@ -32,6 +32,18 @@ func test_a_play_out_leaves_the_fight_untouched() -> void:
 	assert_array(fight_model.timeline).contains_exactly([shown])
 
 
+func test_a_play_out_s_cooldowns_never_reach_the_fight() -> void:
+	var fight_model := _create_fight_model()
+	var preview_model := FightModel.new([], [])
+	var choice := _create_choice(fight_model.heroes[0], fight_model.enemies[0], 2, 3)
+	choice.skill.data.cooldown = 2
+
+	Simulation.run(preview_model, fight_model, choice)
+
+	assert_int(preview_model.get_character(choice.actor.id).get_skill(choice.skill.id).cooldown_beats).is_equal(2)
+	assert_int(choice.skill.cooldown_beats).is_equal(0)
+
+
 func test_a_play_out_s_history_holds_the_cancels_on_the_way() -> void:
 	var fight_model := _create_fight_model()
 	var preview_model := FightModel.new([], [])
@@ -105,11 +117,12 @@ func _create_choice(actor: Character, target: Character, skill_delay: int, damag
 	var choice := Action.new()
 	choice.actor = actor
 	choice.target = target
-	choice.skill = SkillData.new()
-	choice.skill.delay = skill_delay
+	choice.skill = Skill.new(SkillData.new())
+	choice.skill.data.delay = skill_delay
+	actor.skills.append(choice.skill)
 	var damage := DamageEffect.new()
 	damage.amount = damage_amount
-	choice.skill.effects = [damage]
+	choice.skill.data.effects = [damage]
 	return choice
 
 

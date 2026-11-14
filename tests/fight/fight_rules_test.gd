@@ -166,7 +166,7 @@ func test_a_character_without_ap_has_no_usable_skill() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_a_beat_gives_back_ap() -> void:
@@ -178,7 +178,7 @@ func test_a_beat_gives_back_ap() -> void:
 
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(hero)).contains([choice.skill])
 
 
 func test_a_beat_gives_back_one_ap_not_up_to_the_cap() -> void:
@@ -203,7 +203,7 @@ func test_ap_is_held_up_to_its_cap() -> void:
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, _create_choice(fight_model, hero, 2)))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_a_skill_costing_more_ap_than_held_is_not_usable() -> void:
@@ -212,11 +212,11 @@ func test_a_skill_costing_more_ap_than_held_is_not_usable() -> void:
 	fight_model.heroes[0] = hero
 	var cheap := _create_choice(fight_model, hero, 2)
 	var dear := _create_choice(fight_model, hero, 2)
-	dear.skill.ap_cost = 2
+	dear.skill.data.ap_cost = 2
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, cheap))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains_exactly([cheap.skill])
+	assert_array(FightRules.get_usable_skills(hero)).contains_exactly([cheap.skill])
 
 
 func test_a_skill_spends_its_ap_cost() -> void:
@@ -224,11 +224,11 @@ func test_a_skill_spends_its_ap_cost() -> void:
 	var hero := _create_character(10, 2)
 	fight_model.heroes[0] = hero
 	var dear := _create_choice(fight_model, hero, 2)
-	dear.skill.ap_cost = 2
+	dear.skill.data.ap_cost = 2
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, dear))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_ap_carries_over_to_the_next_fight() -> void:
@@ -239,7 +239,7 @@ func test_ap_carries_over_to_the_next_fight() -> void:
 
 	var fight_model := FightModel.new(last_fight.heroes, last_fight.enemies)
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat() -> void:
@@ -249,11 +249,11 @@ func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_a_skill_chosen_on_a_beat_does_not_count_that_beat() -> void:
@@ -263,9 +263,9 @@ func test_a_skill_chosen_on_a_beat_does_not_count_that_beat() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_a_cooldown_carries_over_to_the_next_fight() -> void:
@@ -276,9 +276,9 @@ func test_a_cooldown_carries_over_to_the_next_fight() -> void:
 
 	var fight_model := FightModel.new(last_fight.heroes, last_fight.enemies)
 
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
@@ -287,7 +287,7 @@ func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:
 	var action := _schedule(fight_model, _create_choice(fight_model, enemy, 2, 1, 1))
 	fight_model.apply(FightRules.get_resolve_delta(fight_model, action))
 	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
-	fight_model.enemies[1].data.skills = []
+	fight_model.enemies[1].skills = []
 
 	assert_object(await brain.get_next_action(fight_model)).is_null()
 
@@ -296,7 +296,7 @@ func test_an_enemy_spends_all_its_ap() -> void:
 	var fight_model := _create_fight_model()
 	var enemy := _create_character(10, 2)
 	fight_model.enemies = [enemy]
-	enemy.data.skills.append(SkillData.new())
+	enemy.skills.append(Skill.new(SkillData.new()))
 	var brain := RandomBrain.new(FightModel.Side.ENEMY, 1)
 	var actors: Array[Character] = []
 	var choice := await brain.get_next_action(fight_model)
@@ -324,13 +324,13 @@ func _create_character(health: int, max_ap := CharacterData.MAX_AP) -> Character
 func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int, damage_amount := 1, skill_cooldown := 0) -> Action:
 	var choice := Action.new()
 	choice.actor = actor
-	choice.skill = SkillData.new()
-	choice.skill.delay = skill_delay
-	choice.skill.cooldown = skill_cooldown
-	actor.data.skills.append(choice.skill)
+	choice.skill = Skill.new(SkillData.new())
+	choice.skill.data.delay = skill_delay
+	choice.skill.data.cooldown = skill_cooldown
+	actor.skills.append(choice.skill)
 	var damage := DamageEffect.new()
 	damage.amount = damage_amount
-	choice.skill.effects = [damage]
+	choice.skill.data.effects = [damage]
 	choice.target = FightRules.get_targets(fight_model, actor, choice.skill)[0]
 	return choice
 
@@ -338,7 +338,7 @@ func _create_choice(fight_model: FightModel, actor: Character, skill_delay: int,
 func _add_stagger(choice: Action, ticks: int) -> void:
 	var stagger := StaggerEffect.new()
 	stagger.ticks = ticks
-	choice.skill.effects.append(stagger)
+	choice.skill.data.effects.append(stagger)
 
 
 func _schedule(fight_model: FightModel, choice: Action) -> Action:

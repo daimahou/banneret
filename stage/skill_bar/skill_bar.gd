@@ -2,9 +2,9 @@ class_name SkillBar
 extends Control
 # One character's skills, and Stop or Pass during a fight. It shows what it is told, and only reports its buttons.
 
-signal skill_pressed(skill: SkillData)
+signal skill_pressed(skill: Skill)
 # Null once the cursor leaves the skill.
-signal skill_hovered(skill: SkillData)
+signal skill_hovered(skill: Skill)
 signal stop_pressed
 
 const FONT_SIZE := 48
@@ -24,10 +24,10 @@ func _ready() -> void:
 	_stop_button.pressed.connect(stop_pressed.emit)
 
 
-func show_skills(skills: Array[SkillData]) -> void:
+func show_skills(skills: Array[Skill]) -> void:
 	var flip_delay := 0.0
 	for index in _slots.size():
-		var skill: SkillData = skills[index] if index < skills.size() else null
+		var skill: Skill = skills[index] if index < skills.size() else null
 		if _slots[index].show_skill(skill, flip_delay):
 			flip_delay += Scenery.FLIP_STAGGER
 
@@ -37,13 +37,13 @@ func show_cooldown(slot_index: int, beats: int, style := PreviewPulse.Style.NONE
 		_slots[slot_index].show_cooldown(beats, style)
 
 
-func set_usable(usable: Array[SkillData]) -> void:
+func set_usable(usable: Array[Skill]) -> void:
 	for slot in _slots:
 		slot.disabled = slot.skill not in usable
 		slot.set_greyed(usable.is_empty() if slot.skill == null else slot.disabled)
 
 
-func set_armed_skill(armed_skill: SkillData) -> void:
+func set_armed_skill(armed_skill: Skill) -> void:
 	for slot in _slots:
 		slot.set_armed(slot.skill != null and slot.skill == armed_skill)
 
