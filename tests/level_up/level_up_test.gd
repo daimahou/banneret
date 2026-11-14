@@ -4,10 +4,15 @@ const SKILL_DRAFT_NUMBER := 3
 const TALENT_DRAFT_NUMBER := 1
 
 var _rng := RandomNumberGenerator.new()
+var _game_bags := LevelUp.bags
 
 
 func before_test() -> void:
 	_rng.seed = 1
+
+
+func after_test() -> void:
+	LevelUp.bags = _game_bags
 
 
 func test_each_hero_gets_three_distinct_offers_of_skills_they_do_not_own() -> void:
@@ -105,7 +110,9 @@ func test_a_talent_draft_offers_no_skill() -> void:
 	var hero := _create_hero()
 	SkillFixture.add_rank(hero.skills[0].data)
 
-	var offers := LevelUp.new(TALENT_DRAFT_NUMBER, [hero], _rng, {LevelUp.Draft.SKILL: _create_bag(3)}).get_offers(hero)
+	LevelUp.bags = {LevelUp.Draft.SKILL: _create_bag(3)}
+
+	var offers := LevelUp.new(TALENT_DRAFT_NUMBER, [hero], _rng).get_offers(hero)
 
 	assert_array(offers).is_empty()
 
@@ -305,11 +312,13 @@ func test_an_upgrade_without_one_of_its_perks_cannot_be_selected() -> void:
 
 
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:
-	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, _rng, {LevelUp.Draft.SKILL: bag})
+	LevelUp.bags = {LevelUp.Draft.SKILL: bag}
+	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, _rng)
 
 
 func _create_talent_level_up(heroes: Array[Character], talent_bag: Array[TalentData]) -> LevelUp:
-	return LevelUp.new(TALENT_DRAFT_NUMBER, heroes, _rng, {LevelUp.Draft.TALENT: talent_bag})
+	LevelUp.bags = {LevelUp.Draft.TALENT: talent_bag}
+	return LevelUp.new(TALENT_DRAFT_NUMBER, heroes, _rng)
 
 
 func _pick_first_upgrade(level_up: LevelUp, hero: Character, perk_index: int) -> void:
