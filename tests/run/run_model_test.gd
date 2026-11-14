@@ -61,6 +61,38 @@ func test_a_level_up_already_confirmed_is_rejected() -> void:
 	assert_int(run_model.level_up_count).is_equal(1)
 
 
+func test_confirming_applies_each_selection_to_its_own_hero() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	_complete_level_ups(run_model, 2)
+	var level_up := run_model.create_level_up()
+	var selected: Array[SkillData] = []
+	for index in level_up.heroes.size():
+		var hero := level_up.heroes[index]
+		var offer: LevelUpOffer = level_up.get_offers(hero)[index]
+		level_up.select_offer(hero, offer)
+		selected.append(offer.skill_data)
+
+	run_model.confirm_level_up(level_up)
+
+	for index in level_up.heroes.size():
+		assert_int(level_up.heroes[index].skills.size()).is_equal(2)
+		assert_object(level_up.heroes[index].skills.back().data).is_same(selected[index])
+
+
+func test_a_level_up_waiting_on_a_selection_is_not_confirmed() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	_complete_level_ups(run_model, 2)
+	var level_up := run_model.create_level_up()
+	var hero := level_up.heroes[0]
+	level_up.select_offer(hero, level_up.get_offers(hero)[0])
+
+	var confirm := func() -> void: run_model.confirm_level_up(level_up)
+	await assert_error(confirm).is_push_error("Level-up 3 waits on a selection")
+
+	assert_int(hero.skills.size()).is_equal(1)
+	assert_int(run_model.level_up_count).is_equal(2)
+
+
 func test_the_same_run_seed_draws_the_same_offers_however_often_they_are_drawn() -> void:
 	var run_model := RunModel.new(RUN_SEED)
 	var other_run_model := RunModel.new(RUN_SEED)

@@ -1,6 +1,6 @@
 class_name LevelUp
 extends RefCounted
-# One level-up of the run: each hero's offers, drawn once, the offer each selects, and the picks that confirm them all at once.
+# One level-up of the run: each hero's offers, drawn once, and the offer each has selected.
 
 enum Draft { TALENT, SKILL }
 
@@ -14,7 +14,6 @@ var heroes: Array[Character] = []
 
 var _offers: Dictionary[Character, Array] = {}
 var _selected_offers: Dictionary[Character, LevelUpOffer] = {}
-var _is_confirmed := false
 
 
 func _init(level_up_number: int, party: Array[Character], bag: Array[SkillData], rng: RandomNumberGenerator) -> void:
@@ -60,22 +59,10 @@ func is_ready() -> bool:
 
 
 func select_offer(hero: Character, offer: LevelUpOffer) -> void:
-	if _is_confirmed or offer not in _offers[hero]:
+	if offer not in _offers[hero]:
 		push_error("%s cannot select that offer" % hero.data.name)
 		return
 	_selected_offers[hero] = offer
-
-
-func confirm_picks() -> void:
-	if _is_confirmed:
-		push_error("Level-up %d is already confirmed" % number)
-		return
-	if not is_ready():
-		push_error("Level-up %d waits on a selection" % number)
-		return
-	for hero in _selected_offers:
-		_selected_offers[hero].apply(hero)
-	_is_confirmed = true
 
 
 func _is_hero_ready(hero: Character) -> bool:
