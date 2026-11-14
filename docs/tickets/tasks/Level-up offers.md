@@ -4,9 +4,9 @@ id: 1.3-1.2
 requires:
   - "[[Fight sequence and starting party]]"
 started: 2026-11-14
-finished:
-hours: 2.6
-total_hours: 7.2
+finished: 2026-11-14
+hours: 2.8
+total_hours: 7.4
 extra_hours: 0.5
 parent: "[[Combat and progression]]"
 ---
