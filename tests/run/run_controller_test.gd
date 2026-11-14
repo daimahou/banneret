@@ -33,3 +33,31 @@ func test_the_party_carries_its_health_ap_and_cooldowns_into_the_next_fight() ->
 	assert_int(hero.ap).is_equal(0)
 	assert_int(hero.skills[0].cooldown_beats).is_equal(2)
 	assert_array(fight_controller.fight_model.timeline).is_empty()
+
+
+func test_a_victory_opens_the_level_up_and_the_next_fight_carries_its_picks() -> void:
+	var runner := scene_runner(RUN_SCENE)
+	var run_controller := runner.scene() as RunController
+	runner.set_time_factor(TIME_FACTOR)
+	var first_fight_controller: FightController = await run_controller.fight_started
+	await runner.await_func_on(first_fight_controller.hero_brain, "is_waiting").is_true()
+	run_controller.run_model.get_next_level_up()
+	run_controller.run_model.get_next_level_up()
+
+	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
+	debug_commands.knock_out(first_fight_controller, FightModel.Side.ENEMY)
+	var level_up: LevelUp = await run_controller.level_up_started
+
+	assert_int(level_up.draft).is_equal(LevelUp.Draft.SKILL)
+	assert_object(run_controller.fight_controller).is_null()
+	var picks: Dictionary[Character, SkillData] = {}
+	for hero in level_up.heroes:
+		var offer: LevelUpOffer = level_up.get_offers(hero)[0]
+		level_up.confirm_pick(hero, offer)
+		picks[hero] = offer.skill_data
+	(run_controller.get_node("LevelUpView/ContinueButton") as TextureButton).pressed.emit()
+	var fight_controller: FightController = await run_controller.fight_started
+
+	for hero in picks:
+		assert_array(fight_controller.fight_model.heroes).contains([hero])
+		assert_object(hero.skills.back().data).is_same(picks[hero])

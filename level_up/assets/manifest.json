@@ -1,7 +1,7 @@
 {
   "reference_size": [
-    1672,
-    941
+    3840,
+    2160
   ],
   "display_scale": 1,
   "background": "background.png",
@@ -9,16 +9,16 @@
     "background": {
       "file": "background.png",
       "size": [
-        1672,
-        941
+        3840,
+        2160
       ],
-      "processing": "native size; no resampling"
+      "processing": "native size; no resampling; then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)"
     },
     "offer_normal": {
       "file": "offer_normal.png",
       "size": [
-        512,
-        152
+        1176,
+        349
       ],
       "source": "clean_skin.png",
       "source_region": [
@@ -31,19 +31,19 @@
         497,
         158
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        20,
-        14,
-        472,
-        120
+        46,
+        32,
+        1084,
+        276
       ]
     },
     "offer_focused": {
       "file": "offer_focused.png",
       "size": [
-        512,
-        152
+        1176,
+        349
       ],
       "source": "clean_skin.png",
       "source_region": [
@@ -56,19 +56,19 @@
         529,
         158
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        20,
-        14,
-        472,
-        120
+        46,
+        32,
+        1084,
+        276
       ]
     },
     "offer_selected": {
       "file": "offer_selected.png",
       "size": [
-        512,
-        152
+        1176,
+        349
       ],
       "source": "clean_skin.png",
       "source_region": [
@@ -81,19 +81,19 @@
         528,
         160
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        20,
-        14,
-        472,
-        120
+        46,
+        32,
+        1084,
+        276
       ]
     },
     "talent_normal": {
       "file": "talent_normal.png",
       "size": [
-        512,
-        100
+        1176,
+        230
       ],
       "source": "clean_skin.png",
       "source_region": [
@@ -106,19 +106,19 @@
         521,
         103
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        18,
-        12,
-        476,
-        76
+        41,
+        28,
+        1093,
+        175
       ]
     },
     "talent_selected": {
       "file": "talent_selected.png",
       "size": [
-        512,
-        100
+        1176,
+        230
       ],
       "source": "clean_skin.png",
       "source_region": [
@@ -131,19 +131,19 @@
         523,
         105
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        18,
-        12,
-        476,
-        76
+        41,
+        28,
+        1093,
+        175
       ]
     },
     "active_tray": {
       "file": "active_tray.png",
       "size": [
-        512,
-        88
+        1176,
+        202
       ],
       "source": "clean_skin.png",
       "source_region": [
@@ -156,19 +156,19 @@
         513,
         94
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        20,
-        16,
-        472,
-        56
+        46,
+        37,
+        1084,
+        129
       ]
     },
     "button_enabled": {
       "file": "button_enabled.png",
       "size": [
-        320,
-        64
+        735,
+        147
       ],
       "source": "skin.png",
       "source_region": [
@@ -181,19 +181,19 @@
         315,
         65
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        40,
-        12,
-        240,
-        40
+        92,
+        28,
+        551,
+        92
       ]
     },
     "button_normal": {
       "file": "button_normal.png",
       "size": [
-        320,
-        64
+        735,
+        147
       ],
       "source": "skin.png",
       "source_region": [
@@ -206,19 +206,19 @@
         323,
         64
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        40,
-        12,
-        240,
-        40
+        92,
+        28,
+        551,
+        92
       ]
     },
     "button_disabled": {
       "file": "button_disabled.png",
       "size": [
-        320,
-        64
+        735,
+        147
       ],
       "source": "skin.png",
       "source_region": [
@@ -231,19 +231,19 @@
         320,
         64
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        40,
-        12,
-        240,
-        40
+        92,
+        28,
+        551,
+        92
       ]
     },
     "button_compact": {
       "file": "button_compact.png",
       "size": [
-        240,
-        48
+        551,
+        110
       ],
       "source": "skin.png",
       "source_region": [
@@ -256,19 +256,19 @@
         235,
         48
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        24,
-        8,
-        192,
-        32
+        55,
+        18,
+        441,
+        73
       ]
     },
     "button_back": {
       "file": "button_back.png",
       "size": [
-        104,
-        40
+        239,
+        92
       ],
       "source": "components.png",
       "source_region": [
@@ -281,19 +281,19 @@
         144,
         59
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        12,
-        7,
-        80,
-        26
+        28,
+        16,
+        184,
+        60
       ]
     },
     "portrait_frame": {
       "file": "portrait_frame.png",
       "size": [
-        136,
-        148
+        312,
+        340
       ],
       "source": "skin.png",
       "source_region": [
@@ -306,19 +306,19 @@
         131,
         141
       ],
-      "processing": "native crop and transparent padding",
+      "processing": "native crop and transparent padding; then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        16,
-        14,
-        104,
-        120
+        37,
+        32,
+        239,
+        276
       ]
     },
     "skill_frame": {
       "file": "skill_frame.png",
       "size": [
-        56,
-        56
+        129,
+        129
       ],
       "source": "skin.png",
       "source_region": [
@@ -331,19 +331,19 @@
         55,
         57
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        7,
-        7,
-        42,
-        42
+        16,
+        16,
+        96,
+        96
       ]
     },
     "talent_socket": {
       "file": "talent_socket.png",
       "size": [
-        24,
-        24
+        55,
+        55
       ],
       "source": "skin.png",
       "source_region": [
@@ -356,19 +356,19 @@
         27,
         27
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        5,
-        5,
-        14,
-        14
+        11,
+        11,
+        32,
+        32
       ]
     },
     "offer_icon_frame": {
       "file": "offer_icon_frame.png",
       "size": [
-        88,
-        88
+        202,
+        202
       ],
       "source": "components.png",
       "source_region": [
@@ -381,19 +381,19 @@
         122,
         127
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        10,
-        10,
-        68,
-        68
+        23,
+        23,
+        156,
+        156
       ]
     },
     "talent_icon_frame": {
       "file": "talent_icon_frame.png",
       "size": [
-        52,
-        52
+        119,
+        119
       ],
       "source": "skin.png",
       "source_region": [
@@ -406,19 +406,19 @@
         55,
         57
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        7,
-        7,
-        38,
-        38
+        16,
+        16,
+        87,
+        87
       ]
     },
     "skill_slot_empty": {
       "file": "skill_slot_empty.png",
       "size": [
-        56,
-        56
+        129,
+        129
       ],
       "source": "components.png",
       "source_region": [
@@ -431,19 +431,19 @@
         87,
         91
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        10,
-        10,
-        36,
-        36
+        23,
+        23,
+        83,
+        83
       ]
     },
     "talent_socket_empty": {
       "file": "talent_socket_empty.png",
       "size": [
-        24,
-        24
+        55,
+        55
       ],
       "source": "components.png",
       "source_region": [
@@ -456,19 +456,19 @@
         44,
         46
       ],
-      "processing": "offline normalization to final pixel size (Lanczos)",
+      "processing": "offline normalization to final pixel size (Lanczos); then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)",
       "content_rect": [
-        6,
-        6,
-        12,
-        12
+        14,
+        14,
+        28,
+        28
       ]
     },
     "check_selected": {
       "file": "check_selected.png",
       "size": [
-        24,
-        24
+        55,
+        55
       ],
       "source": "components.png",
       "source_region": [
@@ -481,13 +481,13 @@
         44,
         39
       ],
-      "processing": "uniform offline resample to final size"
+      "processing": "uniform offline resample to final size; then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)"
     },
     "check_muted": {
       "file": "check_muted.png",
       "size": [
-        24,
-        24
+        55,
+        55
       ],
       "source": "components.png",
       "source_region": [
@@ -500,31 +500,31 @@
         42,
         38
       ],
-      "processing": "uniform offline resample to final size"
+      "processing": "uniform offline resample to final size; then scaled offline from the 1672 × 941 canvas to 3840 × 2160 (×2.2966, Lanczos)"
     }
   },
   "layout": {
     "column_x": [
-      64,
-      592,
-      1120
+      147,
+      1360,
+      2572
     ],
     "card_y": [
-      320,
-      480,
-      640
+      735,
+      1102,
+      1470
     ],
     "talent_y": [
-      480,
-      588,
-      696
+      1102,
+      1350,
+      1598
     ],
-    "confirm_y": 804,
-    "active_tray_y": 232
+    "confirm_y": 1847,
+    "active_tray_y": 533
   },
   "notes": [
     "Draw at exported size: no runtime scaling or NinePatchRect stretching.",
-    "Source elements were generated at reference scale, then cropped and normalized offline to the exact exported sizes. No runtime scaling is needed.",
+    "Source elements were generated at the 1672 × 941 reference scale, cropped and normalized to exact sizes, then scaled offline ×2.2966 to the 3840 × 2160 viewport. No runtime scaling is needed.",
     "All words, numbers, portraits and gameplay icons are separate runtime content."
   ]
 }

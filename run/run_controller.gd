@@ -2,6 +2,7 @@ class_name RunController
 extends Node
 
 signal fight_started(fight_controller: FightController)
+signal level_up_started(level_up: LevelUp)
 
 const HOLD_DURATION := 0.4
 
@@ -9,6 +10,7 @@ var run_model := RunModel.new()
 var fight_controller: FightController
 
 @onready var _stage: Stage = $Stage
+@onready var _level_up_view: LevelUpView = $LevelUpView
 
 
 func _ready() -> void:
@@ -34,6 +36,7 @@ func _play_fights(first_fight_seed: int) -> void:
 			run_model = RunModel.new()
 		else:
 			LimboConsole.info("Fight won")
+			await _play_level_up()
 		fight_seed = randi()
 
 
@@ -50,6 +53,25 @@ func _play_fight(fight_seed: int) -> void:
 	await fight_controller.play()
 	fight_controller.dispose()
 	fight_controller = null
+
+
+func _play_level_up() -> void:
+	var level_up := run_model.get_next_level_up()
+	if level_up == null:
+		return
+	LimboConsole.info("Level-up %d: %s draft" % [level_up.number, level_up.get_draft_name()])
+	if level_up.is_complete():
+		return
+	var confirm_pick := func(hero: Character, offer: LevelUpOffer) -> void:
+		level_up.confirm_pick(hero, offer)
+		_level_up_view.update_states()
+	_level_up_view.pick_confirmed.connect(confirm_pick)
+	_level_up_view.show_level_up(level_up)
+	level_up_started.emit(level_up)
+	while not level_up.is_complete():
+		await _level_up_view.continue_pressed
+	_level_up_view.pick_confirmed.disconnect(confirm_pick)
+	_level_up_view.hide()
 
 
 func _on_action_resolved(action: Action) -> void:

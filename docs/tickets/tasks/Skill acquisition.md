@@ -4,7 +4,7 @@ id: "1.3-1.2.2"
 parent: "[[Level-up offers]]"
 requires:
   - "[[Skill wraps SkillData]]"
-started:
+started: 2026-11-14
 finished:
 hours:
 ---

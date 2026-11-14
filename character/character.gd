@@ -1,6 +1,8 @@
 class_name Character
 extends RefCounted
 
+const SKILL_SLOTS := 5
+
 static var _next_id := 0
 
 var id: int
@@ -22,6 +24,14 @@ func _init(character_data: CharacterData) -> void:
 
 func is_fallen() -> bool:
 	return health <= 0
+
+
+func has_free_skill_slot() -> bool:
+	return skills.size() < SKILL_SLOTS
+
+
+func has_skill(skill_data: SkillData) -> bool:
+	return skills.any(func(skill: Skill) -> bool: return skill.data == skill_data)
 
 
 func get_skill(skill_id: int) -> Skill:
