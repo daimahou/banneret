@@ -64,7 +64,9 @@ func is_level_up_open() -> bool:
 func request_level_up() -> void:
 	var fight_model := fight_controller.fight_model
 	get_tree().paused = true
+	_level_up_view.process_mode = Node.PROCESS_MODE_ALWAYS
 	await _play_level_up()
+	_level_up_view.process_mode = Node.PROCESS_MODE_INHERIT
 	get_tree().paused = false
 	fight_model.notify_characters_changed()
 
