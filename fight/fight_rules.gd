@@ -6,8 +6,7 @@ const BEAT_TICKS := 4
 const AP_PER_BEAT := 1
 
 
-#TODO: remove unused argument fight_model
-static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[Skill]:
+static func get_usable_skills(character: Character) -> Array[Skill]:
 	var skills: Array[Skill] = []
 	for skill in character.skills:
 		if skill.cooldown_beats == 0 and character.ap >= skill.data.ap_cost:
@@ -15,8 +14,8 @@ static func get_usable_skills(fight_model: FightModel, character: Character) -> 
 	return skills
 
 
-static func is_ready(fight_model: FightModel, character: Character) -> bool:
-	return not get_usable_skills(fight_model, character).is_empty()
+static func is_ready(character: Character) -> bool:
+	return not get_usable_skills(character).is_empty()
 
 
 static func is_beat(tick: int) -> bool:

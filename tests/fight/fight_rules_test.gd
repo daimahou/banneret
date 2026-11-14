@@ -166,7 +166,7 @@ func test_a_character_without_ap_has_no_usable_skill() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_a_beat_gives_back_ap() -> void:
@@ -178,7 +178,7 @@ func test_a_beat_gives_back_ap() -> void:
 
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(hero)).contains([choice.skill])
 
 
 func test_a_beat_gives_back_one_ap_not_up_to_the_cap() -> void:
@@ -203,7 +203,7 @@ func test_ap_is_held_up_to_its_cap() -> void:
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, _create_choice(fight_model, hero, 2)))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_a_skill_costing_more_ap_than_held_is_not_usable() -> void:
@@ -216,7 +216,7 @@ func test_a_skill_costing_more_ap_than_held_is_not_usable() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, cheap))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).contains_exactly([cheap.skill])
+	assert_array(FightRules.get_usable_skills(hero)).contains_exactly([cheap.skill])
 
 
 func test_a_skill_spends_its_ap_cost() -> void:
@@ -228,7 +228,7 @@ func test_a_skill_spends_its_ap_cost() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, dear))
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_ap_carries_over_to_the_next_fight() -> void:
@@ -239,7 +239,7 @@ func test_ap_carries_over_to_the_next_fight() -> void:
 
 	var fight_model := FightModel.new(last_fight.heroes, last_fight.enemies)
 
-	assert_array(FightRules.get_usable_skills(fight_model, hero)).is_empty()
+	assert_array(FightRules.get_usable_skills(hero)).is_empty()
 
 
 func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat() -> void:
@@ -249,11 +249,11 @@ func test_a_skill_goes_on_cooldown_when_chosen_until_its_nth_beat() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_a_skill_chosen_on_a_beat_does_not_count_that_beat() -> void:
@@ -263,9 +263,9 @@ func test_a_skill_chosen_on_a_beat_does_not_count_that_beat() -> void:
 
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))
 
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_a_cooldown_carries_over_to_the_next_fight() -> void:
@@ -276,9 +276,9 @@ func test_a_cooldown_carries_over_to_the_next_fight() -> void:
 
 	var fight_model := FightModel.new(last_fight.heroes, last_fight.enemies)
 
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).not_contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).not_contains([choice.skill])
 	fight_model.apply(FightRules.get_beat_delta(fight_model))
-	assert_array(FightRules.get_usable_skills(fight_model, fight_model.heroes[0])).contains([choice.skill])
+	assert_array(FightRules.get_usable_skills(fight_model.heroes[0])).contains([choice.skill])
 
 
 func test_an_enemy_with_its_only_skill_on_cooldown_chooses_nothing() -> void:

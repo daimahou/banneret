@@ -70,7 +70,7 @@ func get_next_action(fight_model: FightModel) -> Action:
 		fight_model.action_cancelled.connect(_on_action_removed)
 		fight_model.character_fell.connect(_on_character_fell)
 		fight_model.changed.connect(_show_choices)
-	var free_heroes := fight_model.get_standing(side).filter(is_hero_ready.bind(fight_model))
+	var free_heroes := fight_model.get_standing(side).filter(FightRules.is_ready)
 	if free_heroes.is_empty() and not _is_stop_requested:
 		_is_stopped = false
 		return null
@@ -83,10 +83,6 @@ func get_next_action(fight_model: FightModel) -> Action:
 	_is_waiting = true
 	_show_choices()
 	return await _decided
-
-
-func is_hero_ready(character: Character, fight_model: FightModel) -> bool:
-	return FightRules.is_ready(fight_model, character)
 
 
 func request_stop() -> void:
@@ -123,7 +119,7 @@ func cycle_hero(step: int) -> void:
 func arm_skill(skill: Skill) -> void:
 	if not _is_waiting:
 		return
-	var usable_skills := FightRules.get_usable_skills(_fight_model, hero)
+	var usable_skills := FightRules.get_usable_skills(hero)
 	if get_inspected_character() != hero or skill not in usable_skills:
 		return
 	armed_skill = skill
@@ -221,7 +217,7 @@ func is_pickable(character: Character) -> bool:
 
 
 func is_ready(character: Character) -> bool:
-	return _is_waiting and _fight_model.get_side(character) == side and FightRules.is_ready(_fight_model, character)
+	return _is_waiting and _fight_model.get_side(character) == side and FightRules.is_ready(character)
 
 
 func get_inspected_character() -> Character:
@@ -237,7 +233,7 @@ func get_previewed_action() -> Action:
 		return null
 	if hovered_action != null:
 		return hovered_action
-	if _ghost_action != null and _ghost_action.skill in FightRules.get_usable_skills(_fight_model, hero):
+	if _ghost_action != null and _ghost_action.skill in FightRules.get_usable_skills(hero):
 		return _ghost_action
 	return null
 
@@ -298,7 +294,7 @@ func _show_choices() -> void:
 		skill_bar.show_cooldown(index, skills[index].cooldown_beats)
 	var usable_skills: Array[Skill] = []
 	if _is_waiting and inspected == hero:
-		usable_skills = FightRules.get_usable_skills(_fight_model, hero)
+		usable_skills = FightRules.get_usable_skills(hero)
 	skill_bar.set_usable(usable_skills)
 	if hovered_action != null:
 		skill_bar.set_armed_skill(hovered_action.skill)

@@ -6,7 +6,6 @@ static var _next_id := 0
 var id: int
 var data: CharacterData
 var health: int
-# Carries from one fight to the next.
 var ap: int
 var skills: Array[Skill] = []
 
