@@ -140,5 +140,5 @@ func _draw_wipe() -> void:
 	_wipe.draw_colored_polygon(points, WIPE_COLOR)
 
 
-static func _get_skill_data(shown_skill: Skill) -> SkillData:
-	return null if shown_skill == null else shown_skill.data
+static func _get_skill_data(card_skill: Skill) -> SkillData:
+	return null if card_skill == null else card_skill.data
