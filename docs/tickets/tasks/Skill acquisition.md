@@ -21,16 +21,16 @@ Tracer bullet for [[Level-up offers]]: a victory opens the level-up, each hero p
 
 ## Implementation decisions
 
-- `LevelUp`: model object the run creates for its next level-up; holds the draft, each hero's offers, each hero's state (pending, confirmed, skipped) and selection; ready once every hero has a selection or is skipped; confirming applies every selection at once, each to its hero only; completes when none is pending; completion advances the run's count.
+- `LevelUp`: model object the run creates for its next level-up; holds the draft, each hero's offers and selection; a hero with no offer is skipped; ready once every hero has a selection or is skipped. The run keeps only its level-up count: confirming a level-up applies every selection at once, each to its hero only, and advances the count.
 - A level-up offer is its own type (new entry, or later an upgrade); the mission map's `Offer` is untouched.
-- One run-level `RandomNumberGenerator`, separate from fight seeds, draws offers; injectable.
+- Offers are drawn from the run's seed and the level-up's number, separate from fight seeds, so the same level-up always offers the same; a save needs only the seed and the count. The seed is injectable.
 - Skill Bag: Placeholder A, B, C. They do nothing.
 - View: full-screen overlay scene in the level-up feature folder. Three columns: portrait, name, class and stats; five skill slots; offers. No per-hero Confirm. The talent row arrives with [[Talents and class]].
 - Scale the level-up PNGs offline from 1672 × 941 to 3840 × 2160 (×2.2966); update their README and manifest. Nodes stay at 1 × 1.
 
 ## Testing decisions
 
-- `RunModel` / `LevelUp` with an injected scripted RNG: draft per count, advance once including all-skipped, stop after the 37th, reset; offer count, distinctness, fewer than three, none; fallen and starved skips; offers stable across reads; a pick applies once to one hero.
+- `RunModel` / `LevelUp` with an injected seed: draft per count, advance once including all-skipped, stop after the 37th, reset; offer count, distinctness, fewer than three, none; fallen and starved skips; offers stable across reads; a pick applies once to one hero.
 - `RunController`: a victory opens a level-up before the next fight (extend its test).
 - The view is judged by playing against the reference in [[Level-up offers]].
 

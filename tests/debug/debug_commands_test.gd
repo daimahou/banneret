@@ -107,17 +107,17 @@ func test_levelup_pauses_the_fight_opens_the_next_level_up_and_resumes_the_same_
 	assert_bool(fight_controller.is_paused()).is_false()
 	assert_int(hero.health).is_equal(health)
 	assert_object(hero.skills.back().data).is_same(opened[0].get_offers(hero)[0].skill_data)
-	assert_int(run_controller.run_model.get_next_level_up().number).is_equal(4)
+	assert_int(run_controller.run_model.level_up_count).is_equal(3)
 
 
 func test_levelup_after_the_last_level_up_changes_nothing() -> void:
 	var runner := scene_runner(RUN_SCENE)
 	var run_controller := await _start_run_at_first_skill_draft(runner)
-	while run_controller.run_model.has_level_up_left():
-		var level_up := run_controller.run_model.get_next_level_up()
-		if not level_up.is_complete():
-			_select_first_offers(level_up)
-			level_up.confirm_picks()
+	var run_model := run_controller.run_model
+	while run_model.has_level_up_left():
+		var level_up := run_model.create_level_up()
+		_select_first_offers(level_up)
+		run_model.confirm_level_up(level_up)
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 
 	debug_commands.request_level_up(run_controller)
@@ -151,14 +151,14 @@ func _start_run_at_first_skill_draft(runner: GdUnitSceneRunner) -> RunController
 	runner.set_time_factor(TIME_FACTOR)
 	var fight_controller: FightController = await run_controller.fight_started
 	await runner.await_func_on(fight_controller.hero_brain, "is_waiting").is_true()
-	run_controller.run_model.get_next_level_up()
-	run_controller.run_model.get_next_level_up()
+	for index in 2:
+		run_controller.run_model.confirm_level_up(run_controller.run_model.create_level_up())
 	return run_controller
 
 
 func _select_first_offers(level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
-		if level_up.get_state(hero) == LevelUp.State.PENDING:
+		if not level_up.is_skipped(hero):
 			level_up.select_offer(hero, level_up.get_offers(hero)[0])
 
 

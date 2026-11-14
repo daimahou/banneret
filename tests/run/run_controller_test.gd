@@ -41,8 +41,8 @@ func test_a_victory_opens_the_level_up_and_the_next_fight_carries_its_picks() ->
 	runner.set_time_factor(TIME_FACTOR)
 	var first_fight_controller: FightController = await run_controller.fight_started
 	await runner.await_func_on(first_fight_controller.hero_brain, "is_waiting").is_true()
-	run_controller.run_model.get_next_level_up()
-	run_controller.run_model.get_next_level_up()
+	for index in 2:
+		run_controller.run_model.confirm_level_up(run_controller.run_model.create_level_up())
 
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 	debug_commands.knock_out(first_fight_controller, FightModel.Side.ENEMY)

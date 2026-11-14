@@ -66,12 +66,16 @@ func request_level_up() -> void:
 
 
 func _play_level_up() -> void:
-	var level_up := run_model.get_next_level_up()
-	if level_up == null:
+	if not run_model.has_level_up_left():
 		return
+	var level_up := run_model.create_level_up()
 	LimboConsole.info("Level-up %d: %s draft" % [level_up.number, level_up.get_draft_name()])
-	if level_up.is_complete():
-		return
+	if level_up.has_offers():
+		await _show_level_up(level_up)
+	run_model.confirm_level_up(level_up)
+
+
+func _show_level_up(level_up: LevelUp) -> void:
 	var select_offer := func(hero: Character, offer: LevelUpOffer) -> void:
 		level_up.select_offer(hero, offer)
 		_level_up_view.update_states()
@@ -81,7 +85,6 @@ func _play_level_up() -> void:
 	level_up_started.emit(level_up)
 	while not level_up.is_ready():
 		await _level_up_view.continue_pressed
-	level_up.confirm_picks()
 	_level_up_view.offer_selected.disconnect(select_offer)
 	_level_up_view.hide()
 	_is_level_up_open = false

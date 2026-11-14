@@ -3,7 +3,6 @@ extends RefCounted
 # One level-up of the run: each hero's offers, drawn once, the offer each selects, and the picks that confirm them all at once.
 
 enum Draft { TALENT, SKILL }
-enum State { PENDING, CONFIRMED, SKIPPED }
 
 const OFFER_COUNT := 3
 const LAST_NUMBER := 37
@@ -14,8 +13,8 @@ var draft: Draft
 var heroes: Array[Character] = []
 
 var _offers: Dictionary[Character, Array] = {}
-var _states: Dictionary[Character, State] = {}
 var _selected_offers: Dictionary[Character, LevelUpOffer] = {}
+var _is_confirmed := false
 
 
 func _init(level_up_number: int, party: Array[Character], bag: Array[SkillData], rng: RandomNumberGenerator) -> void:
@@ -24,8 +23,7 @@ func _init(level_up_number: int, party: Array[Character], bag: Array[SkillData],
 	heroes = party
 	for hero in heroes:
 		_offers[hero] = _draw_offers(hero, bag, rng)
-		_states[hero] = State.SKIPPED if _offers[hero].is_empty() else State.PENDING
-		if not hero.is_fallen() and _offers[hero].is_empty():
+		if not hero.is_fallen() and is_skipped(hero):
 			push_warning("%s has no offer in the %s draft of level-up %d" % [hero.data.name, get_draft_name(), number])
 
 
@@ -39,8 +37,12 @@ func get_offers(hero: Character) -> Array[LevelUpOffer]:
 	return offers
 
 
-func get_state(hero: Character) -> State:
-	return _states[hero]
+func has_offers() -> bool:
+	return not heroes.all(is_skipped)
+
+
+func is_skipped(hero: Character) -> bool:
+	return _offers[hero].is_empty()
 
 
 # Null while the hero has selected nothing.
@@ -57,19 +59,15 @@ func is_ready() -> bool:
 	return heroes.all(_is_hero_ready)
 
 
-func is_complete() -> bool:
-	return heroes.all(func(hero: Character) -> bool: return _states[hero] != State.PENDING)
-
-
 func select_offer(hero: Character, offer: LevelUpOffer) -> void:
-	if _states[hero] != State.PENDING or offer not in _offers[hero]:
+	if _is_confirmed or offer not in _offers[hero]:
 		push_error("%s cannot select that offer" % hero.data.name)
 		return
 	_selected_offers[hero] = offer
 
 
 func confirm_picks() -> void:
-	if is_complete():
+	if _is_confirmed:
 		push_error("Level-up %d is already confirmed" % number)
 		return
 	if not is_ready():
@@ -77,11 +75,11 @@ func confirm_picks() -> void:
 		return
 	for hero in _selected_offers:
 		_selected_offers[hero].apply(hero)
-		_states[hero] = State.CONFIRMED
+	_is_confirmed = true
 
 
 func _is_hero_ready(hero: Character) -> bool:
-	return _states[hero] == State.SKIPPED or _selected_offers.has(hero)
+	return is_skipped(hero) or _selected_offers.has(hero)
 
 
 func _draw_offers(hero: Character, bag: Array[SkillData], rng: RandomNumberGenerator) -> Array[LevelUpOffer]:
