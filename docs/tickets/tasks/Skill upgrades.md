@@ -5,8 +5,8 @@ parent: "[[Level-up offers]]"
 requires:
   - "[[Skill acquisition]]"
 started: 2026-11-14
-finished:
-hours:
+finished: 2026-11-14
+hours: 0.6
 ---
 Upgrade offers for skills, with ranks and perks: [[Level-up offers]].
 

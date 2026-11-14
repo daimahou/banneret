@@ -6,7 +6,7 @@ requires:
   - "[[Skill acquisition]]"
 started: 2026-11-14
 finished: 2026-11-14
-hours: 1.7
+hours: 1.8
 ---
 The `levelup` debug command and the mid-fight pause: [[Level-up offers]].
 
