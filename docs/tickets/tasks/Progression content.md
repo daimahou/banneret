@@ -16,8 +16,8 @@ Add designed skills and their supporting mechanics to the progression system est
 ## Scope
 
 - Introduce content system by system, pairing skill design with the mechanics needed to make it playable.
-- Author passive ranks and node options, active skills and their expressions, classes and ascension capstones.
-- Supply eligibility rules and new-skill offer weights alongside the content that uses them.
+- Author talent ranks and perks, skills and their perks, classes and ascension capstones.
+- Supply tag requirements and offer weights alongside the content that uses them. Offer weights, including class-dependent ones, are not built yet: [[Level-up offers]] draws uniformly.
 - Integrate each addition into the existing draft and verify its effect in combat.
 
 > [!frontier] Content breakdown
@@ -26,7 +26,7 @@ Add designed skills and their supporting mechanics to the progression system est
 ## Done when
 
 - The selected content replaces its placeholders and can be acquired, upgraded and used through the playable combat loop.
-- Class-dependent options and weighted offers match the authored content; earlier confirmed choices remain unchanged.
+- Class-dependent perks and weighted offers match the authored content; earlier confirmed choices remain unchanged.
 - Each implemented system has its design rules recorded and its combat behaviour checked.
 
 ## Tickets

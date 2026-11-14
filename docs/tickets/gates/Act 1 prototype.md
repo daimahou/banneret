@@ -5,7 +5,7 @@ requires:
 deadline:
 started: 2026-11-07
 finished:
-total_hours: 0.8
+total_hours: 3.3
 parent: "[[Vertical slice]]"
 ---
 # Prototype 1 - Core

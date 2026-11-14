@@ -52,7 +52,7 @@ The coach's move along one road to the next map node.
 _Avoid_: move, step, hop
 
 **Offer**:
-One option an event puts up for the player to pick.
+One option an event or a level-up puts up for the player to pick.
 _Avoid_: option, card, reward
 
 **Character**:
@@ -129,3 +129,56 @@ _Avoid_: outcome, result
 **Stagger**:
 A pushback of all the target's pending actions, a set number of ticks later on the timeline.
 _Avoid_: delay, push, knockback
+
+## Progression
+
+**Skill**:
+An action a character can use in a fight.
+_Avoid_: ability, active skill, move
+
+**Talent**:
+A part of a hero's build that is always in effect.
+_Avoid_: passive, passive skill, trait
+
+**Class**:
+The talent a hero starts with, which sets the direction of their build.
+_Avoid_: job, archetype
+
+**Specialization**:
+The direction a class takes at its first upgrade, closing the others.
+_Avoid_: subclass
+
+**Ascension**:
+A specialization's capstone, taken at the class's second upgrade.
+
+**Build**:
+A hero's skills and talents, with their ranks and perks.
+_Avoid_: loadout, kit
+
+**Rank**:
+A skill's or talent's development stage: Basic, Advanced, Expert.
+_Avoid_: level, tier
+
+**Perk**:
+One authored choice inside an upgrade.
+_Avoid_: node, development option, sub-skill, trait
+
+**Modifier**:
+A lasting change to a stat: its skill's own, or its hero's when held by a talent.
+_Avoid_: buff, bonus
+
+**Tag**:
+A designer's label a character holds in stacks, never shown to the player.
+_Avoid_: flag, keyword
+
+**Level-up**:
+The party's development at one position of the shared sequence: one pick per hero.
+_Avoid_: reward, level
+
+**Draft**:
+A level-up's type, talent or skill; every hero shares it.
+_Avoid_: round
+
+**Pick**:
+One hero's confirmed choice at a level-up: an offer and its perk together.
+_Avoid_: choice, selection
