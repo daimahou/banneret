@@ -5,8 +5,8 @@ parent: "[[Level-up offers]]"
 requires:
   - "[[Talents and class]]"
 started: 2026-11-14
-finished:
-hours:
+finished: 2026-11-14
+hours: 0.3
 ---
 Tags for designers, used to gate class content: [[Level-up offers]].
 
