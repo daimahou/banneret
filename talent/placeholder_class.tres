@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="TalentData" format=3 uid="uid://bf3m1eal618fu"]
 
+[ext_resource type="Script" uid="uid://clwu26bygn442" path="res://talent/hero_modifier.gd" id="1_j6031"]
 [ext_resource type="Script" uid="uid://b1p6fdjmjlh7n" path="res://talent/talent_data.gd" id="1_talent_data"]
 [ext_resource type="Script" uid="uid://bqgaluurg1anp" path="res://talent/talent_rank.gd" id="2_talent_rank"]
 [ext_resource type="Script" uid="uid://bbtfo81yge6j" path="res://talent/talent_perk.gd" id="3_talent_perk"]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://keg1ub9awa66"]
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://keg1ucaawa66"]
 
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="1_skill_data"]
 [ext_resource type="Script" uid="uid://bg7lowjig6amm" path="res://skill/skill_rank.gd" id="2_skill_rank"]
