@@ -110,11 +110,11 @@ func _get_new_offers(hero: Character, bag: Array) -> Array[LevelUpOffer]:
 	if draft == Draft.SKILL and hero.has_free_skill_slot():
 		for skill_data: SkillData in bag:
 			if not hero.has_skill(skill_data):
-				offers.append(SkillOffer.new(Skill.new(skill_data), false))
+				offers.append(SkillOffer.new(Skill.new(skill_data), Skill.Rank.BASIC))
 	elif draft == Draft.TALENT and hero.has_free_talent_slot():
 		for talent_data: TalentData in bag:
 			if not hero.has_talent(talent_data):
-				offers.append(TalentOffer.new(Talent.new(talent_data), false))
+				offers.append(TalentOffer.new(Talent.new(talent_data), Skill.Rank.BASIC))
 	return offers
 
 
@@ -122,10 +122,10 @@ func _get_upgrade_offers(hero: Character) -> Array[LevelUpOffer]:
 	var candidates: Array[LevelUpOffer] = []
 	if draft == Draft.SKILL:
 		for skill in hero.skills.filter(func(skill: Skill) -> bool: return skill.get_next_rank() != null):
-			candidates.append(SkillOffer.new(skill, true))
+			candidates.append(SkillOffer.new(skill, skill.rank + 1))
 	else:
 		for talent in hero.talents.filter(func(talent: Talent) -> bool: return talent.get_next_rank() != null):
-			candidates.append(TalentOffer.new(talent, true))
+			candidates.append(TalentOffer.new(talent, talent.rank + 1))
 	var offers: Array[LevelUpOffer] = []
 	offers.assign(candidates.filter(func(offer: LevelUpOffer) -> bool: return not offer.get_perks().is_empty()))
 	for offer in offers:
