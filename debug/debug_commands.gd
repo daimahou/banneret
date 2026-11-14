@@ -38,10 +38,6 @@ func level_up() -> void:
 	if run_controller == null:
 		LimboConsole.warn("No run is playing")
 		return
-	request_level_up(run_controller)
-
-
-func request_level_up(run_controller: RunController) -> void:
 	if not run_controller.run_model.has_level_up_left():
 		LimboConsole.info("Every level-up is done")
 		return

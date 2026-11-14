@@ -4,8 +4,16 @@ const RUN_SCENE := "res://run/run.tscn"
 const TIME_FACTOR := 10.0
 
 
+var _current_scene: Node
+
+
+func before_test() -> void:
+	_current_scene = get_tree().current_scene
+
+
 func after_test() -> void:
 	get_tree().paused = false
+	get_tree().current_scene = _current_scene
 
 
 func test_a_knocked_out_side_falls_as_the_next_action_resolves() -> void:
@@ -99,8 +107,8 @@ func test_levelup_pauses_the_game_opens_the_next_level_up_and_resumes_the_same_f
 	var opened: Array[LevelUp] = []
 	run_controller.level_up_started.connect(opened.append)
 
-	debug_commands.request_level_up(run_controller)
-	debug_commands.request_level_up(run_controller)
+	Debug.level_up()
+	Debug.level_up()
 
 	assert_int(opened.size()).is_equal(1)
 	assert_int(opened[0].number).is_equal(3)
@@ -129,11 +137,10 @@ func test_levelup_after_the_last_level_up_changes_nothing() -> void:
 		var level_up := run_model.create_level_up()
 		_select_first_offers(level_up)
 		run_model.confirm_level_up(level_up)
-	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 	var opened: Array[LevelUp] = []
 	run_controller.level_up_started.connect(opened.append)
 
-	debug_commands.request_level_up(run_controller)
+	Debug.level_up()
 
 	assert_array(opened).is_empty()
 	assert_bool(get_tree().paused).is_false()
@@ -142,6 +149,7 @@ func test_levelup_after_the_last_level_up_changes_nothing() -> void:
 func _start_run_at_first_skill_draft(runner: GdUnitSceneRunner) -> RunController:
 	var run_controller := runner.scene() as RunController
 	runner.set_time_factor(TIME_FACTOR)
+	get_tree().current_scene = run_controller
 	var fight_controller: FightController = await run_controller.fight_started
 	await runner.await_func_on(fight_controller.hero_brain, "is_waiting").is_true()
 	for index in 2:
