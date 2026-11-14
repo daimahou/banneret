@@ -137,7 +137,7 @@ func test_the_class_upgrade_offers_its_specializations() -> void:
 	var offers := _create_talent_level_up([hero], []).get_offers(hero)
 
 	assert_object((offers[0] as TalentOffer).talent).is_same(hero.talents[0])
-	assert_array(offers[0].get_perks()).contains_exactly(specializations.perks)
+	assert_array(offers[0].perks).contains_exactly(specializations.perks)
 
 
 func test_a_specialization_closes_the_others_and_opens_its_ascensions() -> void:
@@ -148,7 +148,7 @@ func test_a_specialization_closes_the_others_and_opens_its_ascensions() -> void:
 
 	var offers := _create_talent_level_up([hero], []).get_offers(hero)
 
-	assert_array(offers[0].get_perks()).contains_exactly(ascensions.perks)
+	assert_array(offers[0].perks).contains_exactly(ascensions.perks)
 
 
 func test_earlier_picks_are_unchanged_by_a_later_specialization() -> void:
@@ -264,7 +264,7 @@ func test_an_upgrade_lists_its_next_rank_s_perks_in_authored_order() -> void:
 
 	var offers := _create_level_up([hero], []).get_offers(hero)
 
-	assert_array(offers[0].get_perks()).contains_exactly(rank.perks)
+	assert_array(offers[0].perks).contains_exactly(rank.perks)
 
 
 func test_an_upgrade_describes_only_what_its_next_rank_adds() -> void:
@@ -286,7 +286,7 @@ func test_more_perks_than_the_limit_are_reported_and_all_kept() -> void:
 
 	await assert_error(create_level_up).is_push_error("Basic attack has 5 perks at Advanced, more than 4")
 
-	assert_array(offers[0].get_perks()).contains_exactly(rank.perks)
+	assert_array(offers[0].perks).contains_exactly(rank.perks)
 
 
 func test_an_upgrade_is_selected_with_one_of_its_perks() -> void:
@@ -311,6 +311,116 @@ func test_an_upgrade_without_one_of_its_perks_cannot_be_selected() -> void:
 	assert_bool(level_up.is_ready()).is_false()
 
 
+func test_a_new_skill_grants_its_tags_once_picked() -> void:
+	var hero := _create_hero()
+	var bag := _create_bag(1)
+	bag[0].granted_tags.append(&"marked")
+	var level_up := _create_level_up([hero], bag)
+	level_up.select_offer(hero, level_up.get_offers(hero)[0])
+
+	level_up.apply_picks()
+
+	assert_bool(hero.meets_requirements([TagFixture.create_requirement(&"marked")])).is_true()
+
+
+func test_a_new_talent_grants_its_tags_once_picked() -> void:
+	var hero := _create_hero()
+	var talent_bag := _create_talent_bag(1)
+	talent_bag[0].granted_tags.append(&"marked")
+	var level_up := _create_talent_level_up([hero], talent_bag)
+	level_up.select_offer(hero, level_up.get_offers(hero)[0])
+
+	level_up.apply_picks()
+
+	assert_bool(hero.meets_requirements([TagFixture.create_requirement(&"marked")])).is_true()
+
+
+func test_only_the_picked_perk_grants_its_tags() -> void:
+	var hero := _create_hero()
+	var rank := SkillFixture.add_rank(hero.skills[0].data, 2)
+	rank.perks[0].granted_tags.append(&"marked")
+	rank.perks[1].granted_tags.append(&"sworn")
+
+	_pick_first_upgrade(_create_level_up([hero], []), hero, 0)
+
+	assert_bool(hero.meets_requirements([TagFixture.create_requirement(&"marked")])).is_true()
+	assert_bool(hero.meets_requirements([TagFixture.create_requirement(&"sworn")])).is_false()
+
+
+func test_a_class_exclusive_skill_is_offered_only_once_its_tag_is_held() -> void:
+	var hero := _create_hero()
+	var bag := _create_bag(1)
+	bag[0].requirements.append(TagFixture.create_requirement(&"marked"))
+	var is_offered_before := not _create_level_up([hero], bag).is_skipped(hero)
+
+	hero.grant_tag(&"marked")
+
+	assert_bool(is_offered_before).is_false()
+	assert_bool(_create_level_up([hero], bag).is_skipped(hero)).is_false()
+
+
+func test_a_class_exclusive_talent_is_offered_only_once_its_tag_is_held() -> void:
+	var hero := _create_hero()
+	var talent_bag := _create_talent_bag(1)
+	talent_bag[0].requirements.append(TagFixture.create_requirement(&"marked"))
+	var is_offered_before := not _create_talent_level_up([hero], talent_bag).is_skipped(hero)
+
+	hero.grant_tag(&"marked")
+
+	assert_bool(is_offered_before).is_false()
+	assert_bool(_create_talent_level_up([hero], talent_bag).is_skipped(hero)).is_false()
+
+
+func test_a_requirement_of_two_stacks_needs_both_and_every_requirement_must_be_met() -> void:
+	var hero := _create_hero()
+	var bag := _create_bag(1)
+	bag[0].requirements.append(TagFixture.create_requirement(&"marked", 2))
+	bag[0].requirements.append(TagFixture.create_requirement(&"sworn"))
+	hero.grant_tag(&"marked")
+	hero.grant_tag(&"sworn")
+	var is_offered_with_one_stack := not _create_level_up([hero], bag).is_skipped(hero)
+
+	hero.grant_tag(&"marked")
+
+	assert_bool(is_offered_with_one_stack).is_false()
+	assert_bool(_create_level_up([hero], bag).is_skipped(hero)).is_false()
+
+
+func test_a_class_specific_perk_on_a_shared_skill_is_listed_only_once_its_tag_is_held() -> void:
+	var hero := _create_hero()
+	var rank := SkillFixture.add_rank(hero.skills[0].data, 3)
+	rank.perks[1].requirements.append(TagFixture.create_requirement(&"marked"))
+	var perks_before := _create_level_up([hero], []).get_offers(hero)[0].perks
+
+	hero.grant_tag(&"marked")
+
+	assert_array(perks_before).contains_exactly([rank.perks[0], rank.perks[2]])
+	assert_array(_create_level_up([hero], []).get_offers(hero)[0].perks).contains_exactly(rank.perks)
+
+
+func test_an_upgrade_with_no_eligible_perk_is_not_offered() -> void:
+	var hero := _create_hero()
+	var rank := SkillFixture.add_rank(hero.skills[0].data)
+	rank.perks[0].requirements.append(TagFixture.create_requirement(&"marked"))
+
+	assert_bool(_create_level_up([hero], []).is_skipped(hero)).is_true()
+
+
+func test_only_the_chosen_specialization_s_ascensions_are_offered() -> void:
+	var hero := _create_hero(TalentFixture.create_talent_data("Class"))
+	var specializations := TalentFixture.add_rank(hero.talents[0].data, 3)
+	var ascensions := TalentFixture.add_rank(hero.talents[0].data, 3)
+	for index in 3:
+		var tag := StringName("specialization_%d" % index)
+		specializations.perks[index].granted_tags.append(tag)
+		ascensions.perks[index].requirements.append(TagFixture.create_requirement(tag))
+	_pick_first_upgrade(_create_talent_level_up([hero], []), hero, 1)
+
+	var offers := _create_talent_level_up([hero], []).get_offers(hero)
+
+	assert_array(offers[0].perks).contains_exactly([ascensions.perks[1]])
+
+
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:
 	LevelUp.bags = {LevelUp.Draft.SKILL: bag}
 	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, _rng)
@@ -324,7 +434,7 @@ func _create_talent_level_up(heroes: Array[Character], talent_bag: Array[TalentD
 func _pick_first_upgrade(level_up: LevelUp, hero: Character, perk_index: int) -> void:
 	var is_upgrade := func(offer: LevelUpOffer) -> bool: return offer.is_upgrade()
 	var upgrade: LevelUpOffer = level_up.get_offers(hero).filter(is_upgrade)[0]
-	level_up.select_offer(hero, upgrade, upgrade.get_perks()[perk_index])
+	level_up.select_offer(hero, upgrade, upgrade.perks[perk_index])
 	level_up.apply_picks()
 
 

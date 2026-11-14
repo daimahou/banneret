@@ -13,15 +13,17 @@ var ap: int
 var skills: Array[Skill] = []
 var talents: Array[Talent] = []
 
+var _tag_counts: Dictionary[StringName, int] = {}
+
 
 func _init(character_data: CharacterData) -> void:
 	id = _next_id
 	_next_id += 1
 	data = character_data
 	for skill_data in data.skills:
-		skills.append(Skill.new(skill_data))
+		add_skill(Skill.new(skill_data))
 	if data.class_talent != null:
-		talents.append(Talent.new(data.class_talent))
+		add_talent(Talent.new(data.class_talent))
 	health = get_max_health()
 	ap = get_max_ap()
 
@@ -53,6 +55,18 @@ func get_skill(skill_id: int) -> Skill:
 	return null
 
 
+func add_skill(skill: Skill) -> void:
+	skills.append(skill)
+	_grant_tags(skill.data.granted_tags)
+
+
+# Null raises the rank alone.
+func upgrade_skill(skill: Skill, perk: SkillPerk) -> void:
+	skill.upgrade(perk)
+	if perk != null:
+		_grant_tags(perk.granted_tags)
+
+
 func has_free_talent_slot() -> bool:
 	return talents.size() < TALENT_SLOTS
 
@@ -63,10 +77,30 @@ func has_talent(talent_data: TalentData) -> bool:
 
 func add_talent(talent: Talent) -> void:
 	_change_talents(func() -> void: talents.append(talent))
+	_grant_tags(talent.data.granted_tags)
 
 
+# Null raises the rank alone.
 func upgrade_talent(talent: Talent, perk: TalentPerk) -> void:
 	_change_talents(talent.upgrade.bind(perk))
+	if perk != null:
+		_grant_tags(perk.granted_tags)
+
+
+func grant_tag(tag: StringName) -> void:
+	_tag_counts[tag] = _tag_counts.get(tag, 0) + 1
+
+
+func strip_tag(tag: StringName) -> void:
+	if _tag_counts.get(tag, 0) <= 1:
+		_tag_counts.erase(tag)
+	else:
+		_tag_counts[tag] -= 1
+
+
+func meets_requirements(requirements: Array[TagRequirement]) -> bool:
+	return requirements.all(func(requirement: TagRequirement) -> bool:
+		return _tag_counts.get(requirement.tag, 0) >= requirement.count)
 
 
 func duplicate() -> Character:
@@ -74,6 +108,7 @@ func duplicate() -> Character:
 	copy.id = id
 	copy.health = health
 	copy.ap = ap
+	copy._tag_counts = _tag_counts.duplicate()
 	copy.skills.assign(skills.map(func(skill: Skill) -> Skill: return skill.duplicate()))
 	copy.talents.assign(talents.map(func(talent: Talent) -> Talent: return talent.duplicate()))
 	return copy
@@ -87,6 +122,11 @@ func _change_talents(change: Callable) -> void:
 	if not is_fallen():
 		health = clampi(health + maxi(0, get_max_health() - old_max_health), 0, get_max_health())
 	ap = clampi(ap + maxi(0, get_max_ap() - old_max_ap), 0, get_max_ap())
+
+
+func _grant_tags(tags: Array[StringName]) -> void:
+	for tag in tags:
+		grant_tag(tag)
 
 
 func _get_talent_amount(stat: HeroModifier.Stat) -> int:

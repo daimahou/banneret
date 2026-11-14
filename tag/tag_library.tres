@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TagLibrary" format=3 uid="uid://c3nyyywm4u3l3"]
+
+[ext_resource type="Script" uid="uid://bxgwjar4x81ku" path="res://tag/tag_library.gd" id="1_tag_library"]
+
+[resource]
+script = ExtResource("1_tag_library")
+tags = Array[StringName]([&"placeholder_a", &"placeholder_b", &"placeholder_c"])

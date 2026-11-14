@@ -4,7 +4,7 @@ id: "1.3-1.2.5"
 parent: "[[Level-up offers]]"
 requires:
   - "[[Talents and class]]"
-started:
+started: 2026-11-14
 finished:
 hours:
 ---

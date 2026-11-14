@@ -6,9 +6,10 @@ var talent: Talent
 var rank: Skill.Rank
 
 
-func _init(offered_talent: Talent, offered_rank: Skill.Rank) -> void:
+func _init(offered_talent: Talent, offered_rank: Skill.Rank, eligible_perks: Array[Perk] = []) -> void:
 	talent = offered_talent
 	rank = offered_rank
+	perks = eligible_perks
 
 
 func is_upgrade() -> bool:
@@ -29,13 +30,6 @@ func get_reached_rank_title() -> String:
 
 func get_description() -> String:
 	return talent.get_next_rank().get_description() if is_upgrade() else talent.get_description()
-
-
-func get_perks() -> Array[Perk]:
-	var perks: Array[Perk] = []
-	if is_upgrade():
-		perks.assign(talent.get_next_rank().perks)
-	return perks
 
 
 func apply(hero: Character, perk: Perk) -> void:

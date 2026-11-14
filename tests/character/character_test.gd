@@ -93,6 +93,57 @@ func test_a_copy_keeps_its_talents_maxima() -> void:
 	assert_int(hero.duplicate().get_max_health()).is_equal(13)
 
 
+func test_each_grant_of_a_tag_stacks_and_each_strip_removes_one() -> void:
+	var hero := _create_hero()
+	var requirement := TagFixture.create_requirement(&"marked", 2)
+
+	hero.grant_tag(&"marked")
+	var is_met_by_one := hero.meets_requirements([requirement])
+	hero.grant_tag(&"marked")
+	var is_met_by_two := hero.meets_requirements([requirement])
+	hero.strip_tag(&"marked")
+
+	assert_bool(is_met_by_one).is_false()
+	assert_bool(is_met_by_two).is_true()
+	assert_bool(hero.meets_requirements([requirement])).is_false()
+	assert_bool(hero.meets_requirements([TagFixture.create_requirement(&"marked")])).is_true()
+
+
+func test_every_requirement_must_be_met() -> void:
+	var hero := _create_hero()
+	hero.grant_tag(&"marked")
+
+	var requirements: Array[TagRequirement] = [
+		TagFixture.create_requirement(&"marked"), TagFixture.create_requirement(&"sworn")
+	]
+
+	assert_bool(hero.meets_requirements(requirements)).is_false()
+	assert_bool(hero.meets_requirements([])).is_true()
+
+
+func test_a_hero_starts_with_its_class_s_and_skills_tags() -> void:
+	var class_data := TalentFixture.create_talent_data("Class")
+	class_data.granted_tags.append(&"marked")
+	var hero_data := CharacterData.new()
+	hero_data.class_talent = class_data
+	hero_data.skills.append(SkillData.new())
+	hero_data.skills[0].granted_tags.append(&"sworn")
+
+	var hero := Character.new(hero_data)
+
+	var requirements: Array[TagRequirement] = [
+		TagFixture.create_requirement(&"marked"), TagFixture.create_requirement(&"sworn")
+	]
+	assert_bool(hero.meets_requirements(requirements)).is_true()
+
+
+func test_a_copy_keeps_its_tags() -> void:
+	var hero := _create_hero()
+	hero.grant_tag(&"marked")
+
+	assert_bool(hero.duplicate().meets_requirements([TagFixture.create_requirement(&"marked")])).is_true()
+
+
 func _create_hero(class_data: TalentData = null) -> Character:
 	var hero_data := CharacterData.new()
 	hero_data.name = "Hero"

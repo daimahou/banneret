@@ -163,7 +163,7 @@ func _select_first_offers(level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
 		if not level_up.is_skipped(hero):
 			var offer := level_up.get_offers(hero)[0]
-			level_up.select_offer(hero, offer, offer.get_perks()[0] if offer.is_upgrade() else null)
+			level_up.select_offer(hero, offer, offer.perks[0] if offer.is_upgrade() else null)
 
 
 func _press_continue(run_controller: RunController) -> void:
