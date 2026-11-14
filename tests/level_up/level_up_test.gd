@@ -105,7 +105,7 @@ func test_a_talent_draft_offers_no_skill() -> void:
 	var hero := _create_hero()
 	SkillFixture.add_rank(hero.skills[0].data)
 
-	var offers := LevelUp.new(TALENT_DRAFT_NUMBER, [hero], {LevelUp.Draft.SKILL: _create_bag(3)}, _rng).get_offers(hero)
+	var offers := LevelUp.new(TALENT_DRAFT_NUMBER, [hero], _rng, {LevelUp.Draft.SKILL: _create_bag(3)}).get_offers(hero)
 
 	assert_array(offers).is_empty()
 
@@ -305,11 +305,11 @@ func test_an_upgrade_without_one_of_its_perks_cannot_be_selected() -> void:
 
 
 func _create_level_up(heroes: Array[Character], bag: Array[SkillData]) -> LevelUp:
-	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, {LevelUp.Draft.SKILL: bag}, _rng)
+	return LevelUp.new(SKILL_DRAFT_NUMBER, heroes, _rng, {LevelUp.Draft.SKILL: bag})
 
 
 func _create_talent_level_up(heroes: Array[Character], talent_bag: Array[TalentData]) -> LevelUp:
-	return LevelUp.new(TALENT_DRAFT_NUMBER, heroes, {LevelUp.Draft.TALENT: talent_bag}, _rng)
+	return LevelUp.new(TALENT_DRAFT_NUMBER, heroes, _rng, {LevelUp.Draft.TALENT: talent_bag})
 
 
 func _pick_first_upgrade(level_up: LevelUp, hero: Character, perk_index: int) -> void:

@@ -5,22 +5,17 @@ const HERO_REGISTRY: Registry = preload("res://hero/hero_registry.tres")
 const PARTY_HERO_IDS: Array[StringName] = [&"warrior", &"rogue", &"mage"]
 const BRIGAND: CharacterData = preload("res://enemy/brigand.tres")
 const ENCOUNTER_ENEMIES: Array[CharacterData] = [BRIGAND, BRIGAND, BRIGAND]
-const SKILL_BAG: Registry = preload("res://skill/skill_bag.tres")
-const TALENT_BAG: Registry = preload("res://talent/talent_bag.tres")
 
 var party: Array[Character] = []
 var level_up_count := 0
 
 var _seed: int
-var _bags: Dictionary[LevelUp.Draft, Array] = {}
 
 
 func _init(run_seed := randi()) -> void:
 	_seed = run_seed
 	for id in PARTY_HERO_IDS:
 		party.append(Character.new(HERO_REGISTRY.load_entry(id) as CharacterData))
-	_bags[LevelUp.Draft.SKILL] = SKILL_BAG.load_all_blocking().values()
-	_bags[LevelUp.Draft.TALENT] = TALENT_BAG.load_all_blocking().values()
 
 
 func create_encounter_enemies() -> Array[Character]:
@@ -38,7 +33,7 @@ func has_level_up_left() -> bool:
 func create_level_up() -> LevelUp:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([_seed, level_up_count + 1])
-	return LevelUp.new(level_up_count + 1, party, _bags, rng)
+	return LevelUp.new(level_up_count + 1, party, rng)
 
 
 func confirm_level_up(level_up: LevelUp) -> void:

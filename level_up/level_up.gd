@@ -9,6 +9,10 @@ const UPGRADE_COUNT := 1
 const PERK_LIMIT := 4
 const LAST_NUMBER := 37
 const SKILL_DRAFT_NUMBERS: Array[int] = [3, 6, 8, 11, 14, 16, 19, 22, 24, 27, 30, 32, 35, 37]
+const BAGS: Dictionary[Draft, Registry] = {
+	Draft.SKILL: preload("res://skill/skill_bag.tres"),
+	Draft.TALENT: preload("res://talent/talent_bag.tres"),
+}
 
 var number: int
 var draft: Draft
@@ -20,7 +24,7 @@ var _selected_perks: Dictionary[Character, Perk] = {}
 
 
 # Each draft's bag: skill data for the skill draft, talent data for the talent draft.
-func _init(position: int, party: Array[Character], bags: Dictionary[Draft, Array], rng: RandomNumberGenerator) -> void:
+func _init(position: int, party: Array[Character], rng: RandomNumberGenerator, bags := _load_bags()) -> void:
 	number = position
 	draft = Draft.SKILL if number in SKILL_DRAFT_NUMBERS else Draft.TALENT
 	heroes = party
@@ -28,6 +32,13 @@ func _init(position: int, party: Array[Character], bags: Dictionary[Draft, Array
 		_offers[hero] = _draw_offers(hero, bags.get(draft, []), rng)
 		if not hero.is_fallen() and is_skipped(hero):
 			push_warning("%s has no offer in the %s draft of level-up %d" % [hero.data.name, get_draft_name(), number])
+
+
+static func _load_bags() -> Dictionary[Draft, Array]:
+	var bags: Dictionary[Draft, Array] = {}
+	for bag_draft in BAGS:
+		bags[bag_draft] = BAGS[bag_draft].load_all_blocking().values()
+	return bags
 
 
 func get_draft_name() -> String:
