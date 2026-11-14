@@ -28,10 +28,9 @@ func show_offer(shown_offer: LevelUpOffer) -> void:
 	visible = offer != null
 	if offer == null:
 		return
-	var offered_skill := offer.create_skill_before_perk()
-	_icon.texture = offer.skill_data.icon
-	_name.text = "%s · %s" % [offer.skill_data.name, offered_skill.get_rank_title()]
-	_description.text = offered_skill.get_description()
+	_icon.texture = offer.get_icon()
+	_name.text = "%s · %s" % [offer.get_name(), offer.get_reached_rank_title()]
+	_description.text = offer.get_description_before_perk()
 	var perks := offer.get_perks()
 	for index in _perk_icons.size():
 		_perk_icons[index].visible = index < perks.size()

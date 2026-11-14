@@ -6,7 +6,7 @@ const NORMAL_TEXTURE := preload("res://level_up/assets/talent_normal.png")
 const SELECTED_TEXTURE := preload("res://level_up/assets/talent_selected.png")
 
 # Null while the card is hidden.
-var perk: SkillPerk
+var perk: Perk
 
 @onready var _icon: TextureRect = $IconFrame/Icon
 @onready var _name: Label = $Name
@@ -15,7 +15,7 @@ var perk: SkillPerk
 
 
 # Null hides the card.
-func show_perk(shown_perk: SkillPerk) -> void:
+func show_perk(shown_perk: Perk) -> void:
 	perk = shown_perk
 	visible = perk != null
 	if perk == null:

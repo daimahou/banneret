@@ -16,15 +16,16 @@ var heroes: Array[Character] = []
 
 var _offers: Dictionary[Character, Array] = {}
 var _selected_offers: Dictionary[Character, LevelUpOffer] = {}
-var _selected_perks: Dictionary[Character, SkillPerk] = {}
+var _selected_perks: Dictionary[Character, Perk] = {}
 
 
-func _init(level_up_number: int, party: Array[Character], bag: Array[SkillData], rng: RandomNumberGenerator) -> void:
+# Each draft's Bag: skill data for the skill draft, talent data for the talent draft.
+func _init(level_up_number: int, party: Array[Character], bags: Dictionary[Draft, Array], rng: RandomNumberGenerator) -> void:
 	number = level_up_number
 	draft = Draft.SKILL if number in SKILL_DRAFT_NUMBERS else Draft.TALENT
 	heroes = party
 	for hero in heroes:
-		_offers[hero] = _draw_offers(hero, bag, rng)
+		_offers[hero] = _draw_offers(hero, bags.get(draft, []), rng)
 		if not hero.is_fallen() and is_skipped(hero):
 			push_warning("%s has no offer in the %s draft of level-up %d" % [hero.data.name, get_draft_name(), number])
 
@@ -61,13 +62,13 @@ func is_ready() -> bool:
 	return heroes.all(_is_hero_ready)
 
 
-# Null for a new skill, or while the hero has selected nothing.
-func get_selected_perk(hero: Character) -> SkillPerk:
+# Null for a new skill or talent, or while the hero has selected nothing.
+func get_selected_perk(hero: Character) -> Perk:
 	return _selected_perks.get(hero)
 
 
-# An upgrade is selected with one of its perks, a new skill with none.
-func select_offer(hero: Character, offer: LevelUpOffer, perk: SkillPerk = null) -> void:
+# An upgrade is selected with one of its perks, a new skill or talent with none.
+func select_offer(hero: Character, offer: LevelUpOffer, perk: Perk = null) -> void:
 	if offer not in _offers[hero]:
 		push_error("%s cannot select that offer" % hero.data.name)
 		return
@@ -79,45 +80,56 @@ func select_offer(hero: Character, offer: LevelUpOffer, perk: SkillPerk = null) 
 	_selected_perks[hero] = perk
 
 
+func apply_picks() -> void:
+	for hero in _selected_offers:
+		_selected_offers[hero].apply(hero, _selected_perks[hero])
+
+
 func _is_hero_ready(hero: Character) -> bool:
 	return is_skipped(hero) or _selected_offers.has(hero)
 
 
-# Two new skills and one upgrade; where either falls short, the other fills its places.
-func _draw_offers(hero: Character, bag: Array[SkillData], rng: RandomNumberGenerator) -> Array[LevelUpOffer]:
+# Two new skills or talents and one upgrade; where either falls short, the other fills its places.
+func _draw_offers(hero: Character, bag: Array, rng: RandomNumberGenerator) -> Array[LevelUpOffer]:
 	var offers: Array[LevelUpOffer] = []
-	if hero.is_fallen() or draft != Draft.SKILL:
+	if hero.is_fallen():
 		return offers
-	var new_skills := _get_new_skill_offers(hero, bag)
+	var new_offers := _get_new_offers(hero, bag)
 	var upgrades := _get_upgrade_offers(hero)
-	var new_skill_count := mini(OFFER_COUNT - mini(UPGRADE_COUNT, upgrades.size()), new_skills.size())
-	var upgrade_count := mini(OFFER_COUNT - new_skill_count, upgrades.size())
-	for index in new_skill_count:
-		offers.append(new_skills.pop_at(rng.randi_range(0, new_skills.size() - 1)))
+	var new_count := mini(OFFER_COUNT - mini(UPGRADE_COUNT, upgrades.size()), new_offers.size())
+	var upgrade_count := mini(OFFER_COUNT - new_count, upgrades.size())
+	for index in new_count:
+		offers.append(new_offers.pop_at(rng.randi_range(0, new_offers.size() - 1)))
 	for index in upgrade_count:
 		offers.append(upgrades.pop_at(rng.randi_range(0, upgrades.size() - 1)))
 	return offers
 
 
-func _get_new_skill_offers(hero: Character, bag: Array[SkillData]) -> Array[LevelUpOffer]:
+func _get_new_offers(hero: Character, bag: Array) -> Array[LevelUpOffer]:
 	var offers: Array[LevelUpOffer] = []
-	if not hero.has_free_skill_slot():
-		return offers
-	for skill_data in bag:
-		if not hero.has_skill(skill_data):
-			offers.append(LevelUpOffer.new(skill_data))
+	if draft == Draft.SKILL and hero.has_free_skill_slot():
+		for skill_data: SkillData in bag:
+			if not hero.has_skill(skill_data):
+				offers.append(SkillOffer.new(skill_data))
+	elif draft == Draft.TALENT and hero.has_free_talent_slot():
+		for talent_data: TalentData in bag:
+			if not hero.has_talent(talent_data):
+				offers.append(TalentOffer.new(talent_data))
 	return offers
 
 
 func _get_upgrade_offers(hero: Character) -> Array[LevelUpOffer]:
+	var candidates: Array[LevelUpOffer] = []
+	if draft == Draft.SKILL:
+		for skill in hero.skills.filter(func(skill: Skill) -> bool: return skill.get_next_rank() != null):
+			candidates.append(SkillOffer.new(skill.data, skill))
+	else:
+		for talent in hero.talents.filter(func(talent: Talent) -> bool: return talent.get_next_rank() != null):
+			candidates.append(TalentOffer.new(talent.data, talent))
 	var offers: Array[LevelUpOffer] = []
-	for skill in hero.skills:
-		var next_rank := skill.get_next_rank()
-		if next_rank == null or next_rank.perks.is_empty():
-			continue
-		if next_rank.perks.size() > PERK_LIMIT:
-			var rank_title := Skill.get_title((skill.rank + 1) as Skill.Rank)
-			var counts := [next_rank.perks.size(), rank_title, PERK_LIMIT]
-			push_error("%s has %d perks at %s, more than %d" % ([skill.data.name] + counts))
-		offers.append(LevelUpOffer.new(skill.data, skill))
+	offers.assign(candidates.filter(func(offer: LevelUpOffer) -> bool: return not offer.get_perks().is_empty()))
+	for offer in offers:
+		if offer.get_perks().size() > PERK_LIMIT:
+			var counts := [offer.get_perks().size(), offer.get_reached_rank_title(), PERK_LIMIT]
+			push_error("%s has %d perks at %s, more than %d" % ([offer.get_name()] + counts))
 	return offers

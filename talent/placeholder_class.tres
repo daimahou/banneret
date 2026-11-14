@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="TalentData" format=3 uid="uid://bf3m1eal618fu"]
+
+[ext_resource type="Script" uid="uid://b1p6fdjmjlh7n" path="res://talent/talent_data.gd" id="1_talent_data"]
+[ext_resource type="Script" uid="uid://bqgaluurg1anp" path="res://talent/talent_rank.gd" id="2_talent_rank"]
+[ext_resource type="Script" uid="uid://bbtfo81yge6j" path="res://talent/talent_perk.gd" id="3_talent_perk"]
+
+[sub_resource type="Resource" id="Resource_advanced_perk_a"]
+script = ExtResource("3_talent_perk")
+name = "Specialization A"
+
+[sub_resource type="Resource" id="Resource_advanced_perk_b"]
+script = ExtResource("3_talent_perk")
+name = "Specialization B"
+
+[sub_resource type="Resource" id="Resource_advanced_perk_c"]
+script = ExtResource("3_talent_perk")
+name = "Specialization C"
+
+[sub_resource type="Resource" id="Resource_advanced"]
+script = ExtResource("2_talent_rank")
+perks = Array[ExtResource("3_talent_perk")]([SubResource("Resource_advanced_perk_a"), SubResource("Resource_advanced_perk_b"), SubResource("Resource_advanced_perk_c")])
+
+[sub_resource type="Resource" id="Resource_expert_perk_a"]
+script = ExtResource("3_talent_perk")
+name = "Ascension A"
+
+[sub_resource type="Resource" id="Resource_expert_perk_b"]
+script = ExtResource("3_talent_perk")
+name = "Ascension B"
+
+[sub_resource type="Resource" id="Resource_expert_perk_c"]
+script = ExtResource("3_talent_perk")
+name = "Ascension C"
+
+[sub_resource type="Resource" id="Resource_expert"]
+script = ExtResource("2_talent_rank")
+perks = Array[ExtResource("3_talent_perk")]([SubResource("Resource_expert_perk_a"), SubResource("Resource_expert_perk_b"), SubResource("Resource_expert_perk_c")])
+
+[resource]
+script = ExtResource("1_talent_data")
+name = "Placeholder class"
+ranks = Array[ExtResource("2_talent_rank")]([SubResource("Resource_advanced"), SubResource("Resource_expert")])

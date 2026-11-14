@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b6p6mko1e862w" path="res://hero/warrior.png" id="2_puppet"]
 [ext_resource type="Script" uid="uid://by5can8qflmyk" path="res://skill/skill_data.gd" id="3_skill_data"]
 [ext_resource type="Resource" uid="uid://3bpbae2bacqx" path="res://skill/strike.tres" id="4_strike"]
+[ext_resource type="Resource" uid="uid://bf3m1eal618fu" path="res://talent/placeholder_class.tres" id="5_class"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_portrait"]
 atlas = ExtResource("2_puppet")
@@ -16,4 +17,5 @@ max_health = 30
 max_ap = 2
 puppet = ExtResource("2_puppet")
 portrait = SubResource("AtlasTexture_portrait")
+class_talent = ExtResource("5_class")
 skills = Array[ExtResource("3_skill_data")]([ExtResource("4_strike")])

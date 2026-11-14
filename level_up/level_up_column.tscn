@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dw5oswkrhhm0n" path="res://level_up/level_up_column.gd" id="1_column"]
 [ext_resource type="Texture2D" uid="uid://cdmhuststr5vd" path="res://level_up/assets/portrait_frame.png" id="2_portrait_frame"]
 [ext_resource type="Texture2D" uid="uid://p0cc32rhqvsy" path="res://level_up/assets/active_tray.png" id="3_tray"]
-[ext_resource type="PackedScene" path="res://level_up/level_up_skill_slot.tscn" id="4_skill_slot"]
+[ext_resource type="PackedScene" uid="uid://cx8c4peshpu71" path="res://level_up/level_up_build_slot.tscn" id="4_build_slot"]
 [ext_resource type="PackedScene" uid="uid://7cfaa7r4h1cu" path="res://level_up/level_up_offer_card.tscn" id="5_offer_card"]
 [ext_resource type="PackedScene" path="res://level_up/level_up_perk_card.tscn" id="6_perk_card"]
 [ext_resource type="Texture2D" uid="uid://0126bve1chbp" path="res://level_up/assets/button_back.png" id="7_back"]
@@ -38,22 +38,68 @@ stretch_mode = 3
 [node name="Name" type="Label" parent="." unique_id=1165513543]
 layout_mode = 0
 offset_left = 380.0
-offset_top = 190.0
-offset_right = 1176.0
-offset_bottom = 300.0
+offset_top = 150.0
+offset_right = 760.0
+offset_bottom = 240.0
 theme_override_colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 72
 text = "Hero"
+vertical_alignment = 1
 
 [node name="Stats" type="Label" parent="." unique_id=796866876]
 layout_mode = 0
-offset_left = 380.0
-offset_top = 320.0
-offset_right = 1176.0
-offset_bottom = 400.0
+offset_left = 760.0
+offset_top = 150.0
+offset_right = 1150.0
+offset_bottom = 240.0
 theme_override_colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
-theme_override_font_sizes/font_size = 52
+theme_override_font_sizes/font_size = 44
 text = "Health 0 / 0   AP 0 / 0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TalentSlots" type="GridContainer" parent="." unique_id=1092796523]
+layout_mode = 0
+offset_left = 380.0
+offset_top = 255.0
+offset_right = 1176.0
+offset_bottom = 525.0
+mouse_filter = 2
+theme_override_constants/h_separation = 13
+theme_override_constants/v_separation = 12
+columns = 4
+
+[node name="TalentSlot1" parent="TalentSlots" unique_id=860013893 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot2" parent="TalentSlots" unique_id=1680172085 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot3" parent="TalentSlots" unique_id=172487684 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot4" parent="TalentSlots" unique_id=1107749151 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot5" parent="TalentSlots" unique_id=368160984 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot6" parent="TalentSlots" unique_id=1552245841 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot7" parent="TalentSlots" unique_id=1288134613 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TalentSlot8" parent="TalentSlots" unique_id=1330970255 instance=ExtResource("4_build_slot")]
+layout_mode = 2
+mouse_filter = 1
 
 [node name="SkillTray" type="TextureRect" parent="." unique_id=488358826]
 layout_mode = 0
@@ -72,20 +118,25 @@ offset_bottom = 173.0
 mouse_filter = 2
 theme_override_constants/separation = 34
 
-[node name="SkillSlot1" parent="SkillTray/SkillSlots" unique_id=1602439984 instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot1" parent="SkillTray/SkillSlots" unique_id=1602439984 instance=ExtResource("4_build_slot")]
 layout_mode = 2
+mouse_filter = 1
 
-[node name="SkillSlot2" parent="SkillTray/SkillSlots" unique_id=402832218 instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot2" parent="SkillTray/SkillSlots" unique_id=402832218 instance=ExtResource("4_build_slot")]
 layout_mode = 2
+mouse_filter = 1
 
-[node name="SkillSlot3" parent="SkillTray/SkillSlots" unique_id=667435894 instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot3" parent="SkillTray/SkillSlots" unique_id=667435894 instance=ExtResource("4_build_slot")]
 layout_mode = 2
+mouse_filter = 1
 
-[node name="SkillSlot4" parent="SkillTray/SkillSlots" unique_id=2134078446 instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot4" parent="SkillTray/SkillSlots" unique_id=2134078446 instance=ExtResource("4_build_slot")]
 layout_mode = 2
+mouse_filter = 1
 
-[node name="SkillSlot5" parent="SkillTray/SkillSlots" unique_id=934751055 instance=ExtResource("4_skill_slot")]
+[node name="SkillSlot5" parent="SkillTray/SkillSlots" unique_id=934751055 instance=ExtResource("4_build_slot")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="Offers" type="VBoxContainer" parent="." unique_id=1971481029]
 layout_mode = 0

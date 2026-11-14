@@ -42,6 +42,8 @@ func test_the_count_advances_only_when_a_level_up_is_confirmed() -> void:
 
 func test_an_all_skipped_level_up_is_confirmed_without_picks() -> void:
 	var run_model := RunModel.new(RUN_SEED)
+	for hero in run_model.party:
+		hero.health = 0
 	var level_up := run_model.create_level_up()
 	assert_bool(level_up.has_offers()).is_false()
 
@@ -53,7 +55,7 @@ func test_an_all_skipped_level_up_is_confirmed_without_picks() -> void:
 func test_a_level_up_already_confirmed_is_rejected() -> void:
 	var run_model := RunModel.new(RUN_SEED)
 	var level_up := run_model.create_level_up()
-	run_model.confirm_level_up(level_up)
+	_confirm_first_offers(run_model, level_up)
 
 	var confirm_again := func() -> void: run_model.confirm_level_up(level_up)
 	await assert_error(confirm_again).is_push_error("Level-up 1 is not the next one")
@@ -68,7 +70,7 @@ func test_confirming_applies_each_selection_to_its_own_hero() -> void:
 	var selected: Array[SkillData] = []
 	for index in level_up.heroes.size():
 		var hero := level_up.heroes[index]
-		var offer: LevelUpOffer = level_up.get_offers(hero)[index]
+		var offer := level_up.get_offers(hero)[index] as SkillOffer
 		level_up.select_offer(hero, offer)
 		selected.append(offer.skill_data)
 
@@ -116,7 +118,7 @@ func test_a_skill_pick_from_the_run_reaches_the_hero() -> void:
 	_complete_level_ups(run_model, 2)
 	var level_up := run_model.create_level_up()
 	var hero := run_model.party[0]
-	var offer: LevelUpOffer = level_up.get_offers(hero)[0]
+	var offer := level_up.get_offers(hero)[0] as SkillOffer
 
 	_confirm_first_offers(run_model, level_up)
 
@@ -143,6 +145,17 @@ func test_confirming_an_upgrade_raises_its_skill_with_the_chosen_perk() -> void:
 	assert_object(skill.get_next_rank()).is_null()
 
 
+func test_a_talent_pick_from_the_run_reaches_the_hero() -> void:
+	var run_model := RunModel.new(RUN_SEED)
+	var level_up := run_model.create_level_up()
+	var hero := run_model.party[0]
+	var offer := level_up.get_offers(hero)[0] as TalentOffer
+
+	_confirm_first_offers(run_model, level_up)
+
+	assert_object(hero.talents.back().data).is_same(offer.talent_data)
+
+
 func _complete_level_ups(run_model: RunModel, count: int) -> void:
 	for index in count:
 		_confirm_first_offers(run_model, run_model.create_level_up())
@@ -159,4 +172,4 @@ func _confirm_first_offers(run_model: RunModel, level_up: LevelUp) -> void:
 # Each hero's offered skills, in party order.
 func _get_offered(level_up: LevelUp) -> Array:
 	return level_up.heroes.map(func(hero: Character) -> Array:
-		return level_up.get_offers(hero).map(func(offer: LevelUpOffer) -> SkillData: return offer.skill_data))
+		return level_up.get_offers(hero).map(func(offer: SkillOffer) -> SkillData: return offer.skill_data))

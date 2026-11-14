@@ -348,6 +348,21 @@ func test_an_action_already_queued_resolves_with_an_upgrade_made_since() -> void
 	assert_int(choice.target.health).is_equal(10 - 1 - 2 - 3)
 
 
+func test_a_beat_regains_ap_up_to_the_max_a_talent_raised() -> void:
+	var fight_model := _create_fight_model()
+	var hero := _create_character(10, 1)
+	fight_model.heroes.append(hero)
+	var talent_data := TalentFixture.create_talent_data("Talent")
+	talent_data.modifiers.append(TalentFixture.create_modifier(HeroModifier.Stat.MAX_AP, 1))
+	hero.add_talent(Talent.new(talent_data))
+	hero.ap = 0
+
+	for beat in 3:
+		fight_model.apply(FightRules.get_beat_delta(fight_model))
+
+	assert_int(hero.ap).is_equal(2)
+
+
 func _create_fight_model() -> FightModel:
 	var heroes: Array[Character] = [_create_character(10), _create_character(10)]
 	var enemies: Array[Character] = [_create_character(10), _create_character(10)]

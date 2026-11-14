@@ -8,4 +8,6 @@ const MAX_AP := 5
 @export_range(1, MAX_AP) var max_ap := 1
 @export var puppet: Texture2D
 @export var portrait: Texture2D
+# Null for an enemy, which has no class.
+@export var class_talent: TalentData
 @export var skills: Array[SkillData] = []

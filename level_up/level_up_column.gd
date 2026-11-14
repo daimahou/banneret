@@ -2,13 +2,14 @@ class_name LevelUpColumn
 extends Control
 # One hero's column of the level-up: their build and their offers, or the perks of the upgrade open. It shows what it is told, and only reports the offer selected.
 
-signal offer_selected(offer: LevelUpOffer, perk: SkillPerk)
+signal offer_selected(offer: LevelUpOffer, perk: Perk)
 
 var _level_up: LevelUp
 var _hero: Character
 # Null while the offers are listed.
 var _open_offer: LevelUpOffer
-var _skill_slots: Array[LevelUpSkillSlot] = []
+var _talent_slots: Array[LevelUpBuildSlot] = []
+var _skill_slots: Array[LevelUpBuildSlot] = []
 var _offer_cards: Array[LevelUpOfferCard] = []
 var _perk_cards: Array[LevelUpPerkCard] = []
 
@@ -20,6 +21,7 @@ var _perk_cards: Array[LevelUpPerkCard] = []
 
 
 func _ready() -> void:
+	_talent_slots.assign($TalentSlots.get_children())
 	_skill_slots.assign($SkillTray/SkillSlots.get_children())
 	_offer_cards.assign($Offers.get_children())
 	_perk_cards.assign($Perks.get_children())
@@ -36,7 +38,7 @@ func show_hero(level_up: LevelUp, hero: Character) -> void:
 	_open_offer = null
 	_portrait.texture = hero.data.portrait
 	_name.text = hero.data.name
-	_stats.text = "Health %d / %d   AP %d / %d" % [hero.health, hero.data.max_health, hero.ap, hero.data.max_ap]
+	_stats.text = "Health %d / %d   AP %d / %d" % [hero.health, hero.get_max_health(), hero.ap, hero.get_max_ap()]
 	var offers := level_up.get_offers(hero)
 	for index in _offer_cards.size():
 		_offer_cards[index].show_offer(offers[index] if index < offers.size() else null)
@@ -48,7 +50,7 @@ func update_state() -> void:
 	for card in _offer_cards:
 		card.visible = card.offer != null and (_open_offer == null or card.offer == _open_offer)
 		card.show_state(card.offer != null and card.offer == selected_offer, card.offer == _open_offer)
-	var perks: Array[SkillPerk] = []
+	var perks: Array[Perk] = []
 	if _open_offer != null:
 		perks = _open_offer.get_perks()
 	var selected_perk := _level_up.get_selected_perk(_hero) if selected_offer == _open_offer else null
@@ -58,6 +60,8 @@ func update_state() -> void:
 		card.set_selected(card.perk != null and card.perk == selected_perk)
 	_back_button.visible = _open_offer != null
 	_skipped_label.visible = _level_up.is_skipped(_hero)
+	for index in _talent_slots.size():
+		_talent_slots[index].show_talent(_hero.talents[index] if index < _hero.talents.size() else null)
 	for index in _skill_slots.size():
 		_skill_slots[index].show_skill(_hero.skills[index] if index < _hero.skills.size() else null)
 

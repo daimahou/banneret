@@ -51,7 +51,7 @@ static func get_pip_states(preview_model: FightModel, character: Character) -> A
 	var previewed := preview_model.get_character(character.id)
 	var lowest_ap := preview_model.get_lowest_ap(character.id)
 	var states: Array[Nameplate.Pip] = []
-	for index in character.data.max_ap:
+	for index in character.get_max_ap():
 		var is_held_previewed := index < previewed.ap
 		if is_held_previewed and index >= lowest_ap:
 			states.append(Nameplate.Pip.GAINED)
@@ -115,7 +115,7 @@ func _refresh() -> void:
 		var previewed := null if nameplate.character == null else _preview_model.get_character(nameplate.character.id)
 		if previewed != null:
 			var style := get_health_style(_preview_model, nameplate.character)
-			nameplate.show_health(previewed.health, previewed.data.max_health, style)
+			nameplate.show_health(previewed.health, previewed.get_max_health(), style)
 			nameplate.show_pips(get_pip_states(_preview_model, nameplate.character))
 	_show_cooldowns()
 	_timeline_rope.show_entries(get_timeline_entries(_fight_model, _preview_model, _shown_action))

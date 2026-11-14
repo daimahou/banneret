@@ -1,31 +1,28 @@
+@abstract
 class_name LevelUpOffer
 extends RefCounted
-# One offer a level-up puts up for one hero: a new skill, or an upgrade of one they own.
-
-var skill_data: SkillData
-# Null for a new skill.
-var skill: Skill
+# One offer a level-up puts up for one hero: a new skill or talent, or an upgrade of one they own.
 
 
-func _init(offered_skill_data: SkillData, upgraded_skill: Skill = null) -> void:
-	skill_data = offered_skill_data
-	skill = upgraded_skill
+@abstract func is_upgrade() -> bool
 
 
-func is_upgrade() -> bool:
-	return skill != null
+@abstract func get_name() -> String
 
 
-func get_perks() -> Array[SkillPerk]:
-	var perks: Array[SkillPerk] = []
-	if is_upgrade():
-		perks.assign(skill.get_next_rank().perks)
-	return perks
+# Null shows the placeholder.
+@abstract func get_icon() -> Texture2D
 
 
-func create_skill_before_perk() -> Skill:
-	if not is_upgrade():
-		return Skill.new(skill_data)
-	var offered := skill.duplicate()
-	offered.upgrade(null)
-	return offered
+@abstract func get_reached_rank_title() -> String
+
+
+@abstract func get_description_before_perk() -> String
+
+
+# Empty for a new skill or talent.
+@abstract func get_perks() -> Array[Perk]
+
+
+# The perk is null for a new skill or talent.
+@abstract func apply(hero: Character, perk: Perk) -> void

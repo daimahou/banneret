@@ -125,7 +125,7 @@ func test_levelup_pauses_the_game_opens_the_next_level_up_and_resumes_the_same_f
 	await runner.simulate_frames(2)
 	assert_bool(get_tree().paused).is_false()
 	assert_object(run_controller.fight_controller).is_same(fight_controller)
-	assert_object(hero.skills.back().data).is_same(opened[0].get_offers(hero)[0].skill_data)
+	assert_object(hero.skills.back().data).is_same((opened[0].get_offers(hero)[0] as SkillOffer).skill_data)
 	assert_int(run_controller.run_model.level_up_count).is_equal(3)
 
 
@@ -153,7 +153,9 @@ func _start_run_at_first_skill_draft(runner: GdUnitSceneRunner) -> RunController
 	var fight_controller: FightController = await run_controller.fight_started
 	await runner.await_func_on(fight_controller.hero_brain, "is_waiting").is_true()
 	for index in 2:
-		run_controller.run_model.confirm_level_up(run_controller.run_model.create_level_up())
+		var level_up := run_controller.run_model.create_level_up()
+		_select_first_offers(level_up)
+		run_controller.run_model.confirm_level_up(level_up)
 	return run_controller
 
 

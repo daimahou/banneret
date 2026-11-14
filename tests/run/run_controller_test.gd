@@ -10,7 +10,7 @@ func test_a_new_run_holds_the_party_at_full_health() -> void:
 	assert_int(party.size()).is_equal(RunModel.PARTY_HERO_IDS.size())
 	for index in party.size():
 		assert_object(party[index].data).is_same(RunModel.HERO_REGISTRY.load_entry(RunModel.PARTY_HERO_IDS[index]))
-		assert_int(party[index].health).is_equal(party[index].data.max_health)
+		assert_int(party[index].health).is_equal(party[index].get_max_health())
 
 
 func test_the_party_carries_its_health_ap_and_cooldowns_into_the_next_fight() -> void:
@@ -26,6 +26,8 @@ func test_the_party_carries_its_health_ap_and_cooldowns_into_the_next_fight() ->
 
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 	debug_commands.knock_out(first_fight_controller, FightModel.Side.ENEMY)
+	_select_first_offers(await run_controller.level_up_started)
+	_press_continue(run_controller)
 	var fight_controller: FightController = await run_controller.fight_started
 
 	assert_array(fight_controller.fight_model.heroes).contains([hero])
@@ -42,7 +44,9 @@ func test_a_victory_opens_the_level_up_and_the_next_fight_carries_its_picks() ->
 	var first_fight_controller: FightController = await run_controller.fight_started
 	await runner.await_func_on(first_fight_controller.hero_brain, "is_waiting").is_true()
 	for index in 2:
-		run_controller.run_model.confirm_level_up(run_controller.run_model.create_level_up())
+		var completed := run_controller.run_model.create_level_up()
+		_select_first_offers(completed)
+		run_controller.run_model.confirm_level_up(completed)
 
 	var debug_commands: DebugCommands = auto_free(DebugCommands.new())
 	debug_commands.knock_out(first_fight_controller, FightModel.Side.ENEMY)
@@ -52,12 +56,23 @@ func test_a_victory_opens_the_level_up_and_the_next_fight_carries_its_picks() ->
 	assert_object(run_controller.fight_controller).is_null()
 	var picks: Dictionary[Character, SkillData] = {}
 	for hero in level_up.heroes:
-		var offer: LevelUpOffer = level_up.get_offers(hero)[0]
+		var offer := level_up.get_offers(hero)[0] as SkillOffer
 		level_up.select_offer(hero, offer)
 		picks[hero] = offer.skill_data
-	(run_controller.get_node("LevelUpView/ContinueButton") as TextureButton).pressed.emit()
+	_press_continue(run_controller)
 	var fight_controller: FightController = await run_controller.fight_started
 
 	for hero in picks:
 		assert_array(fight_controller.fight_model.heroes).contains([hero])
 		assert_object(hero.skills.back().data).is_same(picks[hero])
+
+
+func _select_first_offers(level_up: LevelUp) -> void:
+	for hero in level_up.heroes:
+		if not level_up.is_skipped(hero):
+			var offer := level_up.get_offers(hero)[0]
+			level_up.select_offer(hero, offer, offer.get_perks()[0] if offer.is_upgrade() else null)
+
+
+func _press_continue(run_controller: RunController) -> void:
+	(run_controller.get_node("LevelUpView/ContinueButton") as TextureButton).pressed.emit()

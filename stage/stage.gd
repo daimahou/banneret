@@ -422,9 +422,9 @@ func _update_nameplates() -> void:
 		var character := nameplate.character
 		if character == null:
 			continue
-		nameplate.show_health(character.health, character.data.max_health)
+		nameplate.show_health(character.health, character.get_max_health())
 		var pips: Array[Nameplate.Pip] = []
-		for index in character.data.max_ap:
+		for index in character.get_max_ap():
 			pips.append(Nameplate.Pip.HELD if index < character.ap else Nameplate.Pip.EMPTY)
 		nameplate.show_pips(pips)
 

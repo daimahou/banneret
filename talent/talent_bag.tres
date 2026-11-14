@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Registry" format=3 uid="uid://9y1ee8gruvnad"]
+
+[ext_resource type="Script" uid="uid://dqtv77mng5dyh" path="res://addons/yard/registry.gd" id="1_e7euy"]
+
+[resource]
+script = ExtResource("1_e7euy")
+_version = 2
+_scan_rulesets = Array[Dictionary]([{
+&"allowed_file_extensions": Array[String]([".tres"]),
+&"class_restrictions": Array[StringName]([&"TalentData"]),
+&"recursive_scan": false,
+&"scan_directories": Array[String](["res://talent/placeholder/"]),
+&"scan_regex_exclude": "",
+&"scan_regex_include": ""
+}])
+_uids_to_string_ids = Dictionary[StringName, StringName]({
+&"uid://c3a4qiptmfhk5": &"placeholder_a",
+&"uid://cws8uemmgrvig": &"placeholder_b",
+&"uid://cwra1qfl7ovk5": &"placeholder_c"
+})
+_string_ids_to_uids = Dictionary[StringName, StringName]({
+&"placeholder_a": &"uid://c3a4qiptmfhk5",
+&"placeholder_b": &"uid://cws8uemmgrvig",
+&"placeholder_c": &"uid://cwra1qfl7ovk5"
+})

@@ -41,7 +41,7 @@ func test_a_win_leaves_the_heroes_health_as_the_fight_left_it() -> void:
 		assert_array(fight_controller.fight_model.heroes).contains_exactly(heroes)
 		assert_bool(heroes.any(func(hero: Character) -> bool: return damage_taken.has(hero))).is_true()
 		for hero in heroes:
-			assert_int(hero.health).is_equal(hero.data.max_health - damage_taken.get(hero, 0))
+			assert_int(hero.health).is_equal(hero.get_max_health() - damage_taken.get(hero, 0))
 		return
 	fail("No seed won")
 

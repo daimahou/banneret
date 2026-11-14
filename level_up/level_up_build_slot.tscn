@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cx8c4peshpu71"]
 
-[ext_resource type="Script" uid="uid://b3jxo8vf514cw" path="res://level_up/level_up_skill_slot.gd" id="1_slot"]
+[ext_resource type="Script" uid="uid://b3jxo8vf514cw" path="res://level_up/level_up_build_slot.gd" id="1_slot"]
 [ext_resource type="Texture2D" uid="uid://di2r6tks2xspb" path="res://level_up/assets/skill_slot_empty.png" id="2_empty"]
 [ext_resource type="PackedScene" path="res://level_up/level_up_perk_icon.tscn" id="3_perk_icon"]
 
-[node name="LevelUpSkillSlot" type="HBoxContainer" unique_id=166246715]
+[node name="LevelUpBuildSlot" type="HBoxContainer" unique_id=166246715]
 offset_right = 189.0
 offset_bottom = 129.0
 mouse_filter = 2

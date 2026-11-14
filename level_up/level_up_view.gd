@@ -2,7 +2,7 @@ class_name LevelUpView
 extends Control
 # The level-up, full screen over the stage: one column per hero, the readiness count and Continue. It shows what it is told, and only reports its buttons.
 
-signal offer_selected(hero: Character, offer: LevelUpOffer, perk: SkillPerk)
+signal offer_selected(hero: Character, offer: LevelUpOffer, perk: Perk)
 signal continue_pressed
 
 const DISABLED_MODULATE := Color(0.5, 0.5, 0.5)
@@ -44,5 +44,5 @@ func _show_readiness() -> void:
 	_continue_button.modulate = DISABLED_MODULATE if _continue_button.disabled else Color.WHITE
 
 
-func _on_offer_selected(offer: LevelUpOffer, perk: SkillPerk, column_index: int) -> void:
+func _on_offer_selected(offer: LevelUpOffer, perk: Perk, column_index: int) -> void:
 	offer_selected.emit(_level_up.heroes[column_index], offer, perk)

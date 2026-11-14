@@ -50,7 +50,7 @@ static func get_beat_delta(fight_model: FightModel) -> Delta:
 	var delta := Delta.new()
 	delta.ticks = get_beat_at_or_after(fight_model.tick + 1) - fight_model.tick
 	for character in fight_model.heroes + fight_model.enemies:
-		var regained := mini(AP_PER_BEAT, character.data.max_ap - character.ap)
+		var regained := mini(AP_PER_BEAT, character.get_max_ap() - character.ap)
 		if regained > 0:
 			delta.add_ap(character, regained)
 		for skill in character.skills:
