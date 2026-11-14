@@ -30,7 +30,7 @@ func has_free_skill_slot() -> bool:
 	return skills.size() < SKILL_SLOTS
 
 
-func has_skill(skill_data: SkillData) -> bool:
+func has_skill_data(skill_data: SkillData) -> bool:
 	return skills.any(func(skill: Skill) -> bool: return skill.data == skill_data)
 
 
