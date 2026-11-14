@@ -62,9 +62,9 @@ static func get_pip_states(preview_model: FightModel, character: Character) -> A
 	return states
 
 
-static func get_cooldown_style(preview_model: FightModel, character: Character, skill: SkillData) -> PreviewPulse.Style:
-	var previewed := preview_model.get_character(character.id)
-	var gain := FightRules.get_cooldown_beats(character, skill) - FightRules.get_cooldown_beats(previewed, skill)
+static func get_cooldown_style(preview_model: FightModel, character: Character, skill: Skill) -> PreviewPulse.Style:
+	var previewed := preview_model.get_character(character.id).get_skill(skill.id)
+	var gain := skill.cooldown_beats - previewed.cooldown_beats
 	return PreviewPulse.get_style(gain)
 
 
@@ -126,9 +126,9 @@ func _show_cooldowns() -> void:
 	var previewed := null if _inspected == null else _preview_model.get_character(_inspected.id)
 	if previewed == null:
 		return
-	var skills := _inspected.data.skills
+	var skills := _inspected.skills
 	for index in skills.size():
-		var beats := FightRules.get_cooldown_beats(previewed, skills[index])
+		var beats := previewed.get_skill(skills[index].id).cooldown_beats
 		_skill_bar.show_cooldown(index, beats, get_cooldown_style(_preview_model, _inspected, skills[index]))
 
 

@@ -26,7 +26,7 @@ class AddAction:
 	extends Change
 
 	var actor_id: int
-	var skill: SkillData
+	var skill_id: int
 	var target_id: int
 	var resolve_tick: int
 
@@ -35,7 +35,7 @@ class AddAction:
 		action.id = fight_model.next_action_id
 		fight_model.next_action_id += 1
 		action.actor = fight_model.get_character(actor_id)
-		action.skill = skill
+		action.skill = action.actor.get_skill(skill_id)
 		action.target = fight_model.get_character(target_id)
 		action.resolve_tick = resolve_tick
 		fight_model.timeline.insert(fight_model.get_timeline_index(actor_id, resolve_tick), action)
@@ -46,11 +46,11 @@ class Cooldown:
 	extends Change
 
 	var character_id: int
-	var skill: SkillData
+	var skill_id: int
 	var beats: int
 
 	func apply(fight_model: FightModel) -> void:
-		fight_model.get_character(character_id).skill_cooldowns[skill] = beats
+		fight_model.get_character(character_id).get_skill(skill_id).cooldown_beats = beats
 
 
 class Ap:

@@ -14,8 +14,8 @@ signal cancel_pressed
 signal character_hovered(character: Character)
 signal action_hovered(action: Action)
 signal character_clicked(character: Character)
-signal skill_pressed(skill: SkillData)
-signal skill_hovered(skill: SkillData)
+signal skill_pressed(skill: Skill)
+signal skill_hovered(skill: Skill)
 
 var _stage: Stage
 
@@ -30,7 +30,7 @@ func _ready() -> void:
 	_stage.skill_bar.stop_pressed.connect(stop_button_pressed.emit)
 
 
-func _on_skill_hovered(skill: SkillData) -> void:
+func _on_skill_hovered(skill: Skill) -> void:
 	character_hovered.emit(null)
 	action_hovered.emit(null)
 	skill_hovered.emit(skill)

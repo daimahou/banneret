@@ -16,16 +16,16 @@ func add_health(changed: Character, health_amount: int) -> void:
 func add_action(added: Action) -> void:
 	var change := Change.AddAction.new()
 	change.actor_id = added.actor.id
-	change.skill = added.skill
+	change.skill_id = added.skill.id
 	change.target_id = -1 if added.target == null else added.target.id
 	change.resolve_tick = added.resolve_tick
 	changes.append(change)
 
 
-func add_cooldown(character: Character, skill: SkillData, beats: int) -> void:
+func add_cooldown(character: Character, skill: Skill, beats: int) -> void:
 	var change := Change.Cooldown.new()
 	change.character_id = character.id
-	change.skill = skill
+	change.skill_id = skill.id
 	change.beats = beats
 	changes.append(change)
 

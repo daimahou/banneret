@@ -6,9 +6,9 @@ extends Brain
 signal _decided(action: Action)
 
 var hero: Character
-var armed_skill: SkillData
+var armed_skill: Skill
 var aimed_target: Character
-var hovered_skill: SkillData
+var hovered_skill: Skill
 var hovered_character: Character
 var hovered_action: Action
 
@@ -120,7 +120,7 @@ func cycle_hero(step: int) -> void:
 	select_hero(heroes[posmod(heroes.find(hero) + step, heroes.size())])
 
 
-func arm_skill(skill: SkillData) -> void:
+func arm_skill(skill: Skill) -> void:
 	if not _is_waiting:
 		return
 	var usable_skills := FightRules.get_usable_skills(_fight_model, hero)
@@ -143,7 +143,7 @@ func press_number(index: int) -> void:
 	if not _is_waiting or get_inspected_character() != hero:
 		return
 	if armed_skill == null:
-		var skills := hero.data.skills
+		var skills := hero.skills
 		if index < skills.size():
 			arm_skill(skills[index])
 		return
@@ -188,7 +188,7 @@ func pick(character: Character) -> void:
 		select_hero(character)
 
 
-func hover_skill(skill: SkillData) -> void:
+func hover_skill(skill: Skill) -> void:
 	if skill != hovered_skill:
 		hovered_skill = skill
 		_show_choices()
@@ -253,11 +253,11 @@ func _create_ghost_action() -> Action:
 	ghost.actor = hero
 	ghost.skill = shown
 	ghost.target = _get_ghost_target(shown)
-	ghost.resolve_tick = _fight_model.tick + shown.delay
+	ghost.resolve_tick = _fight_model.tick + shown.data.delay
 	return ghost
 
 
-func _get_ghost_target(shown: SkillData) -> Character:
+func _get_ghost_target(shown: Skill) -> Character:
 	if shown != armed_skill:
 		return null
 	if hovered_character == null:
@@ -290,13 +290,13 @@ func _show_choices() -> void:
 	_stage.show_choices(self)
 	var skill_bar := _stage.skill_bar
 	var inspected := get_inspected_character()
-	var skills: Array[SkillData] = []
+	var skills: Array[Skill] = []
 	if inspected != null:
-		skills = inspected.data.skills
+		skills = inspected.skills
 	skill_bar.show_skills(skills)
 	for index in skills.size():
-		skill_bar.show_cooldown(index, FightRules.get_cooldown_beats(inspected, skills[index]))
-	var usable_skills: Array[SkillData] = []
+		skill_bar.show_cooldown(index, skills[index].cooldown_beats)
+	var usable_skills: Array[Skill] = []
 	if _is_waiting and inspected == hero:
 		usable_skills = FightRules.get_usable_skills(_fight_model, hero)
 	skill_bar.set_usable(usable_skills)

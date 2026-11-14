@@ -6,12 +6,13 @@ func test_a_delta_signals_changed_once_every_change_in_it_is_applied() -> void:
 	var heroes: Array[Character] = [hero]
 	var enemies: Array[Character] = []
 	var fight_model := FightModel.new(heroes, enemies)
-	var skill := SkillData.new()
+	var skill := Skill.new(SkillData.new())
+	hero.skills.append(skill)
 	var delta := Delta.new()
 	delta.ticks = 4
 	delta.add_cooldown(hero, skill, 3)
 	var seen_cooldowns: Array[int] = []
-	fight_model.changed.connect(func() -> void: seen_cooldowns.append(hero.skill_cooldowns.get(skill, 0)))
+	fight_model.changed.connect(func() -> void: seen_cooldowns.append(skill.cooldown_beats))
 
 	fight_model.apply(delta)
 
@@ -81,11 +82,12 @@ func _schedule(fight_model: FightModel, actor: Character, target: Character) -> 
 	var choice := Action.new()
 	choice.actor = actor
 	choice.target = target
-	choice.skill = SkillData.new()
-	choice.skill.delay = 2
+	choice.skill = Skill.new(SkillData.new())
+	choice.skill.data.delay = 2
+	actor.skills.append(choice.skill)
 	var damage := DamageEffect.new()
 	damage.amount = 4
-	choice.skill.effects = [damage]
+	choice.skill.data.effects = [damage]
 	var added: Array[Action] = []
 	fight_model.action_added.connect(added.append, CONNECT_ONE_SHOT)
 	fight_model.apply(FightRules.get_timeline_delta(fight_model, choice))

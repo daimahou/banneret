@@ -12,7 +12,7 @@ const ARMED_INK_COLOR := Color("b8860b")
 const GREYED_INK_COLOR := Color("454545ff")
 
 # Null while the slot is empty.
-var skill: SkillData
+var skill: Skill
 
 var _is_awaiting_swap := false
 var _cooldown_beats := 0
@@ -43,10 +43,11 @@ func _ready() -> void:
 
 
 # Null empties the slot.
-func show_skill(shown_skill: SkillData, delay: float) -> bool:
-	if shown_skill == skill:
-		return false
+func show_skill(shown_skill: Skill, delay: float) -> bool:
+	var is_card_unchanged := _get_skill_data(shown_skill) == _get_skill_data(skill)
 	skill = shown_skill
+	if is_card_unchanged:
+		return false
 	_is_awaiting_swap = true
 	_cooldown_beats = 0
 	_cooldown_style = PreviewPulse.Style.NONE
@@ -55,7 +56,7 @@ func show_skill(shown_skill: SkillData, delay: float) -> bool:
 	pivot_offset = size / 2.0
 	_flip_tween = create_tween().set_trans(Scenery.FLIP_TRANSITION)
 	_flip_tween.tween_property(self, "scale:x", 0.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_IN).set_delay(delay)
-	_flip_tween.tween_callback(_show_content.bind(shown_skill))
+	_flip_tween.tween_callback(_show_content.bind(_get_skill_data(shown_skill)))
 	_flip_tween.tween_property(self, "scale:x", 1.0, Scenery.FLIP_DURATION / 2.0).set_ease(Tween.EASE_OUT)
 	return true
 
@@ -93,7 +94,7 @@ func _show_cooldown() -> void:
 	_wipe.visible = _cooldown_beats > 0 or _cooldown_style != PreviewPulse.Style.NONE
 	_cooldown_label.text = str(_cooldown_beats)
 	_cooldown_pulse.show_style(_cooldown_style)
-	_wipe_fraction = _cooldown_beats / float(skill.cooldown) if _cooldown_beats > 0 else 0.0
+	_wipe_fraction = _cooldown_beats / float(skill.data.cooldown) if _cooldown_beats > 0 else 0.0
 	_wipe.queue_redraw()
 
 
@@ -137,3 +138,7 @@ func _draw_wipe() -> void:
 		var angle := -PI / 2.0 + TAU * _wipe_fraction * step / float(steps)
 		points.append(center + Vector2.from_angle(angle) * radius)
 	_wipe.draw_colored_polygon(points, WIPE_COLOR)
+
+
+static func _get_skill_data(shown_skill: Skill) -> SkillData:
+	return null if shown_skill == null else shown_skill.data

@@ -48,7 +48,7 @@ func sync(fight_model: FightModel) -> void:
 		var copy := Action.new()
 		copy.id = action.id
 		copy.actor = get_character(action.actor.id)
-		copy.skill = action.skill
+		copy.skill = copy.actor.get_skill(action.skill.id)
 		copy.target = get_character(action.target.id)
 		copy.resolve_tick = action.resolve_tick
 		timeline.append(copy)
