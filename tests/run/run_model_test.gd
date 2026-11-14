@@ -55,7 +55,8 @@ func test_a_level_up_already_confirmed_is_rejected() -> void:
 	var level_up := run_model.create_level_up()
 	run_model.confirm_level_up(level_up)
 
-	await assert_error(func() -> void: run_model.confirm_level_up(level_up)).is_push_error("Level-up 1 is not the next one")
+	var confirm_again := func() -> void: run_model.confirm_level_up(level_up)
+	await assert_error(confirm_again).is_push_error("Level-up 1 is not the next one")
 
 	assert_int(run_model.level_up_count).is_equal(1)
 
