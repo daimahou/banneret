@@ -42,9 +42,7 @@ func level_up() -> void:
 
 
 func request_level_up(run_controller: RunController) -> void:
-	if run_controller.fight_controller == null:
-		LimboConsole.warn("The run is between fights")
-	elif not run_controller.run_model.has_level_up_left():
+	if not run_controller.run_model.has_level_up_left():
 		LimboConsole.info("Every level-up is done")
 	else:
 		run_controller.request_level_up()
