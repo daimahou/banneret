@@ -15,6 +15,10 @@ func _ready() -> void:
 	_perk_icons.assign($PerkColumn.get_children())
 
 
+func _make_custom_tooltip(for_text: String) -> Object:
+	return LevelUpTooltip.new(for_text)
+
+
 # Null empties the slot.
 func show_skill(skill: Skill) -> void:
 	if skill == null:
@@ -34,7 +38,7 @@ func show_talent(talent: Talent) -> void:
 func _show_empty() -> void:
 	_frame.texture = EMPTY_TEXTURE
 	_name.text = ""
-	_frame.tooltip_text = ""
+	tooltip_text = ""
 	for perk_icon in _perk_icons:
 		perk_icon.show_perk(null)
 
@@ -47,6 +51,6 @@ func _show_owned(owned_name: String, rank_title: String, description: String, pe
 		lines.append(description)
 	if not perks.is_empty():
 		lines.append("Perks: %s" % ", ".join(perks.map(func(perk: Perk) -> String: return perk.name)))
-	_frame.tooltip_text = "\n".join(lines)
+	tooltip_text = "\n".join(lines)
 	for index in _perk_icons.size():
 		_perk_icons[index].show_perk(perks[index] if index < perks.size() else null)

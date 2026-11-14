@@ -45,15 +45,17 @@ offset_bottom = 110.0
 theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
 theme_override_font_sizes/font_size = 56
 
-[node name="Description" type="Label" parent="."]
+[node name="Description" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 200.0
 offset_top = 110.0
 offset_right = 1040.0
 offset_bottom = 175.0
-theme_override_colors/font_color = Color(0.168627, 0.129412, 0.0941176, 1)
-theme_override_font_sizes/font_size = 40
-autowrap_mode = 3
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.168627, 0.129412, 0.0941176, 1)
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+scroll_active = false
 
 [node name="Check" type="TextureRect" parent="."]
 visible = false

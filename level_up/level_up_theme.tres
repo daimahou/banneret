@@ -17,6 +17,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [resource]
-TooltipLabel/colors/font_color = Color(0.909804, 0.827451, 0.627451, 1)
-TooltipLabel/font_sizes/font_size = 40
+LevelUpTooltip/base_type = &"RichTextLabel"
+LevelUpTooltip/colors/default_color = Color(0.909804, 0.827451, 0.627451, 1)
+LevelUpTooltip/font_sizes/normal_font_size = 40
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_tooltip")

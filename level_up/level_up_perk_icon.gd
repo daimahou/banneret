@@ -8,6 +8,10 @@ const EMPTY_TEXTURE := preload("res://level_up/assets/talent_socket_empty.png")
 @onready var _icon: TextureRect = $Icon
 
 
+func _make_custom_tooltip(for_text: String) -> Object:
+	return LevelUpTooltip.new(for_text)
+
+
 # Null empties the socket.
 func show_perk(perk: Perk) -> void:
 	texture = EMPTY_TEXTURE if perk == null else SOCKET_TEXTURE

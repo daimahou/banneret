@@ -10,7 +10,7 @@ var perk: Perk
 
 @onready var _icon: TextureRect = $IconFrame/Icon
 @onready var _name: Label = $Name
-@onready var _description: Label = $Description
+@onready var _description: RichTextLabel = $Description
 @onready var _check: TextureRect = $Check
 
 
