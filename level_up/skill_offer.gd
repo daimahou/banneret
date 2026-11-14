@@ -27,10 +27,8 @@ func get_reached_rank_title() -> String:
 	return Skill.get_title(rank)
 
 
-func get_description_before_perk() -> String:
-	var reached := skill.duplicate()
-	reached.rank = rank
-	return reached.get_description()
+func get_description() -> String:
+	return skill.get_next_rank().get_description() if is_upgrade() else skill.get_description()
 
 
 func get_perks() -> Array[Perk]:

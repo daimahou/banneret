@@ -4,3 +4,7 @@ extends Resource
 
 @export var modifiers: Array[HeroModifier] = []
 @export var perks: Array[TalentPerk] = []
+
+
+func get_description() -> String:
+	return "\n".join(modifiers.map(func(modifier: HeroModifier) -> String: return modifier.get_description()))

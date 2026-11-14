@@ -17,7 +17,8 @@ extends RefCounted
 @abstract func get_reached_rank_title() -> String
 
 
-@abstract func get_description_before_perk() -> String
+# An upgrade describes only what its next rank adds.
+@abstract func get_description() -> String
 
 
 # Empty for a new skill or talent.

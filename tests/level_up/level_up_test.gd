@@ -260,6 +260,17 @@ func test_an_upgrade_lists_its_next_rank_s_perks_in_authored_order() -> void:
 	assert_array(offers[0].get_perks()).contains_exactly(rank.perks)
 
 
+func test_an_upgrade_describes_only_what_its_next_rank_adds() -> void:
+	var hero := _create_hero()
+	hero.skills[0].data.effects.append(SkillFixture.create_damage(1))
+	var rank := SkillFixture.add_rank(hero.skills[0].data)
+	rank.modifiers.append(SkillFixture.create_modifier(SkillModifier.Stat.DELAY, -1))
+
+	var offers := _create_level_up([hero], []).get_offers(hero)
+
+	assert_str(offers[0].get_description()).is_equal("Delay -1")
+
+
 func test_more_perks_than_the_limit_are_reported_and_all_kept() -> void:
 	var hero := _create_hero()
 	var rank := SkillFixture.add_rank(hero.skills[0].data, LevelUp.PERK_LIMIT + 1)
