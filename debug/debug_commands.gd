@@ -45,10 +45,10 @@ func request_level_up(run_controller: RunController) -> void:
 	if not run_controller.run_model.has_level_up_left():
 		LimboConsole.info("Every level-up is done")
 		return
-	if run_controller._is_level_up_open:
+	var level_up_view := run_controller._level_up_view
+	if level_up_view.visible:
 		return
 	var tree := run_controller.get_tree()
-	var level_up_view := run_controller._level_up_view
 	tree.paused = true
 	level_up_view.process_mode = Node.PROCESS_MODE_ALWAYS
 	await run_controller._play_level_up()

@@ -9,8 +9,6 @@ const HOLD_DURATION := 0.4
 var run_model := RunModel.new()
 var fight_controller: FightController
 
-var _is_level_up_open := false
-
 @onready var _stage: Stage = $Stage
 @onready var _level_up_view: LevelUpView = $LevelUpView
 
@@ -71,7 +69,6 @@ func _show_level_up(level_up: LevelUp) -> void:
 	var select_offer := func(hero: Character, offer: LevelUpOffer) -> void:
 		level_up.select_offer(hero, offer)
 		_level_up_view.update_states()
-	_is_level_up_open = true
 	_level_up_view.offer_selected.connect(select_offer)
 	_level_up_view.show_level_up(level_up)
 	level_up_started.emit(level_up)
@@ -79,7 +76,6 @@ func _show_level_up(level_up: LevelUp) -> void:
 		await _level_up_view.continue_pressed
 	_level_up_view.offer_selected.disconnect(select_offer)
 	_level_up_view.hide()
-	_is_level_up_open = false
 
 
 func _on_action_resolved(action: Action) -> void:
