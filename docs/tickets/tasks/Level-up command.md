@@ -19,7 +19,7 @@ The `levelup` debug command and the mid-fight pause: [[Level-up offers]].
 
 ## Implementation decisions
 
-- The fight knows nothing of level-ups. The run pauses the scene tree, plays the level-up (its view processes while paused), unpauses, then tells the fight its characters changed. The command calls the run's exposed request.
+- The game exposes nothing for the command: `DebugCommands`, the developer's backdoor, reaches into the run's private state. It pauses the scene tree, plays the run's level-up (its view processes while paused), unpauses, then tells the fight, if any, its characters changed. The fight knows nothing of level-ups.
 - An action already playing out keeps the effects it was resolved with; only later actions see a level-up's changes.
 
 ## Testing decisions

@@ -44,8 +44,18 @@ func level_up() -> void:
 func request_level_up(run_controller: RunController) -> void:
 	if not run_controller.run_model.has_level_up_left():
 		LimboConsole.info("Every level-up is done")
-	else:
-		run_controller.request_level_up()
+		return
+	if run_controller._is_level_up_open:
+		return
+	var tree := run_controller.get_tree()
+	var level_up_view := run_controller._level_up_view
+	tree.paused = true
+	level_up_view.process_mode = Node.PROCESS_MODE_ALWAYS
+	await run_controller._play_level_up()
+	level_up_view.process_mode = Node.PROCESS_MODE_INHERIT
+	tree.paused = false
+	if run_controller.fight_controller != null:
+		run_controller.fight_controller.fight_model.notify_characters_changed()
 
 
 func toggle_auto_combat() -> void:

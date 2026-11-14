@@ -57,18 +57,6 @@ func _play_fight(fight_seed: int) -> void:
 	fight_controller = null
 
 
-func request_level_up() -> void:
-	if _is_level_up_open:
-		return
-	get_tree().paused = true
-	_level_up_view.process_mode = Node.PROCESS_MODE_ALWAYS
-	await _play_level_up()
-	_level_up_view.process_mode = Node.PROCESS_MODE_INHERIT
-	get_tree().paused = false
-	if fight_controller != null:
-		fight_controller.fight_model.notify_characters_changed()
-
-
 func _play_level_up() -> void:
 	if not run_model.has_level_up_left():
 		return
