@@ -13,11 +13,6 @@ func is_waiting() -> bool:
 	return false
 
 
-# A paused brain takes no choice until it is resumed.
-func set_paused(_is_paused: bool) -> void:
-	pass
-
-
 func dispose() -> void:
 	pass
 

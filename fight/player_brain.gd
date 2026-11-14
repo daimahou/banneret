@@ -12,11 +12,12 @@ var hovered_skill: Skill
 var hovered_character: Character
 var hovered_action: Action
 
+# Null without a stage.
+var input: PlayerInput
+
 var _stage: Stage
-var _input: PlayerInput
 var _fight_model: FightModel
 var _is_waiting := false
-var _is_paused := false
 var _is_stopped := false
 var _ghost_action: Action
 var _is_stop_requested := false
@@ -28,28 +29,28 @@ func _init(stage: Stage = null) -> void:
 	if stage == null:
 		return
 	_stage = stage
-	_input = PlayerInput.new(stage)
-	_input.stop_pressed.connect(request_stop)
-	_input.pass_pressed.connect(pass_stop)
-	_input.stop_button_pressed.connect(_on_stop_button_pressed)
-	_input.hero_cycled.connect(cycle_hero)
-	_input.number_pressed.connect(press_number)
-	_input.aim_cycled.connect(cycle_aim)
-	_input.confirm_pressed.connect(confirm)
-	_input.cancel_pressed.connect(disarm)
-	_input.character_hovered.connect(hover_character)
-	_input.action_hovered.connect(hover_action)
-	_input.character_clicked.connect(pick)
-	_input.skill_pressed.connect(arm_skill)
-	_input.skill_hovered.connect(hover_skill)
-	(Engine.get_main_loop() as SceneTree).root.add_child(_input)
+	input = PlayerInput.new(stage)
+	input.stop_pressed.connect(request_stop)
+	input.pass_pressed.connect(pass_stop)
+	input.stop_button_pressed.connect(_on_stop_button_pressed)
+	input.hero_cycled.connect(cycle_hero)
+	input.number_pressed.connect(press_number)
+	input.aim_cycled.connect(cycle_aim)
+	input.confirm_pressed.connect(confirm)
+	input.cancel_pressed.connect(disarm)
+	input.character_hovered.connect(hover_character)
+	input.action_hovered.connect(hover_action)
+	input.character_clicked.connect(pick)
+	input.skill_pressed.connect(arm_skill)
+	input.skill_hovered.connect(hover_skill)
+	(Engine.get_main_loop() as SceneTree).root.add_child(input)
 	_show_choices()
 
 
 func dispose() -> void:
-	if _input != null:
-		_input.queue_free()
-		_input = null
+	if input != null:
+		input.queue_free()
+		input = null
 	if _stage != null:
 		_stage.hide_choices()
 		_stage.skill_bar.clear()
@@ -92,17 +93,7 @@ func request_stop() -> void:
 	_show_choices()
 
 
-func set_paused(is_paused: bool) -> void:
-	_is_paused = is_paused
-	if _input != null:
-		_input.set_process_unhandled_input(not is_paused)
-	if not is_paused:
-		_show_choices()
-
-
 func pass_stop() -> void:
-	if _is_paused:
-		return
 	if not _is_waiting:
 		_show_choices()
 		return
@@ -178,7 +169,7 @@ func cycle_aim(step: int) -> void:
 
 
 func confirm() -> void:
-	if not _is_waiting or _is_paused or aimed_target == null:
+	if not _is_waiting or aimed_target == null:
 		return
 	var action := Action.new()
 	action.actor = hero

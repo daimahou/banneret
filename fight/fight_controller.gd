@@ -77,7 +77,12 @@ func _play_pause() -> void:
 	var pause := _pause_request
 	_pause_request = Callable()
 	_is_paused = true
-	hero_brain.set_paused(true)
+	var player_brain := hero_brain as PlayerBrain
+	var input: PlayerInput = null if player_brain == null else player_brain.input
+	if input != null:
+		input.process_mode = Node.PROCESS_MODE_DISABLED
 	await pause.call()
-	hero_brain.set_paused(false)
+	if input != null:
+		input.process_mode = Node.PROCESS_MODE_INHERIT
 	_is_paused = false
+	fight_model.notify_characters_changed()

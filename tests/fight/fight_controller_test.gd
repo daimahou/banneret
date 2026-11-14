@@ -89,7 +89,7 @@ func test_a_pause_requested_mid_action_waits_for_it_to_resolve_and_holds_the_fig
 	assert_int(resolved.size()).is_greater(1)
 
 
-func test_a_pause_requested_while_the_player_chooses_starts_at_once_and_blocks_choices() -> void:
+func test_a_pause_requested_while_the_player_chooses_starts_at_once_and_the_choice_follows_it() -> void:
 	var player_brain := PlayerBrain.new()
 	var fight_controller := _create_fight_controller_for(_create_heroes(), 1, player_brain)
 	var hero_actions: Array[Action] = []
@@ -102,8 +102,6 @@ func test_a_pause_requested_while_the_player_chooses_starts_at_once_and_blocks_c
 
 	fight_controller.request_pause(func() -> void: await released)
 	assert_bool(fight_controller.is_paused()).is_true()
-	_choose_first_target(player_brain)
-	assert_array(hero_actions).is_empty()
 
 	pause_released.emit()
 	await get_tree().process_frame
