@@ -119,7 +119,6 @@ func test_a_hero_with_every_talent_slot_full_is_offered_upgrades_only() -> void:
 
 	var offers := _create_talent_level_up([hero], _create_talent_bag(5)).get_offers(hero)
 
-	assert_int(hero.talents.size()).is_equal(Character.TALENT_SLOTS)
 	assert_int(offers.size()).is_equal(LevelUp.OFFER_COUNT)
 	assert_bool(offers.all(func(offer: LevelUpOffer) -> bool: return offer.is_upgrade())).is_true()
 

@@ -79,18 +79,17 @@ func duplicate() -> Character:
 	return copy
 
 
-# A fallen hero stays at 0.
 func _change_talents(change: Callable) -> void:
 	var old_max_health := get_max_health()
 	var old_max_ap := get_max_ap()
 	change.call()
 	if not is_fallen():
-		health = _get_followed(health, old_max_health, get_max_health())
-	ap = _get_followed(ap, old_max_ap, get_max_ap())
+		health = _get_current_after_max_change(health, old_max_health, get_max_health())
+	ap = _get_current_after_max_change(ap, old_max_ap, get_max_ap())
 
 
 # A gain in max raises the current value by as much; a loss only clamps it to the new max.
-static func _get_followed(current: int, old_max: int, new_max: int) -> int:
+static func _get_current_after_max_change(current: int, old_max: int, new_max: int) -> int:
 	return mini(current + maxi(0, new_max - old_max), new_max)
 
 

@@ -19,9 +19,9 @@ var _selected_offers: Dictionary[Character, LevelUpOffer] = {}
 var _selected_perks: Dictionary[Character, Perk] = {}
 
 
-# Each draft's Bag: skill data for the skill draft, talent data for the talent draft.
-func _init(level_up_number: int, party: Array[Character], bags: Dictionary[Draft, Array], rng: RandomNumberGenerator) -> void:
-	number = level_up_number
+# Each draft's bag: skill data for the skill draft, talent data for the talent draft.
+func _init(position: int, party: Array[Character], bags: Dictionary[Draft, Array], rng: RandomNumberGenerator) -> void:
+	number = position
 	draft = Draft.SKILL if number in SKILL_DRAFT_NUMBERS else Draft.TALENT
 	heroes = party
 	for hero in heroes:
