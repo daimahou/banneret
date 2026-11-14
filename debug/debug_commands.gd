@@ -44,12 +44,11 @@ func level_up() -> void:
 	var level_up_view := run_controller._level_up_view
 	if level_up_view.visible:
 		return
-	var tree := run_controller.get_tree()
-	tree.paused = true
+	get_tree().paused = true
 	level_up_view.process_mode = Node.PROCESS_MODE_ALWAYS
 	await run_controller._play_level_up()
 	level_up_view.process_mode = Node.PROCESS_MODE_INHERIT
-	tree.paused = false
+	get_tree().paused = false
 	if run_controller.fight_controller != null:
 		run_controller.fight_controller.fight_model.notify_characters_changed()
 
