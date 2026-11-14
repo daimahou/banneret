@@ -215,6 +215,6 @@ class HeldPause:
 		var timeline_size := fight_model.timeline.size()
 		for frame in FRAMES:
 			await (Engine.get_main_loop() as SceneTree).process_frame
-		var is_timeline_held := fight_model.timeline.size() == timeline_size and _resolved_count == resolved_count_at_start
-		is_fight_held = fight_model.tick == tick and is_timeline_held
+		var is_nothing_resolved := _resolved_count == resolved_count_at_start
+		is_fight_held = fight_model.tick == tick and fight_model.timeline.size() == timeline_size and is_nothing_resolved
 		_fight_controller.resume()
