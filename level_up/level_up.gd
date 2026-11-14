@@ -88,7 +88,7 @@ func _draw_offers(hero: Character, bag: Array[SkillData], rng: RandomNumberGener
 	var offers: Array[LevelUpOffer] = []
 	if hero.is_fallen() or draft != Draft.SKILL or not hero.has_free_skill_slot():
 		return offers
-	var eligible := bag.filter(func(skill_data: SkillData) -> bool: return not hero.has_skill_data(skill_data))
+	var eligible := bag.filter(func(skill_data: SkillData) -> bool: return not hero.has_skill(skill_data))
 	while offers.size() < OFFER_COUNT and not eligible.is_empty():
 		offers.append(LevelUpOffer.new(eligible.pop_at(rng.randi_range(0, eligible.size() - 1))))
 	return offers
