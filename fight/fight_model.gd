@@ -37,10 +37,6 @@ func apply(delta: Delta) -> void:
 	changed.emit()
 
 
-func notify_characters_changed() -> void:
-	changed.emit()
-
-
 # The history is not copied: a preview's history holds only what the preview plays out.
 func sync(fight_model: FightModel) -> void:
 	tick = fight_model.tick

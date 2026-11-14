@@ -50,7 +50,7 @@ func level_up() -> void:
 	level_up_view.process_mode = Node.PROCESS_MODE_INHERIT
 	get_tree().paused = false
 	if run_controller.fight_controller != null:
-		run_controller.fight_controller.fight_model.notify_characters_changed()
+		run_controller.fight_controller.fight_model.changed.emit()
 
 
 func toggle_auto_combat() -> void:
