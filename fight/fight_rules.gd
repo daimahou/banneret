@@ -6,6 +6,7 @@ const BEAT_TICKS := 4
 const AP_PER_BEAT := 1
 
 
+#TODO: remove unused argument fight_model
 static func get_usable_skills(fight_model: FightModel, character: Character) -> Array[SkillData]:
 	var skills: Array[SkillData] = []
 	for skill in character.data.skills:
