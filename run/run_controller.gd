@@ -62,7 +62,11 @@ func is_level_up_open() -> bool:
 
 
 func request_level_up() -> void:
-	fight_controller.request_pause(_play_level_up)
+	var paused_fight := fight_controller
+	if not await paused_fight.pause():
+		return
+	await _play_level_up()
+	paused_fight.resume()
 
 
 func _play_level_up() -> void:

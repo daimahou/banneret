@@ -20,7 +20,7 @@ The `levelup` debug command and the mid-fight pause: [[Level-up offers]].
 
 ## Implementation decisions
 
-- `FightController` accepts a level-up request and awaits it inside its loop; no second combat loop. The command calls the run's exposed request.
+- `FightController` knows nothing of level-ups: `pause()` holds the fight at a safe boundary (false when the fight ends first) and `resume()` lets it play on; no second combat loop. The run pauses the fight, plays the level-up, then resumes it; the command calls the run's exposed request.
 
 ## Testing decisions
 

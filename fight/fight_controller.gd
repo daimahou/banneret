@@ -3,14 +3,15 @@ extends RefCounted
 # Plays a fight one delta at a time: it asks the brains for choices and the rules for deltas, and waits on the stage, if any, to show each beat and blow.
 
 signal action_resolved(action: Action)
+signal _resumed
+signal _pause_settled(is_paused: bool)
 
 var fight_model: FightModel
 var hero_brain: Brain
 
 var _enemy_brain: Brain
 var _stage: Stage
-# Empty while no pause is requested.
-var _pause_request: Callable
+var _is_pause_requested := false
 var _is_paused := false
 
 
@@ -29,15 +30,25 @@ func dispose() -> void:
 	_enemy_brain.dispose()
 
 
-# A pause is a coroutine the fight stands still for. It waits for a safe boundary: the end of the action being shown, or none while the heroes' brain waits.
-func request_pause(pause: Callable) -> void:
-	_pause_request = pause
+# A pause waits for a safe boundary: the end of the action being shown, or none while the heroes' brain waits.
+# False when the fight ends first. While paused, the fight stands still and takes no input.
+func pause() -> bool:
 	if hero_brain.is_waiting():
-		_play_pause()
+		_hold()
+		return true
+	_is_pause_requested = true
+	return await _pause_settled
+
+
+func resume() -> void:
+	_set_input_enabled(true)
+	_is_paused = false
+	fight_model.notify_characters_changed()
+	_resumed.emit()
 
 
 func is_pause_requested() -> bool:
-	return not _pause_request.is_null()
+	return _is_pause_requested
 
 
 func is_paused() -> bool:
@@ -46,8 +57,12 @@ func is_paused() -> bool:
 
 func play() -> void:
 	while not fight_model.is_over():
-		if is_pause_requested():
-			await _play_pause()
+		if _is_pause_requested:
+			_is_pause_requested = false
+			_hold()
+			_pause_settled.emit(true)
+			while _is_paused:
+				await _resumed
 		var choice := await _enemy_brain.get_next_action(fight_model)
 		var next_action := fight_model.get_next_action()
 		var is_nothing_due := next_action == null or next_action.resolve_tick > fight_model.tick
@@ -70,19 +85,17 @@ func play() -> void:
 				_stage.preview_model.apply(delta)
 				await _stage.show_action(next_action, fight_model.apply.bind(delta))
 			action_resolved.emit(next_action)
-	_pause_request = Callable()
+	if _is_pause_requested:
+		_is_pause_requested = false
+		_pause_settled.emit(false)
 
 
-func _play_pause() -> void:
-	var pause := _pause_request
-	_pause_request = Callable()
+func _hold() -> void:
 	_is_paused = true
+	_set_input_enabled(false)
+
+
+func _set_input_enabled(is_enabled: bool) -> void:
 	var player_brain := hero_brain as PlayerBrain
-	var input: PlayerInput = null if player_brain == null else player_brain.input
-	if input != null:
-		input.process_mode = Node.PROCESS_MODE_DISABLED
-	await pause.call()
-	if input != null:
-		input.process_mode = Node.PROCESS_MODE_INHERIT
-	_is_paused = false
-	fight_model.notify_characters_changed()
+	if player_brain != null and player_brain.input != null:
+		player_brain.input.process_mode = Node.PROCESS_MODE_INHERIT if is_enabled else Node.PROCESS_MODE_DISABLED
