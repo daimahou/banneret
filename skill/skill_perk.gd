@@ -3,7 +3,7 @@ extends Resource
 # One authored choice inside a skill's rank: what the skill gains once it is picked.
 
 @export var name: String
-# Null shows the empty socket.
+# Null leaves its socket bare.
 @export var icon: Texture2D
 @export var effects: Array[Effect] = []
 @export var modifiers: Array[SkillModifier] = []

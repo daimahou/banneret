@@ -133,7 +133,8 @@ func test_confirming_an_upgrade_raises_its_skill_with_the_chosen_perk() -> void:
 	perk.effects.append(gained)
 	hero.skills.append(skill)
 	var level_up := run_model.create_level_up()
-	var upgrade: LevelUpOffer = level_up.get_offers(hero).filter(func(offer: LevelUpOffer) -> bool: return offer.is_upgrade())[0]
+	var is_upgrade := func(offer: LevelUpOffer) -> bool: return offer.is_upgrade()
+	var upgrade: LevelUpOffer = level_up.get_offers(hero).filter(is_upgrade)[0]
 
 	level_up.select_offer(hero, upgrade, perk)
 	_confirm_first_offers(run_model, level_up)

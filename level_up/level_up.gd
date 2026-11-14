@@ -116,7 +116,8 @@ func _get_upgrade_offers(hero: Character) -> Array[LevelUpOffer]:
 		if next_rank == null or next_rank.perks.is_empty():
 			continue
 		if next_rank.perks.size() > PERK_LIMIT:
-			var rank_title: String = Skill.Rank.find_key(skill.rank + 1).capitalize()
-			push_error("%s has %d perks at %s, more than %d" % [skill.data.name, next_rank.perks.size(), rank_title, PERK_LIMIT])
+			var rank_title := Skill.get_title((skill.rank + 1) as Skill.Rank)
+			var counts := [next_rank.perks.size(), rank_title, PERK_LIMIT]
+			push_error("%s has %d perks at %s, more than %d" % ([skill.data.name] + counts))
 		offers.append(LevelUpOffer.new(skill.data, skill))
 	return offers

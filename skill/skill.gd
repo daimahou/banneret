@@ -35,7 +35,11 @@ func upgrade(perk: SkillPerk) -> void:
 
 
 func get_rank_title() -> String:
-	return Rank.find_key(rank).capitalize()
+	return get_title(rank)
+
+
+static func get_title(shown_rank: Rank) -> String:
+	return Rank.find_key(shown_rank).capitalize()
 
 
 func get_delay() -> int:
