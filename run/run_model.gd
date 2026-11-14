@@ -49,7 +49,7 @@ func confirm_level_up(level_up: LevelUp) -> void:
 	for hero in level_up.heroes:
 		var offer := level_up.get_selected_offer(hero)
 		if offer != null:
-			offer.apply(hero)
+			hero.skills.append(Skill.new(offer.skill_data))
 	level_up_count += 1
 
 
